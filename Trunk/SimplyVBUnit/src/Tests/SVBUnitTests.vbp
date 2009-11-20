@@ -1,9 +1,9 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
 Reference=*\A..\Fakes\SVBUnitFakes.vbp
-Reference=*\G{8B217740-717D-11CE-AB5B-D41203C10000}#1.0#0#..\..\..\..\..\..\..\..\Windows\SysWow64\tlbinf32.dll#TypeLib Information
+Reference=*\G{8B217740-717D-11CE-AB5B-D41203C10000}#1.0#0#..\..\..\..\..\..\..\..\..\Windows\SysWow64\tlbinf32.dll#TypeLib Information
 Reference=*\A..\Framework\SVBUnit.vbp
-Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#..\..\..\..\SimplyVBUnit 4.0 Solution\SimplyVBUnit\TypeLibrary\SimplyVBUnitType.tlb#SimplyVBUnit 4.0 Type Library
+Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#..\..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\VB98\Source\SimplyVBUnit 4.0 Solution\SimplyVBUnit\TypeLibrary\SimplyVBUnitType.tlb#SimplyVBUnit 4.0 Type Library
 Module=modMain; modMain.bas
 Class=BootstrapTestFixtureTests; BootstrapTestFixtureTests.cls
 Class=BootstrapMockOneSubTestClassTests; BootstrapMockOneSubTestClassTests.cls

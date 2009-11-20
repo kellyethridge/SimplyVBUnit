@@ -39,9 +39,9 @@ Public Function Execute(ByVal TestClass As Object) As QueryResult
     Set Execute = Release
 End Function
 
-Private Sub Init(ByRef TestClass As Object)
+Private Sub Init(ByVal TestClass As Object)
     Set mResult = New QueryResult
-    Set mInfo = tli.InterfaceInfoFromObject(TestClass)
+    Set mInfo = TLI.InterfaceInfoFromObject(TestClass)
 End Sub
 
 Private Sub FindMembers()
@@ -52,13 +52,13 @@ Private Sub FindMembers()
     Next
 End Sub
 
-Private Sub ProcessMember(ByRef Member As MemberInfo)
+Private Sub ProcessMember(ByVal Member As MemberInfo)
     If IncludeMember(Member) Then
         Call mResult.AddMember(Member)
     End If
 End Sub
 
-Private Function IncludeMember(ByRef Member As MemberInfo) As Boolean
+Private Function IncludeMember(ByVal Member As MemberInfo) As Boolean
     IncludeMember = (Member.InvokeKind = INVOKE_FUNC)
 End Function
 

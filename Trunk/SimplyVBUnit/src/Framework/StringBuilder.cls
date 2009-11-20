@@ -103,12 +103,12 @@ Private Sub EnsureCapacity(ByVal RequiredCapacity As Long)
     End If
 End Sub
 
-Private Sub AppendToBuffer(ByRef Text As String)
+Private Sub AppendToBuffer(ByVal Text As String)
     Call CopyMemory(ByVal StrPtr(mBuffer) + (Length * 2), ByVal StrPtr(Text), LenB(Text))
     Call SetLength(Text)
 End Sub
 
-Private Sub SetLength(ByRef Text As String)
+Private Sub SetLength(ByVal Text As String)
     mLength = mLength + Len(Text)
 End Sub
 

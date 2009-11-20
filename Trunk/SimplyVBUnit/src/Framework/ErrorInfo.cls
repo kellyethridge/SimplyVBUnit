@@ -54,7 +54,7 @@ Public Function Equals(ByVal Other As ErrorInfo) As Boolean
     Equals = True
 End Function
 
-Friend Sub Init(ByVal Number As Long, ByRef Source As String, ByRef Description As String)
+Friend Sub Init(ByVal Number As Long, ByVal Source As String, ByVal Description As String)
     mNumber = Number
     mSource = Source
     mDescription = Description
