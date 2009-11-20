@@ -80,7 +80,7 @@ Private Function SupportsEnumeration(ByVal Obj As Object) As Boolean
     Next
 End Function
 
-Private Function IsEnumerationMember(ByRef Member As MemberInfo) As Boolean
+Private Function IsEnumerationMember(ByVal Member As MemberInfo) As Boolean
     IsEnumerationMember = (Member.MemberId = ENUM_MEMBERID)
 End Function
 

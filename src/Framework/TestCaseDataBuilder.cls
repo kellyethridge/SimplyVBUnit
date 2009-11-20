@@ -55,7 +55,7 @@ Private Sub AddTestCaseData(ByRef Args() As Variant)
     Call mTestCases.Add(TestCaseData)
 End Sub
 
-Friend Sub Init(ByRef MethodName As String, ByRef DataStore As Collection)
+Friend Sub Init(ByVal MethodName As String, ByVal DataStore As Collection)
     mMethodName = MethodName
     Set mTestCases = DataStore
 End Sub

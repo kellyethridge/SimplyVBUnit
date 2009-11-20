@@ -96,7 +96,7 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     Set Run = Result
 End Function
 
-Private Sub RunTests(ByRef Result As TestResult)
+Private Sub RunTests(ByVal Result As TestResult)
     Dim Test As ITest
     For Each Test In mTests
         Result.AddResult Test.Run
@@ -116,7 +116,7 @@ Private Sub StartTiming()
     mTicks = Timing.GetTicks
 End Sub
 
-Private Sub RecordMetrics(ByRef Result As TestResult)
+Private Sub RecordMetrics(ByVal Result As TestResult)
     Result.Time = StopTiming
     Result.AssertCount = RestoreAssertCount
 End Sub
