@@ -112,7 +112,7 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     Set Run = Result
 End Function
 
-Private Sub RunTestCase(ByRef Result As TestResult, ByRef Listener As IEventListener)
+Private Sub RunTestCase(ByVal Result As TestResult, ByVal Listener As IEventListener)
     Call InitMetrics
     
     If RunSetup(Result) Then
@@ -129,7 +129,7 @@ Private Sub InitMetrics()
     Call StartTiming
 End Sub
 
-Private Sub RecordMetrics(ByRef Result As TestResult)
+Private Sub RecordMetrics(ByVal Result As TestResult)
     Result.Time = StopTiming
     Result.AssertCount = RestoreAssertCount
 End Sub
@@ -150,7 +150,7 @@ Private Function RestoreAssertCount() As Long
     RestoreAssertCount = Assert.SetCount(mOldAssertCount)
 End Function
 
-Private Function RunSetup(ByRef Result As TestResult) As Boolean
+Private Function RunSetup(ByVal Result As TestResult) As Boolean
     On Error GoTo errTrap
     Call mContext.RunSetup
     
@@ -161,7 +161,7 @@ errTrap:
     Call Result.Error("Error " & Err.Number & ", " & Err.Description, SetupSite)
 End Function
 
-Private Sub RunTestMethod(ByRef Result As TestResult, ByRef Listener As IEventListener)
+Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventListener)
     On Error Resume Next
     Call mTestMethod.Run
 
@@ -183,7 +183,7 @@ Private Sub RunTestMethod(ByRef Result As TestResult, ByRef Listener As IEventLi
     Call Err.Clear
 End Sub
 
-Private Sub RunTeardown(ByRef Result As TestResult)
+Private Sub RunTeardown(ByVal Result As TestResult)
     On Error GoTo errTrap
     Call mContext.RunTeardown
     
@@ -197,7 +197,7 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Name As String, ByVal TestMethod As ITestMethod)
+Friend Sub Init(ByVal Name As String, ByVal TestMethod As ITestMethod)
     If Len(Name) = 0 Then _
         Call Err.Raise(ErrorCode.Argument, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_EmptyName))
     If TestMethod Is Nothing Then _
