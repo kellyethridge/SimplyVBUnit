@@ -41,7 +41,7 @@ Public Function BuildFrom(ByVal TestClass As Object, ByVal Member As MemberInfo)
     Set BuildFrom = Release
 End Function
 
-Private Sub Init(ByRef TestClass As Object, ByRef Member As MemberInfo)
+Private Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo)
     Set mTestCases = New Collection
     Set mMember = Member
     Set mTestClass = TestClass
@@ -90,7 +90,7 @@ Private Sub BuildIndirectly()
     Next
 End Sub
 
-Private Function MakeTestCaseFromData(ByRef Data As TestCaseData) As TestCase
+Private Function MakeTestCaseFromData(ByVal Data As TestCaseData) As TestCase
     Dim Method As ArgOnlyTestMethod
     Set Method = Sim.NewArgOnlyTestMethod(mTestClass, mMember, Data)
     Set MakeTestCaseFromData = Sim.NewTestCase(NextSequentialTestName, Method)
