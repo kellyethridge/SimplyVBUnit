@@ -1,0 +1,582 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+  Persistable = 0  'NotPersistable
+  DataBindingBehavior = 0  'vbNone
+  DataSourceBehavior  = 0  'vbNone
+  MTSTransactionMode  = 0  'NotAnMTSObject
+END
+Attribute VB_Name = "TestCaseTests"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+' Copyright 2009 Kelly Ethridge
+'
+' Licensed under the Apache License, Version 2.0 (the "License");
+' you may not use this file except in compliance with the License.
+' You may obtain a copy of the License at
+'
+'     http://www.apache.org/licenses/LICENSE-2.0
+'
+' Unless required by applicable law or agreed to in writing, software
+' distributed under the License is distributed on an "AS IS" BASIS,
+' WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+' See the License for the specific language governing permissions and
+' limitations under the License.
+'
+' Module: TestCaseTests
+'
+Option Explicit
+
+
+Public Sub Constructor_WhenCalled_StoresName()
+    Dim TestCase As TestCase
+    Set TestCase = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
+    
+    Dim Actual As String
+    Actual = TestCase.Name
+    
+    Debug.Assert Actual = Constants.TEST1_METHOD
+End Sub
+
+Public Sub Constructor_WithEmptyName_RaisesError()
+    On Error GoTo errTrap
+    
+    Sim.NewTestCase "", MakeTestMethod
+    On Error GoTo 0
+    Assert.Fail "An error should be raised."
+    
+errTrap:
+    Dim Actual As ErrorInfo
+    Set Actual = ErrorInfo.FromErr(Err)
+    Dim Expected As ErrorInfo
+    Set Expected = Sim.NewErrorInfo(ErrorCode.Argument, "TestCase.Init", "Name cannot be empty.")
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Constructor_WithNothingTestMethod_RaisesError()
+    On Error GoTo errTrap
+    
+    Sim.NewTestCase "Name", Nothing
+    On Error GoTo 0
+    Assert.Fail "An error should be raised."
+    
+errTrap:
+    Dim Actual As ErrorInfo
+    Set Actual = ErrorInfo.FromErr(Err)
+    Dim Expected As ErrorInfo
+    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "TestCase.Init", "TestMethod cannot be Nothing.")
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub FullName_WhenCalled_ReturnsNameWithParentName()
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Fake1Test)
+    Dim TestCase As TestCase
+    Set TestCase = Fixture.Tests(0)
+
+    Dim Actual As String
+    Actual = TestCase.FullName
+    
+    Assert.IsTrue Actual = "Fake1Test.Test1", "Wrong full name."
+End Sub
+
+Public Sub FullName_WithNoParent_ReturnsName()
+    Dim TestCase As TestCase
+    Set TestCase = Sim.NewTestCase("Test", MakeTestMethod)
+    Set TestCase.Parent = Nothing
+    
+    Dim Actual As String
+    Actual = TestCase.FullName
+    
+    Assert.IsTrue Actual = "Test", "Wrong test name."
+End Sub
+
+Public Sub Run_WithFailingAssert_ReturnsFailingTestResult()
+    Dim TestCase As TestCase
+    Set TestCase = MakeFailingTestCase
+    
+    Dim Result As TestResult
+    Set Result = TestCase.Run
+    
+    Assert.IsTrue Result.IsFailure, "Result should be failure."
+End Sub
+
+Public Sub Run_WithFailingAssert_ReturnsFailingTestResult2()
+    Dim TestCase As TestCase
+    Set TestCase = MakeFailingTestCase
+    
+    Dim Result As TestResult
+    Set Result = TestCase.Run
+    
+    Dim Actual As String
+    Actual = Result.Message
+    Assert.IsTrue Actual = "Failed", "Result should contain message."
+End Sub
+
+Public Sub Run_WithPassingTest_ReturnsSuccessTestResult()
+    Dim TestClass As New Stub1Test
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(TestClass)
+    Dim TestCase As TestCase
+    Set TestCase = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = TestCase.Run
+    
+    Dim Actual As Boolean
+    Actual = Result.IsSuccess
+    Assert.IsTrue Actual = True, "Result should be success."
+End Sub
+
+Public Sub Run_WithUnknownErrorInTest_ReturnsErrorTestResult()
+    Dim TestClass As New Stub1Test
+    TestClass.Errors.Add Constants.TEST1_METHOD, 1, , "unknown error"
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(TestClass)
+    Dim TestCase As TestCase
+    Set TestCase = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = TestCase.Run
+    
+    Dim Actual As Boolean
+    Actual = Result.IsError
+    Assert.IsTrue Actual = True, "Result should be error."
+End Sub
+
+Public Sub Run_WithUnknownErrorTest_ReturnsErrorTestResult2()
+    Dim TestClass As New Stub1Test
+    TestClass.Errors.Add Constants.TEST1_METHOD, 1, , "unknown error"
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(TestClass)
+    Dim TestCase As TestCase
+    Set TestCase = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = TestCase.Run
+    
+    Dim Actual As String
+    Actual = Result.Message
+    Assert.IsTrue Actual = "unknown error", "Wrong error message."
+End Sub
+
+
+Public Sub Run_WithSetupDefined_RunsSetup()
+    Dim TestClass As New Mock2TestsWithSetup
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(TestClass)
+    Dim TestCase As ITest
+    Set TestCase = Fixture.Tests(0)
+    
+    TestCase.Run
+    
+    Dim Expected As New CallTrace
+    Expected.Add "Setup"
+    Expected.Add Constants.TEST1_METHOD
+    Assert.IsTrue TestClass.Calls.Equals(Expected)
+End Sub
+
+Public Sub Run_WithTeardownDefined_RunsTeardown()
+    Dim TestClass As New Mock2TestsWithTeardown
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(TestClass)
+    Dim TestCase As ITest
+    Set TestCase = Fixture.Tests(0)
+    
+    TestCase.Run
+    
+    Dim Expected As New CallTrace
+    Expected.Add Constants.TEST1_METHOD
+    Expected.Add Constants.TEARDOWN_METHOD
+    Assert.IsTrue TestClass.Calls.Equals(Expected)
+End Sub
+
+Public Sub Run_WithErrorInSetup_SkipsTestRunsTeardown()
+    Dim TestClass As New Mock1TestWithSetupTeardown
+    TestClass.Errors.Add "Setup", AssertCode.FailureCode
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(TestClass)
+    Dim TestCase As ITest
+    Set TestCase = Fixture.Tests(0)
+    
+    TestCase.Run
+    
+    Dim Expected As New CallTrace
+    Expected.Add Constants.SETUP_METHOD
+    Expected.Add Constants.TEARDOWN_METHOD
+    Assert.IsTrue TestClass.Calls.Equals(Expected)
+End Sub
+
+Public Sub Run_WithAssertFailInTest_RunsTeardown()
+    Dim Mock As New Mock1TestWithTeardown
+    Mock.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Dim TestCase As ITest
+    Set TestCase = Fixture.Tests(0)
+
+    TestCase.Run
+    
+    Dim Expected As New CallTrace
+    Expected.Add Constants.TEST1_METHOD
+    Expected.Add "Teardown"
+    Assert.IsTrue Mock.Calls.Equals(Expected)
+End Sub
+
+Public Sub Run_WithAssertFailInTest_ReturnsFailingResult()
+    Dim Mock As New Mock1TestWithTeardown
+    Mock.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Dim TestCase As ITest
+    Set TestCase = Fixture.Tests(0)
+
+    Dim Result As TestResult
+    Set Result = TestCase.Run
+    
+    Dim Actual As Boolean
+    Actual = Result.IsFailure
+    Assert.IsTrue Actual = True, "Result should be failure."
+End Sub
+
+Public Sub TestClass_WhenCalled_ReturnsTestClass()
+    Dim Fake As New Fake1Test
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Fake)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Actual As Object
+    Set Actual = Test.TestClass
+    
+    Assert.IsTrue Actual Is Fake, "Wrong test class returned."
+End Sub
+
+Public Sub Run_ParameterizedTest_RunsTest()
+    Dim Mock As New Mock1TestCaseSource
+    Mock.Value1 = "arg1"
+    Mock.Value2 = "arg2"
+    Mock.Value3 = "arg3"
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Test.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Expected.Add "GetTestCases.Test1"
+    Expected.Add "Test1.arg1.arg2.arg3"
+    Assert.IsTrue Actual.Equals(Expected), "Wrong call trace."
+End Sub
+
+Public Sub Run_WithErrorInSetup_SetsResultToError()
+    Dim Stub As New Stub1TestWithFullContext
+    Stub.Errors.Add Constants.SETUP_METHOD, ErrorCode.Argument
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Actual As TestResult
+    Set Actual = Test.Run
+    
+    Assert.IsTrue Actual.IsError, "Result should be error."
+End Sub
+
+Public Sub Run_WithErrorInSetup_SetsResultToError2()
+    Dim Stub As New Stub1TestWithFullContext
+    Stub.Errors.Add Constants.SETUP_METHOD, ErrorCode.Argument, , "In Setup"
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Actual As TestResult
+    Set Actual = Test.Run
+    
+    Assert.IsTrue Actual.Message = "Error 5, In Setup", "Wrong result message."
+End Sub
+
+Public Sub Run_WithErrorInTeardown_SetsResultToError()
+    Dim Stub As New Stub1TestWithFullContext
+    Stub.Errors.Add Constants.TEARDOWN_METHOD, 5, , "In Teardown"
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Dim Actual As Boolean
+    Actual = Result.IsError
+    Assert.IsTrue Actual = True, "Result should be error."
+End Sub
+
+Public Sub Run_WithErrorInTeardown_SetsResultToError2()
+    Dim Stub As New Stub1TestWithFullContext
+    Stub.Errors.Add Constants.TEARDOWN_METHOD, 5, , "In Teardown"
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Dim Actual As String
+    Actual = Result.Message
+    Assert.IsTrue Actual = "Error 5, In Teardown", "Wrong result message."
+End Sub
+
+Public Sub Run_WithErrorInTest_RunsTeardown()
+    Dim Mock As New Mock1TestWithTeardown
+    Mock.Errors.Add Constants.TEST1_METHOD, 1
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Expected.Add Constants.TEST1_METHOD
+    Expected.Add Constants.TEARDOWN_METHOD
+    Assert.IsTrue Actual.Equals(Expected), "Wrong call trace."
+End Sub
+
+Public Sub Run_WhenCalled_StoresAssertCountInResult()
+    Dim Stub As New Stub2TestsWithFullAsserts
+    Stub.Test1AssertCount = 2
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+
+    Dim Result As TestResult
+    Set Result = Test.Run
+
+    Dim Actual As Long
+    Actual = Result.AssertCount
+    Assert.AreEqual 2, Actual
+End Sub
+
+Public Sub Run_WhenCalled_StoresAssertCountInResult2()
+    Dim Stub As New Stub2TestsWithFullAsserts
+    Stub.Test2AssertCount = 3
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(1)
+
+    Dim Result As TestResult
+    Set Result = Test.Run
+
+    Dim Actual As Long
+    Actual = Result.AssertCount
+    Assert.AreEqual 3, Actual
+End Sub
+
+Public Sub Run_WhenCalled_StoresAssertCountInResult3()
+    Dim Stub As New Stub2TestsWithFullAsserts
+    Stub.SetupAssertCount = 2
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(1)
+
+    Dim Result As TestResult
+    Set Result = Test.Run
+
+    Dim Actual As Long
+    Actual = Result.AssertCount
+    Assert.AreEqual 2, Actual
+End Sub
+
+Public Sub Run_WhenCalled_StoresAssertCountInResult4()
+    Dim Stub As New Stub2TestsWithFullAsserts
+    Stub.TeardownAssertCount = 3
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(1)
+
+    Dim Result As TestResult
+    Set Result = Test.Run
+
+    Dim Actual As Long
+    Actual = Result.AssertCount
+    Assert.AreEqual 3, Actual
+End Sub
+
+Public Sub Run_WhenCalled_DoesNotStoreFixtureAssertCounts()
+    Dim Stub As New Stub2TestsWithFullAsserts
+    Stub.FixtureSetupAssertCount = 1
+    Stub.FixtureTeardownAssertCount = 2
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+
+    Dim Result As TestResult
+    Set Result = Test.Run
+
+    Dim Actual As Long
+    Actual = Result.AssertCount
+    Assert.AreEqual 0, Actual
+End Sub
+
+Public Sub Run_WithTestCaseSource_RunsSetup()
+    Dim Mock As New Mock2TestCaseSourceFullContext
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Test.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Expected.Add Constants.SETUP_METHOD
+    Expected.Add Constants.TEST_ANY
+    Expected.Add Constants.TEARDOWN_METHOD
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithEventListener_CallsListenerMethods()
+    Dim Mock As New MockEventListener
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Fake1Test)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Test.Run Mock
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Expected.Add "TestCaseStarted"
+    Expected.Add "TestCaseFinished"
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithAssertPass_ReturnsSuccess()
+    Dim Stub As New Stub1Test
+    Stub.Errors.Add Constants.TEST1_METHOD, AssertCode.SuccessCode
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Dim Expected As ResultState
+    Expected = SuccessState
+    Assert.IsTrue Actual = Expected
+End Sub
+
+Public Sub Run_WithAssertPassMessage_IncludesMessageInResult()
+    Const SUCCESS_MESSAGE   As String = "success message"
+    
+    Dim Stub As New Stub1Test
+    Stub.Errors.Add Constants.TEST1_METHOD, AssertCode.SuccessCode, , SUCCESS_MESSAGE
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+
+    Dim Actual As String
+    Actual = Result.Message
+    Assert.IsTrue Actual = SUCCESS_MESSAGE
+End Sub
+
+Public Sub Run_WithUnknownError_CallsListenerMethod()
+    Const ERR_CODE As Long = 5
+    
+    Dim Mock As New MockEventListener
+    Dim Stub As New Stub1Test
+    Stub.Errors.Add Constants.TEST1_METHOD, ERR_CODE
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Test.Run Mock
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Expected.Add Constants.TESTCASESTARTED_LISTENERMETHOD
+    Expected.Add Constants.UNHANDLEDERROR_LISTENERMETHOD
+    Expected.Add Constants.TESTCASEFINISHED_LISTENERMETHOD
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithUnknownError_CallsListenerMethod2()
+    Const ERR_CODE      As Long = 9
+    Const ERR_SOURCE    As String = "source"
+    Const ERR_DESC      As String = "description"
+    
+    Dim Mock As New MockEventListener
+    Dim Stub As New Stub1Test
+    Stub.Errors.Add Constants.TEST1_METHOD, ERR_CODE, ERR_SOURCE, ERR_DESC
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Test.Run Mock
+    
+    Dim Actual As ErrorInfo
+    Set Actual = Mock.ErrorInfo
+    Dim Expected As ErrorInfo
+    Set Expected = Sim.NewErrorInfo(ERR_CODE, ERR_SOURCE, ERR_DESC)
+    
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WhenSuccessful_SetsRunStateToExecuted()
+    Dim Test As ITest
+    Set Test = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
+    
+    Test.Run
+    
+    Dim Actual As RunState
+    Actual = Test.RunState
+    Assert.IsTrue Actual = ExecutedRunState
+End Sub
+
+
+
+
+Private Function MakeFailingTestCase() As TestCase
+    Dim TestClass As New Stub1Test
+    TestClass.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode, , "Failed"
+    
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(TestClass)
+
+    Set MakeFailingTestCase = Fixture.Tests(0)
+End Function
+
+Private Function MakeTestMethod() As ITestMethod
+    Dim TestClass As New Fake1Test
+    Dim Member As MemberInfo
+    Set Member = tli.InterfaceInfoFromObject(TestClass).GetMember(Constants.TEST1_METHOD)
+    Set MakeTestMethod = Sim.NewNoArgTestMethod(TestClass, Member)
+End Function

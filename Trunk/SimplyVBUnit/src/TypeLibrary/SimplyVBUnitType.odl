@@ -1,0 +1,159 @@
+//
+// SimplyVBUnit Type Library
+//
+
+[
+    helpstring("SimplyVBUnit 4.0 Type Library"),
+    uuid(923925AC-1013-4d27-9FB1-4FF0B3B47BA2),
+    lcid(0x00000000),
+    version(4.0)
+]
+library SimplyVBUnitType {
+    importlib("stdole2.tlb");
+    importlib("msvbvm60.dll");
+
+    typedef unsigned char byte;
+
+    typedef struct VBGUID {
+        int   Data1;
+        short Data2;
+        short Data3;
+        byte  Data4[8];
+    } VBGUID;
+
+    typedef struct SafeArray1d {
+        short   cDims;
+        short   fFeatures;
+        long    cbElements;
+        long    cLocks;
+        long    pvData;
+        long    cElements;
+        long    lLbound;
+    } SafeArray1d;
+
+
+    [dllname("Constants")]
+    module Constants {
+    const long vbNullPtr          = 0x00000000;
+    const long ENUM_FINISHED      = 0x00000001;
+    const long E_NOINTERFACE      = 0x80004002;
+    const long E_OUTOFMEMORY      = 0x00000007;
+    const long PVDATA_OFFSET      = 0x0000000C;
+    const long VT_BYREF           = 0x00004000;
+    const long VARIANTDATA_OFFSET = 0x00000008;
+    }
+
+
+    [
+        dllname("kernel32.dll"),
+        helpstring("Access to API functions within the Kernel32.dll system file.")
+    ]
+    module Kernel32
+    {
+        [entry("RtlMoveMemory")]                                void CopyMemory([in] void * Destination,[in] void * Source, [in] long Length);
+        [entry("RtlZeroMemory")]                                void ZeroMemory([in] void * Destination, [in] long Length);
+        [entry("QueryPerformanceCounter"), usesgetlasterror]    long QueryPerformanceCounter([in] CURRENCY * lpPerformanceCount);
+        [entry("QueryPerformanceFrequency"), usesgetlasterror]  long QueryPerformanceFrequency([in] CURRENCY * lpFrequency);
+    }
+
+    [
+        dllname("oleaut32.dll"),
+        helpstring("Access to API functions within the Oleaut32.dll system file.")
+    ]
+    module OleAut32
+    {
+        [entry("VariantCopyInd")]   HRESULT VariantCopyInd([in] VARIANT * pvarDest, [in] void * pvarSrc);
+        [entry("VariantCopy")]      HRESULT VariantCopy([in] VARIANT * pvarDest, [in] void * pvarSrc);
+        [entry("SafeArrayGetDim")]  long    SafeArrayGetDim([in] long psa);
+    }
+    
+    [
+        dllname("ole32.dll"),
+        helpstring("Access to API functions within the Ole32.dll system file.")
+    ]
+    module Ole32 
+    {
+        [entry("CoTaskMemAlloc")] long CoTaskMemAlloc([in] long cb);
+        [entry("CoTaskMemFree")]  void CoTaskMemFree([in] long pv);
+        [entry("IsEqualGUID")]    long IsEqualGUID([in] void * rguid1, [in] void * rguid2);
+    }
+    
+    [
+        dllname("msvbvm60.dll"),
+        helpstring("Access to VB6 runtime dll methods.")
+    ]
+    module VBVM60
+    {
+        [propget, entry("GetMem4")] HRESULT MemLong([in] long Address, [out, retval] long * RetVal);
+        [propput, entry("PutMem4")] HRESULT MemLong([in] long Address, [in] long RHS);
+        [propget, entry("GetMem4")] HRESULT ObjectPtr([in] void * Object, [out, retval] long * RetVal);
+        [propput, entry("PutMem4")] HRESULT ObjectPtr([in] void * Object, [in] long RHS);
+        [propget, entry("GetMem4")] HRESULT SAPtr([in] SAFEARRAY(VARIANT) * Array, [out, retval] long * RetVal);
+        [propput, entry("PutMem4")] HRESULT SAPtr([in] SAFEARRAY(VARIANT) * Array, [in] long RHS);
+        [propget, entry("GetMem2")] HRESULT VariantType([in] VARIANT * Source, [out, retval] short * RetVal);
+        [propput, entry("PutMem2")] HRESULT VariantType([in] VARIANT * Source, [in] short RHS);
+        [propget, entry("GetMem4")] HRESULT StringPtr([in] BSTR * Source, [out, retval] long * RetVal);
+		[propput, entry("PutMem4")] HRESULT StringPtr([in] BSTR * Source, [in] long Value);
+    }
+    
+    // Forward definitions
+    interface IEqualConstraint;
+
+	[uuid(00020404-0000-0000-C000-000000000046), odl]
+	interface IVBEnumVARIANT : IUnknown
+	{
+	    HRESULT VBNext([in] long celt, [in, out] VARIANT * rgvar, [in] int * pceltFetched);
+	    HRESULT Skip([in] int celt);
+	    HRESULT Reset();
+	    HRESULT Clone([in, out] IVBEnumVARIANT ** RetVal);
+	}
+	
+	[uuid(BE21FDD8-15D9-423b-AAD9-3A094532C4D2), odl]
+	interface IEqualityComparer : IDispatch
+	{
+		HRESULT Equals([in] VARIANT * X, [in] VARIANT * Y, [out, retval] boolean * RetVal);
+	}
+
+    [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
+    interface IConstraintExpression : IDispatch
+    {
+
+	}
+
+	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
+	interface IBasicExpression : IDispatch
+	{
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+	}
+	
+	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
+	interface IToleranceScales : IDispatch
+	{
+		HRESULT Days([out, retval] IEqualConstraint ** RetVal);
+		HRESULT Hours([out, retval] IEqualConstraint ** RetVal);
+		HRESULT Minutes([out, retval] IEqualConstraint ** RetVal);
+		HRESULT Seconds([out, retval] IEqualConstraint ** RetVal);
+	}
+
+	[uuid(3249766A-0390-4dda-8F3C-B481688485F9), odl]
+	interface IEqualConstraint : IDispatch
+	{
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+		HRESULT IgnoreCase([out, retval] IEqualConstraint ** RetVal);
+		HRESULT Within([in] VARIANT Tolerance, [out, retval] IToleranceScales ** RetVal);
+		HRESULT AsCollection([out, retval] IEqualConstraint ** RetVal);
+		HRESULT Using([in] IEqualityComparer * Comparer, [out, retval] IEqualConstraint ** RetVal);
+		HRESULT Strict([out, retval] IEqualConstraint ** RetVal);
+	}
+
+	[uuid(0331F242-579F-4210-9822-39782E51E0BF), odl]
+	interface IzSyntaxHelper : IDispatch
+	{
+		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualConstraint ** RetVal);
+		HRESULT True([out, retval] IBasicExpression ** RetVal);
+		HRESULT False([out, retval] IBasicExpression ** RetVal);
+	}
+}
+
