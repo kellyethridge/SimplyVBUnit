@@ -30,33 +30,42 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IBootstrapTestClass
 
-Public Sub Run()
-    Constructor_WhenCalled_HasNoTrace
-    Test1_WhenCalled_AddsToTrace
+Private mCount As Long
+
+Public Function Run() As Long
+    mCount = 0
     
+    Call RunTest(Constructor_WhenCalled_HasNoTrace)
+    Call RunTest(Test1_WhenCalled_AddsToTrace)
+    
+    Run = mCount
+End Function
+
+Private Sub RunTest(ByRef v As Variant)
+    mCount = mCount + 1
 End Sub
 
-Private Sub Constructor_WhenCalled_HasNoTrace()
+Private Function Constructor_WhenCalled_HasNoTrace()
     Dim Mock As New Mock1Test
     
     Dim Actual As Boolean
     Actual = Mock.Calls.IsEmpty
     
     Debug.Assert Actual = True
-End Sub
+End Function
 
-Private Sub Test1_WhenCalled_AddsToTrace()
+Private Function Test1_WhenCalled_AddsToTrace()
     Dim Mock As New Mock1Test
     
-    Mock.Test1
+    Call Mock.Test1
     
     Dim Expected As New CallTrace
-    Expected.Add "Test1"
+    Call Expected.Add("Test1")
     Debug.Assert Mock.Calls.Equals(Expected)
-End Sub
+End Function
 
 
 
-Private Sub IBootstrapTestClass_Run()
-    Run
-End Sub
+Private Function IBootstrapTestClass_Run() As Long
+    IBootstrapTestClass_Run = Run
+End Function

@@ -30,69 +30,74 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IBootstrapTestClass
 
+Private mCount As Long
 
-Public Sub Run()
-    Raise_WithNonexistingMethod_DoesNothing
-    Raise_WithExistingError_RaisesError
-    Raise_WithExistingError_RaisesError2
-    Raise_WithExistingError_RaisesError3
+Public Function Run() As Long
+    mCount = 0
+    
+    Call RunTest(Raise_WithNonexistingMethod_DoesNothing)
+    Call RunTest(Raise_WithExistingError_RaisesError)
+    Call RunTest(Raise_WithExistingError_RaisesError2)
+    Call RunTest(Raise_WithExistingError_RaisesError3)
+    
+    Run = mCount
+End Function
+
+Private Sub RunTest(ByRef v As Variant)
+    mCount = mCount + 1
 End Sub
 
-Private Sub Raise_WithNonexistingMethod_DoesNothing()
+Private Function Raise_WithNonexistingMethod_DoesNothing()
     On Error GoTo errTrap
-    
     Dim Errors As New CallError
     
-    Errors.Raise "missing"
-    Exit Sub
+    Call Errors.Raise("missing")
+    Exit Function
     
 errTrap:
     Debug.Assert False
-End Sub
+End Function
 
-Private Sub Raise_WithExistingError_RaisesError()
+Private Function Raise_WithExistingError_RaisesError()
     On Error GoTo errTrap
-    
     Dim Errors As New CallError
-    Errors.Add "Test", 1
+    Call Errors.Add("Test", 1)
     
-    Errors.Raise "Test"
+    Call Errors.Raise("Test")
     Debug.Assert False ' should raise an error
     
 errTrap:
     Debug.Assert Err.Number = 1
-    Err.Clear
-End Sub
+    Call Err.Clear
+End Function
 
-Private Sub Raise_WithExistingError_RaisesError2()
+Private Function Raise_WithExistingError_RaisesError2()
     On Error GoTo errTrap
-    
     Dim Errors As New CallError
-    Errors.Add "Test", 1, "source"
+    Call Errors.Add("Test", 1, "source")
     
-    Errors.Raise "Test"
+    Call Errors.Raise("Test")
     Debug.Assert False ' should raise an error
     
 errTrap:
     Debug.Assert Err.Source = "source"
     Err.Clear
-End Sub
+End Function
 
-Private Sub Raise_WithExistingError_RaisesError3()
+Private Function Raise_WithExistingError_RaisesError3()
     On Error GoTo errTrap
-    
     Dim Errors As New CallError
-    Errors.Add "Test", 1, "source", "desc"
+    Call Errors.Add("Test", 1, "source", "desc")
     
     Errors.Raise "Test"
     Debug.Assert False ' should raise an error
     
 errTrap:
     Debug.Assert Err.Description = "desc"
-    Err.Clear
-End Sub
+    Call Err.Clear
+End Function
 
 
-Private Sub IBootstrapTestClass_Run()
-    Run
-End Sub
+Private Function IBootstrapTestClass_Run() As Long
+    IBootstrapTestClass_Run = Run
+End Function

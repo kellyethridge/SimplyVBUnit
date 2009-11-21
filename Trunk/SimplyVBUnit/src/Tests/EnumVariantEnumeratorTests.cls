@@ -41,7 +41,7 @@ End Sub
 
 Public Sub MoveNext_WithCollectionOfOneItem_ReturnsTrue()
     Dim c As New Collection
-    c.Add 1
+    Call c.Add(1)
     
     Dim e As IEnumerator
     Set e = Sim.NewEnumVariantEnumerator(c)
@@ -54,7 +54,7 @@ End Sub
 
 Public Sub Current_WithCollectionOfOneItem_ReturnsItem()
     Dim c As New Collection
-    c.Add "one"
+    Call c.Add("one")
     
     Dim e As IEnumerator
     Set e = Sim.NewEnumVariantEnumerator(c)
@@ -69,7 +69,7 @@ End Sub
 Public Sub Constructor_WithNonsupportedType_RaisesError()
     On Error GoTo errTrap
     
-    Sim.NewEnumVariantEnumerator Me
+    Call Sim.NewEnumVariantEnumerator(Me)
     On Error GoTo 0
     Assert.Fail "Should raise an error."
     
@@ -79,8 +79,8 @@ End Sub
 
 Public Sub MoveNext_WithTestListOfTwoTests_ReturnsTrueTwice()
     Dim List As New TestList
-    List.Add New FakeTest
-    List.Add New FakeTest
+    Call List.Add(New FakeTest)
+    Call List.Add(New FakeTest)
     
     Dim e As IEnumerator
     Set e = Sim.NewEnumVariantEnumerator(List)

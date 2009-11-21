@@ -58,3 +58,14 @@ Public Property Set Log(ByVal RHS As ITextWriter)
     Set mLog = RHS
 End Property
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Class Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub Class_Initialize()
+    Call TestContextManager.BeginContext(Me)
+End Sub
+
+Private Sub Class_Terminate()
+    Call TestContextManager.EndContext
+End Sub

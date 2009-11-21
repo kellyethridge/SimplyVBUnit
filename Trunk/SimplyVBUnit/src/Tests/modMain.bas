@@ -17,40 +17,41 @@ Attribute VB_Name = "modMain"
 '
 Option Explicit
 
-Private mPassed As Long
-Private mFailed As Long
+Private mBootstraps As Long
+Private mPassed     As Long
+Private mFailed     As Long
 
 Private Sub RunTestClassTests()
-    Init
+    Call Init
     
     Dim Suite As New TestSuite
     
-    Suite.Add New TestFixtureTests
-    Suite.Add New TestResultTests
-    Suite.Add New TestListTests
-    Suite.Add New TestResultListTests
-    Suite.Add New TestSuiteTests
-    Suite.Add New TestCaseTests
-    Suite.Add New AssertionsTests
-    Suite.Add New NoArgTestMethodTests
-    Suite.Add New ErrorInfoTests
-    Suite.Add New MemberQueryTests
-    Suite.Add New TestCaseDataBuilderTests
-    Suite.Add New TestCaseDataTests
-    Suite.Add New ArgOnlyTestMethodTests
-    Suite.Add New TestCaseBuilderTests
-    Suite.Add New TestListEnumeratorTests
-    Suite.Add New StringBuilderTests
-    Suite.Add New TextMessageWriterTests
-    Suite.Add New EqualConstraintTests
-    Suite.Add New IzTests
-    Suite.Add New ArrayEnumeratorTests
-    Suite.Add New EnumVariantEnumeratorTests
-    Suite.Add New TestOutputTests
-    Suite.Add New StackTests
-    Suite.Add New TestContextTests
-    Suite.Add New TestContextManagerTests
-    Suite.Add New TestRunnerTests
+    Call Suite.Add(New TestFixtureTests)
+    Call Suite.Add(New TestResultTests)
+    Call Suite.Add(New TestListTests)
+    Call Suite.Add(New TestResultListTests)
+    Call Suite.Add(New TestSuiteTests)
+    Call Suite.Add(New TestCaseTests)
+    Call Suite.Add(New AssertionsTests)
+    Call Suite.Add(New NoArgTestMethodTests)
+    Call Suite.Add(New ErrorInfoTests)
+    Call Suite.Add(New MemberQueryTests)
+    Call Suite.Add(New TestCaseDataBuilderTests)
+    Call Suite.Add(New TestCaseDataTests)
+    Call Suite.Add(New ArgOnlyTestMethodTests)
+    Call Suite.Add(New TestCaseBuilderTests)
+    Call Suite.Add(New TestListEnumeratorTests)
+    Call Suite.Add(New StringBuilderTests)
+    Call Suite.Add(New TextMessageWriterTests)
+    Call Suite.Add(New EqualConstraintTests)
+    Call Suite.Add(New IzTests)
+    Call Suite.Add(New ArrayEnumeratorTests)
+    Call Suite.Add(New EnumVariantEnumeratorTests)
+    Call Suite.Add(New TestOutputTests)
+    Call Suite.Add(New StackTests)
+    Call Suite.Add(New TestContextTests)
+    Call Suite.Add(New TestContextManagerTests)
+    Call Suite.Add(New TestRunnerTests)
     
     
     Dim Result As TestResult
@@ -68,13 +69,14 @@ End Sub
 
 Private Sub PrintSummary(ByVal Result As TestResult)
     Debug.Print String$(50, "-")
-    Debug.Print "Total : " & Result.Test.TestCount
-    Debug.Print "Passed: " & mPassed
+    Debug.Print "Total : " & Result.Test.TestCount + mBootstraps
+    Debug.Print "Passed: " & mPassed + mBootstraps
     Debug.Print "Failed: " & mFailed
     Debug.Print "Time  : " & Result.Time & "ms"
 End Sub
 
 Private Sub RunBootstrapTests()
+    mBootstraps = 0
     Call RunBootstrapTestClass(New BootstrapUtilitiesTests)
     Call RunBootstrapTestClass(New BootstrapCallTraceTests)
     Call RunBootstrapTestClass(New BootstrapCallErrorTests)
@@ -86,7 +88,7 @@ Private Sub RunBootstrapTests()
 End Sub
 
 Private Sub RunBootstrapTestClass(ByVal TestClass As IBootstrapTestClass)
-    Call TestClass.Run
+    mBootstraps = mBootstraps + TestClass.Run
 End Sub
 
 Private Sub Main()

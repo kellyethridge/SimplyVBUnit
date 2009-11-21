@@ -30,13 +30,23 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IBootstrapTestClass
 
-Public Sub Run()
-    Setup_WhenCalled_AddsToTrace
-    Test1_WhenCalled_AddsToTrace
-    Test2_WhenCalled_AddsToTrace
+Private mCount As Long
+
+Public Function Run() As Long
+    mCount = 0
+    
+    Call RunTest(Setup_WhenCalled_AddsToTrace)
+    Call RunTest(Test1_WhenCalled_AddsToTrace)
+    Call RunTest(Test2_WhenCalled_AddsToTrace)
+    
+    Run = mCount
+End Function
+
+Private Sub RunTest(ByRef v As Variant)
+    mCount = mCount + 1
 End Sub
 
-Private Sub Setup_WhenCalled_AddsToTrace()
+Private Function Setup_WhenCalled_AddsToTrace()
     Dim Mock As New Mock2TestsWithSetup
     
     Mock.Setup
@@ -44,9 +54,9 @@ Private Sub Setup_WhenCalled_AddsToTrace()
     Dim Expected As New CallTrace
     Expected.Add "Setup"
     Debug.Assert Mock.Calls.Equals(Expected)
-End Sub
+End Function
 
-Private Sub Test1_WhenCalled_AddsToTrace()
+Private Function Test1_WhenCalled_AddsToTrace()
     Dim Mock As New Mock2TestsWithSetup
     
     Mock.Test1
@@ -54,9 +64,9 @@ Private Sub Test1_WhenCalled_AddsToTrace()
     Dim Expected As New CallTrace
     Expected.Add "Test1"
     Debug.Assert Mock.Calls.Equals(Expected)
-End Sub
+End Function
 
-Private Sub Test2_WhenCalled_AddsToTrace()
+Private Function Test2_WhenCalled_AddsToTrace()
     Dim Mock As New Mock2TestsWithSetup
     
     Mock.Test2
@@ -64,13 +74,10 @@ Private Sub Test2_WhenCalled_AddsToTrace()
     Dim Expected As New CallTrace
     Expected.Add "Test2"
     Debug.Assert Mock.Calls.Equals(Expected)
-End Sub
+End Function
 
 
 
-
-
-
-Private Sub IBootstrapTestClass_Run()
-    Run
-End Sub
+Private Function IBootstrapTestClass_Run() As Long
+    IBootstrapTestClass_Run = Run
+End Function

@@ -30,12 +30,21 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IBootstrapTestClass
 
-Public Sub Run()
-    Quote_WithText_ReturnsTextInQuotes
+Private mCount As Long
+
+Public Function Run() As Long
+    mCount = 0
     
+    Call RunTest(Quote_WithText_ReturnsTextInQuotes)
+    
+    Run = mCount
+End Function
+
+Private Sub RunTest(ByRef v As Variant)
+    mCount = mCount + 1
 End Sub
 
-Private Sub Quote_WithText_ReturnsTextInQuotes()
+Private Function Quote_WithText_ReturnsTextInQuotes()
     Const TEST_TEXT As String = "text"
     
     Dim Actual As String
@@ -43,9 +52,9 @@ Private Sub Quote_WithText_ReturnsTextInQuotes()
     
     Const Expected As String = """text"""
     Debug.Assert Actual = Expected
-End Sub
+End Function
 
 
-Private Sub IBootstrapTestClass_Run()
-    Run
-End Sub
+Private Function IBootstrapTestClass_Run() As Long
+    IBootstrapTestClass_Run = Run
+End Function
