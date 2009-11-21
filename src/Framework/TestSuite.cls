@@ -33,11 +33,20 @@ Implements ITest
 Private Const DEF_NAME As String = "TestSuite"
 
 
-Private mTests  As New TestList
-Private mParent As Long
-Private mName   As String
+Private mTests      As New TestList
+Private mParent     As Long
+Private mName       As String
+Private mRunState   As RunState
 
 
+
+Public Property Get RunState() As RunState
+    RunState = mRunState
+End Property
+
+Public Property Let RunState(ByVal RHS As RunState)
+    mRunState = RHS
+End Property
 
 Public Sub Sort(Optional ByVal Comparer As ITestComparer)
     Call mTests.Sort(Comparer)
@@ -97,21 +106,25 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(Me)
-    Call Result.Success
     
-    Call Listener.TestSuiteStarted(Me)
-    
-    Dim Ticks As Currency
-    Ticks = Timing.GetTicks
-    
-    Dim Test As ITest
-    For Each Test In mTests
-        Call Result.AddResult(Test.Run)
-    Next
-    
-    Result.Time = Timing.GetTime(Ticks)
-    
-    Call Listener.TestSuiteFinished(Result)
+    If Me.RunState = RunnableRunState Then
+        Call Result.Success
+        Call Listener.TestSuiteStarted(Me)
+        
+        Dim Ticks As Currency
+        Ticks = Timing.GetTicks
+        
+        Dim Test As ITest
+        For Each Test In mTests
+            Call Result.AddResult(Test.Run)
+        Next
+        
+        Result.Time = Timing.GetTime(Ticks)
+        
+        Call Listener.TestSuiteFinished(Result)
+    Else
+        Call Result.SetResult(NotRunnableState)
+    End If
     
     Set Run = Result
 End Function
@@ -197,11 +210,11 @@ Private Function ITest_Run(Optional ByVal Listener As IEventListener) As TestRes
 End Function
 
 Private Property Let ITest_RunState(ByVal RHS As RunState)
-
+    RunState = RHS
 End Property
 
 Private Property Get ITest_RunState() As RunState
-
+    ITest_RunState = RunState
 End Property
 
 Private Sub ITest_Sort(Optional ByVal Comparer As ITestComparer)
