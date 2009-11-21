@@ -220,6 +220,33 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
+Public Sub Run_WithRunStateSetToNotRunnable_DoesNotRunTests()
+    Dim Mock As New Mock1Test
+    Dim Suite As New TestSuite
+    Suite.Add Mock
+    Suite.RunState = NotRunnableRunState
+    
+    Call Suite.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
+    Dim Suite As New TestSuite
+    Suite.Add New FakeTest
+    Suite.RunState = NotRunnableRunState
+    
+    Dim Result As TestResult
+    Set Result = Suite.Run
+    
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Assert.IsTrue Actual = NotRunnableState
+End Sub
+
 
 
 Private Function NewStubTest(ByVal Name As String) As ITest
