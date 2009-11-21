@@ -41,14 +41,6 @@ Friend Sub ClearParents(ByVal List As TestList)
     Next
 End Sub
 
-Public Sub SetParents(ByVal List As TestList, ByVal Parent As ITest)
-    Dim Test As ITest
-    
-    For Each Test In List
-        Set Test.Parent = Parent
-    Next
-End Sub
-
 Friend Function GetObjectFromPointer(ByVal Ptr As Long) As Object
     If Ptr <> vbNullPtr Then
         Dim Unk As IUnknown
@@ -60,12 +52,10 @@ Friend Function GetObjectFromPointer(ByVal Ptr As Long) As Object
 End Function
 
 Friend Function BuildFullName(ByVal Test As ITest) As String
-    Dim Parent As ITest
     Dim Prefix As String
     
-    Set Parent = Test.Parent
-    If Not Parent Is Nothing Then
-        Prefix = Parent.FullName & "."
+    If Test.HasParent Then
+        Prefix = Test.Parent.FullName & "."
     End If
     
     BuildFullName = Prefix & Test.Name
