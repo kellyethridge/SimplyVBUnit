@@ -37,6 +37,7 @@ Class=Stub1TestCaseSrcAndFixtureSetup; Stub1TestCaseSourceWithFixtureSetup.cls
 Class=FakeTextWriter; FakeTextWriter.cls
 Class=Mock3TestsWithWriters; Mock3TestsWithWriters.cls
 Class=FakeTestContext; FakeTestContext.cls
+Class=Mock2TestsWithFullContext; Mock2TestsWithFullContext.cls
 Startup="(None)"
 HelpFile=""
 Command32=""

@@ -422,6 +422,31 @@ Public Sub Run_WithFailingFixtureSetup_SetsTestCaseSourceTestsToFailingResult()
     Assert.IsTrue Actual = FailureState
 End Sub
 
+Public Sub Run_WithRunStateSetToNotRunnable_DoesNotRunTests()
+    Dim Mock As New Mock2TestsWithFullContext
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Fixture.RunState = NotRunnableRunState
+    
+    Call Fixture.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Fake1Test)
+    Fixture.RunState = NotRunnableRunState
+
+    Dim Result As TestResult
+    Set Result = Fixture.Run
+
+    Assert.IsTrue Result.ResultState = NotRunnableState
+End Sub
+
 
 
 
