@@ -58,16 +58,9 @@ Public Property Set Log(ByVal RHS As ITextWriter)
     Set mLog = RHS
 End Property
 
-Public Sub CopyWritersFrom(ByVal Context As TestContext)
-    Set mOut = Context.Out
-    Set mError = Context.Error
-    Set mLog = Context.Log
-End Sub
-
-Private Sub Class_Initialize()
-    Call TestContext.BeginContext(Me)
-End Sub
-
-Private Sub Class_Terminate()
-    Call TestContext.EndContext
-End Sub
+Public Function Clone() As TestContext
+    Set Clone = New TestContext
+    Set Clone.Error = mError
+    Set Clone.Log = mLog
+    Set Clone.Out = mOut
+End Function
