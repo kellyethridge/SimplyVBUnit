@@ -43,3 +43,14 @@ End Function
 Public Property Get IsEmpty() As Boolean
     IsEmpty = Me.Count = 0
 End Property
+
+Public Function ToString() As String
+    Dim sb  As New StringBuilder
+    Dim v   As Variant
+    
+    For Each v In mMethodNames
+        Call sb.Append(v & vbCrLf)
+    Next
+    
+    ToString = sb.ToString
+End Function
