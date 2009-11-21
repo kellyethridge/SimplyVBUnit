@@ -29,16 +29,18 @@ Public Type NullListenerStatic
     Instance As New NullListener
 End Type
 
+Public NullContext      As NullContextStatic
+Public NullListener     As NullListenerStatic
+Public NullMethod       As NullMethodStatic
+
 Public Sim              As New SVBUnitConstructors
 Public TestUtils        As New TestUtils
 Public ErrorInfo        As New ErrorInfoStatic
-Public NullMethod       As NullMethodStatic
 Public Resource         As New ResourceStatic
 Public Timing           As New TimingStatic
 Public TestCaseBuilder  As New TestCaseBuilder
 Public Assert           As New Assertions
-Public NullContext      As NullContextStatic
-Public NullListener     As NullListenerStatic
+Public TestContext      As New TestContextStatic
 
 Private mIz As New IzStatic
 
