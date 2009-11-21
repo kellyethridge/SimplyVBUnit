@@ -30,50 +30,61 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IBootstrapTestClass
 
-Public Sub Run()
-    Test1_WhenCalled_DoesNothing
-    Test1_WhenSetToFail_RaisesCorrectErrorCode
-    Test1_WithMessageSet_IncludesMessageWithError
+Private mCount As Long
+
+Public Function Run() As Long
+    mCount = 0
+    
+    Call RunTest(Test1_WhenCalled_DoesNothing)
+    Call RunTest(Test1_WhenSetToFail_RaisesCorrectErrorCode)
+    Call RunTest(Test1_WithMessageSet_IncludesMessageWithError)
+    
+    Run = mCount
+End Function
+
+Private Sub RunTest(ByRef v As Variant)
+    mCount = mCount + 1
 End Sub
 
-Private Sub Test1_WhenCalled_DoesNothing()
+Private Function Test1_WhenCalled_DoesNothing()
     On Error GoTo errTrap
     Dim TestClass As New Stub1Test
     
-    TestClass.Test1
-    Exit Sub
+    Call TestClass.Test1
+    Exit Function
     
 errTrap:
     Debug.Assert False
-End Sub
+End Function
 
-Private Sub Test1_WhenSetToFail_RaisesCorrectErrorCode()
+Private Function Test1_WhenSetToFail_RaisesCorrectErrorCode()
     On Error GoTo errTrap
     Dim TestClass As New Stub1Test
-    TestClass.Errors.Add "Test1", AssertCode.FailureCode
+    Call TestClass.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode)
     
-    TestClass.Test1
+    Call TestClass.Test1
     Debug.Assert False ' should have raised an error
     
 errTrap:
     Dim Actual As Long
     Actual = Err.Number
     Debug.Assert Actual = AssertCode.FailureCode
-End Sub
+End Function
 
-Private Sub Test1_WithMessageSet_IncludesMessageWithError()
+Private Function Test1_WithMessageSet_IncludesMessageWithError()
+    Const Expected As String = "message"
     On Error GoTo errTrap
     Dim TestClass As New Stub1Test
-    TestClass.Errors.Add "Test1", AssertCode.FailureCode, , "message"
+    Call TestClass.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode, , Expected)
     
     TestClass.Test1
     
 errTrap:
     Dim Actual As String
     Actual = Err.Description
-    Debug.Assert Actual = "message"
-End Sub
+    Debug.Assert Actual = Expected
+End Function
 
-Private Sub IBootstrapTestClass_Run()
-    Run
-End Sub
+Private Function IBootstrapTestClass_Run() As Long
+    IBootstrapTestClass_Run = Run
+End Function

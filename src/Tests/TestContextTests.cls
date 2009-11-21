@@ -29,40 +29,39 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Public Sub Log_WhenCalled_StoresLogWriter()
-    Dim Fake    As New FakeTextWriter
-    Dim c       As New TestContext
+Public Sub Constructor_WhenCalled_BeginsNewContext()
+    Dim FakeOut As New FakeTextWriter
     
-    Set c.Log = Fake
+    With New TestContext
+        Set .Out = FakeOut
     
-    Dim Actual As ITextWriter
-    Set Actual = c.Log
-    Assert.IsTrue Actual Is Fake
+        Dim Actual As ITextWriter
+        Set Actual = TestContext.Out
+    End With
+    
+    Assert.IsTrue Actual Is FakeOut
 End Sub
 
-Public Sub Error_WhenCalled_StoresErrorWriter()
-    Dim Fake    As New FakeTextWriter
-    Dim c       As New TestContext
+Public Sub Destructor_WhenCalled_RevertsToPreviousContext()
+    Dim FirstOut        As New FakeTextWriter
+    Dim SecondOut       As New FakeTextWriter
+    Dim FirstActual     As ITextWriter
+    Dim SecondActual    As ITextWriter
     
-    Set c.Error = Fake
+    With New TestContext
+        Set .Out = FirstOut
+        
+        With New TestContext
+            Set .Out = SecondOut
+            Set SecondActual = TestContext.Out
+        End With
+        
+        Set FirstActual = TestContext.Out
+    End With
     
-    Dim Actual As ITextWriter
-    Set Actual = c.Error
-    Assert.IsTrue Actual Is Fake
+    Assert.IsTrue FirstActual Is FirstOut
+    Assert.IsTrue SecondActual Is SecondOut
 End Sub
-
-Public Sub Out_WhenCalled_StoredOutWriter()
-    Dim Fake    As New FakeTextWriter
-    Dim c       As New TestContext
-    
-    Set c.Out = Fake
-    
-    Dim Actual As ITextWriter
-    Set Actual = c.Out
-    Assert.IsTrue Actual Is Fake
-End Sub
-
-
 
 
 

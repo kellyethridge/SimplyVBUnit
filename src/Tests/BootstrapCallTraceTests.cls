@@ -30,104 +30,114 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IBootstrapTestClass
 
-Public Sub Run()
-    Constructor_WhenCalled_IsEmpty
-    Add_WhenCalled_StoresCallOnStack
-    Count_WhenCalled_ReturnsCallCount
-    Equals_WithSameCalls_ReturnsTrue
-    Equals_WithSameCallsInDifferentOrder_ReturnsFalse
-    Equals_WithDifferentSizeStacks_ReturnsFalse
-    Equals_WithDifferentCase_ReturnsTrue
-    Equals_WithPatternMatch_ReturnsTrue
+Private mCount As Long
+
+Public Function Run() As Long
+    mCount = 0
+    
+    Call RunTest(Constructor_WhenCalled_IsEmpty)
+    Call RunTest(Add_WhenCalled_StoresCallOnStack)
+    Call RunTest(Count_WhenCalled_ReturnsCallCount)
+    Call RunTest(Equals_WithSameCalls_ReturnsTrue)
+    Call RunTest(Equals_WithSameCallsInDifferentOrder_ReturnsFalse)
+    Call RunTest(Equals_WithDifferentSizeStacks_ReturnsFalse)
+    Call RunTest(Equals_WithDifferentCase_ReturnsTrue)
+    Call RunTest(Equals_WithPatternMatch_ReturnsTrue)
+    
+    Run = mCount
+End Function
+
+Private Sub RunTest(ByRef v As Variant)
+    mCount = mCount + 1
 End Sub
 
-Private Sub Constructor_WhenCalled_IsEmpty()
+Private Function Constructor_WhenCalled_IsEmpty()
     Dim Calls As New CallTrace
     
     Dim Actual As Long
     Actual = Calls.Count
     
     Debug.Assert Actual = 0
-End Sub
+End Function
 
-Public Sub Add_WhenCalled_StoresCallOnStack()
+Public Function Add_WhenCalled_StoresCallOnStack()
     Dim Calls As New CallTrace
     
-    Calls.Add "Method1"
+    Call Calls.Add("Method1")
     
     Dim Actual As String
     Actual = Calls(1)
     Debug.Assert Actual = "Method1"
-End Sub
+End Function
 
-Public Sub Count_WhenCalled_ReturnsCallCount()
+Public Function Count_WhenCalled_ReturnsCallCount()
     Dim Calls As New CallTrace
-    Calls.Add "Method"
+    Call Calls.Add("Method")
     
     Dim Actual As Long
     Actual = Calls.Count
     
     Debug.Assert Actual = 1
-End Sub
+End Function
 
-Public Sub Equals_WithSameCalls_ReturnsTrue()
+Public Function Equals_WithSameCalls_ReturnsTrue()
     Dim Actual As New CallTrace
-    Actual.Add "Test1"
-    Actual.Add "Test2"
+    Call Actual.Add("Test1")
+    Call Actual.Add("Test2")
     
     Dim Expected As New CallTrace
-    Expected.Add "Test1"
-    Expected.Add "Test2"
+    Call Expected.Add("Test1")
+    Call Expected.Add("Test2")
     
     Debug.Assert Actual.Equals(Expected)
-End Sub
+End Function
 
-Public Sub Equals_WithSameCallsInDifferentOrder_ReturnsFalse()
+Public Function Equals_WithSameCallsInDifferentOrder_ReturnsFalse()
     Dim Actual As New CallTrace
-    Actual.Add "Test1"
-    Actual.Add "Test2"
+    Call Actual.Add("Test1")
+    Call Actual.Add("Test2")
     
     Dim Expected As New CallTrace
-    Expected.Add "Test2"
-    Expected.Add "Test1"
+    Call Expected.Add("Test2")
+    Call Expected.Add("Test1")
     
     Debug.Assert Actual.Equals(Expected) = False
-End Sub
+End Function
 
-Public Sub Equals_WithDifferentSizeStacks_ReturnsFalse()
+Public Function Equals_WithDifferentSizeStacks_ReturnsFalse()
     Dim Actual As New CallTrace
-    Actual.Add "Test1"
-    Actual.Add "Test2"
+    Call Actual.Add("Test1")
+    Call Actual.Add("Test2")
     
     Dim Expected As New CallTrace
-    Expected.Add "Test1"
+    Call Expected.Add("Test1")
     
     Debug.Assert Actual.Equals(Expected) = False
-End Sub
+End Function
 
-Public Sub Equals_WithDifferentCase_ReturnsTrue()
+Public Function Equals_WithDifferentCase_ReturnsTrue()
     Dim Actual As New CallTrace
-    Actual.Add "test1"
+    Call Actual.Add("test1")
     
     Dim Expected As New CallTrace
-    Expected.Add "TEST1"
+    Call Expected.Add("TEST1")
     
     Debug.Assert Actual.Equals(Expected) = True
-End Sub
+End Function
 
-Public Sub Equals_WithPatternMatch_ReturnsTrue()
+Public Function Equals_WithPatternMatch_ReturnsTrue()
     Dim Actual As New CallTrace
-    Actual.Add "Test1"
+    Call Actual.Add("Test1")
     
     Dim Expected As New CallTrace
-    Expected.Add "Test*"
+    Call Expected.Add("Test*")
     
     Debug.Assert Actual.Equals(Expected) = True
-End Sub
+End Function
 
 
 
 
-Private Sub IBootstrapTestClass_Run()
-    Run
-End Sub
+Private Function IBootstrapTestClass_Run() As Long
+    IBootstrapTestClass_Run = Run
+End Function

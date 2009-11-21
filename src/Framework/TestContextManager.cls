@@ -29,12 +29,12 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mCurrentContext As TestContext
+Private mContextPointer As Long
 Private mContexts       As New Stack
 
 
 Public Property Get CurrentContext() As TestContext
-    Set CurrentContext = mCurrentContext
+    Set CurrentContext = TestUtils.GetObjectFromPointer(mContextPointer)
 End Property
 
 Public Sub BeginContext(ByVal Context As TestContext)
@@ -43,20 +43,22 @@ Public Sub BeginContext(ByVal Context As TestContext)
 End Sub
 
 Private Sub StoreCurrentContext()
-    Call mContexts.Push(mCurrentContext)
+    Call mContexts.Push(CurrentContext)
 End Sub
 
 Private Sub InitializeNewContext(ByVal Context As TestContext)
-    If Not mCurrentContext Is Nothing Then
-        Set Context.Error = mCurrentContext.Error
-        Set Context.Log = mCurrentContext.Log
-        Set Context.Out = mCurrentContext.Out
+    If mContextPointer <> vbNullPtr Then
+        With CurrentContext
+            Set Context.Error = .Error
+            Set Context.Log = .Log
+            Set Context.Out = .Out
+        End With
     End If
 
-    Set mCurrentContext = Context
+    mContextPointer = ObjPtr(Context)
 End Sub
 
 Public Sub EndContext()
-    Set mCurrentContext = mContexts.Pop
+    mContextPointer = ObjPtr(mContexts.Pop)
 End Sub
 

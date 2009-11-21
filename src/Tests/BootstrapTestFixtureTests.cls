@@ -30,15 +30,24 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IBootstrapTestClass
 
-Public Sub Run()
-    Constructor_WithEmptyTestClass_Creates0TestCases
-    Constructor_WithClassWithOneTest_Creates1TestCase
-    Constructor_WithClassWithProperty_ExcludesPropertyAsTest
-    Run_UsingClassWithOneTest_ExecutesTest
+Private mCount As Long
+
+Public Function Run() As Long
+    mCount = 0
     
+    Call RunTest(Constructor_WithEmptyTestClass_Creates0TestCases)
+    Call RunTest(Constructor_WithClassWithOneTest_Creates1TestCase)
+    Call RunTest(Constructor_WithClassWithProperty_ExcludesPropertyAsTest)
+    Call RunTest(Run_UsingClassWithOneTest_ExecutesTest)
+    
+    Run = mCount
+End Function
+
+Private Sub RunTest(ByRef v As Variant)
+    mCount = mCount + 1
 End Sub
 
-Private Sub Constructor_WithEmptyTestClass_Creates0TestCases()
+Private Function Constructor_WithEmptyTestClass_Creates0TestCases()
     Dim TestClass As New FakeEmpty
     Dim Fixture As TestFixture
     
@@ -47,9 +56,9 @@ Private Sub Constructor_WithEmptyTestClass_Creates0TestCases()
     Dim Actual As Long
     Actual = Fixture.TestCount
     Debug.Assert Actual = 0
-End Sub
+End Function
 
-Private Sub Constructor_WithClassWithOneTest_Creates1TestCase()
+Private Function Constructor_WithClassWithOneTest_Creates1TestCase()
     Dim TestClass As New Fake1Test
     Dim Fixture As TestFixture
     
@@ -58,9 +67,9 @@ Private Sub Constructor_WithClassWithOneTest_Creates1TestCase()
     Dim Actual As Long
     Actual = Fixture.TestCount
     Debug.Assert Actual = 1
-End Sub
+End Function
 
-Private Sub Constructor_WithClassWithProperty_ExcludesPropertyAsTest()
+Private Function Constructor_WithClassWithProperty_ExcludesPropertyAsTest()
     Dim TestClass As New Fake1Property
     Dim Fixture As TestFixture
     
@@ -69,24 +78,24 @@ Private Sub Constructor_WithClassWithProperty_ExcludesPropertyAsTest()
     Dim Actual As Long
     Actual = Fixture.TestCount
     Debug.Assert Actual = 0
-End Sub
+End Function
 
-Private Sub Run_UsingClassWithOneTest_ExecutesTest()
+Private Function Run_UsingClassWithOneTest_ExecutesTest()
     Dim TestClass As New Mock1Test
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
 
-    Fixture.Run
+    Call Fixture.Run
 
     Dim Actual As Long
     Actual = TestClass.Calls.Count
     Debug.Assert Actual = 1
-End Sub
+End Function
 
 
 
 
 
-Private Sub IBootstrapTestClass_Run()
-    Run
-End Sub
+Private Function IBootstrapTestClass_Run() As Long
+    IBootstrapTestClass_Run = Run
+End Function

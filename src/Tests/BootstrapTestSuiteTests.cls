@@ -30,101 +30,110 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IBootstrapTestClass
 
-Public Sub Run()
-    Add_WithTestClass_CreatesTestFixture
-    Add_WithTestFixture_StoresTestFixture
-    Add_WithTwoTestClasses_Creates2TestFixtures
-    TestCount_With2TestsPerTestClass_Returns4
-    Run_WithTestClass_ExecutesTest
-    Add_WithTestSuite_StoresTestSuite
-    Run_WithChildTestSuite_RunsChildTestSuite
+Private mCount As Long
+
+Public Function Run() As Long
+    mCount = 0
     
+    Call RunTest(Add_WithTestClass_CreatesTestFixture)
+    Call RunTest(Add_WithTestFixture_StoresTestFixture)
+    Call RunTest(Add_WithTwoTestClasses_Creates2TestFixtures)
+    Call RunTest(TestCount_With2TestsPerTestClass_Returns4)
+    Call RunTest(Run_WithTestClass_ExecutesTest)
+    Call RunTest(Add_WithTestSuite_StoresTestSuite)
+    Call RunTest(Run_WithChildTestSuite_RunsChildTestSuite)
+    
+    Run = mCount
+End Function
+
+Private Sub RunTest(ByRef v As Variant)
+    mCount = mCount + 1
 End Sub
 
-Private Sub Add_WithTestClass_CreatesTestFixture()
+Private Function Add_WithTestClass_CreatesTestFixture()
     Dim TestClass As New FakeEmpty
     Dim Suite As New TestSuite
     
-    Suite.Add TestClass
+    Call Suite.Add(TestClass)
     
     Dim Actual As Object
     Set Actual = Suite.Tests(0)
     Debug.Assert TypeOf Actual Is TestFixture
-End Sub
+End Function
 
-Private Sub Add_WithTestFixture_StoresTestFixture()
+Private Function Add_WithTestFixture_StoresTestFixture()
     Dim TestClass As New FakeEmpty
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     Dim Suite As New TestSuite
     
-    Suite.Add Fixture
+    Call Suite.Add(Fixture)
     
     Dim Actual As Object
     Set Actual = Suite.Tests(0)
     Debug.Assert Actual Is Fixture
-End Sub
+End Function
 
-Private Sub Add_WithTwoTestClasses_Creates2TestFixtures()
+Private Function Add_WithTwoTestClasses_Creates2TestFixtures()
     Dim Suite As New TestSuite
     
-    Suite.Add New Fake1Test
-    Suite.Add New Fake1Test
+    Call Suite.Add(New Fake1Test)
+    Call Suite.Add(New Fake1Test)
     
     Dim Actual As Long
     Actual = Suite.Tests.Count
     Debug.Assert Actual = 2
-End Sub
+End Function
 
-Private Sub TestCount_With2TestsPerTestClass_Returns4()
+Private Function TestCount_With2TestsPerTestClass_Returns4()
     Dim Suite As New TestSuite
     
-    Suite.Add New Fake2Tests
-    Suite.Add New Fake2Tests
+    Call Suite.Add(New Fake2Tests)
+    Call Suite.Add(New Fake2Tests)
     
     Dim Actual As Long
     Actual = Suite.TestCount
     Debug.Assert Actual = 4
-End Sub
+End Function
 
-Private Sub Run_WithTestClass_ExecutesTest()
+Private Function Run_WithTestClass_ExecutesTest()
     Dim TestClass As New Mock1Test
     Dim Suite As New TestSuite
-    Suite.Add TestClass
+    Call Suite.Add(TestClass)
     
-    Suite.Run
+    Call Suite.Run
     
     Dim Actual As Long
     Actual = TestClass.Calls.Count
     Debug.Assert Actual = 1
-End Sub
+End Function
 
-Private Sub Add_WithTestSuite_StoresTestSuite()
+Private Function Add_WithTestSuite_StoresTestSuite()
     Dim Suite1 As New TestSuite
     Dim Suite2 As New TestSuite
     
-    Suite1.Add Suite2
+    Call Suite1.Add(Suite2)
     
     Dim Actual As Object
     Set Actual = Suite1.Tests(0)
     Debug.Assert Actual Is Suite2
-End Sub
+End Function
 
-Private Sub Run_WithChildTestSuite_RunsChildTestSuite()
+Private Function Run_WithChildTestSuite_RunsChildTestSuite()
     Dim TestClass As New Mock1Test
     Dim ChildSuite As New TestSuite
     ChildSuite.Add TestClass
     Dim ParentSuite As New TestSuite
-    ParentSuite.Add ChildSuite
+    Call ParentSuite.Add(ChildSuite)
     
-    ParentSuite.Run
+    Call ParentSuite.Run
     
     Dim Actual As Long
     Actual = TestClass.Calls.Count
     Debug.Assert Actual = 1
-End Sub
+End Function
 
 
-Private Sub IBootstrapTestClass_Run()
-    Run
-End Sub
+Private Function IBootstrapTestClass_Run() As Long
+    IBootstrapTestClass_Run = Run
+End Function

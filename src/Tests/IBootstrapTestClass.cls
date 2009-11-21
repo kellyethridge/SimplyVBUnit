@@ -29,5 +29,5 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Public Sub Run(): End Sub
+Public Function Run() As Long: End Function
 
