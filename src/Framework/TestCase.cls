@@ -99,17 +99,17 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(Me)
     
-'    Call TestContextManager.BeginContext
-    Call Listener.TestCaseStarted(Me)
-    
-    If Me.RunState = RunnableRunState Then
-        Call RunTestCase(Result, Listener)
-    Else
-        Call Result.Failure("FixtureSetup failed.", ParentSite)
-    End If
-    
-    Call Listener.TestCaseFinished(Result)
-'    Call TestContextManager.EndContext
+    With New TestContext
+        Call Listener.TestCaseStarted(Me)
+        
+        If Me.RunState = RunnableRunState Then
+            Call RunTestCase(Result, Listener)
+        Else
+            Call Result.Failure("FixtureSetup failed.", ParentSite)
+        End If
+        
+        Call Listener.TestCaseFinished(Result)
+    End With
     
     Set Run = Result
 End Function
