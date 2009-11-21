@@ -610,6 +610,23 @@ Public Sub Run_WhenCalled_BeginsNewContextForEachTestCase()
     Assert.IsTrue Mock.Test3Writer Is FakeOut
 End Sub
 
+Public Sub Run_WithRunStateSetToNotRunnable_CallsListenerMethods()
+    Dim Mock As New MockEventListener
+    Dim Test As TestCase
+    Set Test = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
+    Test.RunState = NotRunnableRunState
+    
+    Call Test.Run(Mock)
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Call Expected.Add("TestCaseStarted")
+    Call Expected.Add("TestCaseFinished")
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+
 
 
 Private Function MakeFailingTestCase() As TestCase
