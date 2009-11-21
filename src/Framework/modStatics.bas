@@ -41,6 +41,7 @@ Public Timing           As New TimingStatic
 Public TestCaseBuilder  As New TestCaseBuilder
 Public Assert           As New Assertions
 Public TestContext      As New TestContextStatic
+Public TestContextManager As New TestContextManager
 
 Private mIz As New IzStatic
 

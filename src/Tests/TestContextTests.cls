@@ -62,22 +62,6 @@ Public Sub Out_WhenCalled_StoredOutWriter()
     Assert.IsTrue Actual Is Fake
 End Sub
 
-Public Sub Clone_WhenCalled_CopiesTextWriterReferences()
-    Dim FakeError   As New FakeTextWriter
-    Dim FakeLog     As New FakeTextWriter
-    Dim FakeOut     As New FakeTextWriter
-    Dim c           As New TestContext
-    Set c.Error = FakeError
-    Set c.Log = FakeLog
-    Set c.Out = FakeOut
-    
-    Dim Actual As TestContext
-    Set Actual = c.Clone
-    
-    Assert.IsTrue Actual.Error Is FakeError
-    Assert.IsTrue Actual.Log Is FakeLog
-    Assert.IsTrue Actual.Out Is FakeOut
-End Sub
 
 
 

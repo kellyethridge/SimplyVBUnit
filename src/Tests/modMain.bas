@@ -50,6 +50,7 @@ Private Sub RunTestClassTests()
     Suite.Add New StackTests
     Suite.Add New TestContextTests
     Suite.Add New TestContextManagerTests
+    Suite.Add New TestRunnerTests
     
     
     Dim Result As TestResult

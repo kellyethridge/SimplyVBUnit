@@ -53,6 +53,7 @@ Class=Stack; Stack.cls
 Class=TestContext; TestContext.cls
 ResFile32="SVBUnit.RES"
 Class=TestContextManager; TestContextManager.cls
+Class=TestRunner; TestRunner.cls
 Startup="(None)"
 HelpFile=""
 Title="SVBUnit"

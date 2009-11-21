@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "TestContextStatic"
+Attribute VB_Name = "TestRunnerTests"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = True
+Attribute VB_Exposed = False
 ' Copyright 2009 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,31 +25,31 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestContextStatic
+' Module: TestRunnerTests
 '
 Option Explicit
 
+Public Sub Constructor_WhenCalled_StoresTest()
+    Dim Fake As New FakeTest
+    Dim Runner As TestRunner
+    
+    Set Runner = Sim.NewTestRunner(Fake)
+    
+    Dim Actual As ITest
+    Set Actual = Runner.Test
+    Assert.IsTrue Actual Is Fake
+End Sub
 
-Public Property Get Out() As ITextWriter
-    Set Out = TestContextManager.CurrentContext.Out
-End Property
+'Public Sub Run_WhenCalled_BeginsNewTestContext()
+'    Dim Mock As New Mock3TestsWithWriters
+'    Dim Fixture As TestFixture
+'    Set Fixture = Sim.NewTestFixture(Mock)
+'    Dim Runner As TestRunner
+'    Set Runner = Sim.NewTestRunner(Fixture)
+'
+'    Runner.Run
+'
+'    Assert.IsFalse Mock.Test2Writer Is Nothing
+'End Sub
 
-Public Property Set Out(ByVal RHS As ITextWriter)
-    Set TestContextManager.CurrentContext.Out = RHS
-End Property
 
-Public Property Get Error() As ITextWriter
-    Set Error = TestContextManager.CurrentContext.Error
-End Property
-
-Public Property Set Error(ByVal RHS As ITextWriter)
-    Set TestContextManager.CurrentContext.Error = RHS
-End Property
-
-Public Property Get Log() As ITextWriter
-    Set Log = TestContextManager.CurrentContext.Log
-End Property
-
-Public Property Set Log(ByVal RHS As ITextWriter)
-    Set TestContextManager.CurrentContext.Log = RHS
-End Property

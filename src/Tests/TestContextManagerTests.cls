@@ -39,48 +39,50 @@ Public Sub Constructor_WhenCalled_HasContextOfNothing()
 End Sub
 
 Public Sub BeginContext_WhenCalled_StartsNewContext()
+    Dim Fake As New FakeTestContext
     Dim Mgr As New TestContextManager
     
-    Mgr.BeginContext
+    Mgr.BeginContext Fake
     
     Dim Actual As TestContext
     Set Actual = Mgr.CurrentContext
-    Assert.IsFalse Actual Is Nothing
+    Assert.IsTrue Actual Is Fake
 End Sub
 
 Public Sub EndContext_WhenCalledAfterBeginContext_RevertsToPreviousContext()
+    Dim Fake As New FakeTestContext
     Dim Mgr As New TestContextManager
-    Mgr.BeginContext
-    
+    Mgr.BeginContext Fake
+
     Mgr.EndContext
-    
+
     Dim Actual As TestContext
     Set Actual = Mgr.CurrentContext
     Assert.IsTrue Actual Is Nothing
 End Sub
 
 Public Sub BeginContext_WhenCalledAfterBeginContext_StartsNewContext()
+    Dim Fake1 As New FakeTestContext
+    Dim Fake2 As New FakeTestContext
     Dim Mgr As New TestContextManager
-    Mgr.BeginContext
-    Dim OldContext As TestContext
-    Set OldContext = Mgr.CurrentContext
-    
-    Mgr.BeginContext
-    
+    Mgr.BeginContext Fake1
+
+    Mgr.BeginContext Fake2
+
     Dim Actual As TestContext
     Set Actual = Mgr.CurrentContext
-    Assert.IsFalse Actual Is OldContext
+    Assert.IsTrue Actual Is Fake2
 End Sub
 
 Public Sub EndContext_WhenCalledAfterTwoBeginContextCalls_RevertsToFirstContext()
+    Dim FirstContext    As New FakeTestContext
+    Dim SecondContext   As New FakeTestContext
     Dim Mgr As New TestContextManager
-    Mgr.BeginContext
-    Dim FirstContext As TestContext
-    Set FirstContext = Mgr.CurrentContext
-    Mgr.BeginContext
-    
+    Mgr.BeginContext FirstContext
+    Mgr.BeginContext SecondContext
+
     Mgr.EndContext
-    
+
     Dim Actual As TestContext
     Set Actual = Mgr.CurrentContext
     Assert.IsTrue Actual Is FirstContext
@@ -91,13 +93,15 @@ Public Sub BeginContext_WhenCalled_HasNewContextWithSameWritersAsPreviousContext
     Dim FakeLog     As New FakeTextWriter
     Dim FakeOut     As New FakeTextWriter
     Dim Mgr         As New TestContextManager
-    Mgr.BeginContext
+    Dim FirstContext    As New FakeTestContext
+    Dim SecondContext   As New FakeTestContext
+    Mgr.BeginContext FirstContext
     Set Mgr.CurrentContext.Error = FakeError
     Set Mgr.CurrentContext.Log = FakeLog
     Set Mgr.CurrentContext.Out = FakeOut
-    
-    Mgr.BeginContext
-    
+
+    Mgr.BeginContext SecondContext
+
     Dim Actual As TestContext
     Set Actual = Mgr.CurrentContext
     Assert.IsTrue Actual.Error Is FakeError

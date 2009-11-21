@@ -41,6 +41,7 @@ Module=Constants; Constants.bas
 Class=StackTests; StackTests.cls
 Class=TestContextTests; TestContextTests.cls
 Class=TestContextManagerTests; TestContextManagerTests.cls
+Class=TestRunnerTests; TestRunnerTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
