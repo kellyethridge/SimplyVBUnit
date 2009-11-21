@@ -51,7 +51,7 @@ End Sub
 
 Friend Function GetObjectFromPointer(ByVal Ptr As Long) As Object
     If Ptr <> vbNullPtr Then
-        Dim Unk As ITest
+        Dim Unk As IUnknown
         
         ObjectPtr(Unk) = Ptr
         Set GetObjectFromPointer = Unk
