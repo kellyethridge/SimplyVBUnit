@@ -100,15 +100,13 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     Set Result = Sim.NewTestResult(Me)
     
     With New TestContext
-        Call Listener.TestCaseStarted(Me)
-        
         If Me.RunState = RunnableRunState Then
+            Call Listener.TestCaseStarted(Me)
             Call RunTestCase(Result, Listener)
+            Call Listener.TestCaseFinished(Result)
         Else
-            Call Result.SetResult(NotRunnableState)
+            Call Result.Invalid
         End If
-        
-        Call Listener.TestCaseFinished(Result)
     End With
     
     Set Run = Result

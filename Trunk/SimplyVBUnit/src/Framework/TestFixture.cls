@@ -94,7 +94,7 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
         Call RecordMetrics(Result)
         Call Listener.TestFixtureFinished(Result)
     Else
-        Call Result.SetResult(NotRunnableState)
+        Call Result.Invalid
     End If
     
     Set Run = Result
