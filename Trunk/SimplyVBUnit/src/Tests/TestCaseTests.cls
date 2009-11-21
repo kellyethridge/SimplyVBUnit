@@ -561,6 +561,37 @@ Public Sub Run_WhenSuccessful_SetsRunStateToExecuted()
     Assert.IsTrue Actual = ExecutedRunState
 End Sub
 
+Public Sub Run_WithRunStateSetToNotRunnable_DoesNotExecuteTest()
+    Dim Mock As New Mock1Test
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Dim Test As TestCase
+    Set Test = Fixture.Tests(0)
+    Test.RunState = NotRunnableRunState
+    
+    Call Test.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithRunStateSetToNotRunnable_ReturnsNotRunnableResult()
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Fake1Test)
+    Dim Test As TestCase
+    Set Test = Fixture.Tests(0)
+    Test.RunState = NotRunnableRunState
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Assert.IsTrue Actual = NotRunnableState
+End Sub
+
 Public Sub Run_WhenCalled_BeginsNewContextForEachTestCase()
     Dim FakeOut As New FakeTextWriter
     Dim Mock    As New Mock3TestsWithWriters

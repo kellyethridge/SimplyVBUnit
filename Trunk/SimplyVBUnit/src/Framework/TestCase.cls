@@ -105,7 +105,7 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
         If Me.RunState = RunnableRunState Then
             Call RunTestCase(Result, Listener)
         Else
-            Call Result.Failure("FixtureSetup failed.", ParentSite)
+            Call Result.SetResult(NotRunnableState)
         End If
         
         Call Listener.TestCaseFinished(Result)
