@@ -99,6 +99,7 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(Me)
     
+'    Call TestContextManager.BeginContext
     Call Listener.TestCaseStarted(Me)
     
     If Me.RunState = RunnableRunState Then
@@ -108,6 +109,7 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     End If
     
     Call Listener.TestCaseFinished(Result)
+'    Call TestContextManager.EndContext
     
     Set Run = Result
 End Function

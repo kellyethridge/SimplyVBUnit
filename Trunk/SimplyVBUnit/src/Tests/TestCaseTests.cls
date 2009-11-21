@@ -561,6 +561,18 @@ Public Sub Run_WhenSuccessful_SetsRunStateToExecuted()
     Assert.IsTrue Actual = ExecutedRunState
 End Sub
 
+'Public Sub Run_WhenCalled_BeginsNewContextForEachTestCase()
+'    Dim Mock As New Mock3TestsWithWriters
+'    Dim Fixture As TestFixture
+'    Set Fixture = Sim.NewTestFixture(Mock)
+'    Dim Runner As TestRunner
+'    Set Runner = Sim.NewTestRunner(Fixture)
+'
+'    Runner.Run
+'
+'    Assert.IsFalse Mock.Test1Writer Is Mock.Test2Writer
+'    Assert.IsTrue Mock.Test2Writer Is Mock.Test3Writer
+'End Sub
 
 
 

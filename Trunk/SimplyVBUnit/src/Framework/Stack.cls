@@ -51,10 +51,22 @@ Public Property Get IsEmpty() As Boolean
     IsEmpty = (Me.Count = 0)
 End Property
     
-Public Function Pop() As Variant
-    Call VariantCopyInd(Pop, mItems(TOP_ITEM_INDEX))
-    Call mItems.Remove(TOP_ITEM_INDEX)
+Public Function Peek() As Variant
+    Call GetTopItem(Peek)
 End Function
+
+Public Function Pop() As Variant
+    Call GetTopItem(Pop)
+    Call RemoveTopItem
+End Function
+
+Private Sub GetTopItem(ByRef Result As Variant)
+    Call VariantCopyInd(Result, mItems(TOP_ITEM_INDEX))
+End Sub
+
+Private Sub RemoveTopItem()
+    Call mItems.Remove(TOP_ITEM_INDEX)
+End Sub
 
 Public Sub Clear()
     Call Initialize

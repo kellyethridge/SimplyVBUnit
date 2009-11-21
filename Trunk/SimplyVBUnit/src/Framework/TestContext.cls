@@ -58,9 +58,3 @@ Public Property Set Log(ByVal RHS As ITextWriter)
     Set mLog = RHS
 End Property
 
-Public Function Clone() As TestContext
-    Set Clone = New TestContext
-    Set Clone.Error = mError
-    Set Clone.Log = mLog
-    Set Clone.Out = mOut
-End Function

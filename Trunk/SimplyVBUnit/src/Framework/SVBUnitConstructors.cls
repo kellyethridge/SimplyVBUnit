@@ -98,3 +98,8 @@ Public Function NewContextMethods(ByVal SetupMethod As ITestMethod, ByVal Teardo
     Set NewContextMethods = New ContextMethods
     Call NewContextMethods.Init(SetupMethod, TeardownMethod)
 End Function
+
+Public Function NewTestRunner(ByVal Test As ITest) As TestRunner
+    Set NewTestRunner = New TestRunner
+    Call NewTestRunner.Init(Test)
+End Function

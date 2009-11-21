@@ -18,5 +18,14 @@ Public Test2Writer As ITextWriter
 Public Test3Writer As ITextWriter
 
 Public Sub Test1()
-    
+    Set Test1Writer = New FakeTextWriter
+    Set TestContext.Out = Test1Writer
+End Sub
+
+Public Sub Test2()
+    Set Test2Writer = TestContext.Out
+End Sub
+
+Public Sub Test3()
+    Set Test3Writer = TestContext.Out
 End Sub

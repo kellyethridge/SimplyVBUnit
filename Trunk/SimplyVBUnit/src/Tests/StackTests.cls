@@ -103,3 +103,35 @@ Public Sub Clear_WhenCalled_RemovesItems()
     Assert.IsTrue Actual = 0
 End Sub
 
+Public Sub Peek_WhenCalled_ReturnsTopItem()
+    Dim s As New Stack
+    s.Push 1
+    
+    Dim Actual As Long
+    Actual = s.Peek
+    
+    Assert.IsTrue Actual = 1
+End Sub
+
+Public Sub Peek_WhenCalled_LeavesItemOnStack()
+    Dim s As New Stack
+    s.Push 1
+    
+    s.Peek
+    
+    Dim Actual As Long
+    Actual = s.Count
+    Assert.IsTrue Actual = 1
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
