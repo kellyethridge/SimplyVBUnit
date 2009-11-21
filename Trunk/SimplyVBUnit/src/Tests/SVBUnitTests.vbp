@@ -40,6 +40,7 @@ Class=TestOutputTests; TestOutputTests.cls
 Module=Constants; Constants.bas
 Class=StackTests; StackTests.cls
 Class=TestContextTests; TestContextTests.cls
+Class=TestContextManagerTests; TestContextManagerTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

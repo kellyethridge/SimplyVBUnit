@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "TestContextStack"
+Attribute VB_Name = "TestContextManager"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,29 +25,35 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestContextStack
+' Module: TestContextManager
 '
 Option Explicit
 
-Private mStack As New Stack
+Private mCurrentContext As TestContext
+Private mContexts       As New Stack
 
-
-Public Sub Push(ByVal Context As TestContext)
-    Call mStack.Push(Context)
-End Sub
-
-Public Function Pop() As TestContext
-    Set Pop = mStack.Pop
-End Function
-
-Public Property Get Count() As Long
-    Count = mStack.Count
+Public Property Get CurrentContext() As TestContext
+    Set CurrentContext = mCurrentContext
 End Property
 
-Public Property Get IsEmpty() As Boolean
-    IsEmpty = mStack.IsEmpty
-End Property
-
-Public Sub Clear()
-    Call mStack.Clear
+Public Sub BeginContext()
+    Call StoreCurrentContext
+    Call InitializeNewContext
 End Sub
+
+Private Sub StoreCurrentContext()
+    Call mContexts.Push(mCurrentContext)
+End Sub
+
+Private Sub InitializeNewContext()
+    If mCurrentContext Is Nothing Then
+        Set mCurrentContext = New TestContext
+    Else
+        Set mCurrentContext = mCurrentContext.Clone
+    End If
+End Sub
+
+Public Sub EndContext()
+    Set mCurrentContext = mContexts.Pop
+End Sub
+

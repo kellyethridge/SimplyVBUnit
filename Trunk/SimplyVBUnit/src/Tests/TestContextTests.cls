@@ -30,8 +30,8 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Sub Log_WhenCalled_StoresLogWriter()
-    Dim Fake As New FakeTextWriter
-    Dim c As New TestContext
+    Dim Fake    As New FakeTextWriter
+    Dim c       As New TestContext
     
     Set c.Log = Fake
     
@@ -41,8 +41,8 @@ Public Sub Log_WhenCalled_StoresLogWriter()
 End Sub
 
 Public Sub Error_WhenCalled_StoresErrorWriter()
-    Dim Fake As New FakeTextWriter
-    Dim c As New TestContext
+    Dim Fake    As New FakeTextWriter
+    Dim c       As New TestContext
     
     Set c.Error = Fake
     
@@ -52,8 +52,8 @@ Public Sub Error_WhenCalled_StoresErrorWriter()
 End Sub
 
 Public Sub Out_WhenCalled_StoredOutWriter()
-    Dim Fake As New FakeTextWriter
-    Dim c As New TestContext
+    Dim Fake    As New FakeTextWriter
+    Dim c       As New TestContext
     
     Set c.Out = Fake
     
@@ -62,61 +62,22 @@ Public Sub Out_WhenCalled_StoredOutWriter()
     Assert.IsTrue Actual Is Fake
 End Sub
 
-Public Sub BeginContext_WhenCalled_StartsNewOutContext()
-    Dim OriginalOut As ITextWriter
-    Set OriginalOut = TestContext.Out
+Public Sub Clone_WhenCalled_CopiesTextWriterReferences()
+    Dim FakeError   As New FakeTextWriter
+    Dim FakeLog     As New FakeTextWriter
+    Dim FakeOut     As New FakeTextWriter
+    Dim c           As New TestContext
+    Set c.Error = FakeError
+    Set c.Log = FakeLog
+    Set c.Out = FakeOut
     
-    Dim Fake As New FakeTextWriter
-    With New TestContext
-        Set TestContext.Out = Fake
-        Dim Actual As ITextWriter
-        Set Actual = TestContext.Out
-    End With
+    Dim Actual As TestContext
+    Set Actual = c.Clone
     
-    Assert.IsFalse Actual Is OriginalOut
+    Assert.IsTrue Actual.Error Is FakeError
+    Assert.IsTrue Actual.Log Is FakeLog
+    Assert.IsTrue Actual.Out Is FakeOut
 End Sub
-
-Public Sub BeginContext_WhenInsideContext_StartsNewContext()
-    Dim OuterFake As New FakeTextWriter
-    Dim InnerFake As New FakeTextWriter
-    
-    Dim OuterActual As ITextWriter
-    Dim InnerActual As ITextWriter
-    
-    With New TestContext
-        Set TestContext.Out = OuterFake
-        
-        With New TestContext
-            Set TestContext.Out = InnerFake
-            Set InnerActual = TestContext.Out
-        End With
-        
-        Set OuterActual = TestContext.Out
-    End With
-
-    Assert.IsTrue InnerActual Is InnerFake
-    Assert.IsTrue OuterActual Is OuterFake
-End Sub
-
-Public Sub BeginContext_WhenInsideContext_CopiesOriginalWriters()
-    Dim Fake As New FakeTextWriter
-    
-    Dim Actual As ITextWriter
-    With New TestContext
-        Set TestContext.Out = Fake
-        
-        With New TestContext
-            Set Actual = TestContext.Out
-        End With
-    End With
-    
-    Assert.IsTrue Actual Is Fake
-End Sub
-
-
-
-
-
 
 
 
