@@ -100,3 +100,7 @@ End Function
 Public Function Iz() As IzSyntaxHelper
     Set Iz = modStatics.Iz
 End Function
+
+Public Function TestContext() As TestContextStatic
+    Set TestContext = modStatics.TestContext
+End Function

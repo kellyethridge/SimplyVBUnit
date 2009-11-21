@@ -47,6 +47,8 @@ Private Sub RunTestClassTests()
     Suite.Add New ArrayEnumeratorTests
     Suite.Add New EnumVariantEnumeratorTests
     Suite.Add New TestOutputTests
+    Suite.Add New StackTests
+    Suite.Add New TestContextTests
     
     
     Dim Result As TestResult
