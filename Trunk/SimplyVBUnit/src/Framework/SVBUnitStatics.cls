@@ -106,3 +106,7 @@ Public Function TestContext() As TestContextStatic
     Set TestContext = modStatics.TestContext
 End Function
 
+Public Function EmptyFilter() As EmptyFilterStatic
+    Set EmptyFilter = modStatics.EmptyFilter
+End Function
+

@@ -29,21 +29,22 @@ Public Type NullListenerStatic
     Instance As New NullListener
 End Type
 
-Public NullContext      As NullContextStatic
-Public NullListener     As NullListenerStatic
-Public NullMethod       As NullMethodStatic
+Public NullContext          As NullContextStatic
+Public NullListener         As NullListenerStatic
+Public NullMethod           As NullMethodStatic
 
-Public Sim              As New SVBUnitConstructors
-Public TestUtils        As New TestUtils
-Public ErrorInfo        As New ErrorInfoStatic
-Public Resource         As New ResourceStatic
-Public Timing           As New TimingStatic
-Public TestCaseBuilder  As New TestCaseBuilder
-Public Assert           As New Assertions
-Public TestContext      As New TestContextStatic
-Public TestContextManager As New TestContextManager
+Public Sim                  As New SVBUnitConstructors
+Public TestUtils            As New TestUtils
+Public ErrorInfo            As New ErrorInfoStatic
+Public Resource             As New ResourceStatic
+Public Timing               As New TimingStatic
+Public TestCaseBuilder      As New TestCaseBuilder
+Public Assert               As New Assertions
+Public TestContext          As New TestContextStatic
+Public TestContextManager   As New TestContextManager
+Public EmptyFilter          As New EmptyFilterStatic
 
-Private mIz As New IzStatic
+Private mIz                 As New IzStatic
 
 
 Public Property Get Iz() As IzSyntaxHelper

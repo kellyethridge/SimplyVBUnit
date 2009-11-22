@@ -73,29 +73,34 @@ Public Property Get TestCount() As Long
     TestCount = Result
 End Property
 
-Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
+Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult
     If Listener Is Nothing Then
         Set Listener = NullListener.Instance
+    End If
+    If Filter Is Nothing Then
+        Set Filter = EmptyFilter.Instance
     End If
     
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(Me)
     
-    If Me.RunState = RunnableRunState Then
-        Call Listener.TestFixtureStarted(Me)
-        Call Result.Success
-        Call InitMetrics
-        
-        If RunFixtureSetup(Result) = True Then
-            Call RunTests(Result)
+        If Me.RunState = RunnableRunState Then
+            If Filter.Pass(Me) Then
+                Call Listener.TestFixtureStarted(Me)
+                Call Result.Success
+                Call InitMetrics
+                
+                If RunFixtureSetup(Result) = True Then
+                    Call RunTests(Result)
+                End If
+                
+                Call RunFixtureTeardown
+                Call RecordMetrics(Result)
+                Call Listener.TestFixtureFinished(Result)
+            End If
+        Else
+            Call Result.Invalid
         End If
-        
-        Call RunFixtureTeardown
-        Call RecordMetrics(Result)
-        Call Listener.TestFixtureFinished(Result)
-    Else
-        Call Result.Invalid
-    End If
     
     Set Run = Result
 End Function

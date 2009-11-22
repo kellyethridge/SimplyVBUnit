@@ -629,6 +629,7 @@ End Sub
 
 
 
+
 Private Function MakeFailingTestCase() As TestCase
     Dim TestClass As New Stub1Test
     TestClass.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode, , "Failed"
