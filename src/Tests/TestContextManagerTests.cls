@@ -29,13 +29,13 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Public Sub Constructor_WhenCalled_HasContextOfNothing()
+Public Sub Constructor_WhenCalled_HasDefaultContext()
     Dim Mgr As New TestContextManager
     
     Dim Actual As TestContext
     Set Actual = Mgr.CurrentContext
     
-    Assert.IsTrue Actual Is Nothing
+    Assert.IsFalse Actual Is Nothing
 End Sub
 
 Public Sub BeginContext_WhenCalled_StartsNewContext()
@@ -58,7 +58,7 @@ Public Sub EndContext_WhenCalledAfterBeginContext_RevertsToPreviousContext()
 
     Dim Actual As TestContext
     Set Actual = Mgr.CurrentContext
-    Assert.IsTrue Actual Is Nothing
+    Assert.IsFalse Actual Is Fake
 End Sub
 
 Public Sub BeginContext_WhenCalledAfterBeginContext_StartsNewContext()

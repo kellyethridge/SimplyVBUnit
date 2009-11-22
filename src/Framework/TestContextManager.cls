@@ -31,6 +31,7 @@ Option Explicit
 
 Private mContextPointer As Long
 Private mContexts       As New Stack
+Private mDefault        As New TestContext
 
 
 Public Property Get CurrentContext() As TestContext
@@ -62,3 +63,10 @@ Public Sub EndContext()
     mContextPointer = ObjPtr(mContexts.Pop)
 End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Class Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub Class_Initialize()
+    mContextPointer = ObjPtr(mDefault)
+End Sub
