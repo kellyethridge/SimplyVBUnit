@@ -84,23 +84,23 @@ Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Fi
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(Me)
     
-        If Me.RunState = RunnableRunState Then
-            If Filter.Pass(Me) Then
-                Call Listener.TestFixtureStarted(Me)
-                Call Result.Success
-                Call InitMetrics
-                
-                If RunFixtureSetup(Result) = True Then
-                    Call RunTests(Result)
-                End If
-                
-                Call RunFixtureTeardown
-                Call RecordMetrics(Result)
-                Call Listener.TestFixtureFinished(Result)
+    Call Listener.TestFixtureStarted(Me)
+    If Me.RunState = RunnableRunState Then
+        If Filter.Pass(Me) Then
+            Call Result.Success
+            Call InitMetrics
+            
+            If RunFixtureSetup(Result) = True Then
+                Call RunTests(Result)
             End If
-        Else
-            Call Result.Invalid
+            
+            Call RunFixtureTeardown
+            Call RecordMetrics(Result)
         End If
+    Else
+        Call Result.Invalid
+    End If
+    Call Listener.TestFixtureFinished(Result)
     
     Set Run = Result
 End Function

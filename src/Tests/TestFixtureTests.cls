@@ -451,7 +451,7 @@ Public Sub Run_WithNonPassingFilter_DoesNotRun()
     Dim Stub As New StubFilter
     Stub.Matches = False
     Stub.Passes = False
-    Dim Mock As New Mock1Test
+    Dim Mock As New Mock2TestsWithFullContext
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
@@ -479,7 +479,7 @@ Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()
     Assert.IsTrue Actual = InconclusiveState
 End Sub
 
-Public Sub WithNonPassingFilterAndNonRunnableState_ReturnsNonRunnableResult()
+Public Sub Run_WithNonPassingFilterAndNonRunnableState_ReturnsNonRunnableResult()
     Dim Stub As New StubFilter
     Stub.Matches = False
     Stub.Passes = False
@@ -495,6 +495,21 @@ Public Sub WithNonPassingFilterAndNonRunnableState_ReturnsNonRunnableResult()
     Assert.IsTrue Actual = NotRunnableState
 End Sub
 
+Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
+    Dim Mock As New MockEventListener
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Fake1Test)
+    Fixture.RunState = NotRunnableRunState
+    
+    Call Fixture.Run(Mock)
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Call Expected.Add(Constants.TESTFIXTURESTARTED_LISTENERMETHOD)
+    Call Expected.Add(Constants.TESTFIXTUREFINISHED_LISTENERMETHOD)
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
 
 
 
