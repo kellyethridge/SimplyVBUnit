@@ -447,6 +447,55 @@ Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
     Assert.IsTrue Result.ResultState = NotRunnableState
 End Sub
 
+Public Sub Run_WithNonPassingFilter_DoesNotRun()
+    Dim Stub As New StubFilter
+    Stub.Matches = False
+    Stub.Passes = False
+    Dim Mock As New Mock1Test
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    
+    Call Fixture.Run(Nothing, Stub)
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()
+    Dim Stub As New StubFilter
+    Stub.Matches = False
+    Stub.Passes = False
+    Dim Mock As New Mock1Test
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    
+    Dim Result As TestResult
+    Set Result = Fixture.Run(Nothing, Stub)
+    
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Assert.IsTrue Actual = InconclusiveState
+End Sub
+
+Public Sub WithNonPassingFilterAndNonRunnableState_ReturnsNonRunnableResult()
+    Dim Stub As New StubFilter
+    Stub.Matches = False
+    Stub.Passes = False
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Fake1Test)
+    Fixture.RunState = NotRunnableRunState
+    
+    Dim Result As TestResult
+    Set Result = Fixture.Run(Nothing, Stub)
+    
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Assert.IsTrue Actual = NotRunnableState
+End Sub
+
+
 
 
 

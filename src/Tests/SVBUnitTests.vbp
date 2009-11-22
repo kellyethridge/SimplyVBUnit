@@ -42,6 +42,7 @@ Class=StackTests; StackTests.cls
 Class=TestContextTests; TestContextTests.cls
 Class=TestContextManagerTests; TestContextManagerTests.cls
 Class=TestRunnerTests; TestRunnerTests.cls
+Class=EmptyFilterTests; EmptyFilterTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
