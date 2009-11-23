@@ -56,7 +56,7 @@ Private Sub ITest_Reset()
 
 End Sub
 
-Private Function ITest_Run(Optional ByVal Listener As IEventListener) As SVBUnit.TestResult
+Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As SVBUnit.TestResult
 
 End Function
 

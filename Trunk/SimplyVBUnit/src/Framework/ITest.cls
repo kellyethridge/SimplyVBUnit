@@ -29,7 +29,7 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Public Function Run(Optional ByVal Listener As IEventListener) As TestResult: End Function
+Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult: End Function
 
 Public Property Get Name() As String: End Property
 
