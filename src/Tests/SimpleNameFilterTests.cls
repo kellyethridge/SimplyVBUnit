@@ -168,7 +168,17 @@ Public Sub Pass_WithNoMatchingParent_ReturnsFalse()
     Assert.That Actual, Iz.False
 End Sub
 
-
+Public Sub Add_WithExistingNames_DoesNothing()
+    On Error GoTo errTrap
+    
+    Dim Filter As New SimpleNameFilter
+    Call Filter.Add("Test")
+    Call Filter.Add("Test")
+    Exit Sub
+    
+errTrap:
+    Assert.Fail "Should not raise an error."
+End Sub
 
 
 
