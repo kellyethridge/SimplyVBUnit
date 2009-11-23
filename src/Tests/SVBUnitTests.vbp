@@ -43,6 +43,7 @@ Class=TestContextTests; TestContextTests.cls
 Class=TestContextManagerTests; TestContextManagerTests.cls
 Class=TestRunnerTests; TestRunnerTests.cls
 Class=EmptyFilterTests; EmptyFilterTests.cls
+Class=SimpleNameFilterTests; SimpleNameFilterTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

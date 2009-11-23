@@ -53,6 +53,7 @@ Private Sub RunTestClassTests()
     Call Suite.Add(New TestContextManagerTests)
     Call Suite.Add(New TestRunnerTests)
     Call Suite.Add(New EmptyFilterTests)
+    Call Suite.Add(New SimpleNameFilterTests)
     
     
     Dim Result As TestResult
