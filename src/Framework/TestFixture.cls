@@ -333,8 +333,8 @@ Private Sub ITest_Reset()
 
 End Sub
 
-Private Function ITest_Run(Optional ByVal Listener As IEventListener) As TestResult
-    Set ITest_Run = Run(Listener)
+Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult
+    Set ITest_Run = Run(Listener, Filter)
 End Function
 
 Private Property Get ITest_Name() As String

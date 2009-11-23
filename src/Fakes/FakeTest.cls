@@ -54,7 +54,7 @@ Private Sub ITest_Reset()
 
 End Sub
 
-Private Function ITest_Run(Optional ByVal Listener As IEventListener) As TestResult
+Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult
 
 End Function
 
