@@ -16,6 +16,8 @@ Implements ITest
 
 Public Name         As String
 Public FullName     As String
+Public Parent       As ITest
+Public Tests        As New TestList
 
 
 Private Property Get ITest_FullName() As String
@@ -43,11 +45,11 @@ Private Property Get ITest_Name() As String
 End Property
 
 Private Property Set ITest_Parent(ByVal RHS As SVBUnit.ITest)
-
+    Set Parent = RHS
 End Property
 
 Private Property Get ITest_Parent() As SVBUnit.ITest
-
+    Set ITest_Parent = Parent
 End Property
 
 Private Sub ITest_Reset()
@@ -79,5 +81,5 @@ Private Property Get ITest_TestCount() As Long
 End Property
 
 Private Property Get ITest_Tests() As SVBUnit.TestList
-
+    Set ITest_Tests = Tests
 End Property
