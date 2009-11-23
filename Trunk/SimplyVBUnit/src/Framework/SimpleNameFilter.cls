@@ -36,7 +36,11 @@ Private mNames  As New Collection
 
 
 Public Sub Add(ByVal Name As String)
+    On Error GoTo errTrap
+    
     Call mNames.Add(Name, Name)
+
+errTrap:
 End Sub
 
 Public Function Match(ByVal Test As ITest) As Boolean
