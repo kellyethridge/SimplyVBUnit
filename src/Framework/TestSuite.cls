@@ -310,6 +310,11 @@ End Sub
 Private Sub RunFixtureTeardown()
     Call mFixtureTeardown.Run
 End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Class Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
     Call InitTestSuite(DEF_NAME)
     Set mFixtureSetup = NullMethod.Instance

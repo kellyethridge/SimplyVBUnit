@@ -49,7 +49,7 @@ Public Sub Run_UsingFailingTest_ReturnsFailingTestResult()
     On Error GoTo errTrap
     
     Dim TestClass As New Stub1Test
-    TestClass.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
+    Call TestClass.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     
@@ -117,10 +117,12 @@ Public Sub Run_WithTestCases_AddsTestCaseResultToFixtureResult()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     
-    Dim Actual As TestResult
-    Set Actual = Fixture.Run
+    Dim Result As TestResult
+    Set Result = Fixture.Run
     
-    Debug.Assert Actual.Results.Count = 1
+    Dim Actual As Long
+    Actual = Result.Results.Count
+    Debug.Assert Actual = 1
     Exit Sub
     
 errTrap:
@@ -133,10 +135,12 @@ Public Sub Run_WithTestCases_AddsTestCaseResultToTestFixtureResult2()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     
-    Dim Actual As TestResult
-    Set Actual = Fixture.Run.Results(0)
+    Dim Result As TestResult
+    Set Result = Fixture.Run.Results(0)
     
-    Debug.Assert Actual.IsSuccess = True
+    Dim Actual As Boolean
+    Actual = Result.IsSuccess
+    Debug.Assert Actual = True
     Exit Sub
     
 errTrap:
@@ -182,7 +186,7 @@ Public Sub FullName_WithParent_ReturnsParentNameAndSelfName()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(New Fake1Test)
     Dim Suite As New TestSuite
-    Suite.Add Fixture
+    Call Suite.Add(Fixture)
     
     Dim Actual As String
     Actual = Fixture.FullName
@@ -231,15 +235,15 @@ Public Sub Run_UsingClassWithSetup_RunsSetupOnceBeforeEachTest()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     
-    Fixture.Run
+    Call Fixture.Run
     
     Dim Actual As CallTrace
     Set Actual = TestClass.Calls
     Dim Expected As New CallTrace
-    Expected.Add Constants.SETUP_METHOD
-    Expected.Add Constants.TEST1_METHOD
-    Expected.Add Constants.SETUP_METHOD
-    Expected.Add Constants.TEST2_METHOD
+    Call Expected.Add(Constants.SETUP_METHOD)
+    Call Expected.Add(Constants.TEST1_METHOD)
+    Call Expected.Add(Constants.SETUP_METHOD)
+    Call Expected.Add(Constants.TEST2_METHOD)
     Assert.IsTrue Actual.Equals(Expected), "Setup should be called twice."
 End Sub
 
@@ -248,15 +252,15 @@ Public Sub Run_UsingClassWithTeardown_RunsTeardownOnceAfterEachTest()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Fixture.Run
+    Call Fixture.Run
     
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
     Dim Expected As New CallTrace
-    Expected.Add Constants.TEST1_METHOD
-    Expected.Add Constants.TEARDOWN_METHOD
-    Expected.Add Constants.TEST2_METHOD
-    Expected.Add Constants.TEARDOWN_METHOD
+    Call Expected.Add(Constants.TEST1_METHOD)
+    Call Expected.Add(Constants.TEARDOWN_METHOD)
+    Call Expected.Add(Constants.TEST2_METHOD)
+    Call Expected.Add(Constants.TEARDOWN_METHOD)
     Assert.IsTrue Actual.Equals(Expected), "Teardown should be called twice."
 End Sub
 
@@ -270,9 +274,9 @@ Public Sub Run_UsingClassWithFixtureSetup_RunsFixtureSetupOnce()
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
     Dim Expected As New CallTrace
-    Expected.Add Constants.FIXTURESETUP_METHOD
-    Expected.Add Constants.TEST_ANY
-    Expected.Add Constants.TEST_ANY
+    Call Expected.Add(Constants.FIXTURESETUP_METHOD)
+    Call Expected.Add(Constants.TEST_ANY)
+    Call Expected.Add(Constants.TEST_ANY)
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
@@ -281,14 +285,14 @@ Public Sub Run_UsingClassWithFixtureTeardown_RunsFixtureTeardownOnce()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Fixture.Run
+    Call Fixture.Run
     
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
     Dim Expected As New CallTrace
-    Expected.Add Constants.TEST_ANY
-    Expected.Add Constants.TEST_ANY
-    Expected.Add Constants.FIXTURETEARDOWN_METHOD
+    Call Expected.Add(Constants.TEST_ANY)
+    Call Expected.Add(Constants.TEST_ANY)
+    Call Expected.Add(Constants.FIXTURETEARDOWN_METHOD)
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
@@ -308,15 +312,15 @@ Public Sub Sort_WhenCalled_SortsTestsAscending()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Fake)
     
-    Fixture.Sort
+    Call Fixture.Sort
     
     Dim Actual As TestList
     Set Actual = Fixture.Tests
     Dim Expected As New TestList
-    Expected.Add NewStubTest("ATest")
-    Expected.Add NewStubTest("BTest")
-    Expected.Add NewStubTest("CTest")
-    Expected.Add NewStubTest("DTest")
+    Call Expected.Add(NewStubTest("ATest"))
+    Call Expected.Add(NewStubTest("BTest"))
+    Call Expected.Add(NewStubTest("CTest"))
+    Call Expected.Add(NewStubTest("DTest"))
     Assert.IsTrue Actual.Equals(Expected), "Tests not sorted."
 End Sub
 
@@ -364,22 +368,22 @@ End Sub
 
 Public Sub Run_WithFailingFixtureSetup_DoesNotRunTests()
     Dim Mock As New Mock2TestsWithFixtureSetup
-    Mock.Errors.Add Constants.FIXTURESETUP_METHOD, 5
+    Call Mock.Errors.Add(Constants.FIXTURESETUP_METHOD, 5)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Fixture.Run
+    Call Fixture.Run
     
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
     Dim Expected As New CallTrace
-    Expected.Add Constants.FIXTURESETUP_METHOD
+    Call Expected.Add(Constants.FIXTURESETUP_METHOD)
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
 Public Sub Run_WithFailingFixtureSetup_ChildTestResultsAreFailure()
     Dim Stub As New Stub1TestWithFullContext
-    Stub.Errors.Add Constants.FIXTURESETUP_METHOD, 5
+    Call Stub.Errors.Add(Constants.FIXTURESETUP_METHOD, 5)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Result As TestResult
@@ -398,19 +402,19 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(New FakeEmpty)
     
-    Fixture.Run Mock
+    Call Fixture.Run(Mock)
     
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
     Dim Expected As New CallTrace
-    Expected.Add Constants.TESTSUITESTARTED_LISTENERMETHOD
-    Expected.Add Constants.TESTSUITEFINISHED_LISTENERMETHOD
+    Call Expected.Add(Constants.TESTSUITESTARTED_LISTENERMETHOD)
+    Call Expected.Add(Constants.TESTSUITEFINISHED_LISTENERMETHOD)
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
 Public Sub Run_WithFailingFixtureSetup_SetsTestCaseSourceTestsToFailingResult()
     Dim Stub As New Stub1TestCaseSrcAndFixtureSetup
-    Stub.Errors.Add "FixtureSetup", 5, , "FixtureSetup had an error."
+    Call Stub.Errors.Add("FixtureSetup", 5, , "FixtureSetup had an error.")
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     
