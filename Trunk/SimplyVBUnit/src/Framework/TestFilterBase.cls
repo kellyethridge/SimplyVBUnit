@@ -75,7 +75,7 @@ Private Function HasMatchingDescendent(ByVal Test As ITest) As Boolean
 End Function
 
 Private Function HasDescendents(ByVal Test As ITest) As Boolean
-    HasDescendents = (Test.IsTestCase = False)
+    HasDescendents = Test.IsSuite
 End Function
 
 Private Function TryMatchingDescendent(ByVal Descendents As TestList) As Boolean

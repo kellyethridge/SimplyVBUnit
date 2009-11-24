@@ -101,13 +101,11 @@ End Sub
 Private Sub PrintResults(ByVal Result As TestResult, Optional ByVal Indent As Long)
     If Result.IsFailure Or Result.IsError Then
         Debug.Print Space$(Indent); Result.Test.Name & ": " & Result.Message
-        If Result.Test.IsTestCase Then
+        If Not Result.Test.IsSuite Then
             mFailed = mFailed + 1
         End If
-    Else
-        If Result.Test.IsTestCase Then
-            mPassed = mPassed + 1
-        End If
+    ElseIf Not Result.Test.IsSuite Then
+        mPassed = mPassed + 1
     End If
     
     Dim Child As TestResult

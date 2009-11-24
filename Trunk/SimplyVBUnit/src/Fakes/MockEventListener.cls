@@ -42,14 +42,6 @@ Private Sub IEventListener_TestCaseStarted(ByVal Test As SVBUnit.TestCase)
     Call CallMade("TestCaseStarted")
 End Sub
 
-Private Sub IEventListener_TestFixtureFinished(ByVal Result As SVBUnit.TestResult)
-    Call CallMade("TestFixtureFinished")
-End Sub
-
-Private Sub IEventListener_TestFixtureStarted(ByVal Fixture As SVBUnit.TestFixture)
-    Call CallMade("TestFixtureStarted")
-End Sub
-
 Private Sub IEventListener_TestOutput(ByVal Output As SVBUnit.TestOutput)
     Call CallMade("TestOutput")
 End Sub

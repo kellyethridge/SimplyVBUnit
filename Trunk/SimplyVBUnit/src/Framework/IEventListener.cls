@@ -76,20 +76,6 @@ Public Sub TestSuiteStarted(ByVal Suite As TestSuite): End Sub
 Public Sub TestSuiteFinished(ByVal Result As TestResult): End Sub
 
 ''
-' This method is called when a new test fixture is started.
-'
-' @param Fixture The user fixture that is to be run.
-'
-Public Sub TestFixtureStarted(ByVal Fixture As TestFixture): End Sub
-
-''
-' This method is called when a test fixture is finished running.
-'
-' @param Result The final result of the test fixture fun.
-'
-Public Sub TestFixtureFinished(ByVal Result As TestResult): End Sub
-
-''
 ' This method is called when a test case is started running.
 '
 ' @param Test The test case to be run.

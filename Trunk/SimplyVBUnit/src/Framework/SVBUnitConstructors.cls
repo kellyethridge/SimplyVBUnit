@@ -30,8 +30,9 @@ Attribute VB_Exposed = True
 Option Explicit
 
 Public Function NewTestFixture(ByVal TestClass As Object) As TestFixture
-    Set NewTestFixture = New TestFixture
-    Call NewTestFixture.Init(TestClass)
+    Dim Suite As New TestSuite
+    Call Suite.InitTestFixture(TestClass)
+    Set NewTestFixture = Suite
 End Function
 
 Public Function NewTestResult(ByVal Test As ITest) As TestResult
@@ -51,7 +52,7 @@ End Function
 
 Public Function NewTestSuite(ByVal Name As String) As TestSuite
     Set NewTestSuite = New TestSuite
-    Call NewTestSuite.Init(Name)
+    Call NewTestSuite.InitTestSuite(Name)
 End Function
 
 Public Function NewErrorInfo(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String) As ErrorInfo
