@@ -114,7 +114,6 @@ Private Sub RunTestCase(ByVal Result As TestResult, ByVal Listener As IEventList
     End If
     
     Call RunTeardown(Result)
-    Call Err.Clear
     Call RecordMetrics(Result)
 End Sub
 
