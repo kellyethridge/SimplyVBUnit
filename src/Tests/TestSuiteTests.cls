@@ -210,7 +210,7 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     Dim Mock As New MockEventListener
     Dim Suite As New TestSuite
     
-    Suite.Run Mock
+    Call Suite.Run(Mock)
     
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
@@ -245,6 +245,70 @@ Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
     Dim Actual As ResultState
     Actual = Result.ResultState
     Assert.IsTrue Actual = NotRunnableState
+End Sub
+
+Public Sub Run_WithNonPassingFilter_DoesNotRun()
+    Dim Stub As New StubFilter
+    Stub.Matches = False
+    Stub.Passes = False
+    Dim Mock As New Mock2TestsWithFullContext
+    Dim Suite As New TestSuite
+    Call Suite.Add(Mock)
+    
+    Call Suite.Run(Nothing, Stub)
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()
+    Dim Stub As New StubFilter
+    Stub.Matches = False
+    Stub.Passes = False
+    Dim Mock As New Mock1Test
+    Dim Suite As New TestSuite
+    Call Suite.Add(Mock)
+
+    Dim Result As TestResult
+    Set Result = Suite.Run(Nothing, Stub)
+
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Assert.IsTrue Actual = InconclusiveState
+End Sub
+
+Public Sub Run_WithNonPassingFilterAndNonRunnableState_ReturnsNonRunnableResult()
+    Dim Stub As New StubFilter
+    Stub.Matches = False
+    Stub.Passes = False
+    Dim Suite As New TestSuite
+    Call Suite.Add(New Fake1Test)
+    Suite.RunState = NotRunnableRunState
+
+    Dim Result As TestResult
+    Set Result = Suite.Run(Nothing, Stub)
+
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Assert.IsTrue Actual = NotRunnableState
+End Sub
+
+Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
+    Dim Mock As New MockEventListener
+    Dim Suite As New TestSuite
+    Call Suite.Add(New Fake1Test)
+    Suite.RunState = NotRunnableRunState
+
+    Call Suite.Run(Mock)
+
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Call Expected.Add("TestSuiteStarted")
+    Call Expected.Add("TestSuiteFinished")
+    Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
 

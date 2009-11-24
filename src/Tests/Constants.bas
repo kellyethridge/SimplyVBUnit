@@ -12,6 +12,6 @@ Public Const FIXTURETEARDOWN_METHOD As String = "FixtureTeardown"
 Public Const TESTCASESTARTED_LISTENERMETHOD     As String = "TestCaseStarted"
 Public Const TESTCASEFINISHED_LISTENERMETHOD    As String = "TestCaseFinished"
 Public Const UNHANDLEDERROR_LISTENERMETHOD      As String = "UnhandledError"
-Public Const TESTFIXTURESTARTED_LISTENERMETHOD  As String = "TestFixtureStarted"
-Public Const TESTFIXTUREFINISHED_LISTENERMETHOD As String = "TestFixtureFinished"
+Public Const TESTSUITESTARTED_LISTENERMETHOD    As String = "TestSuiteStarted"
+Public Const TESTSUITEFINISHED_LISTENERMETHOD   As String = "TestSuiteFinished"
 

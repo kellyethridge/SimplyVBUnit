@@ -43,11 +43,7 @@ Public Property Set Parent(ByVal RHS As ITest): End Property
 
 Public Property Get Tests() As TestList: End Property
 
-Public Property Get IsFixture() As Boolean: End Property
-
 Public Property Get IsSuite() As Boolean: End Property
-
-Public Property Get IsTestCase() As Boolean: End Property
 
 Public Property Get HasParent() As Boolean: End Property
 
@@ -58,6 +54,4 @@ Public Sub Sort(Optional ByVal Comparer As ITestComparer): End Sub
 Public Property Get RunState() As RunState: End Property
 
 Public Property Let RunState(ByVal RHS As RunState): End Property
-
-Public Sub Reset(): End Sub
 

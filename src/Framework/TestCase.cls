@@ -71,16 +71,8 @@ Public Property Get FullName() As String
     FullName = TestUtils.BuildFullName(Me)
 End Property
 
-Public Property Get IsFixture() As Boolean
-    IsFixture = False
-End Property
-
 Public Property Get IsSuite() As Boolean
     IsSuite = False
-End Property
-
-Public Property Get IsTestCase() As Boolean
-    IsTestCase = True
 End Property
 
 Public Property Set Parent(ByVal RHS As ITest)
@@ -242,16 +234,8 @@ Private Property Get ITest_HasParent() As Boolean
     ITest_HasParent = HasParent
 End Property
 
-Private Property Get ITest_IsFixture() As Boolean
-    ITest_IsFixture = IsFixture
-End Property
-
 Private Property Get ITest_IsSuite() As Boolean
     ITest_IsSuite = IsSuite
-End Property
-
-Private Property Get ITest_IsTestCase() As Boolean
-    ITest_IsTestCase = IsTestCase
 End Property
 
 Private Property Get ITest_Parent() As ITest

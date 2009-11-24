@@ -265,7 +265,7 @@ Public Sub Run_UsingClassWithFixtureSetup_RunsFixtureSetupOnce()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Fixture.Run
+    Call Fixture.Run
     
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
@@ -403,8 +403,8 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
     Dim Expected As New CallTrace
-    Expected.Add Constants.TESTFIXTURESTARTED_LISTENERMETHOD
-    Expected.Add Constants.TESTFIXTUREFINISHED_LISTENERMETHOD
+    Expected.Add Constants.TESTSUITESTARTED_LISTENERMETHOD
+    Expected.Add Constants.TESTSUITEFINISHED_LISTENERMETHOD
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
@@ -506,8 +506,8 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
     Dim Expected As New CallTrace
-    Call Expected.Add(Constants.TESTFIXTURESTARTED_LISTENERMETHOD)
-    Call Expected.Add(Constants.TESTFIXTUREFINISHED_LISTENERMETHOD)
+    Call Expected.Add(Constants.TESTSUITESTARTED_LISTENERMETHOD)
+    Call Expected.Add(Constants.TESTSUITEFINISHED_LISTENERMETHOD)
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
