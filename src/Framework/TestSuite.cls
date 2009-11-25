@@ -140,7 +140,9 @@ End Function
 
 Private Sub RunTests(ByVal Result As TestResult)
     Dim Test As ITest
+    
     For Each Test In mTests
+        Test.RunState = Me.RunState
         Call Result.AddResult(Test.Run)
     Next
 End Sub
