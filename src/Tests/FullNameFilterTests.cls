@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "SimpleNameFilterTests"
+Attribute VB_Name = "FullNameFilterTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,7 +25,7 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: SimpleNameFilterTests
+' Module: FullNameFilterTests
 '
 Option Explicit
 
@@ -35,7 +35,7 @@ Public Sub Match_WithEqualFullNames_ReturnsTrue()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("Fake2Tests.Test1")
     
     Dim Actual As Boolean
@@ -50,7 +50,7 @@ Public Sub Match_WithUnequalFullNames_ReturnsFalse()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("UnequalName")
     
     Dim Actual As Boolean
@@ -67,7 +67,7 @@ Public Sub Match_WithMultipleEqualNames_ReturnsTrue()
     Set Test1 = Fixture.Tests(0)
     Set Test2 = Fixture.Tests(1)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("Fake2Tests.Test1")
     Call Filter.Add("Fake2Tests.Test2")
     
@@ -86,7 +86,7 @@ Public Sub Match_WithEqualNamesDifferenceCasing_ReturnsTrue()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("Fake2Tests.Test1")
     
     Dim Actual As Boolean
@@ -101,7 +101,7 @@ Public Sub Pass_WithExactMatch_ReturnsTrue()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("Fake2Tests.Test1")
     
     Dim Actual As Boolean
@@ -114,7 +114,7 @@ Public Sub Pass_WithMatchingDecendent_ReturnsTrue()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(New Fake2Tests)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("Fake2Tests.Test2")
     
     Dim Actual As Boolean
@@ -127,7 +127,7 @@ Public Sub Pass_WithNoMatchingDescendents_ReturnsFalse()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(New Fake2Tests)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("Fake2Tests.None")
     
     Dim Actual As Boolean
@@ -143,7 +143,7 @@ Public Sub Pass_WithMatchingParent_ReturnsTrue()
     Set Suite = Sim.NewTestSuite("ParentSuite")
     Call Suite.Add(Fixture)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("ParentSuite")
     
     Dim Actual As Boolean
@@ -159,7 +159,7 @@ Public Sub Pass_WithNoMatchingParent_ReturnsFalse()
     Set Suite = Sim.NewTestSuite("ParentSuite")
     Call Suite.Add(Fixture)
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("NotParentSuite")
     
     Dim Actual As Boolean
@@ -171,7 +171,7 @@ End Sub
 Public Sub Add_WithExistingNames_DoesNothing()
     On Error GoTo errTrap
     
-    Dim Filter As New SimpleNameFilter
+    Dim Filter As New FullNameFilter
     Call Filter.Add("Test")
     Call Filter.Add("Test")
     Exit Sub
