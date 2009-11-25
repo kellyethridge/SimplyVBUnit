@@ -515,6 +515,22 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
+Public Sub Run_WhenCalledTwice_RunsTestsTwice()
+    Dim Mock As New Mock1Test
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    
+    Call Fixture.Run
+    Call Fixture.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Call Expected.Add("Test1")
+    Call Expected.Add("Test1")
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
 
 
 
