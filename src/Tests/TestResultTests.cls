@@ -50,7 +50,7 @@ Public Sub SetResult_WithInconclusive_IsSuccessReturnsFalse()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.SetResult InconclusiveState
+    Call Result.SetResult(InconclusiveState)
     
     Dim Actual As Boolean
     Actual = Result.IsSuccess
@@ -61,7 +61,7 @@ Public Sub SetResult_WithInconclusive_IsFailureReturnsFalse()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.SetResult InconclusiveState
+    Call Result.SetResult(InconclusiveState)
     
     Dim Actual As Boolean
     Actual = Result.IsFailure
@@ -72,7 +72,7 @@ Public Sub SetResult_WithSuccessState_IsSuccessReturnsTrue()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.SetResult SuccessState
+    Call Result.SetResult(SuccessState)
     
     Dim Actual As Boolean
     Actual = Result.IsSuccess
@@ -83,7 +83,7 @@ Public Sub SetResult_WithFailureState_IsFailureReturnsTrue()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.SetResult FailureState
+    Call Result.SetResult(FailureState)
     
     Dim Actual As Boolean
     Actual = Result.IsFailure
@@ -94,7 +94,7 @@ Public Sub SetResult_WithErrorState_IsErrorReturnsTrue()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.SetResult ErrorState
+    Call Result.SetResult(ErrorState)
     
     Dim Actual As Boolean
     Actual = Result.IsError
@@ -105,7 +105,7 @@ Public Sub Error_WhenCalled_SetsResultState()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Error
+    Call Result.Error
     
     Dim Actual As ResultState
     Actual = Result.ResultState
@@ -116,7 +116,7 @@ Public Sub Error_WithMessage_StoresMessage()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Error "Error"
+    Call Result.Error("Error")
     
     Dim Actual As String
     Actual = Result.Message
@@ -128,7 +128,7 @@ Public Sub Success_WhenCalled_SetsResultState()
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(New FakeTest)
     
-    Result.Success
+    Call Result.Success
     
     Dim Actual As ResultState
     Actual = Result.ResultState
@@ -143,7 +143,7 @@ Public Sub Success_WithMessage_StoresMessage()
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(New FakeTest)
     
-    Result.Success "message"
+    Call Result.Success("message")
     
     Dim Actual As String
     Actual = Result.Message
@@ -155,7 +155,7 @@ Public Sub Failure_WhenCalled_SetsResultState()
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(New FakeTest)
     
-    Result.Failure
+    Call Result.Failure
     
     Dim Actual As ResultState
     Actual = Result.ResultState
@@ -171,8 +171,8 @@ Public Sub Success_AfterFailureIsCalled_SetsFailureToFalse()
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(New FakeTest)
     
-    Result.Failure
-    Result.Success
+    Call Result.Failure
+    Call Result.Success
     
     Dim Actual As Boolean
     Actual = Result.IsFailure
@@ -188,8 +188,8 @@ Public Sub Failure_AfterSuccessIsCalled_SetsSuccessToFalse()
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(New FakeTest)
     
-    Result.Success
-    Result.Failure
+    Call Result.Success
+    Call Result.Failure
     
     Dim Actual As Boolean
     Actual = Result.IsSuccess
@@ -207,7 +207,7 @@ Public Sub AddResult_WithResult_StoresResult()
     Dim Child As TestResult
     Set Child = Sim.NewTestResult(New FakeTest)
     
-    Parent.AddResult Child
+    Call Parent.AddResult(Child)
     
     Dim Actual As TestResult
     Set Actual = Parent.Results(0)
@@ -224,8 +224,8 @@ Public Sub AddResult_AddFailingResult_SetsParentResultToFailing()
     Dim Child As TestResult
     Set Child = Sim.NewTestResult(New FakeTest)
     
-    Child.Failure
-    Parent.AddResult Child
+    Call Child.Failure
+    Call Parent.AddResult(Child)
     
     Dim Actual As Boolean
     Actual = Parent.IsFailure
@@ -236,7 +236,7 @@ Public Sub Failure_WithMessage_StoresMessage()
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(New FakeTest)
     
-    Result.Failure "failure message"
+    Call Result.Failure("failure message")
     
     Dim Actual As String
     Actual = Result.Message
@@ -294,7 +294,7 @@ Public Sub HasResults_WithChildResult_ReturnsTrue()
     Set Parent = MakeTestResult
     Dim Child As TestResult
     Set Child = MakeTestResult
-    Parent.AddResult Child
+    Call Parent.AddResult(Child)
     
     Dim Actual As Boolean
     Actual = Parent.HasResults
@@ -307,7 +307,7 @@ Public Sub AddResult_WithNothing_RaisesError()
     Set Result = MakeTestResult
     
     On Error GoTo errTrap
-    Result.AddResult Nothing
+    Call Result.AddResult(Nothing)
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
@@ -323,7 +323,7 @@ Public Sub SetResult_WithFailureSite_StoresFailureSite()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.SetResult FailureState, , FailureSite.SetupSite
+    Call Result.SetResult(FailureState, , FailureSite.SetupSite)
     
     Dim Actual As FailureSite
     Actual = Result.FailureSite
@@ -334,7 +334,7 @@ Public Sub SetResult_WithDefaultSite_StoresDefault()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.SetResult ErrorState
+    Call Result.SetResult(ErrorState)
     
     Dim Actual As FailureSite
     Actual = Result.FailureSite
@@ -345,7 +345,7 @@ Public Sub Failure_WithFailureSite_StoresFailureSite()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Failure "", FailureSite.ChildSite
+    Call Result.Failure("", FailureSite.ChildSite)
     
     Dim Actual As FailureSite
     Actual = Result.FailureSite
@@ -356,7 +356,7 @@ Public Sub Error_WithFailureSite_StoresFailureSite()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Error "", FailureSite.ParentSite
+    Call Result.Error("", FailureSite.ParentSite)
     
     Dim Actual As FailureSite
     Actual = Result.FailureSite
@@ -366,9 +366,9 @@ End Sub
 Public Sub AddResult_WithErrorChild_SetsResultToFailure()
     Dim Parent As TestResult: Set Parent = MakeTestResult
     Dim Child As TestResult: Set Child = MakeTestResult
-    Child.Error
+    Call Child.Error
     
-    Parent.AddResult Child
+    Call Parent.AddResult(Child)
     
     Dim Actual As ResultState
     Actual = Parent.ResultState
@@ -378,9 +378,9 @@ End Sub
 Public Sub Error_WithTeardownSite_AppendsMessageInResult()
     Dim Result As TestResult
     Set Result = MakeTestResult
-    Result.Failure "First message"
+    Call Result.Failure("First message")
     
-    Result.Error "second message", TeardownSite
+    Call Result.Error("second message", TeardownSite)
     
     Dim Actual As String
     Actual = Result.Message
@@ -391,9 +391,9 @@ End Sub
 Public Sub SetResult_AsErrorInTeardownSite_AppensMessageInResult()
     Dim Result As TestResult
     Set Result = MakeTestResult
-    Result.SetResult FailureState, "First message"
+    Call Result.SetResult(FailureState, "First message")
     
-    Result.SetResult ErrorState, "second message", TeardownSite
+    Call Result.SetResult(ErrorState, "second message", TeardownSite)
     
     Dim Actual As String
     Actual = Result.Message
@@ -406,10 +406,10 @@ Public Sub AddResult_WithResultStateCombinations_SetsParentResultState(ByVal Par
     Dim Child As TestResult
     Set Parent = MakeTestResult
     Set Child = MakeTestResult
-    Parent.SetResult ParentState
-    Child.SetResult ChildState
+    Call Parent.SetResult(ParentState)
+    Call Child.SetResult(ChildState)
     
-    Parent.AddResult Child
+    Call Parent.AddResult(Child)
     
     Dim Actual As ResultState
     Actual = Parent.ResultState
@@ -420,7 +420,7 @@ Public Sub Ignore_WhenCalled_SetsResultStateToIgnored()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Ignore
+    Call Result.Ignore
     
     Dim Actual As ResultState
     Actual = Result.ResultState
@@ -431,7 +431,7 @@ Public Sub Ignore_WhenCalled_IsIgnoredReturnsTrue()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Ignore
+    Call Result.Ignore
     
     Dim Actual As Boolean
     Actual = Result.IsIgnored
@@ -442,7 +442,7 @@ Public Sub Ignore_WithReason_StoresReason()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Ignore "because"
+    Call Result.Ignore("because")
     
     Dim Actual As String
     Actual = Result.Message
@@ -453,7 +453,7 @@ Public Sub Invalid_WhenCalled_SetsResultStateToNotRunnable()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Invalid
+    Call Result.Invalid
     
     Dim Actual As ResultState
     Actual = Result.ResultState
@@ -464,7 +464,7 @@ Public Sub Invalid_WithReason_StoresReason()
     Dim Result As TestResult
     Set Result = MakeTestResult
     
-    Result.Invalid "because"
+    Call Result.Invalid("because")
     
     Dim Actual As String
     Actual = Result.Message
