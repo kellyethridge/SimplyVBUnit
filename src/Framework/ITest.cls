@@ -59,3 +59,5 @@ Public Function CountTestCases(ByVal Filter As ITestFilter) As Long: End Functio
 
 Public Property Get Categories() As CategoryList: End Property
 
+Public Property Get HasCategories() As Boolean: End Property
+

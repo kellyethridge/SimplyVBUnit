@@ -602,7 +602,7 @@ Public Sub Run_WhenCalled_BeginsNewContextForEachTestCase()
 
     With New TestContext
         Set .Out = FakeOut
-        Runner.Run
+        Call Runner.Run
     End With
     
     Assert.IsFalse Mock.Test1Writer Is FakeOut
@@ -745,6 +745,23 @@ Public Sub Name_WithCategoryDefined_RemovesCategoryFromName()
     
     Assert.That Actual, Iz.EqualTo("Test1")
 End Sub
+
+Public Sub Name_WithMultipleCategoriesDefined_AddsToList()
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Mock1TestWith2Categories)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Actual1 As Boolean
+    Dim Actual2 As Boolean
+    Actual1 = Test.Categories.Contains("DB")
+    Actual2 = Test.Categories.Contains("General")
+    
+    Assert.IsTrue Actual1
+    Assert.IsTrue Actual2
+End Sub
+
+
 
 
 

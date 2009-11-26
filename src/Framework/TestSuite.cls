@@ -34,21 +34,27 @@ Implements TestFixture
 Private Const DEF_NAME As String = "TestSuite"
 
 
-Private mTestClass              As Object
-Private mParent                 As Long
-Private mTests                  As New TestList
-Private mFixtureSetup           As ITestMethod
-Private mFixtureTeardown        As ITestMethod
-Private mOldAssertCount         As Long
-Private mTicks                  As Currency
-Private mRunState               As RunState
-Private mTestCaseContext        As ContextMethods
-Private mName                   As String
+Private mTestClass          As Object
+Private mParent             As Long
+Private mTests              As New TestList
+Private mFixtureSetup       As ITestMethod
+Private mFixtureTeardown    As ITestMethod
+Private mOldAssertCount     As Long
+Private mTicks              As Currency
+Private mRunState           As RunState
+Private mTestCaseContext    As ContextMethods
+Private mName               As String
+Private mCategories         As CategoryList
 
 
+Public Property Get HasCategories() As Boolean
+    If Not mCategories Is Nothing Then
+        HasCategories = (mCategories.Count > 0)
+    End If
+End Property
 
 Public Property Get Categories() As CategoryList
-
+    Set Categories = mCategories
 End Property
 
 Public Function CountTestCases(ByVal Filter As ITestFilter) As Long
@@ -208,7 +214,10 @@ Public Property Get TestClass() As Object
 End Property
 
 Friend Sub InitTestSuite(ByVal Name As String)
-    mName = Name
+    With CategoryParser.Parse(Name)
+        mName = .Name
+        Set mCategories = .Categories
+    End With
 End Sub
 
 Friend Sub InitTestFixture(ByVal TestClass As Object)
@@ -365,6 +374,10 @@ Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
 End Property
 
+Private Property Get ITest_HasCategories() As Boolean
+    ITest_HasCategories = HasCategories
+End Property
+
 Private Property Get ITest_HasParent() As Boolean
     ITest_HasParent = HasParent
 End Property
@@ -421,8 +434,20 @@ End Property
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   TestFixture Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Property Get TestFixture_Categories() As CategoryList
+    Set TestFixture_Categories = Categories
+End Property
+
+Private Function TestFixture_CountTestCases(ByVal Filter As ITestFilter) As Long
+    TestFixture_CountTestCases = CountTestCases(Filter)
+End Function
+
 Private Property Get TestFixture_FullName() As String
     TestFixture_FullName = FullName
+End Property
+
+Private Property Get TestFixture_HasCategories() As Boolean
+    TestFixture_HasCategories = HasCategories
 End Property
 
 Private Property Get TestFixture_HasParent() As Boolean

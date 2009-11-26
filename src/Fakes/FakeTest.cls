@@ -25,6 +25,10 @@ Private Function ITest_CountTestCases(ByVal Filter As SVBUnit.ITestFilter) As Lo
 
 End Function
 
+Private Property Get ITest_HasCategories() As Boolean
+
+End Property
+
 Private Property Get ITest_HasParent() As Boolean
 
 End Property
