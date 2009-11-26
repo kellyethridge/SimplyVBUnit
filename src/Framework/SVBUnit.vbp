@@ -59,6 +59,7 @@ Class=EmptyFilterStatic; EmptyFilterStatic.cls
 Class=FullNameFilter; FullNameFilter.cls
 Class=TestFilterBase; TestFilterBase.cls
 ResFile32="SVBUnit.RES"
+Class=CategoryList; CategoryList.cls
 Startup="(None)"
 HelpFile=""
 Title="SVBUnit"

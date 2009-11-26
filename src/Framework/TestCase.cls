@@ -37,7 +37,12 @@ Private mOldAssertCount As Long
 Private mTicks          As Currency
 Private mRunState       As RunState
 Private mContext        As ContextMethods
+Private mCategories     As New CategoryList
 
+
+Public Property Get Categories() As CategoryList
+    Set Categories = mCategories
+End Property
 
 Public Function CountTestCases(ByVal Filter As ITestFilter) As Long
     If Filter.Pass(Me) Then
@@ -151,6 +156,7 @@ End Function
 
 Private Function RunSetup(ByVal Result As TestResult) As Boolean
     On Error GoTo errTrap
+    
     Call mContext.RunSetup
     
     RunSetup = True
@@ -166,6 +172,7 @@ End Function
 
 Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventListener)
     On Error Resume Next
+    
     Call mTestMethod.Run
 
     Select Case Err.Number
@@ -192,8 +199,8 @@ End Sub
 
 Private Sub RunTeardown(ByVal Result As TestResult)
     On Error GoTo errTrap
-    Call mContext.RunTeardown
     
+    Call mContext.RunTeardown
     Exit Sub
     
 errTrap:
@@ -209,8 +216,16 @@ Friend Sub Init(ByVal Name As String, ByVal TestMethod As ITestMethod)
         Call Err.Raise(ErrorCode.Argument, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_EmptyName))
     If TestMethod Is Nothing Then _
         Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_NullTestMethod))
-        
-    mName = Name
+    
+    Dim i As Long
+    i = InStr(Name, "__")
+    If i > 0 Then
+        mName = Mid$(Name, i + 2)
+        Call mCategories.Add(Left$(Name, i - 1))
+    Else
+        mName = Name
+    End If
+    
     Set mTestMethod = TestMethod
 End Sub
 
@@ -239,6 +254,10 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Property Get ITest_Categories() As CategoryList
+    Set ITest_Categories = Categories
+End Property
+
 Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
     ITest_CountTestCases = CountTestCases(Filter)
 End Function

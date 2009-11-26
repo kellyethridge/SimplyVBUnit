@@ -722,6 +722,30 @@ Public Sub CountTestCases_WithNonpassingFilter_ReturnsZero()
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
+Public Sub Categories_WhenDefinedInTestName_AddsToList()
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Mock1TestWithCategory)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Actual As Boolean
+    Actual = Test.Categories.Contains("DB")
+    
+    Assert.IsTrue Actual
+End Sub
+
+Public Sub Name_WithCategoryDefined_RemovesCategoryFromName()
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Mock1TestWithCategory)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+
+    Dim Actual As String
+    Actual = Test.Name
+    
+    Assert.That Actual, Iz.EqualTo("Test1")
+End Sub
+
 
 
 Private Function MakeFailingTestCase() As TestCase
