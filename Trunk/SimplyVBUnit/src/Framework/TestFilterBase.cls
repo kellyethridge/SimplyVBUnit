@@ -55,7 +55,7 @@ Private Function DoesPass(ByVal Test As ITest) As Boolean
     
     If ExactMatch(Test) Then
         Result = True
-    ElseIf HasMatchingDescendent(Test) Then
+    ElseIf HasMatchingDescendant(Test) Then
         Result = True
     Else
         Result = HasMatchingParent(Test)
@@ -68,25 +68,31 @@ Private Function ExactMatch(ByVal Test As ITest) As Boolean
     ExactMatch = mFilter.Match(Test)
 End Function
 
-Private Function HasMatchingDescendent(ByVal Test As ITest) As Boolean
-    If HasDescendents(Test) Then
-        HasMatchingDescendent = TryMatchingDescendent(Test.Tests)
+Private Function HasMatchingDescendant(ByVal Test As ITest) As Boolean
+    If HasDescendants(Test) Then
+        HasMatchingDescendant = TryMatchingDescendant(Test.Tests)
     End If
 End Function
 
-Private Function HasDescendents(ByVal Test As ITest) As Boolean
-    HasDescendents = Test.IsSuite
+Private Function HasDescendants(ByVal Test As ITest) As Boolean
+    HasDescendants = Test.IsSuite
 End Function
 
-Private Function TryMatchingDescendent(ByVal Descendents As TestList) As Boolean
-    Dim Descendent As ITest
+Private Function TryMatchingDescendant(ByVal Descendants As TestList) As Boolean
+    Dim Result      As Boolean
+    Dim Descendant  As ITest
     
-    For Each Descendent In Descendents
-        If DoesPass(Descendent) Then
-            TryMatchingDescendent = True
-            Exit Function
+    For Each Descendant In Descendants
+        If ExactMatch(Descendant) Then
+            Result = True
+            Exit For
+        ElseIf HasMatchingDescendant(Descendant) Then
+            Result = True
+            Exit For
         End If
     Next
+    
+    TryMatchingDescendant = Result
 End Function
 
 Private Function HasMatchingParent(ByVal Test As ITest) As Boolean

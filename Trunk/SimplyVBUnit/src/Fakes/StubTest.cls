@@ -20,6 +20,10 @@ Public Parent       As ITest
 Public Tests        As New TestList
 
 
+Private Function ITest_CountTestCases(ByVal Filter As SVBUnit.ITestFilter) As Long
+
+End Function
+
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
 End Property

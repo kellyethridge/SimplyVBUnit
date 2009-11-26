@@ -53,6 +53,7 @@ Public Enum StringResourceID
     Src_StringBuilder_Length = 119
     Arg_CannotBeNegative = 120
     Arg_EnumerationNonSupported = 121
+    Msg_FixtureSetupFailed = 122
     
 End Enum
 

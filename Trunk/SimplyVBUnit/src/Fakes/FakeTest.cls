@@ -17,6 +17,10 @@ Implements ITest
 Public Parent As ITest
 
 
+Private Function ITest_CountTestCases(ByVal Filter As SVBUnit.ITestFilter) As Long
+
+End Function
+
 Private Property Get ITest_HasParent() As Boolean
 
 End Property

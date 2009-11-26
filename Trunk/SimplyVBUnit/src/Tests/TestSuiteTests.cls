@@ -311,6 +311,46 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
+Public Sub CountTestCases_WithPassingFilter_ReturnsFour()
+    Dim Suite As New TestSuite
+    Call Suite.Add(New Fake2Tests)
+    Call Suite.Add(New Fake2Tests)
+    
+    Dim Actual As Long
+    Actual = Suite.CountTestCases(EmptyFilter.Instance)
+    
+    Const Expected As Long = 4
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub CountTestCases_WithNonpassingFilter_ReturnsZero()
+    Dim Stub As New StubFilter
+    Stub.Passes = False
+    Dim Suite As New TestSuite
+    Call Suite.Add(New Fake2Tests)
+    Call Suite.Add(New Fake2Tests)
+    
+    Dim Actual As Long
+    Actual = Suite.CountTestCases(Stub)
+    
+    Const Expected As Long = 0
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub CountTestCases_WithPartialPassingFilter_ReturnsTwo()
+    Dim Suite As New TestSuite
+    Call Suite.Add(New Fake2Tests)
+    Call Suite.Add(New Fake2Tests)
+    Dim Filter As New FullNameFilter
+    Call Filter.Add(Suite.Tests(0).Tests(0).FullName)
+    
+    Dim Actual As Long
+    Actual = Suite.CountTestCases(Filter)
+    
+    Const Expected As Long = 2
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
 
 
 Private Function NewStubTest(ByVal Name As String) As ITest

@@ -694,6 +694,34 @@ Public Sub Run_WithIgnoredInTeardown_DoesNothing()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
+Public Sub CountTestCases_WithPassingFilter_ReturnsOne()
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Fake1Test)
+    Dim Test As TestCase
+    Set Test = Fixture.Tests(0)
+    
+    Dim Actual As Long
+    Actual = Test.CountTestCases(EmptyFilter.Instance)
+    
+    Const Expected As Long = 1
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub CountTestCases_WithNonpassingFilter_ReturnsZero()
+    Dim Stub As New StubFilter
+    Stub.Passes = False
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(New Fake1Test)
+    Dim Test As TestCase
+    Set Test = Fixture.Tests(0)
+    
+    Dim Actual As Long
+    Actual = Test.CountTestCases(Stub)
+    
+    Const Expected As Long = 0
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
 
 
 Private Function MakeFailingTestCase() As TestCase
