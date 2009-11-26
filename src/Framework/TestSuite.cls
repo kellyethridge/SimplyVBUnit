@@ -47,6 +47,20 @@ Private mName                   As String
 
 
 
+Public Function CountTestCases(ByVal Filter As ITestFilter) As Long
+    Dim Result  As Long
+    
+    If Filter.Pass(Me) Then
+        Dim Test    As ITest
+        
+        For Each Test In mTests
+            Result = Result + Test.CountTestCases(Filter)
+        Next
+    End If
+    
+    CountTestCases = Result
+End Function
+
 Public Property Get RunState() As RunState
     RunState = mRunState
 End Property
@@ -291,12 +305,8 @@ Private Function RunFixtureSetup(ByVal FixtureResult As TestResult) As Boolean
     Exit Function
     
 errTrap:
-    If Err.Number = AssertCode.IgnoreCode Then
-        RunFixtureSetup = True
-    Else
-        Call FixtureResult.Error("FixtureSetup failed.", SetupSite)
-        Call FailAllTests(mTests, FixtureResult)
-    End If
+    Call FixtureResult.Error(Resource.GetString(Msg_FixtureSetupFailed), SetupSite)
+    Call FailAllTests(mTests, FixtureResult)
 End Function
 
 Private Sub FailAllTests(ByVal Tests As TestList, ByVal ParentResult As TestResult)
@@ -304,17 +314,19 @@ Private Sub FailAllTests(ByVal Tests As TestList, ByVal ParentResult As TestResu
     For Each Test In Tests
         Dim Result As TestResult
         Set Result = Sim.NewTestResult(Test)
-        Call Result.Failure("FixtureSetup failed.", ParentSite)
+        Call Result.Failure(Resource.GetString(Msg_FixtureSetupFailed), ParentSite)
         Call ParentResult.AddResult(Result)
         
-        If Not Test.Tests Is Nothing Then
+        If Test.IsSuite Then
             Call FailAllTests(Test.Tests, Result)
         End If
     Next
 End Sub
 
 Private Sub RunFixtureTeardown()
+    On Error GoTo errTrap
     Call mFixtureTeardown.Run
+errTrap:
 End Sub
 
 
@@ -335,6 +347,10 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
+    ITest_CountTestCases = CountTestCases(Filter)
+End Function
+
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
 End Property

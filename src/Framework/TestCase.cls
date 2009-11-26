@@ -39,6 +39,12 @@ Private mRunState       As RunState
 Private mContext        As ContextMethods
 
 
+Public Function CountTestCases(ByVal Filter As ITestFilter) As Long
+    If Filter.Pass(Me) Then
+        CountTestCases = 1
+    End If
+End Function
+
 Public Property Get RunState() As RunState
     RunState = mRunState
 End Property
@@ -233,6 +239,10 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
+    ITest_CountTestCases = CountTestCases(Filter)
+End Function
+
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
 End Property

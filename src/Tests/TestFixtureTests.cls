@@ -366,7 +366,7 @@ Public Sub Run_WhenCalled_DoesNotStoreTestCaseAssertCounts()
     Assert.AreEqual 0, Actual
 End Sub
 
-Public Sub Run_WithFailingFixtureSetup_DoesNotRunTests()
+Public Sub Run_WithFailingFixtureSetup_FailsTests()
     Dim Mock As New Mock2TestsWithFixtureSetup
     Call Mock.Errors.Add(Constants.FIXTURESETUP_METHOD, 5)
     Dim Fixture As TestFixture
@@ -531,26 +531,24 @@ Public Sub Run_WhenCalledTwice_RunsTestsTwice()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
-Public Sub Run_WithIgnoreInFixtureSetup_RunsTests()
+Public Sub Run_WithAssertIgnoreInFixtureSetup_FailsTests()
     Dim Mock As New Mock2TestsWithFixtureSetup
     Call Mock.Errors.Add(Constants.FIXTURESETUP_METHOD, AssertCode.IgnoreCode)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
-    
+
     Call Fixture.Run
-    
+
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
     Dim Expected As New CallTrace
     Call Expected.Add(Constants.FIXTURESETUP_METHOD)
-    Call Expected.Add(Constants.TEST1_METHOD)
-    Call Expected.Add(Constants.TEST2_METHOD)
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
-Public Sub Run_WithIgnoreInFixtureTeardown_Continues()
+Public Sub Run_WithFailingFixtureTeardown_ConsumesError()
     Dim Mock As New Mock2TestsWithFixtureTeardown
-    Call Mock.Errors.Add(Constants.FIXTURETEARDOWN_METHOD, AssertCode.IgnoreCode)
+    Call Mock.Errors.Add(Constants.FIXTURETEARDOWN_METHOD, 5)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     

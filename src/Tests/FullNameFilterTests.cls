@@ -123,7 +123,7 @@ Public Sub Pass_WithMatchingDecendent_ReturnsTrue()
     Assert.That Actual, Iz.True
 End Sub
 
-Public Sub Pass_WithNoMatchingDescendents_ReturnsFalse()
+Public Sub Pass_WithNoMatchingDescendants_ReturnsFalse()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(New Fake2Tests)
     

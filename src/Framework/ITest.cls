@@ -55,3 +55,5 @@ Public Property Get RunState() As RunState: End Property
 
 Public Property Let RunState(ByVal RHS As RunState): End Property
 
+Public Function CountTestCases(ByVal Filter As ITestFilter) As Long: End Function
+
