@@ -531,7 +531,36 @@ Public Sub Run_WhenCalledTwice_RunsTestsTwice()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
+Public Sub Run_WithIgnoreInFixtureSetup_RunsTests()
+    Dim Mock As New Mock2TestsWithFixtureSetup
+    Call Mock.Errors.Add(Constants.FIXTURESETUP_METHOD, AssertCode.IgnoreCode)
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    
+    Call Fixture.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Call Expected.Add(Constants.FIXTURESETUP_METHOD)
+    Call Expected.Add(Constants.TEST1_METHOD)
+    Call Expected.Add(Constants.TEST2_METHOD)
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
 
+Public Sub Run_WithIgnoreInFixtureTeardown_Continues()
+    Dim Mock As New Mock2TestsWithFixtureTeardown
+    Call Mock.Errors.Add(Constants.FIXTURETEARDOWN_METHOD, AssertCode.IgnoreCode)
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    
+    Dim Result As TestResult
+    Set Result = Fixture.Run
+    
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Assert.IsTrue Actual = SuccessState
+End Sub
 
 
 Private Function NewStubTest(ByVal Name As String) As ITest

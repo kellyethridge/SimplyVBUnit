@@ -291,8 +291,12 @@ Private Function RunFixtureSetup(ByVal FixtureResult As TestResult) As Boolean
     Exit Function
     
 errTrap:
-    Call FixtureResult.Error("FixtureSetup failed.", SetupSite)
-    Call FailAllTests(mTests, FixtureResult)
+    If Err.Number = AssertCode.IgnoreCode Then
+        RunFixtureSetup = True
+    Else
+        Call FixtureResult.Error("FixtureSetup failed.", SetupSite)
+        Call FailAllTests(mTests, FixtureResult)
+    End If
 End Function
 
 Private Sub FailAllTests(ByVal Tests As TestList, ByVal ParentResult As TestResult)
