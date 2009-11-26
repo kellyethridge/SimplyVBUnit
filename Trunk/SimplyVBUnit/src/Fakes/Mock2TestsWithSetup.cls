@@ -13,7 +13,8 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Public Calls As New CallTrace
+Public Calls    As New CallTrace
+Public Errors   As New CallError
 
 
 Public Sub Setup()
@@ -31,4 +32,5 @@ End Sub
 Private Sub Called(ByVal MethodName As String)
     Call Err.Clear
     Call Calls.Add(MethodName)
+    Call Errors.Raise(MethodName)
 End Sub

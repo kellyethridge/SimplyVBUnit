@@ -151,7 +151,11 @@ Private Function RunSetup(ByVal Result As TestResult) As Boolean
     Exit Function
     
 errTrap:
-    Call Result.Error("Error " & Err.Number & ", " & Err.Description, SetupSite)
+    If Err.Number = AssertCode.IgnoreCode Then
+        RunSetup = True
+    Else
+        Call Result.Error("Error " & Err.Number & ", " & Err.Description, SetupSite)
+    End If
 End Function
 
 Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventListener)

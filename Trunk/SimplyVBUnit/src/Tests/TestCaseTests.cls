@@ -658,6 +658,41 @@ Public Sub Run_WithIgnoredTest_ReturnsIgnoreReason()
     Assert.IsTrue Actual = "Ignore message"
 End Sub
 
+Public Sub Run_WithIgnoredInSetup_RunsTest()
+    Dim Mock As New Mock2TestsWithSetup
+    Call Mock.Errors.Add(Constants.SETUP_METHOD, AssertCode.IgnoreCode)
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    
+    Call Fixture.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Call Expected.Add(Constants.SETUP_METHOD)
+    Call Expected.Add(Constants.TEST1_METHOD)
+    Call Expected.Add(Constants.SETUP_METHOD)
+    Call Expected.Add(Constants.TEST2_METHOD)
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_WithIgnoredInTeardown_DoesNothing()
+    Dim Mock As New Mock2TestsWithTeardown
+    Call Mock.Errors.Add(Constants.TEARDOWN_METHOD, AssertCode.IgnoreCode)
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    
+    Call Fixture.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Calls
+    Dim Expected As New CallTrace
+    Call Expected.Add(Constants.TEST1_METHOD)
+    Call Expected.Add(Constants.TEARDOWN_METHOD)
+    Call Expected.Add(Constants.TEST2_METHOD)
+    Call Expected.Add(Constants.TEARDOWN_METHOD)
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
 
 
 
