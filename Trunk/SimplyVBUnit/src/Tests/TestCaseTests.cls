@@ -626,6 +626,37 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsListenerMethods()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
+Public Sub Run_WithIgnoredTest_ReturnsIgnoredResult()
+    Dim Stub As New Stub1Test
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, AssertCode.IgnoreCode)
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As TestCase
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Dim Actual As ResultState
+    Actual = Result.ResultState
+    Assert.IsTrue Actual = IgnoredState
+End Sub
+
+Public Sub Run_WithIgnoredTest_ReturnsIgnoreReason()
+    Dim Stub As New Stub1Test
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, AssertCode.IgnoreCode, , "Ignore message")
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As TestCase
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Dim Actual As String
+    Actual = Result.Message
+    Assert.IsTrue Actual = "Ignore message"
+End Sub
 
 
 

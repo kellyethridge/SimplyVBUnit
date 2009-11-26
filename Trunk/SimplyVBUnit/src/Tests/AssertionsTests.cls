@@ -234,7 +234,7 @@ errTrap:
     Assert.IsTrue Err.Description = Expected, "Wrong message."
 End Sub
 
-Public Sub Pass_WhenCalled_RaisedCorrectError()
+Public Sub Pass_WhenCalled_RaisesCorrectError()
     On Error GoTo errTrap
     
     Assert.Pass
@@ -254,6 +254,27 @@ errTrap:
     Assert.IsTrue Err.Description = "message"
 End Sub
 
+Public Sub Ignore_WhenCalled_RaisesCorrectError()
+    On Error GoTo errTrap
+    
+    Assert.Ignore
+    On Error GoTo 0
+    Assert.Fail "An error should be raised."
+    
+errTrap:
+    Assert.That Err.Number, Iz.EqualTo(AssertCode.IgnoreCode)
+End Sub
+
+Public Sub Ignore_WhenCalledWithMessage_IncludesMessageInError()
+    On Error GoTo errTrap
+    
+    Assert.Ignore "message"
+    
+errTrap:
+    Dim Actual As String
+    Actual = Err.Description
+    Assert.That Actual, Iz.EqualTo("message")
+End Sub
 
 
 
