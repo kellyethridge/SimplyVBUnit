@@ -32,6 +32,10 @@ Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
 End Property
 
+Private Property Get ITest_HasCategories() As Boolean
+
+End Property
+
 Private Property Get ITest_HasParent() As Boolean
 
 End Property

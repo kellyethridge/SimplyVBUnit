@@ -43,6 +43,7 @@ Public Assert               As New Assertions
 Public TestContext          As New TestContextStatic
 Public TestContextManager   As New TestContextManager
 Public EmptyFilter          As New EmptyFilterStatic
+Public CategoryParser       As New CategoryParser
 
 Private mIz                 As New IzStatic
 

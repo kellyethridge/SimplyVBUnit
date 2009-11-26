@@ -45,6 +45,7 @@ Class=TestRunnerTests; TestRunnerTests.cls
 Class=EmptyFilterTests; EmptyFilterTests.cls
 Class=FullNameFilterTests; FullNameFilterTests.cls
 Class=CategoryListTests; CategoryListTests.cls
+Class=CategoryParserTests; CategoryParserTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

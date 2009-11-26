@@ -55,6 +55,7 @@ Private Sub RunTestClassTests()
     Call Suite.Add(New EmptyFilterTests)
     Call Suite.Add(New FullNameFilterTests)
     Call Suite.Add(New CategoryListTests)
+    Call Suite.Add(New CategoryParserTests)
     
     
     Dim Result As TestResult

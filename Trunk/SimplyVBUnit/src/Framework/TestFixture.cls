@@ -29,24 +29,17 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-
-Public Property Get RunState() As RunState: End Property
-
-Public Property Let RunState(ByVal RHS As RunState): End Property
-
-Public Sub Sort(Optional ByVal Comparer As ITestComparer): End Sub
-
-Public Property Get Parent() As ITest: End Property
-
-Public Property Set Parent(ByVal RHS As ITest): End Property
-
-Public Property Get TestCount() As Long: End Property
-
 Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult: End Function
 
 Public Property Get Name() As String: End Property
 
+Public Property Get TestCount() As Long: End Property
+
 Public Property Get FullName() As String: End Property
+
+Public Property Get Parent() As ITest: End Property
+
+Public Property Set Parent(ByVal RHS As ITest): End Property
 
 Public Property Get Tests() As TestList: End Property
 
@@ -55,4 +48,16 @@ Public Property Get IsSuite() As Boolean: End Property
 Public Property Get HasParent() As Boolean: End Property
 
 Public Property Get TestClass() As Object: End Property
+
+Public Sub Sort(Optional ByVal Comparer As ITestComparer): End Sub
+
+Public Property Get RunState() As RunState: End Property
+
+Public Property Let RunState(ByVal RHS As RunState): End Property
+
+Public Function CountTestCases(ByVal Filter As ITestFilter) As Long: End Function
+
+Public Property Get Categories() As CategoryList: End Property
+
+Public Property Get HasCategories() As Boolean: End Property
 

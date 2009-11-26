@@ -37,8 +37,14 @@ Private mOldAssertCount As Long
 Private mTicks          As Currency
 Private mRunState       As RunState
 Private mContext        As ContextMethods
-Private mCategories     As New CategoryList
+Private mCategories     As CategoryList
 
+
+Public Property Get HasCategories() As Boolean
+    If Not mCategories Is Nothing Then
+        HasCategories = (mCategories.Count > 0)
+    End If
+End Property
 
 Public Property Get Categories() As CategoryList
     Set Categories = mCategories
@@ -217,14 +223,10 @@ Friend Sub Init(ByVal Name As String, ByVal TestMethod As ITestMethod)
     If TestMethod Is Nothing Then _
         Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_NullTestMethod))
     
-    Dim i As Long
-    i = InStr(Name, "__")
-    If i > 0 Then
-        mName = Mid$(Name, i + 2)
-        Call mCategories.Add(Left$(Name, i - 1))
-    Else
-        mName = Name
-    End If
+    With CategoryParser.Parse(Name)
+        mName = .Name
+        Set mCategories = .Categories
+    End With
     
     Set mTestMethod = TestMethod
 End Sub
@@ -264,6 +266,10 @@ End Function
 
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
+End Property
+
+Private Property Get ITest_HasCategories() As Boolean
+    ITest_HasCategories = HasCategories
 End Property
 
 Private Property Get ITest_HasParent() As Boolean
