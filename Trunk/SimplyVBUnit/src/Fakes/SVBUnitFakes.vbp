@@ -39,6 +39,7 @@ Class=Mock3TestsWithWriters; Mock3TestsWithWriters.cls
 Class=FakeTestContext; FakeTestContext.cls
 Class=Mock2TestsWithFullContext; Mock2TestsWithFullContext.cls
 Class=StubFilter; StubFilter.cls
+Class=Mock1TestWithCategory; Mock1TestWithCategory.cls
 Startup="(None)"
 HelpFile=""
 Command32=""

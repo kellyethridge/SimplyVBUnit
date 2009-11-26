@@ -47,6 +47,10 @@ Private mName                   As String
 
 
 
+Public Property Get Categories() As CategoryList
+
+End Property
+
 Public Function CountTestCases(ByVal Filter As ITestFilter) As Long
     Dim Result  As Long
     
@@ -299,6 +303,7 @@ End Sub
 
 Private Function RunFixtureSetup(ByVal FixtureResult As TestResult) As Boolean
     On Error GoTo errTrap
+    
     Call mFixtureSetup.Run
     
     RunFixtureSetup = True
@@ -325,6 +330,7 @@ End Sub
 
 Private Sub RunFixtureTeardown()
     On Error GoTo errTrap
+    
     Call mFixtureTeardown.Run
 errTrap:
 End Sub
@@ -347,6 +353,10 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Property Get ITest_Categories() As CategoryList
+    Set ITest_Categories = Categories
+End Property
+
 Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
     ITest_CountTestCases = CountTestCases(Filter)
 End Function

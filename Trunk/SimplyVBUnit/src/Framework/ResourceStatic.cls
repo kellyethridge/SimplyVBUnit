@@ -54,6 +54,7 @@ Public Enum StringResourceID
     Arg_CannotBeNegative = 120
     Arg_EnumerationNonSupported = 121
     Msg_FixtureSetupFailed = 122
+    Src_CategoryList_Item = 123
     
 End Enum
 
