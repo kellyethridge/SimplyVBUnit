@@ -166,6 +166,9 @@ Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventLi
         Case AssertCode.FailureCode
             Call Result.Failure(Err.Description, TestSite)
             
+        Case AssertCode.IgnoreCode
+            Call Result.Ignore(Err.Description)
+            
         Case Else
             Call Result.Error(Err.Description, TestSite)
             

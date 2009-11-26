@@ -32,9 +32,10 @@ Option Explicit
 Public Enum AssertCode
     FailureCode = vbObjectError + 151000
     SuccessCode
+    IgnoreCode
     
     #If False Then
-        Dim FailureCode, SuccessCode
+        Dim FailureCode, SuccessCode, IgnoreCode
     #End If
 End Enum
 
@@ -48,6 +49,10 @@ Friend Function SetCount(ByVal NewCount As Long) As Long
     SetCount = mCount
     mCount = NewCount
 End Function
+
+Public Sub Ignore(Optional ByVal Reason As String)
+    Call Err.Raise(AssertCode.IgnoreCode, , Reason)
+End Sub
 
 Public Sub Fail(Optional ByVal Message As String)
     Call IncrementCount
