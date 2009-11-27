@@ -72,11 +72,9 @@ End Enum
 Public Enum RunState
     RunnableRunState
     NotRunnableRunState
-    IgnoredRunState
-    ExecutedRunState
     
     #If False Then
-        Dim RunnableRunState, NotRunnableRunState, IgnoredRunState, ExecutedRunState
+        Dim RunnableRunState, NotRunnableRunState
     #End If
 End Enum
 
