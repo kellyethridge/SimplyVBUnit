@@ -184,7 +184,6 @@ Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventLi
     Select Case Err.Number
         Case AssertCode.SuccessCode, ErrorCode.NoError
             Call Result.Success(Err.Description)
-            mRunState = ExecutedRunState
             
         Case AssertCode.FailureCode
             Call Result.Failure(Err.Description, TestSite)

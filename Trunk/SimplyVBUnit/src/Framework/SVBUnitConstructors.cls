@@ -104,3 +104,8 @@ Public Function NewTestRunner(ByVal Test As ITest) As TestRunner
     Set NewTestRunner = New TestRunner
     Call NewTestRunner.Init(Test)
 End Function
+
+Public Function NewNotFilter(ByVal BaseFilter As ITestFilter) As NotFilter
+    Set NewNotFilter = New NotFilter
+    Call NewNotFilter.Init(BaseFilter)
+End Function

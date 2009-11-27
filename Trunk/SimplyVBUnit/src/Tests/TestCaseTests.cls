@@ -550,16 +550,16 @@ Public Sub Run_WithUnknownError_CallsListenerMethod2()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
-Public Sub Run_WhenSuccessful_SetsRunStateToExecuted()
-    Dim Test As ITest
-    Set Test = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
-    
-    Test.Run
-    
-    Dim Actual As RunState
-    Actual = Test.RunState
-    Assert.IsTrue Actual = ExecutedRunState
-End Sub
+'Public Sub Run_WhenSuccessful_SetsRunStateToExecuted()
+'    Dim Test As ITest
+'    Set Test = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
+'
+'    Test.Run
+'
+'    Dim Actual As RunState
+'    Actual = Test.RunState
+'    Assert.IsTrue Actual = ExecutedRunState
+'End Sub
 
 Public Sub Run_WithRunStateSetToNotRunnable_DoesNotExecuteTest()
     Dim Mock As New Mock1Test
