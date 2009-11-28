@@ -126,9 +126,9 @@ library SimplyVBUnitType {
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
 	}
-	
+
 	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
-	interface IToleranceScales : IDispatch
+	interface IToleranceUnits : IDispatch
 	{
 		HRESULT Days([out, retval] IEqualConstraint ** RetVal);
 		HRESULT Hours([out, retval] IEqualConstraint ** RetVal);
@@ -142,7 +142,7 @@ library SimplyVBUnitType {
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
 		HRESULT IgnoreCase([out, retval] IEqualConstraint ** RetVal);
-		HRESULT Within([in] VARIANT Tolerance, [out, retval] IToleranceScales ** RetVal);
+		HRESULT Within([in] VARIANT Tolerance, [out, retval] IToleranceUnits ** RetVal);
 		HRESULT AsCollection([out, retval] IEqualConstraint ** RetVal);
 		HRESULT Using([in] IEqualityComparer * Comparer, [out, retval] IEqualConstraint ** RetVal);
 		HRESULT Strict([out, retval] IEqualConstraint ** RetVal);
@@ -154,6 +154,10 @@ library SimplyVBUnitType {
 		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualConstraint ** RetVal);
 		HRESULT True([out, retval] IBasicExpression ** RetVal);
 		HRESULT False([out, retval] IBasicExpression ** RetVal);
+		HRESULT VBEmpty([out, retval] IBasicExpression ** RetVal);
+		HRESULT VBNull([out, retval] IBasicExpression ** RetVal);
+		HRESULT Nothing([out, retval] IBasicExpression ** RetVal);
+		HRESULT Missing([out, retval] IBasicExpression ** RetVal);
 	}
 }
 
