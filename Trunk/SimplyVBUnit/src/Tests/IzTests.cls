@@ -28,11 +28,40 @@ Attribute VB_Exposed = False
 ' Module: IzTests
 '
 Option Explicit
+Implements ITestCaseSource
 
-Public Sub EqualTo_WhenCalled_ReturnsEqualConstraint()
-    Dim c As EqualConstraint
-    
-    Set c = Iz.EqualTo(1)
-    
-    Assert.IsTrue Not c Is Nothing
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
+    Select Case Test.MethodName
+        Case "Matches_WithConstraint_ReturnsExpected"
+            Call Test.Using(Iz.EqualTo(1), 1, True)
+            Call Test.Using(Iz.EqualTo(1), 2, False)
+            Call Test.Using(Iz.True, True, True)
+            Call Test.Using(Iz.True, False, False)
+            Call Test.Using(Iz.False, False, True)
+            Call Test.Using(Iz.False, True, False)
+            Call Test.Using(Iz.Nothing, Nothing, True)
+            Call Test.Using(Iz.Nothing, 1, False)
+            Call Test.Using(Iz.vbEmpty, Empty, True)
+            Call Test.Using(Iz.vbEmpty, 1, False)
+            Call Test.Using(Iz.vbNull, Null, True)
+            Call Test.Using(Iz.vbNull, 1, False)
+            Call Test.Using(Iz.Missing, GetMissingVariant, True)
+            Call Test.Using(Iz.Missing, 1, False)
+            
+        
+    End Select
 End Sub
+
+Public Sub Matches_WithConstraint_ReturnsExpected(ByVal c As IConstraint, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
+    Dim Actual As Boolean
+    
+    Actual = c.Matches(ConstraintActual)
+    
+    Assert.IsTrue Actual = Expected
+End Sub
+
+
+
+Private Function GetMissingVariant(Optional ByVal Value As Variant) As Variant
+    GetMissingVariant = Value
+End Function

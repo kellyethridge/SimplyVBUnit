@@ -30,6 +30,10 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IzSyntaxHelper
 
+Private Function GetMissingVariant(Optional ByVal Value As Variant) As Variant
+    GetMissingVariant = Value
+End Function
+
 Private Function IzSyntaxHelper_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
     Set IzSyntaxHelper_EqualTo = Sim.NewEqualConstraint(Expected)
 End Function
@@ -38,6 +42,22 @@ Private Function IzSyntaxHelper_False() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_False = Sim.NewEqualConstraint(False)
 End Function
 
+Private Function IzSyntaxHelper_Missing() As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_Missing = Sim.NewEqualConstraint(GetMissingVariant)
+End Function
+
+Private Function IzSyntaxHelper_Nothing() As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_Nothing = Sim.NewEqualConstraint(Nothing)
+End Function
+
 Private Function IzSyntaxHelper_True() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_True = Sim.NewEqualConstraint(True)
+End Function
+
+Private Function IzSyntaxHelper_VBEmpty() As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_VBEmpty = Sim.NewEqualConstraint(Empty)
+End Function
+
+Private Function IzSyntaxHelper_VBNull() As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_VBNull = Sim.NewEqualConstraint(Null)
 End Function

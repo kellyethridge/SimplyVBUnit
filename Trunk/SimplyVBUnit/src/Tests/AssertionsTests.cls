@@ -276,6 +276,41 @@ errTrap:
     Assert.That Actual, Iz.EqualTo("message")
 End Sub
 
+Public Sub IsVBEmpty_WithNonemptyValue_RaisesCorrectError()
+    On Error GoTo errTrap
+    
+    Assert.IsVBEmpty 1, "Not empty"
+    On Error GoTo 0
+    Assert.Fail "An error should be raised."
+    
+errTrap:
+    Dim Actual As Long
+    Actual = Err.Number
+    Assert.That Actual, Iz.EqualTo(AssertCode.FailureCode)
+End Sub
+
+Public Sub IsVBEmpty_WithEmpty_DoesNothing()
+    On Error GoTo errTrap
+    
+    Assert.IsVBEmpty Empty
+    Exit Sub
+    
+errTrap:
+    Assert.Fail "No error should be raised."
+End Sub
+
+Public Sub IsVBNull_WithNonnullValue_RaisesCorrectError()
+    On Error GoTo errTrap
+    
+    Assert.IsVBNull 1, "Not null"
+    On Error GoTo 0
+    Assert.Fail "An error should be raised."
+    
+errTrap:
+    Dim Actual As Long
+    Actual = Err.Number
+    Assert.That Actual, Iz.EqualTo(AssertCode.FailureCode)
+End Sub
 
 
 

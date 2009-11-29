@@ -31,7 +31,7 @@ Option Explicit
 Implements IConstraint
 Implements IBasicExpression
 Implements IEqualConstraint
-Implements IToleranceScales
+Implements IToleranceUnits
 
 
 Private mExpected   As Variant
@@ -49,7 +49,7 @@ Public Function IgnoreCase() As EqualConstraint
     Set IgnoreCase = Me
 End Function
 
-Public Function Within(ByVal Tolerance As Variant) As IToleranceScales
+Public Function Within(ByVal Tolerance As Variant) As IToleranceUnits
     mComparer.Within Tolerance
     Set Within = Me
 End Function
@@ -202,23 +202,23 @@ Private Function IEqualConstraint_Using(ByVal Comparer As SimplyVBUnitType.IEqua
     Set IEqualConstraint_Using = Using(Comparer)
 End Function
 
-Private Function IEqualConstraint_Within(ByVal Tolerance As Variant) As SimplyVBUnitType.IToleranceScales
+Private Function IEqualConstraint_Within(ByVal Tolerance As Variant) As SimplyVBUnitType.IToleranceUnits
     Set IEqualConstraint_Within = Within(Tolerance)
 End Function
 
 
-Private Function IToleranceScales_Days() As SimplyVBUnitType.IEqualConstraint
-    Set IToleranceScales_Days = Days
+Private Function IToleranceUnits_Days() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Days = Days
 End Function
 
-Private Function IToleranceScales_Hours() As SimplyVBUnitType.IEqualConstraint
-    Set IToleranceScales_Hours = Hours
+Private Function IToleranceUnits_Hours() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Hours = Hours
 End Function
 
-Private Function IToleranceScales_Minutes() As SimplyVBUnitType.IEqualConstraint
-    Set IToleranceScales_Minutes = Minutes
+Private Function IToleranceUnits_Minutes() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Minutes = Minutes
 End Function
 
-Private Function IToleranceScales_Seconds() As SimplyVBUnitType.IEqualConstraint
-    Set IToleranceScales_Seconds = Seconds
+Private Function IToleranceUnits_Seconds() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Seconds = Seconds
 End Function
