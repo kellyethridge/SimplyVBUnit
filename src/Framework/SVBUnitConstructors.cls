@@ -109,3 +109,8 @@ Public Function NewNotFilter(ByVal BaseFilter As ITestFilter) As NotFilter
     Set NewNotFilter = New NotFilter
     Call NewNotFilter.Init(BaseFilter)
 End Function
+
+Public Function NewAndConstraint(ByVal LeftSide As IConstraint, ByVal RightSide As IConstraint) As AndConstraint
+    Set NewAndConstraint = New AndConstraint
+    Call NewAndConstraint.Init(LeftSide, RightSide)
+End Function

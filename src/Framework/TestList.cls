@@ -49,7 +49,7 @@ End Property
 
 Public Sub Add(ByVal Test As ITest)
     If Test Is Nothing Then _
-        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestList_Add), Resource.GetString(Arg_NullTest))
+        Call Error.CannotBeNothing(Me, "Add", "Test")
         
     mCount = mCount + 1
     Call EnsureCapacity
@@ -88,7 +88,8 @@ End Sub
 Public Property Get Item(ByVal Index As Long) As ITest
 Attribute Item.VB_UserMemId = 0
     If (Index < MINIMUM_INDEX) Or (Index >= Me.Count) Then _
-        Call Err.Raise(ErrorCode.IndexOutOfRange, Resource.GetString(Src_TestList_Item), Resource.GetString(Arg_IndexOutOfRange))
+        Call Error.IndexOutOfRange(Me, "Item")
+'        Call Err.Raise(ErrorCode.IndexOutOfRange, Resource.GetString(Src_TestList_Item), Resource.GetString(Arg_IndexOutOfRange))
         
     Set Item = mItems(Index)
 End Property

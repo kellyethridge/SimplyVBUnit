@@ -36,15 +36,13 @@ Private mCurrent    As Variant
 
 
 Friend Sub Init(ByVal Obj As Object)
+    If Obj Is Nothing Then _
+        Call Error.CannotBeNothing(Me, "Init", "Obj")
+    If Not IsEnumerable(Obj) Then _
+        Call Error.EnumerationNotSupported(Me, "Init", "Obj")
+        
     Set mObject = Obj
-    Call FindEnumerator
-End Sub
-
-Private Sub FindEnumerator()
-    If Not IsEnumerable(mObject) Then _
-        Call Err.Raise(ErrorCode.Argument, , Resource.GetString(Arg_EnumerationNonSupported))
-    
-    Set mEnum = TLI.InvokeHook(mObject, ENUM_MEMBERID, INVOKE_FUNC)
+    Set mEnum = TLI.InvokeHook(Obj, ENUM_MEMBERID, INVOKE_FUNC)
 End Sub
 
 

@@ -30,13 +30,48 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements IConstraint
 
-Private mLHS As IConstraint
-Private mRHS As IConstraint
+Private mLeftSide   As IConstraint
+Private mRightSide  As IConstraint
 
 
+Public Function Matches(ByRef Actual As Variant) As Boolean
+    If mLeftSide.Matches(Actual) Then
+        Matches = mRightSide.Matches(Actual)
+    End If
+End Function
 
+Public Sub WriteActualValueTo(ByVal Writer As TextMessageWriter)
+
+End Sub
+
+Public Sub WriteDescriptionTo(ByVal Writer As TextMessageWriter)
+
+End Sub
+
+Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
+
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByVal LeftSide As IConstraint, ByVal RightSide As IConstraint)
+    If LeftSide Is Nothing Then _
+        Call Error.CannotBeNothing(Me, "Init", "LeftSide")
+    If RightSide Is Nothing Then _
+        Call Error.CannotBeNothing(Me, "Init", "RightSide")
+        
+    Set mLeftSide = LeftSide
+    Set mRightSide = RightSide
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IConstraint Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IConstraint_Matches(Actual As Variant) As Boolean
-
+    IConstraint_Matches = Matches(Actual)
 End Function
 
 Private Function IConstraint_Resolve() As IConstraint
@@ -44,13 +79,13 @@ Private Function IConstraint_Resolve() As IConstraint
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
-
+    Call WriteActualValueTo(Writer)
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-
+    Call WriteDescriptionTo(Writer)
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
-
+    Call WriteMessageTo(Writer)
 End Sub

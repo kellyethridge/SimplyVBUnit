@@ -33,28 +33,12 @@ Option Explicit
 
 Public Enum StringResourceID
     HighPerformanceCounterNotSupported = 101
-    Arg_NullTestClass = 102
-    Arg_NullMember = 103
-    Arg_EmptyName = 105
-    Arg_NullTestMethod = 106
-    Src_NoArgTestMethod_Init = 104
-    Src_TestCase_Init = 107
-    Src_TestFixture_Init = 108
-    Arg_NullTest = 109
-    Src_TestList_Add = 110
-    Arg_NullResult = 111
-    Src_TestResultList_Add = 112
-    Src_TestSuite_Add = 113
-    Src_TestResult_AddResult = 114
-    Src_ArgOnlyTestMethod_Init = 115
-    Arg_NullTestCaseData = 116
-    Src_TestList_Item = 117
-    Arg_IndexOutOfRange = 118
-    Src_StringBuilder_Length = 119
-    Arg_CannotBeNegative = 120
-    Arg_EnumerationNonSupported = 121
+    Arg_CannotBeNothing = 102
+    Arg_CannotBeEmpty = 103
+    Arg_CannotBeNegative = 104
+    Arg_IndexOutOfRange = 105
+    Arg_EnumerationNonSupported = 106
     Msg_FixtureSetupFailed = 122
-    Src_CategoryList_Item = 123
     
 End Enum
 

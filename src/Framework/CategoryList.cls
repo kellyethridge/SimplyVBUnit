@@ -45,7 +45,8 @@ End Sub
 Public Property Get Item(ByVal Index As Long) As String
 Attribute Item.VB_UserMemId = 0
     If Index < 0 Or Index >= Me.Count Then _
-        Call Err.Raise(ErrorCode.IndexOutOfRange, Resource.GetString(Src_CategoryList_Item), Resource.GetString(Arg_IndexOutOfRange))
+        Call Error.IndexOutOfRange(Me, "Item")
+'        Call Err.Raise(ErrorCode.IndexOutOfRange, Resource.GetString(Src_CategoryList_Item), Resource.GetString(Arg_IndexOutOfRange))
         
     Item = mItems(Index + 1)
 End Property

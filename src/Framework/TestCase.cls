@@ -218,9 +218,11 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Name As String, ByVal TestMethod As ITestMethod)
     If Len(Name) = 0 Then _
-        Call Err.Raise(ErrorCode.Argument, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_EmptyName))
+        Call Error.CannotBeEmpty(Me, "Init", "Name")
+'        Call Err.Raise(ErrorCode.Argument, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_EmptyName))
     If TestMethod Is Nothing Then _
-        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_NullTestMethod))
+        Call Error.CannotBeNothing(Me, "Init", "TestMethod")
+'        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_CannotBeNothing, "TestMethod"))
     
     With CategoryParser.Parse(Name)
         mName = .Name
