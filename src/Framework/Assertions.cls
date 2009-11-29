@@ -72,6 +72,22 @@ Public Sub IsFalse(ByVal Condition As Boolean, Optional ByVal Message As String)
     Call That(Condition, Iz.False, Message)
 End Sub
 
+Public Sub IsVBEmpty(ByRef Actual As Variant, Optional ByVal Message As String)
+    Call That(Actual, Iz.vbEmpty, Message)
+End Sub
+
+Public Sub IsVBNull(ByRef Actual As Variant, Optional ByVal Message As String)
+    Call That(Actual, Iz.vbNull, Message)
+End Sub
+
+Public Sub IsMissing(ByRef Actual As Variant, Optional ByVal Message As String)
+    Call That(Actual, Iz.Missing, Message)
+End Sub
+
+Public Sub IsNothing(ByRef Actual As Variant, Optional ByVal Message As String)
+    Call That(Actual, Iz.Nothing, Message)
+End Sub
+
 Public Sub AreEqual(ByRef Expected As Variant, ByRef Actual As Variant, Optional ByVal Message As String)
     Call That(Actual, Iz.EqualTo(Expected), Message)
 End Sub
