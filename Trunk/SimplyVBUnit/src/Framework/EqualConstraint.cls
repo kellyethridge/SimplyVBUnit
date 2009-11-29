@@ -170,29 +170,13 @@ Private Function IEqualConstraint_AsCollection() As SimplyVBUnitType.IEqualConst
     Set IEqualConstraint_AsCollection = AsCollection
 End Function
 
-'Private Function IEqualConstraint_Days() As SimplyVBUnitType.IEqualConstraint
-'    Set IEqualConstraint_Days = Days
-'End Function
-'
-'Private Function IEqualConstraint_Hours() As SimplyVBUnitType.IEqualConstraint
-'    Set IEqualConstraint_Hours = Hours
-'End Function
-
 Private Function IEqualConstraint_IgnoreCase() As SimplyVBUnitType.IEqualConstraint
     Set IEqualConstraint_IgnoreCase = Me.IgnoreCase
 End Function
 
-'Private Function IEqualConstraint_Minutes() As SimplyVBUnitType.IEqualConstraint
-'    Set IEqualConstraint_Minutes = Minutes
-'End Function
-
 Private Function IEqualConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
 
 End Function
-
-'Private Function IEqualConstraint_Seconds() As SimplyVBUnitType.IEqualConstraint
-'    Set IEqualConstraint_Seconds = Seconds
-'End Function
 
 Private Function IEqualConstraint_Strict() As SimplyVBUnitType.IEqualConstraint
     Set IEqualConstraint_Strict = Strict
@@ -207,6 +191,9 @@ Private Function IEqualConstraint_Within(ByVal Tolerance As Variant) As SimplyVB
 End Function
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IToleranceUnits Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IToleranceUnits_Days() As SimplyVBUnitType.IEqualConstraint
     Set IToleranceUnits_Days = Days
 End Function

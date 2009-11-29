@@ -140,7 +140,7 @@ End Property
 
 Public Sub AddResult(ByVal Result As TestResult)
     If Result Is Nothing Then _
-        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestResult_AddResult), Resource.GetString(Arg_NullResult))
+        Call modStatics.Error.CannotBeNothing(Me, "AddResult", "Result")
         
     Call mResults.Add(Result)
     Call SetResultState(Result.ResultState)

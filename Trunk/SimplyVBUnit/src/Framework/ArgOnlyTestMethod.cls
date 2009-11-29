@@ -53,11 +53,11 @@ End Property
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData)
     If TestClass Is Nothing Then _
-        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_ArgOnlyTestMethod_Init), Resource.GetString(Arg_NullTestClass))
+        Call Error.CannotBeNothing(Me, "Init", "TestClass")
     If Member Is Nothing Then _
-        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_ArgOnlyTestMethod_Init), Resource.GetString(Arg_NullMember))
+        Call Error.CannotBeNothing(Me, "Init", "Member")
     If TestCaseData Is Nothing Then _
-        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_ArgOnlyTestMethod_Init), Resource.GetString(Arg_NullTestCaseData))
+        Call Error.CannotBeNothing(Me, "Init", "TestCaseData")
         
     Set mTestClass = TestClass
     Set mMember = Member

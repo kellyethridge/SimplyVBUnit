@@ -102,7 +102,7 @@ End Property
 
 Public Sub Add(ByVal TestClass As Object)
     If TestClass Is Nothing Then _
-        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestSuite_Add), Resource.GetString(Arg_NullTestClass))
+        Call Error.CannotBeNothing(Me, "Add", "TestClass")
     
     Dim Test As ITest
     If TypeOf TestClass Is ITest Then
@@ -222,7 +222,7 @@ End Sub
 
 Friend Sub InitTestFixture(ByVal TestClass As Object)
     If TestClass Is Nothing Then _
-        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestFixture_Init), Resource.GetString(Arg_NullTestClass))
+        Call Error.CannotBeNothing(New TestFixture, "Init", "TestClass")
         
     Set mTestClass = TestClass
     Call InitTestSuite(TypeName(TestClass))

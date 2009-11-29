@@ -160,7 +160,7 @@ End Property
 '
 Public Property Let Length(ByVal RHS As Long)
     If RHS < MIN_LENGTH Then _
-        Call Err.Raise(ErrorCode.ArgumentOutOfRange, Resource.GetString(Src_StringBuilder_Length), Resource.GetString(Arg_CannotBeNegative, "Length"))
+        Call Error.CannotBeNegative(Me, "Length", "Length")
     
     If RHS > mLength Then
         Dim FillSpace As String
