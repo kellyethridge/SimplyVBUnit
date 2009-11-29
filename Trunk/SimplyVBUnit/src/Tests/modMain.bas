@@ -59,6 +59,7 @@ Private Sub RunTestClassTests()
     Call Suite.Add(New OrFilterTests)
     Call Suite.Add(New AndFilterTests)
     Call Suite.Add(New NotFilterTests)
+    Call Suite.Add(New AndConstraintTests)
     
     
     Dim Result As TestResult
