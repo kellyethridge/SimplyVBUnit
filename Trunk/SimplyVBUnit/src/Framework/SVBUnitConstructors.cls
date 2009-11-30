@@ -55,9 +55,9 @@ Public Function NewTestSuite(ByVal Name As String) As TestSuite
     Call NewTestSuite.InitTestSuite(Name)
 End Function
 
-Public Function NewErrorInfo(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String) As ErrorInfo
+Public Function NewErrorInfo(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String, Optional ByVal LastDllError As Long) As ErrorInfo
     Set NewErrorInfo = New ErrorInfo
-    Call NewErrorInfo.Init(Number, Source, Description)
+    Call NewErrorInfo.Init(Number, Source, Description, LastDllError)
 End Function
 
 Public Function NewArgOnlyTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData) As ArgOnlyTestMethod
@@ -113,4 +113,9 @@ End Function
 Public Function NewAndConstraint(ByVal LeftSide As IConstraint, ByVal RightSide As IConstraint) As AndConstraint
     Set NewAndConstraint = New AndConstraint
     Call NewAndConstraint.Init(LeftSide, RightSide)
+End Function
+
+Public Function NewThrowsConstraint(ByVal Expected As ErrorInfo) As ThrowsConstraint
+    Set NewThrowsConstraint = New ThrowsConstraint
+    Call NewThrowsConstraint.Init(Expected)
 End Function

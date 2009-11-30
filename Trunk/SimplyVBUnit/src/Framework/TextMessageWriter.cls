@@ -29,17 +29,20 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private Const FIRST_ARGUMENT    As Long = 0
-Private Const SECOND_ARGUMENT   As Long = FIRST_ARGUMENT + 1
-Private Const PFX_EXPECTED      As String = "Expected: "
-Private Const PFX_ACTUAL        As String = "But was : "
-Private Const FMT_EMPTYSTRING   As String = "<Empty String>"
-Private Const FMT_STRING        As String = """{0}"""
-Private Const FMT_NULL          As String = "Null"
-Private Const FMT_EMPTY         As String = "Empty"
-Private Const FMT_NOTHING       As String = "Nothing"
-Private Const FMT_MISSING       As String = "Missing"
-
+Private Const FIRST_ARGUMENT        As Long = 0
+Private Const SECOND_ARGUMENT       As Long = FIRST_ARGUMENT + 1
+Private Const PFX_EXPECTED          As String = "Expected: "
+Private Const PFX_ACTUAL            As String = "But was : "
+Private Const FMT_EMPTYSTRING       As String = "<Empty String>"
+Private Const FMT_STRING            As String = """{0}"""
+Private Const FMT_NULL              As String = "Null"
+Private Const FMT_EMPTY             As String = "Empty"
+Private Const FMT_NOTHING           As String = "Nothing"
+Private Const FMT_MISSING           As String = "Missing"
+Private Const FMT_PREDICATE         As String = "{0} "
+Private Const FMT_ERRORNUMBER       As String = "error {0}"
+Private Const FMT_ERRORDESCRIPTION  As String = ", {0}"
+Private Const FMT_ERRORSOURCE       As String = " from [{0}]"
 
 
 Private mMessage As New StringBuilder
@@ -182,4 +185,27 @@ Private Sub WriteFormattedText(ByVal Text As String, ByRef FirstArgument As Vari
     Call InitArrayProxy(Proxy, FirstArgument, ArgumentCount)
     Call mMessage.AppendFormatArray(Text, Proxy.Data)
 End Sub
+
+Public Sub WritePredicate(ByVal Text As String)
+    Call WriteText(FMT_PREDICATE, Text)
+End Sub
+
+Public Sub WriteErrorInfo(ByVal Info As ErrorInfo)
+    Call WriteText(FMT_ERRORNUMBER, Info.Number)
+    Call WriteOptionalText(Info.Description, FMT_ERRORDESCRIPTION)
+    Call WriteOptionalText(Info.Source, FMT_ERRORSOURCE)
+End Sub
+
+Private Sub WriteOptionalText(ByRef Text As Variant, ByVal TextFormat As String)
+    If Len(Text) > 0 Then
+        Call WriteText(TextFormat, Text)
+    End If
+End Sub
+
+
+
+
+
+
+
 

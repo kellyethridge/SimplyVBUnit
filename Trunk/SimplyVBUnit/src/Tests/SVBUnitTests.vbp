@@ -52,6 +52,7 @@ Class=NotFilterTests; NotFilterTests.cls
 Class=AndOperatorTests; AndOperatorTests.cls
 Class=AndConstraintTests; AndConstraintTests.cls
 Class=ErrorHelperTests; ErrorHelperTests.cls
+Class=ThrowsConstraintTests; ThrowsConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

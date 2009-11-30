@@ -132,16 +132,77 @@ Public Sub Equals_WithNothing_ReturnsFalse()
     Assert.IsTrue Actual = False, "Equals should return false."
 End Sub
 
+Public Sub Equals_WithEquivalentSourceAndIgnoreCase_ReturnsTrue()
+    Dim Info1 As ErrorInfo
+    Set Info1 = Sim.NewErrorInfo(1, "SOURCE")
+    Dim Info2 As ErrorInfo
+    Set Info2 = Sim.NewErrorInfo(1, "source")
+    
+    Dim Actual As Boolean
+    Actual = Info1.Equals(Info2, True)
+    
+    Assert.IsTrue Actual
+End Sub
 
+Public Sub Equals_WithEquivalentDescriptionAndIgnoreCase_ReturnsTrue()
+    Dim Info1 As ErrorInfo
+    Set Info1 = Sim.NewErrorInfo(1, , "DESC")
+    Dim Info2 As ErrorInfo
+    Set Info2 = Sim.NewErrorInfo(1, , "desc")
+    
+    Dim Actual As Boolean
+    Actual = Info1.Equals(Info2, True)
+    
+    Assert.IsTrue Actual
+End Sub
 
+Public Sub Equals_WithEmptySource_DoesNotCompareSources()
+    Dim Info1 As ErrorInfo
+    Set Info1 = Sim.NewErrorInfo(1, "source")
+    Dim Info2 As ErrorInfo
+    Set Info2 = Sim.NewErrorInfo(1)
+    
+    Dim Actual As Boolean
+    Actual = Info1.Equals(Info2)
+    
+    Assert.IsTrue Actual
+End Sub
 
+Public Sub Equals_WithEmptySource_DoesNotCompareSources2()
+    Dim Info1 As ErrorInfo
+    Set Info1 = Sim.NewErrorInfo(1, "source")
+    Dim Info2 As ErrorInfo
+    Set Info2 = Sim.NewErrorInfo(1)
+    
+    Dim Actual As Boolean
+    Actual = Info2.Equals(Info1)
+    
+    Assert.IsTrue Actual
+End Sub
 
+Public Sub Equals_WithEmptyDescription_DoesNotCompareDescriptions()
+    Dim Info1 As ErrorInfo
+    Set Info1 = Sim.NewErrorInfo(1, , "desc")
+    Dim Info2 As ErrorInfo
+    Set Info2 = Sim.NewErrorInfo(1)
+    
+    Dim Actual As Boolean
+    Actual = Info1.Equals(Info2)
+    
+    Assert.IsTrue Actual
+End Sub
 
-
-
-
-
-
+Public Sub Equals_WithEmptyDescription_DoesNotCompareDescriptions2()
+    Dim Info1 As ErrorInfo
+    Set Info1 = Sim.NewErrorInfo(1, , "desc")
+    Dim Info2 As ErrorInfo
+    Set Info2 = Sim.NewErrorInfo(1)
+    
+    Dim Actual As Boolean
+    Actual = Info2.Equals(Info1)
+    
+    Assert.IsTrue Actual
+End Sub
 
 
 
