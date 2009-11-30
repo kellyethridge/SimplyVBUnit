@@ -69,7 +69,7 @@ End Sub
 Public Sub WriteValue_WithValues_WritesExpected(ByRef ActualValue As Variant, ByVal Expected As String)
     Dim w As New TextMessageWriter
     
-    w.WriteValue ActualValue
+    Call w.WriteValue(ActualValue)
     
     Dim Actual As String
     Actual = w.ToString
@@ -79,7 +79,7 @@ End Sub
 Public Sub WriteActualValue_WithValues_WritesExpected(ByRef ActualValue As Variant, ByVal Expected As String)
     Dim w As New TextMessageWriter
     
-    w.WriteActualValue ActualValue
+    Call w.WriteActualValue(ActualValue)
     
     Dim Actual As String
     Actual = w.ToString
@@ -89,7 +89,7 @@ End Sub
 Public Sub WriteExpectedValue_WithValues_WritesExpected(ByRef ExpectedValue As Variant, ByVal Expected As String)
     Dim w As New TextMessageWriter
     
-    w.WriteExpectedValue ExpectedValue
+    Call w.WriteExpectedValue(ExpectedValue)
     
     Dim Actual As String
     Actual = w.ToString
@@ -102,7 +102,7 @@ Public Sub DisplayConstraintDifference_UsingConstraint_WritesExpectedButWasClaus
     Stub.ExpectedValue = False
     Dim w As New TextMessageWriter
     
-    w.DisplayConstraintDifference Stub
+    Call w.DisplayConstraintDifference(Stub)
     
     Dim Actual As String
     Actual = w.ToString
@@ -112,7 +112,7 @@ End Sub
 Public Sub WriteLine_WithNoArgs_AppendsCrLfToMessage()
     Dim w As New TextMessageWriter
     
-    w.WriteLine
+    Call w.WriteLine
     
     Dim Actual As String
     Actual = w.ToString
@@ -122,7 +122,7 @@ End Sub
 Public Sub WriteLine_WithText_AppendsTextThenCrLf()
     Dim w As New TextMessageWriter
     
-    w.WriteLine "Text"
+    Call w.WriteLine("Text")
     
     Dim Actual As String
     Actual = w.ToString
@@ -132,7 +132,7 @@ End Sub
 Public Sub WriteLine_WithArgs_AppendsFormattedArgs()
     Dim w As New TextMessageWriter
     
-    w.WriteLine "{0} text", "Some"
+    Call w.WriteLine("{0} text", "Some")
     
     Dim Actual As String
     Actual = w.ToString
@@ -142,7 +142,7 @@ End Sub
 Public Sub DisplayDifference_WithTrueAndFalse_WritesExpectedButWasClause()
     Dim w As New TextMessageWriter
     
-    w.DisplayDifference True, False
+    Call w.DisplayDifference(True, False)
     
     Dim Actual As String
     Actual = w.ToString
@@ -153,7 +153,7 @@ End Sub
 Public Sub DisplayDifference_WithFalseAndTrue_WritesExpectedButWasClause()
     Dim w As New TextMessageWriter
     
-    w.DisplayDifference False, True
+    Call w.DisplayDifference(False, True)
     
     Dim Actual As String
     Actual = w.ToString
@@ -164,8 +164,8 @@ End Sub
 Public Sub WriteText_WhenCalledMultipleTimes_AppendTextToMessage()
     Dim w As New TextMessageWriter
     
-    w.WriteText "hi"
-    w.WriteText "bye"
+    Call w.WriteText("hi")
+    Call w.WriteText("bye")
     
     Dim Actual As String
     Actual = w.ToString
@@ -175,7 +175,7 @@ End Sub
 Public Sub WriteText_WithArgs_AppendsFormattedArgs()
     Dim w As New TextMessageWriter
     
-    w.WriteText "{0} text", "Some"
+    Call w.WriteText("{0} text", "Some")
     
     Dim Actual As String
     Actual = w.ToString
@@ -187,7 +187,7 @@ Public Sub WriteText_WithVariantArgs_ReturnsFormattedText()
     Dim v1 As Variant
     v1 = "hello"
     
-    w.WriteText "{0},{1}", v1, "bye"
+    Call w.WriteText("{0},{1}", v1, "bye")
     
     Dim Actual As String
     Actual = w.ToString
@@ -199,11 +199,105 @@ Public Sub WriteLine_WithVariantArgs_ReturnsFormattedText()
     Dim v1 As Variant
     v1 = "hello"
     
-    w.WriteLine "{0},{1}", v1, "bye"
+    Call w.WriteLine("{0},{1}", v1, "bye")
     
     Dim Actual As String
     Actual = w.ToString
     Assert.IsTrue Actual = "hello,bye" & vbCrLf
 End Sub
+
+Public Sub WritePredicate_WithValue_AppendValueToMessage()
+    Dim w As New TextMessageWriter
+    
+    Call w.WritePredicate("predicate")
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Assert.That Actual, Iz.EqualTo("predicate ")
+End Sub
+
+Public Sub WriteErrorInfo_WithErrorNumber_WritesNumberOnly()
+    Dim Info As ErrorInfo
+    Set Info = Sim.NewErrorInfo(1)
+    Dim w As New TextMessageWriter
+    
+    Call w.WriteErrorInfo(Info)
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = "error 1"
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub WriteErrorInfo_WithErrorNumberAndDescription_WritesNumberAndDescription()
+    Dim Info As ErrorInfo
+    Set Info = Sim.NewErrorInfo(1, , "description")
+    Dim w As New TextMessageWriter
+    
+    Call w.WriteErrorInfo(Info)
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = "error 1, description"
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub WriteErrorInfo_WithNumberDescriptionSource_WritesNumberDescriptionSource()
+    Dim Info As ErrorInfo
+    Set Info = Sim.NewErrorInfo(1, "src", "description")
+    Dim w As New TextMessageWriter
+    
+    Call w.WriteErrorInfo(Info)
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = "error 1, description from [src]"
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub WriteErrorInfo_WithNumberAndSource_WritesNumberAndSource()
+    Dim Info As ErrorInfo
+    Set Info = Sim.NewErrorInfo(1, "src")
+    Dim w As New TextMessageWriter
+    
+    Call w.WriteErrorInfo(Info)
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = "error 1 from [src]"
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

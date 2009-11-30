@@ -39,11 +39,14 @@ Public Enum AssertCode
     #End If
 End Enum
 
-Private mCount As Long
+Private mCount          As Long
+Private mExpectedError  As ErrorInfo
 
 Private Sub IncrementCount()
     mCount = mCount + 1
 End Sub
+
+
 
 Friend Function SetCount(ByVal NewCount As Long) As Long
     SetCount = mCount
@@ -107,4 +110,8 @@ Public Sub That(ByRef Actual As Variant, ByVal Constraint As IConstraint, Option
     End If
     
     Call IncrementCount
+End Sub
+
+Public Sub Throws(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String)
+    Set mExpectedError = Sim.NewErrorInfo(Number, Source, Description)
 End Sub

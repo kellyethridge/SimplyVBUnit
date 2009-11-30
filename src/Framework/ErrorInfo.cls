@@ -32,6 +32,8 @@ Option Explicit
 Private mNumber         As Long
 Private mSource         As String
 Private mDescription    As String
+Private mLastDllError   As Long
+
 
 Public Property Get Number() As Long
     Number = mNumber
@@ -45,17 +47,44 @@ Public Property Get Description() As String
     Description = mDescription
 End Property
 
-Public Function Equals(ByVal Other As ErrorInfo) As Boolean
+Public Property Get LastDllError() As Long
+    LastDllError = mLastDllError
+End Property
+
+Public Function Equals(ByVal Other As ErrorInfo, Optional ByVal IgnoreCase As Boolean) As Boolean
     If Other Is Nothing Then Exit Function
-    If Other.Number <> mNumber Then Exit Function
-    If Other.Source <> mSource Then Exit Function
-    If Other.Description <> mDescription Then Exit Function
     
-    Equals = True
+    Dim CompareMethod As VbCompareMethod
+    CompareMethod = IIf(IgnoreCase, vbTextCompare, vbBinaryCompare)
+    
+    Dim Result As Boolean
+    Result = (Other.Number = Me.Number)
+    Result = Result And EqualStrings(Me.Source, Other.Source, CompareMethod)
+    Result = Result And EqualStrings(Me.Description, Other.Description, CompareMethod)
+    Result = Result And (Other.LastDllError = Me.LastDllError)
+    
+    Equals = Result
 End Function
 
-Friend Sub Init(ByVal Number As Long, ByVal Source As String, ByVal Description As String)
+Private Function EqualStrings(ByVal Text1 As String, ByVal Text2 As String, ByVal CompareMethod As VbCompareMethod) As Boolean
+    If Len(Text1) > 0 And Len(Text2) > 0 Then
+        If StrComp(Text1, Text2, CompareMethod) <> 0 Then
+            Exit Function
+        End If
+    End If
+    
+    EqualStrings = True
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByVal Number As Long, ByVal Source As String, ByVal Description As String, ByVal LastDllError As Long)
     mNumber = Number
     mSource = Source
     mDescription = Description
+    mLastDllError = LastDllError
 End Sub
+
+
