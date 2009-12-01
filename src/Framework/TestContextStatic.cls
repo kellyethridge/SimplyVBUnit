@@ -53,3 +53,19 @@ End Property
 Public Property Set Log(ByVal RHS As ITextWriter)
     Set TestContextManager.CurrentContext.Log = RHS
 End Property
+
+Friend Property Get Throws() As ThrowsConstraint
+    Set Throws = TestContextManager.CurrentContext.Throws
+End Property
+
+Friend Property Set Throws(ByVal RHS As ThrowsConstraint)
+    Set TestContextManager.CurrentContext.Throws = RHS
+End Property
+
+Friend Property Get AssertCount() As Long
+    AssertCount = TestContextManager.CurrentContext.AssertCount
+End Property
+
+Friend Sub IncrementAssertCount()
+    Call TestContextManager.CurrentContext.IncrementAssertCount
+End Sub

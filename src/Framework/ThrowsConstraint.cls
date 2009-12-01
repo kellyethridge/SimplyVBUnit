@@ -47,6 +47,8 @@ Public Function IgnoreCase() As ThrowsConstraint
 End Function
 
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
+    Debug.Assert Not Writer Is Nothing
+    
     Call Writer.DisplayConstraintDifference(Me)
 End Sub
 

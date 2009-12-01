@@ -39,19 +39,9 @@ Public Enum AssertCode
     #End If
 End Enum
 
-Private mCount          As Long
-Private mExpectedError  As ErrorInfo
-
 Private Sub IncrementCount()
-    mCount = mCount + 1
+    Call TestContext.IncrementAssertCount
 End Sub
-
-
-
-Friend Function SetCount(ByVal NewCount As Long) As Long
-    SetCount = mCount
-    mCount = NewCount
-End Function
 
 Public Sub Ignore(Optional ByVal Reason As String)
     Call Err.Raise(AssertCode.IgnoreCode, , Reason)
@@ -113,5 +103,11 @@ Public Sub That(ByRef Actual As Variant, ByVal Constraint As IConstraint, Option
 End Sub
 
 Public Sub Throws(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String)
-    Set mExpectedError = Sim.NewErrorInfo(Number, Source, Description)
+    Dim Info        As ErrorInfo
+    Dim Constraint  As ThrowsConstraint
+    
+    Set Info = Sim.NewErrorInfo(Number, Source, Description)
+    Set Constraint = Sim.NewThrowsConstraint(Info)
+    
+    Set TestContext.Throws = Constraint
 End Sub

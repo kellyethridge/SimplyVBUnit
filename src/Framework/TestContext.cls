@@ -29,9 +29,11 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mLog    As ITextWriter
-Private mError  As ITextWriter
-Private mOut    As ITextWriter
+Private mLog            As ITextWriter
+Private mError          As ITextWriter
+Private mOut            As ITextWriter
+Private mThrows         As ThrowsConstraint
+Private mAssertCount    As Long
 
 
 Public Property Get Out() As ITextWriter
@@ -57,6 +59,23 @@ End Property
 Public Property Set Log(ByVal RHS As ITextWriter)
     Set mLog = RHS
 End Property
+
+
+Friend Property Get Throws() As ThrowsConstraint
+    Set Throws = mThrows
+End Property
+
+Friend Property Set Throws(ByVal RHS As ThrowsConstraint)
+    Set mThrows = RHS
+End Property
+
+Friend Property Get AssertCount() As Long
+    AssertCount = mAssertCount
+End Property
+
+Friend Sub IncrementAssertCount()
+    mAssertCount = mAssertCount + 1
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

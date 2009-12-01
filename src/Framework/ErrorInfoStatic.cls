@@ -30,5 +30,7 @@ Attribute VB_Exposed = True
 Option Explicit
 
 Public Function FromErr(ByVal Obj As ErrObject) As ErrorInfo
+    Debug.Assert Not Obj Is Nothing
+    
     Set FromErr = Sim.NewErrorInfo(Obj.Number, Obj.Source, Obj.Description)
 End Function
