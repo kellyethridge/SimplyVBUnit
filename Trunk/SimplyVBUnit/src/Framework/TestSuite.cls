@@ -39,7 +39,6 @@ Private mParent             As Long
 Private mTests              As New TestList
 Private mFixtureSetup       As ITestMethod
 Private mFixtureTeardown    As ITestMethod
-Private mOldAssertCount     As Long
 Private mTicks              As Currency
 Private mRunState           As RunState
 Private mTestCaseContext    As ContextMethods
@@ -141,23 +140,26 @@ Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Fi
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(Me)
     
-    Call Listener.TestSuiteStarted(Me)
-    If Me.RunState = RunnableRunState Then
-        If Filter.Pass(Me) Then
-            Call Result.Success
-            Call InitMetrics
-            
-            If RunFixtureSetup(Result) = True Then
-                Call RunTests(Result)
+    With New TestContext
+        Call Listener.TestSuiteStarted(Me)
+        If Me.RunState = RunnableRunState Then
+            If Filter.Pass(Me) Then
+                Call Result.Success
+                Call InitMetrics
+                
+                If RunFixtureSetup(Result) = True Then
+                    Call RunTests(Result)
+                End If
+                
+                Call RunFixtureTeardown
+                Call RecordMetrics(Result)
             End If
-            
-            Call RunFixtureTeardown
-            Call RecordMetrics(Result)
+        Else
+            Call Result.Invalid
         End If
-    Else
-        Call Result.Invalid
-    End If
-    Call Listener.TestSuiteFinished(Result)
+        
+        Call Listener.TestSuiteFinished(Result)
+    End With
     
     Set Run = Result
 End Function
@@ -172,12 +174,7 @@ Private Sub RunTests(ByVal Result As TestResult)
 End Sub
 
 Private Sub InitMetrics()
-    Call ResetAssertCount
     Call StartTiming
-End Sub
-
-Private Sub ResetAssertCount()
-    mOldAssertCount = Assert.SetCount(0)
 End Sub
 
 Private Sub StartTiming()
@@ -186,15 +183,11 @@ End Sub
 
 Private Sub RecordMetrics(ByVal Result As TestResult)
     Result.Time = StopTiming
-    Result.AssertCount = RestoreAssertCount
+    Result.AssertCount = TestContext.AssertCount
 End Sub
 
 Private Function StopTiming() As Currency
     StopTiming = Timing.GetTime(mTicks)
-End Function
-
-Private Function RestoreAssertCount() As Long
-    RestoreAssertCount = Assert.SetCount(mOldAssertCount)
 End Function
 
 Public Property Get Name() As String

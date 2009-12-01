@@ -30,14 +30,13 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements ITest
 
-Private mTestMethod     As ITestMethod
-Private mName           As String
-Private mParent         As Long
-Private mOldAssertCount As Long
-Private mTicks          As Currency
-Private mRunState       As RunState
-Private mContext        As ContextMethods
-Private mCategories     As CategoryList
+Private mTestMethod         As ITestMethod
+Private mName               As String
+Private mParent             As Long
+Private mTicks              As Currency
+Private mRunState           As RunState
+Private mContext            As ContextMethods
+Private mCategories         As CategoryList
 
 
 Public Property Get HasCategories() As Boolean
@@ -135,17 +134,12 @@ Private Sub RunTestCase(ByVal Result As TestResult, ByVal Listener As IEventList
 End Sub
 
 Private Sub InitMetrics()
-    Call ResetAssertCount
     Call StartTiming
 End Sub
 
 Private Sub RecordMetrics(ByVal Result As TestResult)
     Result.Time = StopTiming
-    Result.AssertCount = RestoreAssertCount
-End Sub
-
-Private Sub ResetAssertCount()
-    mOldAssertCount = Assert.SetCount(0)
+    Result.AssertCount = TestContext.AssertCount
 End Sub
 
 Private Sub StartTiming()
@@ -154,10 +148,6 @@ End Sub
 
 Private Function StopTiming() As Currency
     StopTiming = Timing.GetTime(mTicks)
-End Function
-
-Private Function RestoreAssertCount() As Long
-    RestoreAssertCount = Assert.SetCount(mOldAssertCount)
 End Function
 
 Private Function RunSetup(ByVal Result As TestResult) As Boolean
@@ -180,7 +170,7 @@ Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventLi
     On Error Resume Next
     
     Call mTestMethod.Run
-
+    
     Select Case Err.Number
         Case AssertCode.SuccessCode, ErrorCode.NoError
             Call Result.Success(Err.Description)
@@ -192,11 +182,22 @@ Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventLi
             Call Result.Ignore(Err.Description)
             
         Case Else
-            Call Result.Error(Err.Description, TestSite)
+            Dim ExpectedThrows As ThrowsConstraint
+            Set ExpectedThrows = TestContext.Throws
             
-            Dim Info As ErrorInfo
-            Set Info = ErrorInfo.FromErr(Err)
-            Call Listener.UnhandledError(Info)
+            If ExpectedThrows Is Nothing Then
+                Dim Info As ErrorInfo
+                Set Info = ErrorInfo.FromErr(Err)
+    
+                Call Result.Error(Info.Description, TestSite)
+                Call Listener.UnhandledError(Info)
+            ElseIf ExpectedThrows.Matches(Err) Then
+                Call Result.Success
+            Else
+                Dim Writer As New TextMessageWriter
+                Call ExpectedThrows.WriteMessageTo(Writer)
+                Call Result.Failure(Writer.ToString)
+            End If
     End Select
     
     Call Err.Clear
