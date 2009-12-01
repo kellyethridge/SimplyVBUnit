@@ -36,20 +36,34 @@ Private mTestCaseData   As TestCaseData
 
 
 Public Sub Run()
+    Call SetupExpectedError
     Call TLI.InvokeHookArraySub(mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments)
+End Sub
+
+Private Sub SetupExpectedError()
+    If HasExpectedError Then
+        Call AssertExpectedError
+    End If
+End Sub
+
+Private Function HasExpectedError() As Boolean
+    HasExpectedError = (Not mTestCaseData.ErrorInfo Is Nothing)
+End Function
+
+Private Sub AssertExpectedError()
+    Dim Info As ErrorInfo
+    Set Info = mTestCaseData.ErrorInfo
+    
+    Call Assert.Throws(Info.Number, Info.Source, Info.Description)
 End Sub
 
 Public Property Get TestClass() As Object
     Set TestClass = mTestClass
 End Property
 
-Public Property Get TestCaseData() As TestCaseData
-    Set TestCaseData = mTestCaseData
-End Property
-
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Friend Methods
+'   Constructors
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData)
     If TestClass Is Nothing Then _

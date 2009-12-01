@@ -764,7 +764,7 @@ End Sub
 Public Sub Run_UsingTestWithExpectedError_ReturnsSuccess()
     Dim Stub As New Stub1TestThrows
     Stub.Number = 5
-    Call Stub.Errors.Add("Test1", 5)
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, 5)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -779,7 +779,7 @@ End Sub
 Public Sub Run_WithExpectedErrorWithWrongErrorRaised_ReturnsFailure()
     Dim Stub As New Stub1TestThrows
     Stub.Number = 5
-    Call Stub.Errors.Add("Test1", 6)
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, 6)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -789,6 +789,21 @@ Public Sub Run_WithExpectedErrorWithWrongErrorRaised_ReturnsFailure()
     Set Result = Test.Run
 
     Assert.IsTrue Result.IsFailure
+End Sub
+
+Public Sub Run_UsingTestCaseSourceWithExpectedErrorRaised_ReturnsSuccess()
+    Dim Stub As New Stub1TestCaseSourceThrows
+    Stub.Number = 5
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, 5)
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Assert.IsTrue Result.IsSuccess
 End Sub
 
 

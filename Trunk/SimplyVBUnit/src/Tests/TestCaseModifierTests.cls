@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "TestCaseDataTests"
+Attribute VB_Name = "TestCaseModifierTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,22 +25,34 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestCaseDataTests
+' Module: TestCaseModifierTests
 '
 Option Explicit
 
-
-Public Sub MoveFrom_With1Arg_StoresArgsInReverseOrder()
-    Dim TestCaseData As New TestCaseData
-    Dim Args() As Variant
-    Args = Array(1, 2, 3)
+Public Sub TestName_WithName_StoresInTestCaseData()
+    Dim Data As New TestCaseData
+    Dim Modifier As TestCaseModifier
+    Set Modifier = Sim.NewTestCaseModifier(Data)
     
-    Call TestCaseData.CopyArguments(Args)
+    Call Modifier.TestName("Test")
     
-    Dim Actual() As Variant
-    Actual = TestCaseData.Arguments
-    Assert.IsTrue Actual(0) = 3, "Wrong arg value stored."
-    Assert.IsTrue Actual(1) = 2
-    Assert.IsTrue Actual(2) = 1
+    Dim Actual As String
+    Actual = Data.TestName
+    Assert.That Actual, Iz.EqualTo("Test")
 End Sub
+
+Public Sub Throws_WithNumber_StoresErrorInfo()
+    Dim Data As New TestCaseData
+    Dim Modifier As TestCaseModifier
+    Set Modifier = Sim.NewTestCaseModifier(Data)
+    
+    Call Modifier.Throws(10)
+    
+    Dim Actual As ErrorInfo
+    Set Actual = Data.ErrorInfo
+    Dim Expected As ErrorInfo
+    Set Expected = Sim.NewErrorInfo(10)
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
 

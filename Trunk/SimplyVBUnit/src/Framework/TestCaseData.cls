@@ -30,8 +30,26 @@ Attribute VB_Exposed = True
 Option Explicit
 Private Const LOWER_BOUND As Long = 0
 
-Private mArguments() As Variant
+Private mArguments()    As Variant
+Private mTestName       As String
+Private mErrorInfo      As ErrorInfo
 
+
+Public Property Get ErrorInfo() As ErrorInfo
+    Set ErrorInfo = mErrorInfo
+End Property
+
+Public Property Set ErrorInfo(ByVal RHS As ErrorInfo)
+    Set mErrorInfo = RHS
+End Property
+
+Public Property Get TestName() As String
+    TestName = mTestName
+End Property
+
+Public Property Let TestName(ByVal RHS As String)
+    mTestName = RHS
+End Property
 
 Public Property Get Arguments() As Variant()
     Arguments = mArguments

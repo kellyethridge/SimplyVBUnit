@@ -29,10 +29,10 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mTestCases  As Collection
-Private mMember     As MemberInfo
-Private mTestClass  As Object
-Private mTestSequence As Long
+Private mTestCases      As Collection
+Private mMember         As MemberInfo
+Private mTestClass      As Object
+Private mTestSequence   As Long
 
 
 Public Function BuildFrom(ByVal TestClass As Object, ByVal Member As MemberInfo) As Collection
@@ -93,7 +93,23 @@ End Sub
 Private Function MakeTestCaseFromData(ByVal Data As TestCaseData) As TestCase
     Dim Method As ArgOnlyTestMethod
     Set Method = Sim.NewArgOnlyTestMethod(mTestClass, mMember, Data)
-    Set MakeTestCaseFromData = Sim.NewTestCase(NextSequentialTestName, Method)
+    
+    Dim Name As String
+    Name = BuildTestName(Data.TestName)
+    
+    Set MakeTestCaseFromData = Sim.NewTestCase(Name, Method)
+End Function
+
+Private Function BuildTestName(ByVal UserDefinedName As String) As String
+    Dim Result As String
+    
+    If Len(UserDefinedName) > 0 Then
+        Result = UserDefinedName
+    Else
+        Result = NextSequentialTestName
+    End If
+    
+    BuildTestName = Result
 End Function
 
 Private Function NextSequentialTestName() As String
