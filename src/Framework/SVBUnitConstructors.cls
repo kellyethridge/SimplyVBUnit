@@ -119,3 +119,8 @@ Public Function NewThrowsConstraint(ByVal Expected As ErrorInfo) As ThrowsConstr
     Set NewThrowsConstraint = New ThrowsConstraint
     Call NewThrowsConstraint.Init(Expected)
 End Function
+
+Public Function NewTestCaseModifier(ByVal Data As TestCaseData) As TestCaseModifier
+    Set NewTestCaseModifier = New TestCaseModifier
+    Call NewTestCaseModifier.Init(Data)
+End Function

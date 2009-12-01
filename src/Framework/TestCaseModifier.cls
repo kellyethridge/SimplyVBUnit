@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "TestCaseDataTests"
+Attribute VB_Name = "TestCaseModifier"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
+Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 ' Copyright 2009 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,22 +25,21 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestCaseDataTests
+' Module: TestCaseModifier
 '
 Option Explicit
 
+Private mData As TestCaseData
 
-Public Sub MoveFrom_With1Arg_StoresArgsInReverseOrder()
-    Dim TestCaseData As New TestCaseData
-    Dim Args() As Variant
-    Args = Array(1, 2, 3)
-    
-    Call TestCaseData.CopyArguments(Args)
-    
-    Dim Actual() As Variant
-    Actual = TestCaseData.Arguments
-    Assert.IsTrue Actual(0) = 3, "Wrong arg value stored."
-    Assert.IsTrue Actual(1) = 2
-    Assert.IsTrue Actual(2) = 1
+
+Public Sub TestName(ByVal NewTestName As String)
+    mData.TestName = NewTestName
 End Sub
 
+Public Sub Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As String, Optional ByVal ErrorDescription As String)
+    Set mData.ErrorInfo = Sim.NewErrorInfo(ErrorNumber, ErrorSource, ErrorDescription)
+End Sub
+
+Friend Sub Init(ByVal Data As TestCaseData)
+    Set mData = Data
+End Sub

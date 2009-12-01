@@ -29,33 +29,38 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mTestCases      As New Collection
-Private mMethodName     As String
+Private mDataStore  As Collection
+Private mMethodName As String
 
 
 Public Property Get MethodName() As String
     MethodName = mMethodName
 End Property
 
-Public Sub Using(ParamArray Args() As Variant)
+Public Function Using(ParamArray Args() As Variant) As TestCaseModifier
+    Dim Data As New TestCaseData
+    
     If HasElements(UBound(Args)) Then
         Dim Locals() As Variant
         Locals = Args
-        Call AddTestCaseData(Locals)
+        Call Data.CopyArguments(Locals)
+        Call mDataStore.Add(Data)
     End If
-End Sub
+    
+    Set Using = Sim.NewTestCaseModifier(Data)
+End Function
 
 Private Function HasElements(ByVal UpperBound As Long) As Boolean
     HasElements = (UpperBound >= 0)
 End Function
 
-Private Sub AddTestCaseData(ByRef Args() As Variant)
-    Dim TestCaseData As New TestCaseData
-    Call TestCaseData.CopyArguments(Args)
-    Call mTestCases.Add(TestCaseData)
-End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal MethodName As String, ByVal DataStore As Collection)
     mMethodName = MethodName
-    Set mTestCases = DataStore
+    Set mDataStore = DataStore
 End Sub
+
