@@ -88,7 +88,9 @@ End Sub
 Public Sub That(ByRef Actual As Variant, ByVal Constraint As IConstraint, Optional ByVal Message As String)
     Set Constraint = Constraint.Resolve
 
-    If Constraint.Matches(Actual) = False Then
+    If Constraint.Matches(Actual) Then
+        Call IncrementCount
+    Else
         Dim Writer As New TextMessageWriter
         
         If Len(Message) > 0 Then
@@ -98,8 +100,6 @@ Public Sub That(ByRef Actual As Variant, ByVal Constraint As IConstraint, Option
         Call Constraint.WriteMessageTo(Writer)
         Call Fail(Writer.ToString)
     End If
-    
-    Call IncrementCount
 End Sub
 
 Public Sub Throws(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String)
