@@ -54,6 +54,7 @@ Class=AndConstraintTests; AndConstraintTests.cls
 Class=ErrorHelperTests; ErrorHelperTests.cls
 Class=ThrowsConstraintTests; ThrowsConstraintTests.cls
 Class=TestCaseModifierTests; TestCaseModifierTests.cls
+Class=ArgWithReturnTestMethodTests; ArgWithReturnTestMethodTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

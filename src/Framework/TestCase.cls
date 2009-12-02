@@ -159,19 +159,28 @@ errTrap:
 End Function
 
 Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventListener)
-    On Error GoTo errTrap
-    
+    On Error Resume Next
     Call mTestMethod.Run
-    Call Result.Success
-    Exit Sub
     
-errTrap:
     Dim Info As ErrorInfo
     Set Info = ErrorInfo.FromErr(Err)
     
+    On Error GoTo 0
+    Call Err.Clear
+    
+    Dim ExpectedThrows As ThrowsConstraint
+    Set ExpectedThrows = TestContext.Throws
+    
+    Dim Writer As New TextMessageWriter
+    
     Select Case Info.Number
-        Case AssertCode.SuccessCode
-            Call Result.Success(Info.Description)
+        Case AssertCode.SuccessCode, ErrorCode.NoError
+            If ExpectedThrows Is Nothing Then
+                Call Result.Success(Info.Description)
+            Else
+                Call ExpectedThrows.WriteMessageTo(Writer)
+                Call Result.Failure(Writer.ToString)
+            End If
             
         Case AssertCode.FailureCode
             Call Result.Failure(Info.Description, TestSite)
@@ -180,16 +189,12 @@ errTrap:
             Call Result.Ignore(Info.Description)
             
         Case Else
-            Dim ExpectedThrows As ThrowsConstraint
-            Set ExpectedThrows = TestContext.Throws
-
             If ExpectedThrows Is Nothing Then
                 Call Result.Error(Info.Description, TestSite)
                 Call Listener.UnhandledError(Info)
             ElseIf ExpectedThrows.Matches(Info) Then
                 Call Result.Success
             Else
-                Dim Writer As New TextMessageWriter
                 Call ExpectedThrows.WriteMessageTo(Writer)
                 Call Result.Failure(Writer.ToString)
             End If

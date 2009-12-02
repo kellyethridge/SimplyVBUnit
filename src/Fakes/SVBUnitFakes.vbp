@@ -44,6 +44,7 @@ Class=Mock1TestWith2Categories; Mock1TestWith2Categories.cls
 Class=Stub1TestThrows; Stub1TestThrows.cls
 Class=Stub1TestCaseSourceTestName; Stub1TestCaseSourceTestName.cls
 Class=Stub1TestCaseSourceThrows; Stub1TestCaseSourceThrows.cls
+Class=Mock1TestCaseSourceExpect; Mock1TestCaseSourceExpect.cls
 Startup="(None)"
 HelpFile=""
 Command32=""

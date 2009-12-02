@@ -124,3 +124,8 @@ Public Function NewTestCaseModifier(ByVal Data As TestCaseData) As TestCaseModif
     Set NewTestCaseModifier = New TestCaseModifier
     Call NewTestCaseModifier.Init(Data)
 End Function
+
+Public Function NewArgWithReturnTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData) As ArgWithReturnTestMethod
+    Set NewArgWithReturnTestMethod = New ArgWithReturnTestMethod
+    Call NewArgWithReturnTestMethod.Init(TestClass, Member, TestCaseData)
+End Function

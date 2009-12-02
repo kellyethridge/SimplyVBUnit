@@ -33,7 +33,16 @@ Private Const LOWER_BOUND As Long = 0
 Private mArguments()    As Variant
 Private mTestName       As String
 Private mErrorInfo      As ErrorInfo
+Private mExpected       As IConstraint
 
+
+Public Property Get Expected() As IConstraint
+    Set Expected = mExpected
+End Property
+
+Public Property Set Expected(ByVal RHS As IConstraint)
+    Set mExpected = RHS
+End Property
 
 Public Property Get ErrorInfo() As ErrorInfo
     Set ErrorInfo = mErrorInfo

@@ -55,4 +55,39 @@ Public Sub Throws_WithNumber_StoresErrorInfo()
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
+Public Sub Expect_WithConstraint_StoresConstraint()
+    Dim Data As New TestCaseData
+    Dim Modifier As TestCaseModifier
+    Set Modifier = Sim.NewTestCaseModifier(Data)
+    Dim Fake As New StubConstraint
+    
+    Call Modifier.Expect(Fake)
+    
+    Dim Actual As IConstraint
+    Set Actual = Data.Expected
+    Assert.IsTrue Actual Is Fake
+End Sub
 
+Public Sub Expect_WithNonconstraint_CreatesEqualConstraint()
+    Dim Data As New TestCaseData
+    Dim Modifier As TestCaseModifier
+    Set Modifier = Sim.NewTestCaseModifier(Data)
+    
+    Call Modifier.Expect(1)
+    
+    Dim Actual As IConstraint
+    Set Actual = Data.Expected
+    Assert.IsTrue TypeOf Actual Is EqualConstraint
+End Sub
+
+Public Sub Expect_WithNothing_CreatesEqualConstraint()
+    Dim Data As New TestCaseData
+    Dim Modifier As TestCaseModifier
+    Set Modifier = Sim.NewTestCaseModifier(Data)
+    
+    Call Modifier.Expect(Nothing)
+    
+    Dim Actual As IConstraint
+    Set Actual = Data.Expected
+    Assert.IsTrue TypeOf Actual Is EqualConstraint
+End Sub

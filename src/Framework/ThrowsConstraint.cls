@@ -70,7 +70,7 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
 End Function
 
 Private Function IConstraint_Resolve() As IConstraint
-
+    Set IConstraint_Resolve = Me
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)

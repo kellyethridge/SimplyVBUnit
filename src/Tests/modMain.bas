@@ -63,6 +63,8 @@ Private Sub RunTestClassTests()
     Call Suite.Add(New ErrorHelperTests)
     Call Suite.Add(New ThrowsConstraintTests)
     Call Suite.Add(New TestCaseModifierTests)
+    Call Suite.Add(New ArgWithReturnTestMethodTests)
+    
     
     Dim Result As TestResult
     Set Result = Suite.Run

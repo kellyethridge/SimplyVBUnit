@@ -806,6 +806,57 @@ Public Sub Run_UsingTestCaseSourceWithExpectedErrorRaised_ReturnsSuccess()
     Assert.IsTrue Result.IsSuccess
 End Sub
 
+Public Sub Run_WithExpectedErrorWithNoErrorRaised_ReturnsFailure()
+    Dim Stub As New Stub1TestThrows
+    Stub.Number = 5
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Stub)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Dim Result As TestResult
+    Set Result = Test.Run
+    
+    Dim Actual As Boolean
+    Actual = Result.IsFailure
+    Assert.IsTrue Actual = True
+End Sub
+
+Public Sub Run_UsingTestCaseSourceWithExpect_UsesConstraint()
+    Dim Mock As New Mock1TestCaseSourceExpect
+    Mock.ParameterValue = 5
+    Mock.Constraint.Matches = True
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Call Test.Run
+    
+    Dim Actual As CallTrace
+    Set Actual = Mock.Constraint.Calls
+    Dim Expected As New CallTrace
+    Call Expected.Add("Resolve")
+    Call Expected.Add("Matches")
+    Assert.IsTrue Actual.Equals(Expected)
+End Sub
+
+Public Sub Run_UsingTestCaseSourceWithExpect_UsesConstraint2()
+    Dim Mock As New Mock1TestCaseSourceExpect
+    Mock.ParameterValue = 5
+    Mock.Constraint.Matches = True
+    Dim Fixture As TestFixture
+    Set Fixture = Sim.NewTestFixture(Mock)
+    Dim Test As ITest
+    Set Test = Fixture.Tests(0)
+    
+    Call Test.Run
+    
+    Dim Actual As Variant
+    Actual = Mock.Constraint.Actual
+    Assert.That Actual, Iz.EqualTo(5)
+End Sub
+
 
 
 
