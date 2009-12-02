@@ -60,6 +60,11 @@ End Function
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal MethodName As String, ByVal DataStore As Collection)
+    If Len(MethodName) = 0 Then _
+        Call Error.CannotBeEmpty(Me, "Init", "MethodName")
+    If DataStore Is Nothing Then _
+        Call Error.CannotBeNothing(Me, "Init", "DataStore")
+        
     mMethodName = MethodName
     Set mDataStore = DataStore
 End Sub
