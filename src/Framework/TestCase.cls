@@ -142,14 +142,6 @@ Private Sub RecordMetrics(ByVal Result As TestResult)
     Result.AssertCount = TestContext.AssertCount
 End Sub
 
-Private Sub StartTiming()
-    mTicks = Timing.GetTicks
-End Sub
-
-Private Function StopTiming() As Currency
-    StopTiming = Timing.GetTime(mTicks)
-End Function
-
 Private Function RunSetup(ByVal Result As TestResult) As Boolean
     On Error GoTo errTrap
     
@@ -167,31 +159,34 @@ errTrap:
 End Function
 
 Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventListener)
-    On Error Resume Next
+    On Error GoTo errTrap
     
     Call mTestMethod.Run
+    Call Result.Success
+    Exit Sub
     
-    Select Case Err.Number
-        Case AssertCode.SuccessCode, ErrorCode.NoError
-            Call Result.Success(Err.Description)
+errTrap:
+    Dim Info As ErrorInfo
+    Set Info = ErrorInfo.FromErr(Err)
+    
+    Select Case Info.Number
+        Case AssertCode.SuccessCode
+            Call Result.Success(Info.Description)
             
         Case AssertCode.FailureCode
-            Call Result.Failure(Err.Description, TestSite)
+            Call Result.Failure(Info.Description, TestSite)
             
         Case AssertCode.IgnoreCode
-            Call Result.Ignore(Err.Description)
+            Call Result.Ignore(Info.Description)
             
         Case Else
             Dim ExpectedThrows As ThrowsConstraint
             Set ExpectedThrows = TestContext.Throws
-            
+
             If ExpectedThrows Is Nothing Then
-                Dim Info As ErrorInfo
-                Set Info = ErrorInfo.FromErr(Err)
-    
                 Call Result.Error(Info.Description, TestSite)
                 Call Listener.UnhandledError(Info)
-            ElseIf ExpectedThrows.Matches(Err) Then
+            ElseIf ExpectedThrows.Matches(Info) Then
                 Call Result.Success
             Else
                 Dim Writer As New TextMessageWriter
@@ -199,8 +194,6 @@ Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventLi
                 Call Result.Failure(Writer.ToString)
             End If
     End Select
-    
-    Call Err.Clear
 End Sub
 
 Private Sub RunTeardown(ByVal Result As TestResult)
@@ -213,6 +206,14 @@ errTrap:
     Call Result.Error("Error " & Err.Number & ", " & Err.Description, TeardownSite)
 End Sub
 
+Private Sub StartTiming()
+    mTicks = Timing.GetTicks
+End Sub
+
+Private Function StopTiming() As Currency
+    StopTiming = Timing.GetTime(mTicks)
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
@@ -220,10 +221,8 @@ End Sub
 Friend Sub Init(ByVal Name As String, ByVal TestMethod As ITestMethod)
     If Len(Name) = 0 Then _
         Call Error.CannotBeEmpty(Me, "Init", "Name")
-'        Call Err.Raise(ErrorCode.Argument, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_EmptyName))
     If TestMethod Is Nothing Then _
         Call Error.CannotBeNothing(Me, "Init", "TestMethod")
-'        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestCase_Init), Resource.GetString(Arg_CannotBeNothing, "TestMethod"))
     
     With CategoryParser.Parse(Name)
         mName = .Name

@@ -36,8 +36,8 @@ Private mActual     As ErrorInfo
 Private mIgnoreCase As Boolean
 
 
-Public Function Matches(ByVal Actual As ErrObject) As Boolean
-    Set mActual = ErrorInfo.FromErr(Actual)
+Public Function Matches(ByVal Actual As ErrorInfo) As Boolean
+    Set mActual = Actual
     Matches = mActual.Equals(mExpected, mIgnoreCase)
 End Function
 
@@ -47,8 +47,6 @@ Public Function IgnoreCase() As ThrowsConstraint
 End Function
 
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Debug.Assert Not Writer Is Nothing
-    
     Call Writer.DisplayConstraintDifference(Me)
 End Sub
 

@@ -30,97 +30,94 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Sub Matches_WithNoError_ReturnsFalse()
-    Dim Info As ErrorInfo
-    Set Info = Sim.NewErrorInfo(100, , "My Description")
+    Dim ExpectedInfo As ErrorInfo
+    Set ExpectedInfo = Sim.NewErrorInfo(100, , "My Description")
+    Dim ActualInfo As ErrorInfo
+    Set ActualInfo = Sim.NewErrorInfo(0)
     
     Dim c As ThrowsConstraint
-    Set c = Sim.NewThrowsConstraint(Info)
+    Set c = Sim.NewThrowsConstraint(ExpectedInfo)
     
-    Err.Clear
-    Assert.That c.Matches(Err), Iz.False
+    Assert.That c.Matches(ActualInfo), Iz.False
 End Sub
 
 Public Sub Matches_WithEqualErrorNumber_ReturnsTrue()
-    Dim Info As ErrorInfo
-    Set Info = Sim.NewErrorInfo(100)
+    Dim ExpectedInfo As ErrorInfo
+    Set ExpectedInfo = Sim.NewErrorInfo(100)
     Dim c As ThrowsConstraint
-    Set c = Sim.NewThrowsConstraint(Info)
-    Err.Number = 100
+    Set c = Sim.NewThrowsConstraint(ExpectedInfo)
+    Dim ActualInfo As ErrorInfo
+    Set ActualInfo = Sim.NewErrorInfo(100)
     
     Dim Actual As Boolean
-    Actual = c.Matches(Err)
+    Actual = c.Matches(ActualInfo)
     
     Assert.IsTrue Actual
-    Err.Clear
 End Sub
 
 Public Sub Matches_WithEqualDescriptions_ReturnsTrue()
-    Dim Info As ErrorInfo
-    Set Info = Sim.NewErrorInfo(100, , "My Description")
+    Dim ExpectedInfo As ErrorInfo
+    Set ExpectedInfo = Sim.NewErrorInfo(100, , "My Description")
     Dim c As ThrowsConstraint
-    Set c = Sim.NewThrowsConstraint(Info)
-    Err.Number = 100
-    Err.Description = "My Description"
+    Set c = Sim.NewThrowsConstraint(ExpectedInfo)
+    Dim ActualInfo As ErrorInfo
+    Set ActualInfo = Sim.NewErrorInfo(100, , "My Description")
 
     Dim Actual As Boolean
-    Actual = c.Matches(Err)
+    Actual = c.Matches(ActualInfo)
     
     Assert.That Actual, Iz.True
-    Err.Clear
 End Sub
 
 Public Sub Matches_WithUnequalDescriptions_ReturnsFalse()
-    Dim Info As ErrorInfo
-    Set Info = Sim.NewErrorInfo(100, , "My Description")
+    Dim ExpectedInfo As ErrorInfo
+    Set ExpectedInfo = Sim.NewErrorInfo(100, , "My Description")
     Dim c As ThrowsConstraint
-    Set c = Sim.NewThrowsConstraint(Info)
-    Err.Number = 100
-    Err.Description = "Wrong Description"
+    Set c = Sim.NewThrowsConstraint(ExpectedInfo)
+    Dim ActualInfo As ErrorInfo
+    Set ActualInfo = Sim.NewErrorInfo(100, , "Wrong Description")
     
     Dim Actual As Boolean
-    Actual = c.Matches(Err)
+    Actual = c.Matches(ActualInfo)
     
     Assert.That Actual, Iz.False
-    Err.Clear
 End Sub
 
 Public Sub Matches_WithDescriptionsOfWrongCase_ReturnsFalse()
-    Dim Info As ErrorInfo
-    Set Info = Sim.NewErrorInfo(100, , "My Description")
+    Dim ExpectedInfo As ErrorInfo
+    Set ExpectedInfo = Sim.NewErrorInfo(100, , "My Description")
     Dim c As ThrowsConstraint
-    Set c = Sim.NewThrowsConstraint(Info)
-    Err.Number = 100
-    Err.Description = "my description"
+    Set c = Sim.NewThrowsConstraint(ExpectedInfo)
+    Dim ActualInfo As ErrorInfo
+    Set ActualInfo = Sim.NewErrorInfo(100, , "my description")
     
     Dim Actual As Boolean
-    Actual = c.Matches(Err)
+    Actual = c.Matches(ActualInfo)
     
     Assert.That Actual, Iz.False
-    Err.Clear
 End Sub
 
 Public Sub Matches_WithIgnoreCase_ReturnsTrue()
-    Dim Info As ErrorInfo
-    Set Info = Sim.NewErrorInfo(100, , "My Description")
+    Dim ExpectedInfo As ErrorInfo
+    Set ExpectedInfo = Sim.NewErrorInfo(100, , "My Description")
     Dim c As ThrowsConstraint
-    Set c = Sim.NewThrowsConstraint(Info).IgnoreCase
-    Err.Number = 100
-    Err.Description = "my description"
-
+    Set c = Sim.NewThrowsConstraint(ExpectedInfo).IgnoreCase
+    Dim ActualInfo As ErrorInfo
+    Set ActualInfo = Sim.NewErrorInfo(100, , "my description")
+    
     Dim Actual As Boolean
-    Actual = c.Matches(Err)
+    Actual = c.Matches(ActualInfo)
 
     Assert.That Actual, Iz.True
-    Err.Clear
 End Sub
 
 Public Sub WriteMessageTo_WithMatchesNotCalled_WritesExpectedErrorMessage()
     Dim c As ThrowsConstraint
     Set c = Sim.NewThrowsConstraint(Sim.NewErrorInfo(1))
     Dim w As New TextMessageWriter
-    
+
     Call c.WriteMessageTo(w)
-    
+
     Dim Actual As String
     Actual = w.ToString
     Const Expected As String = "Expected: an error" & vbCrLf & "But was : no error raised" & vbCrLf
@@ -130,9 +127,10 @@ End Sub
 Public Sub WriteMessageTo_WithWrongErrorRaised_WritesWrongErrorMessage()
     Dim c As ThrowsConstraint
     Set c = Sim.NewThrowsConstraint(Sim.NewErrorInfo(1))
-    Err.Number = 100
-    Call c.Matches(Err)
-    Call Err.Clear
+    Dim Info As ErrorInfo
+    Set Info = Sim.NewErrorInfo(100)
+    Call c.Matches(Info)
+    
     Dim w As New TextMessageWriter
     Call c.WriteMessageTo(w)
     
