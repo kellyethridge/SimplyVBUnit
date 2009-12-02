@@ -91,13 +91,25 @@ Private Sub BuildIndirectly()
 End Sub
 
 Private Function MakeTestCaseFromData(ByVal Data As TestCaseData) As TestCase
-    Dim Method As ArgOnlyTestMethod
-    Set Method = Sim.NewArgOnlyTestMethod(mTestClass, mMember, Data)
+    Dim Method As ITestMethod
+    Set Method = BuildTestMethod(Data)
     
     Dim Name As String
     Name = BuildTestName(Data.TestName)
     
     Set MakeTestCaseFromData = Sim.NewTestCase(Name, Method)
+End Function
+
+Private Function BuildTestMethod(ByVal Data As TestCaseData) As ITestMethod
+    Dim Result As ITestMethod
+    
+    If mMember.ReturnType = VT_VOID Then
+        Set Result = Sim.NewArgOnlyTestMethod(mTestClass, mMember, Data)
+    Else
+        Set Result = Sim.NewArgWithReturnTestMethod(mTestClass, mMember, Data)
+    End If
+    
+    Set BuildTestMethod = Result
 End Function
 
 Private Function BuildTestName(ByVal UserDefinedName As String) As String

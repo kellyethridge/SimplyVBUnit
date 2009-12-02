@@ -16,9 +16,11 @@ Implements IConstraint
 
 Public Calls    As New CallTrace
 Public Matches  As Boolean
+Public Actual   As Variant
 
 
 Private Function IConstraint_Matches(Actual As Variant) As Boolean
+    Me.Actual = Actual
     Call Calls.Add("Matches")
     IConstraint_Matches = Me.Matches
 End Function

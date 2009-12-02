@@ -87,7 +87,7 @@ Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim TestCaseData As New TestCaseData
     Dim Args() As Variant
     Args = Array("one", "two", 3)
-    TestCaseData.CopyArguments Args
+    Call TestCaseData.CopyArguments(Args)
     
     Dim Method As ArgOnlyTestMethod
     Set Method = Sim.NewArgOnlyTestMethod(Mock, Member, TestCaseData)

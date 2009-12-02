@@ -28,18 +28,71 @@ Attribute VB_Exposed = True
 ' Module: TestCaseModifier
 '
 Option Explicit
+Implements AssertExpression
+Implements TestNameExpression
 
 Private mData As TestCaseData
 
 
-Public Sub TestName(ByVal NewTestName As String)
+Public Function TestName(ByVal NewTestName As String) As AssertExpression
     mData.TestName = NewTestName
-End Sub
+    Set TestName = Me
+End Function
 
-Public Sub Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As String, Optional ByVal ErrorDescription As String)
+Public Function Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As String, Optional ByVal ErrorDescription As String) As TestNameExpression
     Set mData.ErrorInfo = Sim.NewErrorInfo(ErrorNumber, ErrorSource, ErrorDescription)
+    Set Throws = Me
+End Function
+
+Public Function Expect(ByRef Expected As Variant) As TestNameExpression
+    If IsConstraint(Expected) Then
+        Set mData.Expected = Expected
+    Else
+        Set mData.Expected = Sim.NewEqualConstraint(Expected)
+    End If
+    
+    Set Expect = Me
+End Function
+
+Private Function IsConstraint(ByRef Expected As Variant) As Boolean
+    Dim Result As Boolean
+    
+    If IsObject(Expected) Then
+        If Not Expected Is Nothing Then
+            Result = TypeOf Expected Is IConstraint
+        End If
+    End If
+    
+    IsConstraint = Result
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Constructors
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByVal Data As TestCaseData)
+    If Data Is Nothing Then _
+        Call Error.CannotBeNothing(Me, "Init", "Data")
+        
+    Set mData = Data
 End Sub
 
-Friend Sub Init(ByVal Data As TestCaseData)
-    Set mData = Data
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   AssertExpression Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub AssertExpression_Expect(Expected As Variant)
+    Call Expect(Expected)
+End Sub
+
+Private Sub AssertExpression_Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As String, Optional ByVal ErrorDescription As String)
+    Call Throws(ErrorNumber, ErrorSource, ErrorDescription)
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   TestNameExpression Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub TestNameExpression_TestName(ByVal NewTestName As String)
+    Call TestName(NewTestName)
 End Sub
