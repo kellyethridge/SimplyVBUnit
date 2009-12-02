@@ -32,7 +32,7 @@ Option Explicit
 Private mLog            As ITextWriter
 Private mError          As ITextWriter
 Private mOut            As ITextWriter
-Private mThrows         As ThrowsConstraint
+Private mThrows         As IConstraint
 Private mAssertCount    As Long
 
 
@@ -61,11 +61,11 @@ Public Property Set Log(ByVal RHS As ITextWriter)
 End Property
 
 
-Friend Property Get Throws() As ThrowsConstraint
+Friend Property Get Throws() As IConstraint
     Set Throws = mThrows
 End Property
 
-Friend Property Set Throws(ByVal RHS As ThrowsConstraint)
+Friend Property Set Throws(ByVal RHS As IConstraint)
     Set mThrows = RHS
 End Property
 
