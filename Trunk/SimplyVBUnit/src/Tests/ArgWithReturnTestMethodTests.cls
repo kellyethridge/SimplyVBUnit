@@ -31,15 +31,8 @@ Option Explicit
 
 Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim Mock As New Mock1TestCaseSourceExpect
-    Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember("Test1")
-    Dim TestCaseData As New TestCaseData
-    Set TestCaseData.Expected = PassingConstraint
-    Dim Args() As Variant
-    Args = Array(5)
-    Call TestCaseData.CopyArguments(Args)
     Dim Method As ArgWithReturnTestMethod
-    Set Method = Sim.NewArgWithReturnTestMethod(Mock, Member, TestCaseData)
+    Set Method = MakeArgWithReturnTestMethod(Mock)
     
     Call Method.Run
     
@@ -121,6 +114,18 @@ errTrap:
 End Sub
 
 
+
+Private Function MakeArgWithReturnTestMethod(ByVal TestClass As Object) As ArgWithReturnTestMethod
+    Dim Member As MemberInfo
+    Set Member = tli.InterfaceInfoFromObject(TestClass).GetMember("Test1")
+    Dim TestCaseData As New TestCaseData
+    Set TestCaseData.Expected = PassingConstraint
+    Dim Args() As Variant
+    Args = Array(5)
+    Call TestCaseData.CopyArguments(Args)
+    
+    Set MakeArgWithReturnTestMethod = Sim.NewArgWithReturnTestMethod(TestClass, Member, TestCaseData)
+End Function
 
 Private Function PassingConstraint() As MockConstraint
     Set PassingConstraint = New MockConstraint
