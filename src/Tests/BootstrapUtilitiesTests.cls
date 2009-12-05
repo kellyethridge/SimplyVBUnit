@@ -41,6 +41,11 @@ Public Function Run() As Long
     Call RunTest(AssertError_WithWrongErrorSource_RaisesError)
     Call RunTest(AssertError_WithWrongDescription_RaisesError)
     Call RunTest(AssertError_WithCorrectError_Passes)
+    Call RunTest(AssertCalls_WithWrongCall_RaisesError)
+    Call RunTest(AssertCalls_WithWrongNumberOfCalls_RaisesError)
+    Call RunTest(AssertCalls_WithCorrectCalls_Passes)
+    Call RunTest(AssertNoCalls_WithCalls_RaisesError)
+    Call RunTest(AssertNoCalls_WithNoCallsMade_Passes)
     
     Run = mCount
 End Function
@@ -126,6 +131,69 @@ errTrap:
     Debug.Assert False ' should not raise error
 End Function
 
+Private Function AssertCalls_WithWrongCall_RaisesError()
+    Dim Actual As New CallTrace
+    Call Actual.Add("Method1")
+    
+    On Error GoTo errTrap
+    
+    Call AssertCalls(Actual, "Method2")
+    On Error GoTo 0
+    Debug.Assert False ' an error should be raised
+    
+errTrap:
+    Debug.Assert Err.Number = AssertCode.FailureCode
+End Function
+
+Private Function AssertCalls_WithWrongNumberOfCalls_RaisesError()
+    Dim Actual As New CallTrace
+    Call Actual.Add("Method1")
+    
+    On Error GoTo errTrap
+    
+    Call AssertCalls(Actual, "Method1", "Method2")
+    On Error GoTo 0
+    Debug.Assert False ' an error should be raised
+    
+errTrap:
+    Debug.Assert Err.Number = AssertCode.FailureCode
+End Function
+
+Private Function AssertCalls_WithCorrectCalls_Passes()
+    Dim Actual As New CallTrace
+    Call Actual.Add("Method1")
+    
+    On Error GoTo errTrap
+    Call AssertCalls(Actual, "Method1")
+    Exit Function
+    
+errTrap:
+    Debug.Assert False ' no error should be raised
+End Function
+
+Private Function AssertNoCalls_WithCalls_RaisesError()
+    Dim Actual As New CallTrace
+    Call Actual.Add("Method1")
+    
+    On Error GoTo errTrap
+    Call AssertNoCalls(Actual)
+    On Error GoTo 0
+    Debug.Assert False ' an error should be raised
+    
+errTrap:
+    Debug.Assert Err.Number = AssertCode.FailureCode
+End Function
+
+Private Function AssertNoCalls_WithNoCallsMade_Passes()
+    Dim Actual As New CallTrace
+    
+    On Error GoTo errTrap
+    Call AssertNoCalls(Actual)
+    Exit Function
+    
+errTrap:
+    Debug.Assert False ' no error should be raised
+End Function
 
 
 

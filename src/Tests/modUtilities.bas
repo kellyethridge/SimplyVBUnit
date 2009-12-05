@@ -15,9 +15,9 @@ Public Sub AssertError(ByVal ActualError As ErrObject, ByVal ExpectedNumber As L
     Set Expected = Sim.NewErrorInfo(ExpectedNumber, ExpectedSource, ExpectedDescription)
     
     If Actual.Number = ErrorCode.NoError Then
-        Assert.Fail "Expected error"
+        Call Err.Raise(AssertCode.FailureCode, , "Expected an error to be raised.")
     ElseIf Actual.Equals(Expected) = False Then
-        Assert.Fail "Wrong error."
+        Call Err.Raise(AssertCode.FailureCode, , "Wrong error raised.")
     End If
 End Sub
 
