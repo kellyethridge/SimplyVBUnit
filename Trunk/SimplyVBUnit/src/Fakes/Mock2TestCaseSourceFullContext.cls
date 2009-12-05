@@ -20,10 +20,10 @@ Public Calls As New CallTrace
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
         Case "Test1"
-            Call Test.Using(1)
+            Call Test.Use(1)
     
         Case "Test2"
-            Call Test.Using(1)
+            Call Test.Use(1)
     End Select
 End Sub
 

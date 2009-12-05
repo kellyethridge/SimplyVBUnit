@@ -48,8 +48,14 @@ Public Function ToString() As String
     Dim sb  As New StringBuilder
     Dim v   As Variant
     
+    Dim AddComma As Boolean
     For Each v In mMethodNames
-        Call sb.Append(v & vbCrLf)
+        If AddComma Then
+            Call sb.Append(",")
+        End If
+        
+        Call sb.Append(v)
+        AddComma = True
     Next
     
     ToString = sb.ToString

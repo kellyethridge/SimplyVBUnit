@@ -30,74 +30,62 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Sub Constructor_WithNothingTestClass_RaisesError()
+    Dim Data    As New TestCaseData
+    Dim Member  As MemberInfo
+    Set Member = MakeTest1Member(New Fake1Test)
     On Error GoTo errTrap
     
-    Dim Method As ArgOnlyTestMethod
-    Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(New Fake1Test).GetMember("Test1")
-    
-    Set Method = Sim.NewArgOnlyTestMethod(Nothing, Member, New TestCaseData)
+    Call Sim.NewArgOnlyTestMethod(Nothing, Member, Data)
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "ArgOnlyTestMethod.Init", "TestClass cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected), "Wrong error."
+    Call AssertError(Err, ErrorCode.ArgumentNull, "ArgOnlyTestMethod.Init", "TestClass cannot be Nothing.")
 End Sub
 
 Public Sub Constructors_WithNothingMember_RaisesError()
     On Error GoTo errTrap
     
-    Dim Method As ArgOnlyTestMethod
-    
-    Set Method = Sim.NewArgOnlyTestMethod(New Fake1Test, Nothing, New TestCaseData)
+    Call Sim.NewArgOnlyTestMethod(New Fake1Test, Nothing, New TestCaseData)
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "ArgOnlyTestMethod.Init", "Member cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected), "Wrong error."
+    Call AssertError(Err, ErrorCode.ArgumentNull, "ArgOnlyTestMethod.Init", "Member cannot be Nothing.")
 End Sub
 
 Public Sub Constructors_WithNothingTestCaseData_RaisesError()
     On Error GoTo errTrap
     
-    Dim Method As ArgOnlyTestMethod
-    Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(New Fake1Test).GetMember("Test1")
-
-    Set Method = Sim.NewArgOnlyTestMethod(New Fake1Test, Member, Nothing)
+    Call Sim.NewArgOnlyTestMethod(New Fake1Test, MakeTest1Member(New Fake1Test), Nothing)
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Assert.IsTrue Err.Number = ErrorCode.ArgumentNull
+    Call AssertError(Err, ErrorCode.ArgumentNull, "ArgOnlyTestMethod.Init", "TestCaseData cannot be Nothing.")
 End Sub
 
 Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim Mock As New Mock1TestCaseSource
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember("Test1")
-    Dim TestCaseData As New TestCaseData
-    Dim Args() As Variant
-    Args = Array("one", "two", 3)
-    Call TestCaseData.CopyArguments(Args)
+    Set Member = MakeTest1Member(Mock)
+    Dim Data As TestCaseData
+    Set Data = MakeTestData("one", "two", 3)
     
     Dim Method As ArgOnlyTestMethod
-    Set Method = Sim.NewArgOnlyTestMethod(Mock, Member, TestCaseData)
+    Set Method = Sim.NewArgOnlyTestMethod(Mock, Member, Data)
     
-    Method.Run
+    Call Method.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add "Test1.one.two.3"
-    Assert.IsTrue Actual.Equals(Expected), "Method should be executed."
+    Call AssertCalls(Mock.Calls, "Test1.one.two.3")
 End Sub
 
+
+Private Function MakeTest1Member(ByVal TestClass As Object) As MemberInfo
+    Set MakeTest1Member = tli.InterfaceInfoFromObject(TestClass).GetMember(Constants.TEST1_METHOD)
+End Function
+
+Private Function MakeTestData(ParamArray Args() As Variant) As TestCaseData
+    Dim Data As New TestCaseData
+    Dim LocalArgs() As Variant
+    LocalArgs = Args
+    Call Data.CopyArguments(LocalArgs)
+    Set MakeTestData = Data
+End Function

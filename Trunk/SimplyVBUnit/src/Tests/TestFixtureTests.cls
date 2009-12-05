@@ -212,11 +212,7 @@ Public Sub Constructor_WithNothing_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected  As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "TestFixture.Init", "TestClass cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentNull, "TestFixture.Init", "TestClass cannot be Nothing.")
 End Sub
 
 Public Sub Constructor_UsingClassWithSetup_DoesNotIncludeSetupAsTest()
@@ -237,14 +233,10 @@ Public Sub Run_UsingClassWithSetup_RunsSetupOnceBeforeEachTest()
     
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = TestClass.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.SETUP_METHOD)
-    Call Expected.Add(Constants.TEST1_METHOD)
-    Call Expected.Add(Constants.SETUP_METHOD)
-    Call Expected.Add(Constants.TEST2_METHOD)
-    Assert.IsTrue Actual.Equals(Expected), "Setup should be called twice."
+    Call AssertCalls(TestClass.Calls, Constants.SETUP_METHOD, _
+                                      Constants.TEST1_METHOD, _
+                                      Constants.SETUP_METHOD, _
+                                      Constants.TEST2_METHOD)
 End Sub
 
 Public Sub Run_UsingClassWithTeardown_RunsTeardownOnceAfterEachTest()
@@ -254,14 +246,10 @@ Public Sub Run_UsingClassWithTeardown_RunsTeardownOnceAfterEachTest()
     
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.TEST1_METHOD)
-    Call Expected.Add(Constants.TEARDOWN_METHOD)
-    Call Expected.Add(Constants.TEST2_METHOD)
-    Call Expected.Add(Constants.TEARDOWN_METHOD)
-    Assert.IsTrue Actual.Equals(Expected), "Teardown should be called twice."
+    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, _
+                                 Constants.TEARDOWN_METHOD, _
+                                 Constants.TEST2_METHOD, _
+                                 Constants.TEARDOWN_METHOD)
 End Sub
 
 Public Sub Run_UsingClassWithFixtureSetup_RunsFixtureSetupOnce()
@@ -271,13 +259,9 @@ Public Sub Run_UsingClassWithFixtureSetup_RunsFixtureSetupOnce()
     
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.FIXTURESETUP_METHOD)
-    Call Expected.Add(Constants.TEST_ANY)
-    Call Expected.Add(Constants.TEST_ANY)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.FIXTURESETUP_METHOD, _
+                                 Constants.TEST_ANY, _
+                                 Constants.TEST_ANY)
 End Sub
 
 Public Sub Run_UsingClassWithFixtureTeardown_RunsFixtureTeardownOnce()
@@ -287,13 +271,9 @@ Public Sub Run_UsingClassWithFixtureTeardown_RunsFixtureTeardownOnce()
     
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.TEST_ANY)
-    Call Expected.Add(Constants.TEST_ANY)
-    Call Expected.Add(Constants.FIXTURETEARDOWN_METHOD)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TEST_ANY, _
+                                 Constants.TEST_ANY, _
+                                 Constants.FIXTURETEARDOWN_METHOD)
 End Sub
 
 Public Sub Constructor_WhenCalled_StoresTestClass()
@@ -374,11 +354,7 @@ Public Sub Run_WithFailingFixtureSetup_FailsTests()
     
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.FIXTURESETUP_METHOD)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.FIXTURESETUP_METHOD)
 End Sub
 
 Public Sub Run_WithFailingFixtureSetup_ChildTestResultsAreFailure()
@@ -404,12 +380,8 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     
     Call Fixture.Run(Mock)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.TESTSUITESTARTED_LISTENERMETHOD)
-    Call Expected.Add(Constants.TESTSUITEFINISHED_LISTENERMETHOD)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
+                                 Constants.TESTSUITEFINISHED_LISTENERMETHOD)
 End Sub
 
 Public Sub Run_WithFailingFixtureSetup_SetsTestCaseSourceTestsToFailingResult()
@@ -434,10 +406,7 @@ Public Sub Run_WithRunStateSetToNotRunnable_DoesNotRunTests()
     
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertNoCalls(Mock.Calls)
 End Sub
 
 Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
@@ -461,10 +430,7 @@ Public Sub Run_WithNonPassingFilter_DoesNotRun()
     
     Call Fixture.Run(Nothing, Stub)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertNoCalls(Mock.Calls)
 End Sub
 
 Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()
@@ -507,15 +473,11 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
     
     Call Fixture.Run(Mock)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.TESTSUITESTARTED_LISTENERMETHOD)
-    Call Expected.Add(Constants.TESTSUITEFINISHED_LISTENERMETHOD)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
+                                 Constants.TESTSUITEFINISHED_LISTENERMETHOD)
 End Sub
 
-Public Sub Run_WhenCalledTwice_RunsTestsTwice()
+Public Sub Run_WhenCalledTwice_RunsTestTwice()
     Dim Mock As New Mock1Test
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
@@ -523,12 +485,8 @@ Public Sub Run_WhenCalledTwice_RunsTestsTwice()
     Call Fixture.Run
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add("Test1")
-    Call Expected.Add("Test1")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, _
+                                 Constants.TEST1_METHOD)
 End Sub
 
 Public Sub Run_WithAssertIgnoreInFixtureSetup_FailsTests()
@@ -539,11 +497,7 @@ Public Sub Run_WithAssertIgnoreInFixtureSetup_FailsTests()
 
     Call Fixture.Run
 
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.FIXTURESETUP_METHOD)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.FIXTURESETUP_METHOD)
 End Sub
 
 Public Sub Run_WithFailingFixtureTeardown_ConsumesError()

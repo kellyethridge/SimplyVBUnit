@@ -153,11 +153,7 @@ Public Sub Add_WithNothing_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "TestSuite.Add", "TestClass cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentNull, "TestSuite.Add", "TestClass cannot be Nothing.")
 End Sub
 
 Public Sub TestClass_WhenCalled_ReturnsNothing()
@@ -212,12 +208,8 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     
     Call Suite.Run(Mock)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.TESTSUITESTARTED_LISTENERMETHOD)
-    Call Expected.Add(Constants.TESTSUITEFINISHED_LISTENERMETHOD)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
+                                 Constants.TESTSUITEFINISHED_LISTENERMETHOD)
 End Sub
 
 Public Sub Run_WithRunStateSetToNotRunnable_DoesNotRunTests()
@@ -228,10 +220,7 @@ Public Sub Run_WithRunStateSetToNotRunnable_DoesNotRunTests()
     
     Call Suite.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertNoCalls(Mock.Calls)
 End Sub
 
 Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
@@ -257,10 +246,7 @@ Public Sub Run_WithNonPassingFilter_DoesNotRun()
     
     Call Suite.Run(Nothing, Stub)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertNoCalls(Mock.Calls)
 End Sub
 
 Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()
@@ -303,12 +289,8 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
 
     Call Suite.Run(Mock)
 
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add("TestSuiteStarted")
-    Call Expected.Add("TestSuiteFinished")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
+                                 Constants.TESTSUITEFINISHED_LISTENERMETHOD)
 End Sub
 
 Public Sub CountTestCases_WithPassingFilter_ReturnsFour()

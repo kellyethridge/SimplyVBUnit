@@ -48,11 +48,7 @@ Public Sub Constructor_WithEmptyName_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.Argument, "TestCase.Init", "Name cannot be empty.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.Argument, "TestCase.Init", "Name cannot be empty.")
 End Sub
 
 Public Sub Constructor_WithNothingTestMethod_RaisesError()
@@ -63,11 +59,7 @@ Public Sub Constructor_WithNothingTestMethod_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "TestCase.Init", "TestMethod cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentNull, "TestCase.Init", "TestMethod cannot be Nothing.")
 End Sub
 
 Public Sub FullName_WhenCalled_ReturnsNameWithParentName()
@@ -170,12 +162,9 @@ Public Sub Run_WithSetupDefined_RunsSetup()
     Dim TestCase As ITest
     Set TestCase = Fixture.Tests(0)
     
-    TestCase.Run
+    Call TestCase.Run
     
-    Dim Expected As New CallTrace
-    Expected.Add "Setup"
-    Expected.Add Constants.TEST1_METHOD
-    Assert.IsTrue TestClass.Calls.Equals(Expected)
+    Call AssertCalls(TestClass.Calls, Constants.SETUP_METHOD, Constants.TEST1_METHOD)
 End Sub
 
 Public Sub Run_WithTeardownDefined_RunsTeardown()
@@ -185,12 +174,9 @@ Public Sub Run_WithTeardownDefined_RunsTeardown()
     Dim TestCase As ITest
     Set TestCase = Fixture.Tests(0)
     
-    TestCase.Run
+    Call TestCase.Run
     
-    Dim Expected As New CallTrace
-    Expected.Add Constants.TEST1_METHOD
-    Expected.Add Constants.TEARDOWN_METHOD
-    Assert.IsTrue TestClass.Calls.Equals(Expected)
+    Call AssertCalls(TestClass.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD)
 End Sub
 
 Public Sub Run_WithErrorInSetup_SkipsTestRunsTeardown()
@@ -201,12 +187,9 @@ Public Sub Run_WithErrorInSetup_SkipsTestRunsTeardown()
     Dim TestCase As ITest
     Set TestCase = Fixture.Tests(0)
     
-    TestCase.Run
+    Call TestCase.Run
     
-    Dim Expected As New CallTrace
-    Expected.Add Constants.SETUP_METHOD
-    Expected.Add Constants.TEARDOWN_METHOD
-    Assert.IsTrue TestClass.Calls.Equals(Expected)
+    Call AssertCalls(TestClass.Calls, Constants.SETUP_METHOD, Constants.TEARDOWN_METHOD)
 End Sub
 
 Public Sub Run_WithAssertFailInTest_RunsTeardown()
@@ -219,10 +202,7 @@ Public Sub Run_WithAssertFailInTest_RunsTeardown()
 
     TestCase.Run
     
-    Dim Expected As New CallTrace
-    Expected.Add Constants.TEST1_METHOD
-    Expected.Add "Teardown"
-    Assert.IsTrue Mock.Calls.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD)
 End Sub
 
 Public Sub Run_WithAssertFailInTest_ReturnsFailingResult()
@@ -264,14 +244,9 @@ Public Sub Run_ParameterizedTest_RunsTest()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Test.Run
+    Call Test.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add "GetTestCases.Test1"
-    Expected.Add "Test1.arg1.arg2.arg3"
-    Assert.IsTrue Actual.Equals(Expected), "Wrong call trace."
+    Call AssertCalls(Mock.Calls, "GetTestCases.Test1", "Test1.arg1.arg2.arg3")
 End Sub
 
 Public Sub Run_WithErrorInSetup_SetsResultToError()
@@ -345,12 +320,7 @@ Public Sub Run_WithErrorInTest_RunsTeardown()
     Dim Result As TestResult
     Set Result = Test.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add Constants.TEST1_METHOD
-    Expected.Add Constants.TEARDOWN_METHOD
-    Assert.IsTrue Actual.Equals(Expected), "Wrong call trace."
+    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD)
 End Sub
 
 Public Sub Run_WhenCalled_StoresAssertCountInResult()
@@ -441,15 +411,9 @@ Public Sub Run_WithTestCaseSource_RunsSetup()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Test.Run
+    Call Test.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add Constants.SETUP_METHOD
-    Expected.Add Constants.TEST_ANY
-    Expected.Add Constants.TEARDOWN_METHOD
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.SETUP_METHOD, Constants.TEST_ANY, Constants.TEARDOWN_METHOD)
 End Sub
 
 Public Sub Run_WithEventListener_CallsListenerMethods()
@@ -459,14 +423,9 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Test.Run Mock
+    Call Test.Run(Mock)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add "TestCaseStarted"
-    Expected.Add "TestCaseFinished"
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, Constants.TESTCASEFINISHED_LISTENERMETHOD)
 End Sub
 
 Public Sub Run_WithAssertPass_ReturnsSuccess()
@@ -516,15 +475,11 @@ Public Sub Run_WithUnknownError_CallsListenerMethod()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Test.Run Mock
+    Call Test.Run(Mock)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add Constants.TESTCASESTARTED_LISTENERMETHOD
-    Expected.Add Constants.UNHANDLEDERROR_LISTENERMETHOD
-    Expected.Add Constants.TESTCASEFINISHED_LISTENERMETHOD
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, _
+                                 Constants.UNHANDLEDERROR_LISTENERMETHOD, _
+                                 Constants.TESTCASEFINISHED_LISTENERMETHOD)
 End Sub
 
 Public Sub Run_WithUnknownError_CallsListenerMethod2()
@@ -540,7 +495,7 @@ Public Sub Run_WithUnknownError_CallsListenerMethod2()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Test.Run Mock
+    Call Test.Run(Mock)
     
     Dim Actual As ErrorInfo
     Set Actual = Mock.ErrorInfo
@@ -549,17 +504,6 @@ Public Sub Run_WithUnknownError_CallsListenerMethod2()
     
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
-
-'Public Sub Run_WhenSuccessful_SetsRunStateToExecuted()
-'    Dim Test As ITest
-'    Set Test = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
-'
-'    Test.Run
-'
-'    Dim Actual As RunState
-'    Actual = Test.RunState
-'    Assert.IsTrue Actual = ExecutedRunState
-'End Sub
 
 Public Sub Run_WithRunStateSetToNotRunnable_DoesNotExecuteTest()
     Dim Mock As New Mock1Test
@@ -618,12 +562,8 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsListenerMethods()
     
     Call Test.Run(Mock)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add("TestCaseStarted")
-    Call Expected.Add("TestCaseFinished")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, _
+                                 Constants.TESTCASEFINISHED_LISTENERMETHOD)
 End Sub
 
 Public Sub Run_WithIgnoredTest_ReturnsIgnoredResult()
@@ -666,14 +606,10 @@ Public Sub Run_WithIgnoredInSetup_RunsTest()
     
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.SETUP_METHOD)
-    Call Expected.Add(Constants.TEST1_METHOD)
-    Call Expected.Add(Constants.SETUP_METHOD)
-    Call Expected.Add(Constants.TEST2_METHOD)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.SETUP_METHOD, _
+                                 Constants.TEST1_METHOD, _
+                                 Constants.SETUP_METHOD, _
+                                 Constants.TEST2_METHOD)
 End Sub
 
 Public Sub Run_WithIgnoredInTeardown_DoesNothing()
@@ -684,14 +620,10 @@ Public Sub Run_WithIgnoredInTeardown_DoesNothing()
     
     Call Fixture.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add(Constants.TEST1_METHOD)
-    Call Expected.Add(Constants.TEARDOWN_METHOD)
-    Call Expected.Add(Constants.TEST2_METHOD)
-    Call Expected.Add(Constants.TEARDOWN_METHOD)
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, _
+                                 Constants.TEARDOWN_METHOD, _
+                                 Constants.TEST2_METHOD, _
+                                 Constants.TEARDOWN_METHOD)
 End Sub
 
 Public Sub CountTestCases_WithPassingFilter_ReturnsOne()
@@ -833,12 +765,7 @@ Public Sub Run_UsingTestCaseSourceWithExpect_UsesConstraint()
     
     Call Test.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Constraint.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add("Resolve")
-    Call Expected.Add("Matches")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Constraint.Calls, "Resolve", "Matches")
 End Sub
 
 Public Sub Run_UsingTestCaseSourceWithExpect_UsesConstraint2()

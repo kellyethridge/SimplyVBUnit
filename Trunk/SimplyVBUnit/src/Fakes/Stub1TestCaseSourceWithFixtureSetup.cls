@@ -17,7 +17,7 @@ Implements ITestCaseSource
 Public Errors As New CallError
 
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
-    Test.Using "1"
+    Test.Use "1"
 End Sub
 
 Public Sub Test1(ByVal Arg As Variant)

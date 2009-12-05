@@ -71,10 +71,19 @@ Public Sub Constructor_WithNonsupportedType_RaisesError()
     
     Call Sim.NewEnumVariantEnumerator(Me)
     On Error GoTo 0
-    Assert.Fail "Should raise an error."
     
 errTrap:
-    Assert.IsTrue Err.Number = ErrorCode.Argument
+    Call AssertError(Err, ErrorCode.Argument, "EnumVariantEnumerator.Init", "Object does not support enumeration.")
+End Sub
+
+Public Sub Constructor_WithNothing_RaisesError()
+    On Error GoTo errTrap
+    
+    Call Sim.NewEnumVariantEnumerator(Nothing)
+    On Error GoTo 0
+    
+errTrap:
+    Call AssertError(Err, ErrorCode.ArgumentNull, "EnumVariantEnumerator.Init", "Obj cannot be Nothing.")
 End Sub
 
 Public Sub MoveNext_WithTestListOfTwoTests_ReturnsTrueTwice()

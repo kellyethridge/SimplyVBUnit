@@ -34,14 +34,14 @@ Implements ITestCaseSource
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
         Case "Match_WithTestNames_ReturnsTrue"
-            Call Test.Using("NAME")
-            Call Test.Using("name")
-            Call Test.Using("")
+            Call Test.Use("NAME")
+            Call Test.Use("name")
+            Call Test.Use("")
             
         Case "Pass_WithTestNames_ReturnsTrue"
-            Call Test.Using("NAME")
-            Call Test.Using("name")
-            Call Test.Using("")
+            Call Test.Use("NAME")
+            Call Test.Use("name")
+            Call Test.Use("")
     End Select
 End Sub
 

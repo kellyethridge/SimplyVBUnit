@@ -87,7 +87,7 @@ End Sub
 
 Public Sub That(ByRef Actual As Variant, ByVal Constraint As IConstraint, Optional ByVal Message As String)
     Set Constraint = Constraint.Resolve
-
+    
     If Constraint.Matches(Actual) Then
         Call IncrementCount
     Else

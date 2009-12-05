@@ -36,6 +36,11 @@ Public Function Run() As Long
     mCount = 0
     
     Call RunTest(Quote_WithText_ReturnsTextInQuotes)
+    Call RunTest(AssertError_WithNoError_RaisesError)
+    Call RunTest(AssertError_WithWrongErrorNumber_RaisesError)
+    Call RunTest(AssertError_WithWrongErrorSource_RaisesError)
+    Call RunTest(AssertError_WithWrongDescription_RaisesError)
+    Call RunTest(AssertError_WithCorrectError_Passes)
     
     Run = mCount
 End Function
@@ -53,6 +58,75 @@ Private Function Quote_WithText_ReturnsTextInQuotes()
     Const Expected As String = """text"""
     Debug.Assert Actual = Expected
 End Function
+
+Private Function AssertError_WithNoError_RaisesError()
+    On Error GoTo errTrap
+    Call Err.Clear
+    
+    Call AssertError(Err, 1)
+    Debug.Assert False ' should raise error
+    
+errTrap:
+    Debug.Assert Err.Number = AssertCode.FailureCode
+End Function
+
+Private Function AssertError_WithWrongErrorNumber_RaisesError()
+    On Error GoTo errTrap
+    
+    Err.Number = 1
+    Err.Source = "a"
+    Err.Description = "b"
+    
+    Call AssertError(Err, 2, "a", "b")
+    Debug.Assert False ' should raise error
+    
+errTrap:
+    Debug.Assert Err.Number = AssertCode.FailureCode
+End Function
+
+Private Function AssertError_WithWrongErrorSource_RaisesError()
+    On Error GoTo errTrap
+    
+    Err.Number = 1
+    Err.Source = "a"
+    Err.Description = "b"
+    
+    Call AssertError(Err, 1, "b", "b")
+    Debug.Assert False ' should raise error
+    
+errTrap:
+    Debug.Assert Err.Number = AssertCode.FailureCode
+End Function
+
+Private Function AssertError_WithWrongDescription_RaisesError()
+    On Error GoTo errTrap
+    
+    Err.Number = 1
+    Err.Source = "a"
+    Err.Description = "b"
+    
+    Call AssertError(Err, 1, "a", "c")
+    Debug.Assert False ' should raise error
+    
+errTrap:
+    Debug.Assert Err.Number = AssertCode.FailureCode
+End Function
+
+Private Function AssertError_WithCorrectError_Passes()
+    On Error GoTo errTrap
+    
+    Err.Number = 1
+    Err.Source = "a"
+    Err.Description = "b"
+    
+    Call AssertError(Err, 1, "a", "b")
+    Exit Function
+    
+errTrap:
+    Debug.Assert False ' should not raise error
+End Function
+
+
 
 
 Private Function IBootstrapTestClass_Run() As Long

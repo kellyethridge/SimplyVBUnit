@@ -36,17 +36,13 @@ Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     
     Call Method.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add "Test1.5"
-    Assert.IsTrue Actual.Equals(Expected), "Method should be executed."
+    Call AssertCalls(Mock.Calls, "Test1.5")
 End Sub
 
 Public Sub Run_WhenCalled_AppliesConstraintToResult()
     Dim Stub As New Mock1TestCaseSourceExpect
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember(Constants.TEST1_METHOD)
     Dim Mock As New MockConstraint
     Mock.Matches = True
     Dim TestCaseData As New TestCaseData
@@ -59,18 +55,13 @@ Public Sub Run_WhenCalled_AppliesConstraintToResult()
     
     Call Method.Run
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Call Expected.Add("Resolve")
-    Call Expected.Add("Matches")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, "Resolve", "Matches")
 End Sub
 
 Public Sub Run_WhenCalled_AppliesConstraintToResult2()
     Dim Stub As New Mock1TestCaseSourceExpect
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember(Constants.TEST1_METHOD)
     Dim Mock As New MockConstraint
     Mock.Matches = True
     Dim TestCaseData As New TestCaseData
@@ -91,7 +82,7 @@ End Sub
 Public Sub Run_WhenCalled_AssertsResult()
     Dim Stub As New Mock1TestCaseSourceExpect
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember(Constants.TEST1_METHOD)
     Dim Mock As New MockConstraint
     Mock.Matches = False
     Dim TestCaseData As New TestCaseData
@@ -105,19 +96,16 @@ Public Sub Run_WhenCalled_AssertsResult()
     On Error GoTo errTrap
     Call Method.Run
     On Error GoTo 0
-    Assert.Fail "Should raise and error"
     
 errTrap:
-    Dim Actual As Long
-    Actual = Err.Number
-    Assert.IsTrue Actual = AssertCode.FailureCode
+    Call AssertError(Err, AssertCode.FailureCode)
 End Sub
 
 
 
 Private Function MakeArgWithReturnTestMethod(ByVal TestClass As Object) As ArgWithReturnTestMethod
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(TestClass).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(TestClass).GetMember(Constants.TEST1_METHOD)
     Dim TestCaseData As New TestCaseData
     Set TestCaseData.Expected = PassingConstraint
     Dim Args() As Variant

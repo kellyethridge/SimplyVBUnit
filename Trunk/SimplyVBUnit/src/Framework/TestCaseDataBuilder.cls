@@ -37,7 +37,7 @@ Public Property Get MethodName() As String
     MethodName = mMethodName
 End Property
 
-Public Function Using(ParamArray Args() As Variant) As TestCaseModifier
+Public Function Use(ParamArray Args() As Variant) As TestCaseModifier
     Dim Data As New TestCaseData
     
     If HasElements(UBound(Args)) Then
@@ -47,7 +47,7 @@ Public Function Using(ParamArray Args() As Variant) As TestCaseModifier
         Call mDataStore.Add(Data)
     End If
     
-    Set Using = Sim.NewTestCaseModifier(Data)
+    Set Use = Sim.NewTestCaseModifier(Data)
 End Function
 
 Private Function HasElements(ByVal UpperBound As Long) As Boolean

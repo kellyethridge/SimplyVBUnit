@@ -21,7 +21,7 @@ Public Calls            As New CallTrace
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
         Case "Test1"
-            Call Test.Using(ParameterValue).Expect(Constraint)
+            Call Test.Use(ParameterValue).Expect(Constraint)
         
     End Select
 End Sub
