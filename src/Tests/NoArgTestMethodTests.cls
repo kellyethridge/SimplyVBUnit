@@ -30,54 +30,48 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Sub Constructor_WithNothingTestClass_RaisesError()
+    Dim Member As MemberInfo
+    Set Member = MakeTest1Member(New Fake1Test)
+    
     On Error GoTo errTrap
     
-    Dim Method As NoArgTestMethod
-    Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(New Fake1Test).GetMember("Test1")
+    Call Sim.NewNoArgTestMethod(Nothing, Member)
     
-    Set Method = Sim.NewNoArgTestMethod(Nothing, Member)
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Assert.IsTrue Err.Number = ErrorCode.ArgumentNull
+    Call AssertError(Err, ErrorCode.ArgumentNull, "NoArgTestMethod.Init", "TestClass cannot be Nothing.")
 End Sub
 
 Public Sub Constructor_WithNothingMember_RaisesError()
     On Error GoTo errTrap
     
-    Dim Method As NoArgTestMethod
+    Call Sim.NewNoArgTestMethod(New Fake1Test, Nothing)
     
-    Set Method = Sim.NewNoArgTestMethod(New Fake1Test, Nothing)
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Assert.IsTrue Err.Number = ErrorCode.ArgumentNull
+    Call AssertError(Err, ErrorCode.ArgumentNull, "NoArgTestMethod.Init", "Member cannot be Nothing.")
 End Sub
 
 Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim TestClass As New Mock1Test
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(TestClass).GetMember("Test1")
-    
+    Set Member = MakeTest1Member(TestClass)
     Dim Method As NoArgTestMethod
     Set Method = Sim.NewNoArgTestMethod(TestClass, Member)
     
-    Method.Run
+    Call Method.Run
     
-    Dim Actual As CallTrace
-    Set Actual = TestClass.Calls
-    Dim Expected As New CallTrace
-    Expected.Add "Test1"
-    Assert.IsTrue Actual.Equals(Expected), "Method should be executed."
+    Call AssertCalls(TestClass.Calls, Constants.TEST1_METHOD)
 End Sub
 
 Public Sub Constructor_WhenCalled_StoresTestClass()
     Dim Fake As New Fake1Test
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Fake).GetMember("Test1")
+    Set Member = MakeTest1Member(Fake)
     Dim Method As NoArgTestMethod
     
     Set Method = Sim.NewNoArgTestMethod(Fake, Member)
@@ -86,3 +80,7 @@ Public Sub Constructor_WhenCalled_StoresTestClass()
     Set Actual = Method.TestClass
     Assert.IsTrue Actual Is Fake, "Wrong test class returned."
 End Sub
+
+Private Function MakeTest1Member(ByVal TestClass As Object) As MemberInfo
+    Set MakeTest1Member = tli.InterfaceInfoFromObject(TestClass).GetMember(Constants.TEST1_METHOD)
+End Function

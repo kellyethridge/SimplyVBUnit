@@ -67,10 +67,7 @@ Public Sub Matches_WithFailingLHSConstraint_DoesNotCallRHSConstraint()
     
     Call c.Matches(True)
 
-    Dim Actual As CallTrace
-    Set Actual = MockRHS.Calls
-    Dim Expected As New CallTrace
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertNoCalls(MockRHS.Calls)
 End Sub
 
 Public Sub Constructor_WithLeftSideAsNothing_RaisesError()
@@ -79,14 +76,9 @@ Public Sub Constructor_WithLeftSideAsNothing_RaisesError()
     
     Set c = Sim.NewAndConstraint(Nothing, New StubConstraint)
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "AndConstraint.Init", "LeftSide cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentNull, "AndConstraint.Init", "LeftSide cannot be Nothing.")
 End Sub
 
 Public Sub Constructor_WithRightSideAsNothing_RaisesError()
@@ -95,14 +87,9 @@ Public Sub Constructor_WithRightSideAsNothing_RaisesError()
     
     Set c = Sim.NewAndConstraint(New StubConstraint, Nothing)
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "AndConstraint.Init", "RightSide cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentNull, "AndConstraint.Init", "RightSide cannot be Nothing.")
 End Sub
 
 Public Sub WriteMessageTo_WhenCalled_WritesLeftAndRightMessages()

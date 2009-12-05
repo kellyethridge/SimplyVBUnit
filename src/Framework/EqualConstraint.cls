@@ -45,7 +45,7 @@ Private mComparer   As New EqualityComparer
 ' @return Returns a reference to itself to make it easier to chain commands together.
 '
 Public Function IgnoreCase() As EqualConstraint
-    mComparer.IgnoreCase
+    Call mComparer.IgnoreCase
     Set IgnoreCase = Me
 End Function
 
@@ -55,12 +55,12 @@ Public Function Within(ByVal Tolerance As Variant) As IToleranceUnits
 End Function
 
 Public Function AsCollection() As EqualConstraint
-    mComparer.AsCollection
+    Call mComparer.AsCollection
     Set AsCollection = Me
 End Function
 
 Public Function Using(ByVal Comparer As IEqualityComparer) As EqualConstraint
-    mComparer.Using Comparer
+    Call mComparer.Using(Comparer)
     Set Using = Me
 End Function
 

@@ -60,8 +60,8 @@ Public Property Set Log(ByVal RHS As ITextWriter)
     Set mLog = RHS
 End Property
 
-
-Friend Property Get Throws() As IConstraint
+Public Property Get Throws() As IConstraint
+Attribute Throws.VB_MemberFlags = "40"
     Set Throws = mThrows
 End Property
 
@@ -69,7 +69,8 @@ Friend Property Set Throws(ByVal RHS As IConstraint)
     Set mThrows = RHS
 End Property
 
-Friend Property Get AssertCount() As Long
+Public Property Get AssertCount() As Long
+Attribute AssertCount.VB_MemberFlags = "40"
     AssertCount = mAssertCount
 End Property
 

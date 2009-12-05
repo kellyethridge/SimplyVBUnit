@@ -33,35 +33,35 @@ Implements ITestCaseSource
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
         Case "WriteActualValue_WithValues_WritesExpected"
-            Call Test.Using(True, "True")
-            Call Test.Using(False, "False")
-            Call Test.Using("actual", Quote("actual"))
-            Call Test.Using(1.234, "1.234")
+            Call Test.Use(True, "True")
+            Call Test.Use(False, "False")
+            Call Test.Use("actual", Quote("actual"))
+            Call Test.Use(1.234, "1.234")
             
             
         Case "WriteExpectedValue_WithValues_WritesExpected"
-            Call Test.Using(True, "True")
-            Call Test.Using(False, "False")
-            Call Test.Using("expected", Quote("expected"))
-            Call Test.Using(1.234, "1.234")
+            Call Test.Use(True, "True")
+            Call Test.Use(False, "False")
+            Call Test.Use("expected", Quote("expected"))
+            Call Test.Use(1.234, "1.234")
             
         Case "WriteValue_WithValues_WritesExpected"
-            Call Test.Using("", "<Empty String>")
-            Call Test.Using(Null, "Null")
-            Call Test.Using(Empty, "Empty")
-            Call Test.Using(Array(1, 2, 3), "< 1, 2, 3 >")
-            Call Test.Using(Nothing, "Nothing")
-            Call Test.Using(, "Missing")
-            Call Test.Using("string", Quote("string"))
+            Call Test.Use("", "<Empty String>")
+            Call Test.Use(Null, "Null")
+            Call Test.Use(Empty, "Empty")
+            Call Test.Use(Array(1, 2, 3), "< 1, 2, 3 >")
+            Call Test.Use(Nothing, "Nothing")
+            Call Test.Use(, "Missing")
+            Call Test.Use("string", Quote("string"))
             
             Dim List As New Collection
             List.Add 3
             List.Add 2
             List.Add 1
-            Call Test.Using(List, "< 3, 2, 1 >")
+            Call Test.Use(List, "< 3, 2, 1 >")
             
             Dim Unk As IUnknown
-            Call Test.Using(Unk, "Nothing")
+            Call Test.Use(Unk, "Nothing")
     End Select
 End Sub
 

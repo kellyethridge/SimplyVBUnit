@@ -23,7 +23,7 @@ Public Description  As String
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
         Case "Test1"
-            Call Test.Using(1).Throws(Number, Source, Description)
+            Call Test.Use(1).Throws(Number, Source, Description)
         
     End Select
 End Sub

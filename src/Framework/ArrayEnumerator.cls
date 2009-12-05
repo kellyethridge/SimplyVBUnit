@@ -40,6 +40,9 @@ Private mIndex  As Long
 
 
 Friend Sub Init(ByRef Arr As Variant)
+    If Not IsArray(Arr) Then _
+        Call Err.Raise(ErrorCode.Argument, "ArrayEnumerator.Init", "Arr must be an Array.")
+        
     Dim pSA As Long
     pSA = GetArrayPointer(Arr)
     

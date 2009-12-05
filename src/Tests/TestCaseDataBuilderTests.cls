@@ -40,24 +40,24 @@ Public Sub Constructor_WithMethodName_StoresMethodName()
     Assert.IsTrue Actual = METHOD_NAME, "Wrong method name."
 End Sub
 
-Public Sub Using_With1Arg_Adds1TestCaseDataToStore()
+Public Sub Use_With1Arg_Adds1TestCaseDataToStore()
     Dim Store As New Collection
     Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder("Test1", Store)
+    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Builder.Using 1
+    Call Builder.Use(1)
     
     Dim Actual As Long
     Actual = Store.Count
     Assert.IsTrue Actual = 1, "Wrong TestCaseData count."
 End Sub
 
-Public Sub Using_With1Arg_Adds1TestCaseDataToStore2()
+Public Sub Use_With1Arg_Adds1TestCaseDataToStore2()
     Dim Store As New Collection
     Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder("Test1", Store)
+    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Builder.Using 1
+    Call Builder.Use(1)
     
     Dim TestCaseData As TestCaseData
     Set TestCaseData = Store(1)
@@ -67,12 +67,12 @@ Public Sub Using_With1Arg_Adds1TestCaseDataToStore2()
 End Sub
 
 ' Arguments need to be in reverse order to be properly used by the TLIApplication.Invoke methods.
-Public Sub Using_With3Args_StoresArgsInReverse()
+Public Sub Use_With3Args_StoresArgsInReverse()
     Dim Store As New Collection
     Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder("Test1", Store)
+    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Builder.Using "one", "two", 3
+    Call Builder.Use("one", "two", 3)
     
     Dim TestCaseData As TestCaseData
     Set TestCaseData = Store(1)
@@ -83,30 +83,52 @@ Public Sub Using_With3Args_StoresArgsInReverse()
     Assert.IsTrue Actual(2) = "one", "Expected 'one'"
 End Sub
 
-Public Sub Using_With2TestCaseDatas_StoresTestCaseDatas()
+Public Sub Use_With2TestCaseDatas_StoresTestCaseDatas()
     Dim Store As New Collection
     Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder("Test1", Store)
+    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Builder.Using 1, 2
-    Builder.Using "one", "two"
+    Call Builder.Use(1, 2)
+    Call Builder.Use("one", "two")
     
     Dim Actual As Long
     Actual = Store.Count
     Assert.IsTrue Actual = 2, "Wrong TestCaseData count."
 End Sub
 
-Public Sub Using_WithNoArgs_DoesNotCreateTestCaseData()
+Public Sub Use_WithNoArgs_DoesNotCreateTestCaseData()
     Dim Store As New Collection
     Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder("Test1", Store)
+    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Builder.Using
+    Call Builder.Use
     
     Dim Actual As Long
     Actual = Store.Count
     Assert.IsTrue Actual = 0, "Should be 0 TestCaseDatas."
 End Sub
+
+Public Sub Use_WhenCalled_ReturnsTestCaseModifier()
+    Dim Builder As TestCaseDataBuilder
+    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, New Collection)
+    
+    Dim Actual As TestCaseModifier
+    Set Actual = Builder.Use()
+    
+    Assert.IsFalse Actual Is Nothing
+End Sub
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

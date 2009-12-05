@@ -32,7 +32,7 @@ Option Explicit
 Public Sub BuildFrom_With1Test_Returns1TestCase()
     Dim Fake As New Fake1Test
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Fake).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Fake).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
     
     Dim Tests As Collection
@@ -46,10 +46,10 @@ End Sub
 Public Sub BuildFrom_With1TestCaseSource_CallsSourceForTestCase()
     Dim Mock As New Mock1TestCaseSource
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
     
-    Builder.BuildFrom Mock, Member
+    Call Builder.BuildFrom(Mock, Member)
     
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
@@ -61,7 +61,7 @@ End Sub
 Public Sub BuildFrom_With2TestCaseSource_Returns1TestSuite()
     Dim Mock As New Mock2TestCaseSource
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
     
     Dim Tests As Collection
@@ -75,7 +75,7 @@ End Sub
 Public Sub BuildFrom_With2TestCaseSource_Returns2TestCasesWithinTestSuite()
     Dim Mock As New Mock2TestCaseSource
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
     
     Dim Tests As Collection
@@ -91,7 +91,7 @@ End Sub
 Public Sub BuildFrom_With2TestCaseSource_TestCaseNamesEqualParentNamesPlusSequenceNumber()
     Dim Mock As New Mock2TestCaseSource
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Mock).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
     
     Dim Tests As Collection
@@ -110,7 +110,7 @@ End Sub
 Public Sub BuildFrom_WithTestWithArgsDoesNotImplementITestCaseSource_ReturnsEmpty()
     Dim Fake As New Fake1TestWithArgsNoSource
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Fake).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Fake).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
     
     Dim Actual As Collection
@@ -123,7 +123,7 @@ Public Sub BuildFrom_WithTestNameSet_ReturnsWithTestName()
     Dim Stub As New Stub1TestCaseSourceTestName
     Stub.TestName = "Custom"
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember("Test1")
+    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
     
     Dim Tests As Collection
@@ -138,6 +138,7 @@ Public Sub BuildFrom_WithTestNameSet_ReturnsWithTestName()
     Actual = Test.Name
     Assert.That Actual, Iz.EqualTo("Custom")
 End Sub
+
 
 
 

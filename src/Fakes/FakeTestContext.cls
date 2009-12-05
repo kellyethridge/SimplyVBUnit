@@ -19,6 +19,10 @@ Private mLog    As ITextWriter
 Private mOut    As ITextWriter
 
 
+Private Property Get TestContext_AssertCount() As Long
+
+End Property
+
 Private Property Set TestContext_Error(ByVal RHS As SVBUnit.ITextWriter)
     Set mError = RHS
 End Property
@@ -41,4 +45,8 @@ End Property
 
 Private Property Get TestContext_Out() As SVBUnit.ITextWriter
     Set TestContext_Out = mOut
+End Property
+
+Private Property Get TestContext_Throws() As SVBUnit.IConstraint
+
 End Property

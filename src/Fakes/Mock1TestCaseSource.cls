@@ -21,7 +21,7 @@ Public Value3 As Variant
 
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Calls.Add "GetTestCases." & Test.MethodName
-    Test.Using Value1, Value2, Value3
+    Test.Use Value1, Value2, Value3
 End Sub
 
 
