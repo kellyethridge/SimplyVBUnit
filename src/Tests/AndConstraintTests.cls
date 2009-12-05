@@ -105,6 +105,24 @@ errTrap:
     Assert.IsTrue Actual.Equals(Expected)
 End Sub
 
+Public Sub WriteMessageTo_WhenCalled_WritesLeftAndRightMessages()
+    Dim LeftConstraint  As New StubConstraint
+    Dim RightConstraint As New StubConstraint
+    LeftConstraint.Description = "equal left"
+    RightConstraint.Description = "equal right"
+    Dim w As New TextMessageWriter
+    Dim c As AndConstraint
+    Set c = Sim.NewAndConstraint(LeftConstraint, RightConstraint)
+    Call c.Matches(1)
+    
+    Call c.WriteMessageTo(w)
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = "Expected: equal left and equal right" & vbCrLf & _
+                               "But was : 1" & vbCrLf
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
 
 
 

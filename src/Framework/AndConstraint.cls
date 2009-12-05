@@ -30,26 +30,31 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements IConstraint
 
+Private mActual     As Variant
 Private mLeftSide   As IConstraint
 Private mRightSide  As IConstraint
 
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
+    Call VariantCopyInd(mActual, Actual)
+    
     If mLeftSide.Matches(Actual) Then
         Matches = mRightSide.Matches(Actual)
     End If
 End Function
 
 Public Sub WriteActualValueTo(ByVal Writer As TextMessageWriter)
-
+    Call Writer.WriteActualValue(mActual)
 End Sub
 
 Public Sub WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-
+    Call mLeftSide.WriteDescriptionTo(Writer)
+    Call Writer.WriteConnector("and")
+    Call mRightSide.WriteDescriptionTo(Writer)
 End Sub
 
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-
+    Call Writer.DisplayConstraintDifference(Me)
 End Sub
 
 

@@ -43,6 +43,7 @@ Private Const FMT_PREDICATE         As String = "{0} "
 Private Const FMT_ERRORNUMBER       As String = "error {0}"
 Private Const FMT_ERRORDESCRIPTION  As String = ", {0}"
 Private Const FMT_ERRORSOURCE       As String = " from [{0}]"
+Private Const FMT_CONNECTOR         As String = " {0} "
 
 
 Private mMessage As New StringBuilder
@@ -188,6 +189,10 @@ End Sub
 
 Public Sub WritePredicate(ByVal Text As String)
     Call WriteText(FMT_PREDICATE, Text)
+End Sub
+
+Public Sub WriteConnector(ByVal Text As String)
+    Call WriteText(FMT_CONNECTOR, Text)
 End Sub
 
 Public Sub WriteErrorInfo(ByVal Info As ErrorInfo)

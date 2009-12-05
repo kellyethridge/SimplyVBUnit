@@ -14,10 +14,10 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements IConstraint
 
-Public ActualValue      As Variant
-Public ExpectedValue    As Variant
-Public Matches          As Boolean
-Public Message          As String
+Public ActualValue  As Variant
+Public Description  As Variant
+Public Matches      As Boolean
+Public Message      As String
 
 
 Private Function IConstraint_Matches(Actual As Variant) As Boolean
@@ -29,13 +29,13 @@ Private Function IConstraint_Resolve() As SVBUnit.IConstraint
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Writer.WriteActualValue Me.ActualValue
+    Call Writer.WriteActualValue(Me.ActualValue)
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Writer.WriteExpectedValue Me.ExpectedValue
+    Call Writer.WriteText(Me.Description)
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Writer.WriteText Me.Message
+    Call Writer.WriteText(Me.Message)
 End Sub
