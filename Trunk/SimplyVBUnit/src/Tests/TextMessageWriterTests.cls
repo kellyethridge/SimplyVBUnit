@@ -99,7 +99,7 @@ End Sub
 Public Sub DisplayConstraintDifference_UsingConstraint_WritesExpectedButWasClause()
     Dim Stub As New StubConstraint
     Stub.ActualValue = True
-    Stub.ExpectedValue = False
+    Stub.Description = False
     Dim w As New TextMessageWriter
     
     Call w.DisplayConstraintDifference(Stub)
@@ -268,6 +268,16 @@ Public Sub WriteErrorInfo_WithNumberAndSource_WritesNumberAndSource()
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
+Public Sub WriteConnector_WithValue_WrapsValueWithSpaces()
+    Dim w As New TextMessageWriter
+    
+    Call w.WriteConnector("and")
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = " and "
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
 
 
 

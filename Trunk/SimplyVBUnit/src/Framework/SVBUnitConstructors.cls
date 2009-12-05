@@ -115,6 +115,16 @@ Public Function NewAndConstraint(ByVal LeftSide As IConstraint, ByVal RightSide 
     Call NewAndConstraint.Init(LeftSide, RightSide)
 End Function
 
+Public Function NewOrConstraint(ByVal LeftSide As IConstraint, ByVal RightSide As IConstraint) As OrConstraint
+    Set NewOrConstraint = New OrConstraint
+    Call NewOrConstraint.Init(LeftSide, RightSide)
+End Function
+
+Public Function NewNotConstraint(ByVal BaseConstraint As IConstraint) As NotConstraint
+    Set NewNotConstraint = New NotConstraint
+    Call NewNotConstraint.Init(BaseConstraint)
+End Function
+
 Public Function NewThrowsConstraint(ByVal Expected As ErrorInfo) As ThrowsConstraint
     Set NewThrowsConstraint = New ThrowsConstraint
     Call NewThrowsConstraint.Init(Expected)
