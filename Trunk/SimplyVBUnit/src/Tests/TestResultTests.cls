@@ -309,14 +309,9 @@ Public Sub AddResult_WithNothing_RaisesError()
     On Error GoTo errTrap
     Call Result.AddResult(Nothing)
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "TestResult.AddResult", "Result cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected), "Wrong error raised."
+    Call AssertError(Err, ErrorCode.ArgumentNull, "TestResult.AddResult", "Result cannot be Nothing.")
 End Sub
 
 Public Sub SetResult_WithFailureSite_StoresFailureSite()

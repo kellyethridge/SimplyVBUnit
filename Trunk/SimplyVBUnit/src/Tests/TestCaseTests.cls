@@ -124,7 +124,7 @@ End Sub
 
 Public Sub Run_WithUnknownErrorInTest_ReturnsErrorTestResult()
     Dim TestClass As New Stub1Test
-    TestClass.Errors.Add Constants.TEST1_METHOD, 1, , "unknown error"
+    Call TestClass.Errors.Add(Constants.TEST1_METHOD, 1, , "unknown error")
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     Dim TestCase As TestCase
@@ -140,7 +140,7 @@ End Sub
 
 Public Sub Run_WithUnknownErrorTest_ReturnsErrorTestResult2()
     Dim TestClass As New Stub1Test
-    TestClass.Errors.Add Constants.TEST1_METHOD, 1, , "unknown error"
+    Call TestClass.Errors.Add(Constants.TEST1_METHOD, 1, , "unknown error")
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     Dim TestCase As TestCase
@@ -181,7 +181,7 @@ End Sub
 
 Public Sub Run_WithErrorInSetup_SkipsTestRunsTeardown()
     Dim TestClass As New Mock1TestWithSetupTeardown
-    TestClass.Errors.Add "Setup", AssertCode.FailureCode
+    Call TestClass.Errors.Add("Setup", AssertCode.FailureCode)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     Dim TestCase As ITest
@@ -194,20 +194,20 @@ End Sub
 
 Public Sub Run_WithAssertFailInTest_RunsTeardown()
     Dim Mock As New Mock1TestWithTeardown
-    Mock.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
+    Call Mock.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     Dim TestCase As ITest
     Set TestCase = Fixture.Tests(0)
 
-    TestCase.Run
+    Call TestCase.Run
     
     Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD)
 End Sub
 
 Public Sub Run_WithAssertFailInTest_ReturnsFailingResult()
     Dim Mock As New Mock1TestWithTeardown
-    Mock.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
+    Call Mock.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     Dim TestCase As ITest
@@ -251,7 +251,7 @@ End Sub
 
 Public Sub Run_WithErrorInSetup_SetsResultToError()
     Dim Stub As New Stub1TestWithFullContext
-    Stub.Errors.Add Constants.SETUP_METHOD, ErrorCode.Argument
+    Call Stub.Errors.Add(Constants.SETUP_METHOD, ErrorCode.Argument)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -279,7 +279,7 @@ End Sub
 
 Public Sub Run_WithErrorInTeardown_SetsResultToError()
     Dim Stub As New Stub1TestWithFullContext
-    Stub.Errors.Add Constants.TEARDOWN_METHOD, 5, , "In Teardown"
+    Call Stub.Errors.Add(Constants.TEARDOWN_METHOD, 5, , "In Teardown")
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -295,7 +295,7 @@ End Sub
 
 Public Sub Run_WithErrorInTeardown_SetsResultToError2()
     Dim Stub As New Stub1TestWithFullContext
-    Stub.Errors.Add Constants.TEARDOWN_METHOD, 5, , "In Teardown"
+    Call Stub.Errors.Add(Constants.TEARDOWN_METHOD, 5, , "In Teardown")
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -311,7 +311,7 @@ End Sub
 
 Public Sub Run_WithErrorInTest_RunsTeardown()
     Dim Mock As New Mock1TestWithTeardown
-    Mock.Errors.Add Constants.TEST1_METHOD, 1
+    Call Mock.Errors.Add(Constants.TEST1_METHOD, 1)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     Dim Test As ITest
@@ -430,7 +430,7 @@ End Sub
 
 Public Sub Run_WithAssertPass_ReturnsSuccess()
     Dim Stub As New Stub1Test
-    Stub.Errors.Add Constants.TEST1_METHOD, AssertCode.SuccessCode
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, AssertCode.SuccessCode)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -450,7 +450,7 @@ Public Sub Run_WithAssertPassMessage_IncludesMessageInResult()
     Const SUCCESS_MESSAGE   As String = "success message"
     
     Dim Stub As New Stub1Test
-    Stub.Errors.Add Constants.TEST1_METHOD, AssertCode.SuccessCode, , SUCCESS_MESSAGE
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, AssertCode.SuccessCode, , SUCCESS_MESSAGE)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -469,7 +469,7 @@ Public Sub Run_WithUnknownError_CallsListenerMethod()
     
     Dim Mock As New MockEventListener
     Dim Stub As New Stub1Test
-    Stub.Errors.Add Constants.TEST1_METHOD, ERR_CODE
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, ERR_CODE)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -489,7 +489,7 @@ Public Sub Run_WithUnknownError_CallsListenerMethod2()
     
     Dim Mock As New MockEventListener
     Dim Stub As New Stub1Test
-    Stub.Errors.Add Constants.TEST1_METHOD, ERR_CODE, ERR_SOURCE, ERR_DESC
+    Call Stub.Errors.Add(Constants.TEST1_METHOD, ERR_CODE, ERR_SOURCE, ERR_DESC)
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest

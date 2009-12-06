@@ -51,11 +51,7 @@ Public Sub BuildFrom_With1TestCaseSource_CallsSourceForTestCase()
     
     Call Builder.BuildFrom(Mock, Member)
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add "GetTestCases.Test1"
-    Assert.IsTrue Actual.Equals(Expected), "Wrong call trace."
+    Call AssertCalls(Mock.Calls, "GetTestCases.Test1")
 End Sub
 
 Public Sub BuildFrom_With2TestCaseSource_Returns1TestSuite()

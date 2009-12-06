@@ -35,14 +35,9 @@ Public Sub CannotBeNothing_WithValidArguments_RaisesCorrectError()
     
     Call Helper.CannotBeNothing(Me, "Method", "Object")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "ErrorHelperTests.Method", "Object cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentNull, "ErrorHelperTests.Method", "Object cannot be Nothing.")
 End Sub
 
 Public Sub CannotBeNothing_WithSourceObjectAsNothing_RaisesError()
@@ -51,14 +46,9 @@ Public Sub CannotBeNothing_WithSourceObjectAsNothing_RaisesError()
     
     Call Helper.CannotBeNothing(Nothing, "Method", "Object")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "ErrorHelper.CannotBeNothing", "SourceObject cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentNull, "ErrorHelper.CannotBeNothing", "SourceObject cannot be Nothing.")
 End Sub
 
 Public Sub CannotBeEmpty_WithValidArguments_RaisesCorrectError()
@@ -67,14 +57,9 @@ Public Sub CannotBeEmpty_WithValidArguments_RaisesCorrectError()
     
     Call Helper.CannotBeEmpty(Me, "Method", "String")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.Argument, "ErrorHelperTests.Method", "String cannot be empty.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.Argument, "ErrorHelperTests.Method", "String cannot be empty.")
 End Sub
 
 Public Sub CannotBeEmpty_WithSourceObjectAsNothing_RaisesError()
@@ -83,14 +68,9 @@ Public Sub CannotBeEmpty_WithSourceObjectAsNothing_RaisesError()
     
     Call Helper.CannotBeEmpty(Nothing, "Method", "Object")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentNull, "ErrorHelper.CannotBeEmpty", "SourceObject cannot be Nothing.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentNull, "ErrorHelper.CannotBeEmpty", "SourceObject cannot be Nothing.")
 End Sub
 
 Public Sub CannotBeNothing_WithEmptySourceMethod_RaisesError()
@@ -99,14 +79,9 @@ Public Sub CannotBeNothing_WithEmptySourceMethod_RaisesError()
     
     Call Helper.CannotBeNothing(Me, "", "Object")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.Argument, "ErrorHelper.CannotBeNothing", "SourceMethod cannot be empty.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.Argument, "ErrorHelper.CannotBeNothing", "SourceMethod cannot be empty.")
 End Sub
 
 Public Sub CannotBeNothing_WithEmptyArgName_RaisesError()
@@ -115,14 +90,9 @@ Public Sub CannotBeNothing_WithEmptyArgName_RaisesError()
     
     Call Helper.CannotBeNothing(Me, "Method", "")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.Argument, "ErrorHelper.CannotBeNothing", "ArgName cannot be empty.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.Argument, "ErrorHelper.CannotBeNothing", "ArgName cannot be empty.")
 End Sub
 
 Public Sub CannotBeEmpty_WithEmptySourceMethod_RaisesError()
@@ -131,14 +101,9 @@ Public Sub CannotBeEmpty_WithEmptySourceMethod_RaisesError()
     
     Call Helper.CannotBeEmpty(Me, "", "Object")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.Argument, "ErrorHelper.CannotBeEmpty", "SourceMethod cannot be empty.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.Argument, "ErrorHelper.CannotBeEmpty", "SourceMethod cannot be empty.")
 End Sub
 
 Public Sub CannotBeEmpty_WithEmptyArgName_RaisesError()
@@ -147,14 +112,9 @@ Public Sub CannotBeEmpty_WithEmptyArgName_RaisesError()
 
     Call Helper.CannotBeEmpty(Me, "Method", "")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
 
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.Argument, "ErrorHelper.CannotBeEmpty", "ArgName cannot be empty.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.Argument, "ErrorHelper.CannotBeEmpty", "ArgName cannot be empty.")
 End Sub
 
 Public Sub CannotBeNegative_WhenCalled_RaisesCorrectError()
@@ -163,14 +123,9 @@ Public Sub CannotBeNegative_WhenCalled_RaisesCorrectError()
     
     Call Helper.CannotBeNegative(Me, "Method", "Index")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentOutOfRange, "ErrorHelperTests.Method", "Index cannot be negative.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentOutOfRange, "ErrorHelperTests.Method", "Index cannot be negative.")
 End Sub
 
 Public Sub IndexOutOfRange_WhenCalled_RaisesCorrectError()
@@ -179,14 +134,9 @@ Public Sub IndexOutOfRange_WhenCalled_RaisesCorrectError()
     
     Call Helper.IndexOutOfRange(Me, "Method")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.IndexOutOfRange, "ErrorHelperTests.Method", "Index was out of range. Must be non-negative and less than the size of the collection.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.IndexOutOfRange, "ErrorHelperTests.Method", "Index was out of range. Must be non-negative and less than the size of the collection.")
 End Sub
 
 Public Sub DoesNotSupportEnumeration_WhenCalled_RaisesCorrectError()
@@ -195,14 +145,9 @@ Public Sub DoesNotSupportEnumeration_WhenCalled_RaisesCorrectError()
     
     Call Helper.EnumerationNotSupported(Me, "Method", "Object")
     On Error GoTo 0
-    Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.Argument, "ErrorHelperTests.Method", "Object does not support enumeration.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.Argument, "ErrorHelperTests.Method", "Object does not support enumeration.")
 End Sub
 
 

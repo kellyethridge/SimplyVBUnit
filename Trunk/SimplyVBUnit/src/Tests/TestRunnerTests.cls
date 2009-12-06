@@ -40,16 +40,4 @@ Public Sub Constructor_WhenCalled_StoresTest()
     Assert.IsTrue Actual Is Fake
 End Sub
 
-'Public Sub Run_WhenCalled_BeginsNewTestContext()
-'    Dim Mock As New Mock3TestsWithWriters
-'    Dim Fixture As TestFixture
-'    Set Fixture = Sim.NewTestFixture(Mock)
-'    Dim Runner As TestRunner
-'    Set Runner = Sim.NewTestRunner(Fixture)
-'
-'    Runner.Run
-'
-'    Assert.IsFalse Mock.Test2Writer Is Nothing
-'End Sub
-
 

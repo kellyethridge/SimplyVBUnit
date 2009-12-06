@@ -88,12 +88,7 @@ Public Sub That_WithConstraint_ExecutesConstraint()
     
     Assert.That 1, Mock
     
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add "Resolve"
-    Expected.Add "Matches"
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, "Resolve", "Matches")
 End Sub
 
 Public Sub That_WithFailingConstraint_RaisesCorrectError()
@@ -119,13 +114,7 @@ Public Sub That_WithFailingConstraint_WritesConstraintMessage()
     Debug.Assert False
     
 errTrap:
-    Dim Actual As CallTrace
-    Set Actual = Mock.Calls
-    Dim Expected As New CallTrace
-    Expected.Add "Resolve"
-    Expected.Add "Matches"
-    Expected.Add "WriteMessageTo"
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertCalls(Mock.Calls, "Resolve", "Matches", "WriteMessageTo")
 End Sub
 
 Public Sub That_WithFailingConstraint_IncludesConstraintMessageWithError()
@@ -138,11 +127,7 @@ Public Sub That_WithFailingConstraint_IncludesConstraintMessageWithError()
     Debug.Assert False
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(AssertCode.FailureCode, "SVBUnit", "failed")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, AssertCode.FailureCode, "SVBUnit", "failed")
 End Sub
 
 Public Sub That_WithMessage_PrependsConstraintMessage()
@@ -155,11 +140,7 @@ Public Sub That_WithMessage_PrependsConstraintMessage()
     Debug.Assert False
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(AssertCode.FailureCode, "SVBUnit", "the message" & vbCrLf & "failed")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, AssertCode.FailureCode, "SVBUnit", "the message" & vbCrLf & "failed")
 End Sub
 
 Public Sub IsFalse_WithFalseCondtion_DoesNothing()
@@ -180,9 +161,7 @@ Public Sub IsFalse_WithFailingCondition_RaisesCorrectError()
     Assert.Fail "Should raise error."
     
 errTrap:
-    Dim Actual As Long
-    Actual = Err.Number
-    Assert.IsTrue Actual = AssertCode.FailureCode, "Wrong error code."
+    Call AssertError(Err, AssertCode.FailureCode)
 End Sub
 
 Public Sub IsFalse_WithMessage_IncludesMessage()
@@ -216,9 +195,7 @@ Public Sub AreEqual_WithUnequalValues_RaisesCorrectError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As Long
-    Actual = Err.Number
-    Assert.IsTrue Actual = AssertCode.FailureCode
+    Call AssertError(Err, AssertCode.FailureCode)
 End Sub
 
 Public Sub AreEqual_WithMessage_IncludesMessage()
@@ -242,7 +219,7 @@ Public Sub Pass_WhenCalled_RaisesCorrectError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Assert.IsTrue Err.Number = AssertCode.SuccessCode
+    Call AssertError(Err, AssertCode.SuccessCode)
 End Sub
 
 Public Sub Pass_WithMessage_IncludesMessageInError()
@@ -279,14 +256,12 @@ End Sub
 Public Sub IsVBEmpty_WithNonemptyValue_RaisesCorrectError()
     On Error GoTo errTrap
     
-    Assert.IsVBEmpty 1, "Not empty"
+    Assert.IsVBEmpty 1
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As Long
-    Actual = Err.Number
-    Assert.That Actual, Iz.EqualTo(AssertCode.FailureCode)
+    Call AssertError(Err, AssertCode.FailureCode)
 End Sub
 
 Public Sub IsVBEmpty_WithEmpty_DoesNothing()
@@ -307,9 +282,7 @@ Public Sub IsVBNull_WithNonnullValue_RaisesCorrectError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As Long
-    Actual = Err.Number
-    Assert.That Actual, Iz.EqualTo(AssertCode.FailureCode)
+    Call AssertError(Err, AssertCode.FailureCode)
 End Sub
 
 

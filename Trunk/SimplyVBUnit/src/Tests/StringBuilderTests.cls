@@ -149,12 +149,7 @@ Public Sub Length_SetLessThanZero_RaisesError()
     Assert.Fail "An error should be raised."
 
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.ArgumentOutOfRange, "StringBuilder.Length", "Length cannot be negative.")
-    
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.ArgumentOutOfRange, "StringBuilder.Length", "Length cannot be negative.")
 End Sub
 
 Public Sub AppendFormatArray_With1Argument_ReplacesIndexWithArgument()

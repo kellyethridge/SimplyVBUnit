@@ -101,11 +101,7 @@ Public Sub Item_WithNegativeIndex_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.IndexOutOfRange, "CategoryList.Item", "Index was out of range. Must be non-negative and less than the size of the collection.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.IndexOutOfRange, "CategoryList.Item", "Index was out of range. Must be non-negative and less than the size of the collection.")
 End Sub
 
 Public Sub Item_WithIndexPassedEndOfList_RaisesError()
@@ -120,11 +116,7 @@ Public Sub Item_WithIndexPassedEndOfList_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Dim Actual As ErrorInfo
-    Set Actual = ErrorInfo.FromErr(Err)
-    Dim Expected As ErrorInfo
-    Set Expected = Sim.NewErrorInfo(ErrorCode.IndexOutOfRange, "CategoryList.Item", "Index was out of range. Must be non-negative and less than the size of the collection.")
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertError(Err, ErrorCode.IndexOutOfRange, "CategoryList.Item", "Index was out of range. Must be non-negative and less than the size of the collection.")
 End Sub
 
 
