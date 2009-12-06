@@ -35,7 +35,10 @@ Private Function GetMissingVariant(Optional ByVal Value As Variant) As Variant
 End Function
 
 Private Function IzSyntaxHelper_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
-    Set IzSyntaxHelper_EqualTo = Sim.NewEqualConstraint(Expected)
+'    Set IzSyntaxHelper_EqualTo = Sim.NewEqualConstraint(Expected)
+    Dim Expression As IConstraintExpression
+    Set Expression = New ExpressionBuilder
+    Set IzSyntaxHelper_EqualTo = Expression.EqualTo(Expected)
 End Function
 
 Private Function IzSyntaxHelper_False() As SimplyVBUnitType.IBasicExpression

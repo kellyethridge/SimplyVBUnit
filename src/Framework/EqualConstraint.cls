@@ -37,6 +37,7 @@ Implements IToleranceUnits
 Private mExpected   As Variant
 Private mActual     As Variant
 Private mComparer   As New EqualityComparer
+Private mExpression As ExpressionBuilder
 
 
 ''
@@ -98,6 +99,11 @@ Friend Sub Init(ByRef Expected As Variant)
     Call VariantCopyInd(mExpected, Expected)
 End Sub
 
+Friend Sub Init2(ByRef Expected As Variant, ByVal Expression As ExpressionBuilder)
+    Call Init(Expected)
+    Set mExpression = Expression
+End Sub
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -127,7 +133,7 @@ End Function
 '   IBasicExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IBasicExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
-
+    
 End Function
 
 Private Function IBasicExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
@@ -143,7 +149,11 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
 End Function
 
 Private Function IConstraint_Resolve() As IConstraint
-    Set IConstraint_Resolve = Me
+    If mExpression Is Nothing Then
+        Set IConstraint_Resolve = Me
+    Else
+        Set IConstraint_Resolve = mExpression.Resolve
+    End If
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
@@ -163,7 +173,7 @@ End Sub
 '   IEqualConstraint
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IEqualConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
-
+    Set IEqualConstraint_AndAlso = mExpression
 End Function
 
 Private Function IEqualConstraint_AsCollection() As SimplyVBUnitType.IEqualConstraint
@@ -175,7 +185,7 @@ Private Function IEqualConstraint_IgnoreCase() As SimplyVBUnitType.IEqualConstra
 End Function
 
 Private Function IEqualConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
-
+    Set IEqualConstraint_OrElse = mExpression
 End Function
 
 Private Function IEqualConstraint_Strict() As SimplyVBUnitType.IEqualConstraint

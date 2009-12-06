@@ -117,7 +117,9 @@ library SimplyVBUnitType {
     [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
     interface IConstraintExpression : IDispatch
     {
-
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualConstraint ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
