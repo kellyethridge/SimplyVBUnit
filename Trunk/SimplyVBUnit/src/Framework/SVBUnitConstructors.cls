@@ -139,3 +139,9 @@ Public Function NewArgWithReturnTestMethod(ByVal TestClass As Object, ByVal Memb
     Set NewArgWithReturnTestMethod = New ArgWithReturnTestMethod
     Call NewArgWithReturnTestMethod.Init(TestClass, Member, TestCaseData)
 End Function
+
+
+Friend Function NewEqualConstraint2(ByRef Expected As Variant, ByVal Expression As ExpressionBuilder) As EqualConstraint
+    Set NewEqualConstraint2 = New EqualConstraint
+    Call NewEqualConstraint2.Init2(Expected, Expression)
+End Function

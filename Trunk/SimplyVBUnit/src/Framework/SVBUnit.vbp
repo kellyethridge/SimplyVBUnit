@@ -80,6 +80,7 @@ ResFile32="SVBUnit.RES"
 Class=OperatorStack; OperatorStack.cls
 Class=ConstraintBuilder; ConstraintBuilder.cls
 Class=OrOperator; OrOperator.cls
+Class=ExpressionBuilder; ExpressionBuilder.cls
 Startup="(None)"
 HelpFile=""
 Title="SVBUnit"
