@@ -42,3 +42,7 @@ End Function
 Public Property Get Count() As Long
     Count = mConstraints.Count
 End Property
+
+Public Property Get Peek() As IConstraint
+    Set Peek = mConstraints.Peek
+End Property

@@ -28,4 +28,23 @@ Attribute VB_Exposed = True
 ' Module: AndOperator
 '
 Option Explicit
+Implements IOperator
 
+
+Public Function Resolve(ByVal Constraints As ConstraintStack) As AndConstraint
+    Dim LeftSide    As IConstraint
+    Dim RightSide   As IConstraint
+    
+    Set RightSide = Constraints.Pop
+    Set LeftSide = Constraints.Pop
+    
+    Set Resolve = Sim.NewAndConstraint(LeftSide, RightSide)
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IOperator Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IOperator_Resolve(ByVal Constraints As ConstraintStack) As IConstraint
+    Set IOperator_Resolve = Resolve(Constraints)
+End Function

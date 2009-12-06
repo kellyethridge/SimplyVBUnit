@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "AndOperatorTests"
+Attribute VB_Name = "OperatorStack"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 ' Copyright 2009 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,22 +25,25 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: AndOperatorTests
+' Module: OperatorStack
 '
 Option Explicit
 
+Private mOperators As New Stack
 
-Public Sub Resolve_WithTwoConstraints_ReturnsAndOperatorOfTwoConstraint()
-    Dim LeftSide    As New StubConstraint
-    Dim RightSide   As New StubConstraint
-    Dim Constraints As New ConstraintStack
-    Call Constraints.Push(LeftSide)
-    Call Constraints.Push(RightSide)
-    Dim Op As New AndOperator
-    Dim c As AndConstraint
-    
-    Set c = Op.Resolve(Constraints)
-    
-    Assert.IsTrue c.LeftSide Is LeftSide
-    Assert.IsTrue c.RightSide Is RightSide
+Public Sub Push(ByVal Operator As IOperator)
+    Call mOperators.Push(Operator)
 End Sub
+
+Public Function Pop() As IOperator
+    Set Pop = mOperators.Pop
+End Function
+
+Public Property Get Count() As Long
+    Count = mOperators.Count
+End Property
+
+Public Property Get Peek() As IOperator
+    Set Peek = mOperators.Peek
+End Property
+

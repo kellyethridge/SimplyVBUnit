@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "AndOperatorTests"
+Attribute VB_Name = "OrOperatorTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,19 +25,18 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: AndOperatorTests
+' Module: OrOperatorTests
 '
 Option Explicit
 
-
-Public Sub Resolve_WithTwoConstraints_ReturnsAndOperatorOfTwoConstraint()
+Public Sub Resolve_WithTwoConstraints_ReturnsOrOperatorOfTwoConstraint()
     Dim LeftSide    As New StubConstraint
     Dim RightSide   As New StubConstraint
     Dim Constraints As New ConstraintStack
     Call Constraints.Push(LeftSide)
     Call Constraints.Push(RightSide)
-    Dim Op As New AndOperator
-    Dim c As AndConstraint
+    Dim Op As New OrOperator
+    Dim c As OrConstraint
     
     Set c = Op.Resolve(Constraints)
     
