@@ -59,7 +59,7 @@ Public Sub MoveNext_WithListWithOneItem_SetsIndexToCurrentItem()
     Dim Enumerator As TestListEnumerator
     Set Enumerator = Sim.NewTestListEnumerator(List)
 
-    Enumerator.MoveNext
+    Call Enumerator.MoveNext
 
     Dim Actual As ITest
     Set Actual = Enumerator.Current
@@ -86,9 +86,9 @@ Public Sub Reset_AfterMoveNext_RestartsEnumerator()
     List.Add Test
     Dim Enumerator As TestListEnumerator
     Set Enumerator = Sim.NewTestListEnumerator(List)
-    Enumerator.MoveNext
+    Call Enumerator.MoveNext
 
-    Enumerator.Reset
+    Call Enumerator.Reset
 
     Dim Actual As Boolean
     Actual = Enumerator.MoveNext

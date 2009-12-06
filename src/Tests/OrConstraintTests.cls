@@ -92,10 +92,7 @@ Public Sub Matches_WithPassingLeftSide_DoesNotCallRightSide()
     
     Call c.Matches(True)
     
-    Dim Actual As CallTrace
-    Set Actual = MockRight.Calls
-    Dim Expected As New CallTrace
-    Assert.IsTrue Actual.Equals(Expected)
+    Call AssertNoCalls(MockRight.Calls)
 End Sub
 
 Public Sub WriteMessageTo_WhenCalled_WritesBothConstraintMessages()
