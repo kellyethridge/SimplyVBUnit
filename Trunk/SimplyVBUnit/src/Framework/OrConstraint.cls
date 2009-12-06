@@ -35,6 +35,14 @@ Private mLeftSide   As IConstraint
 Private mRightSide  As IConstraint
 
 
+Public Property Get LeftSide() As IConstraint
+    Set LeftSide = mLeftSide
+End Property
+
+Public Property Get RightSide() As IConstraint
+    Set RightSide = mRightSide
+End Property
+
 Public Function Matches(ByRef Actual As Variant) As Boolean
     Dim Result As Boolean
     

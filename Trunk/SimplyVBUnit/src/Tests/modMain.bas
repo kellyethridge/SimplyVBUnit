@@ -66,6 +66,9 @@ Private Sub RunTestClassTests()
     Call Suite.Add(New ThrowsConstraintTests)
     Call Suite.Add(New TestCaseModifierTests)
     Call Suite.Add(New ArgWithReturnTestMethodTests)
+    Call Suite.Add(New ConstraintBuilderTests)
+    Call Suite.Add(New AndOperatorTests)
+    Call Suite.Add(New OrOperatorTests)
     
     
     Dim Result As TestResult

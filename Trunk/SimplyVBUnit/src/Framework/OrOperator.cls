@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "AndOperatorTests"
+Attribute VB_Name = "OrOperator"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 ' Copyright 2009 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,22 +25,16 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: AndOperatorTests
+' Module: OrOperator
 '
 Option Explicit
 
-
-Public Sub Resolve_WithTwoConstraints_ReturnsAndOperatorOfTwoConstraint()
-    Dim LeftSide    As New StubConstraint
-    Dim RightSide   As New StubConstraint
-    Dim Constraints As New ConstraintStack
-    Call Constraints.Push(LeftSide)
-    Call Constraints.Push(RightSide)
-    Dim Op As New AndOperator
-    Dim c As AndConstraint
+Public Function Resolve(ByVal Constraints As ConstraintStack) As IConstraint
+    Dim LeftSide    As IConstraint
+    Dim RightSide   As IConstraint
     
-    Set c = Op.Resolve(Constraints)
+    Set RightSide = Constraints.Pop
+    Set LeftSide = Constraints.Pop
     
-    Assert.IsTrue c.LeftSide Is LeftSide
-    Assert.IsTrue c.RightSide Is RightSide
-End Sub
+    Set Resolve = Sim.NewOrConstraint(LeftSide, RightSide)
+End Function
