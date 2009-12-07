@@ -133,11 +133,11 @@ End Function
 '   IBasicExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IBasicExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    
+    Set IBasicExpression_AndAlso = mExpression.AndAlso
 End Function
 
 Private Function IBasicExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
-
+    Set IBasicExpression_OrElse = mExpression.OrElse
 End Function
 
 
@@ -173,7 +173,7 @@ End Sub
 '   IEqualConstraint
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IEqualConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    Set IEqualConstraint_AndAlso = mExpression
+    Set IEqualConstraint_AndAlso = mExpression.AndAlso
 End Function
 
 Private Function IEqualConstraint_AsCollection() As SimplyVBUnitType.IEqualConstraint
@@ -185,7 +185,7 @@ Private Function IEqualConstraint_IgnoreCase() As SimplyVBUnitType.IEqualConstra
 End Function
 
 Private Function IEqualConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
-    Set IEqualConstraint_OrElse = mExpression
+    Set IEqualConstraint_OrElse = mExpression.OrElse
 End Function
 
 Private Function IEqualConstraint_Strict() As SimplyVBUnitType.IEqualConstraint

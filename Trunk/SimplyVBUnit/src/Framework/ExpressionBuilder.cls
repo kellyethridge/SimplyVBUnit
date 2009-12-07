@@ -40,7 +40,15 @@ Public Function Resolve() As IConstraint
     Set mBuilder = Nothing
 End Function
 
+Public Function OrElse() As IConstraintExpression
+    Call mBuilder.AddOperator(New OrOperator)
+    Set OrElse = Me
+End Function
 
+Public Function AndAlso() As IConstraintExpression
+    Call mBuilder.AddOperator(New AndOperator)
+    Set AndAlso = Me
+End Function
 
 
 Private Function AddConstraint(ByVal c As IConstraint) As IConstraint
@@ -53,13 +61,11 @@ End Function
 '   IBasicExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IBasicExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    Call mBuilder.AddOperator(New AndOperator)
-    Set IBasicExpression_AndAlso = Me
+    Set IBasicExpression_AndAlso = AndAlso
 End Function
 
 Private Function IBasicExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
-    Call mBuilder.AddOperator(New OrOperator)
-    Set IBasicExpression_OrElse = Me
+    Set IBasicExpression_OrElse = OrElse
 End Function
 
 
@@ -68,8 +74,7 @@ End Function
 '   IConstraintExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IConstraintExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    Call mBuilder.AddOperator(New AndOperator)
-    Set IConstraintExpression_AndAlso = Me
+    Set IConstraintExpression_AndAlso = AndAlso
 End Function
 
 Private Function IConstraintExpression_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
@@ -77,6 +82,5 @@ Private Function IConstraintExpression_EqualTo(Expected As Variant) As SimplyVBU
 End Function
 
 Private Function IConstraintExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
-    Call mBuilder.AddOperator(New OrOperator)
-    Set IConstraintExpression_OrElse = Me
+    Set IConstraintExpression_OrElse = OrElse
 End Function
