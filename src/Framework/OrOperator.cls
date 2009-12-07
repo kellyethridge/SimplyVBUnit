@@ -28,6 +28,8 @@ Attribute VB_Exposed = True
 ' Module: OrOperator
 '
 Option Explicit
+Implements IOperator
+
 
 Public Function Resolve(ByVal Constraints As ConstraintStack) As IConstraint
     Dim LeftSide    As IConstraint
@@ -37,4 +39,12 @@ Public Function Resolve(ByVal Constraints As ConstraintStack) As IConstraint
     Set LeftSide = Constraints.Pop
     
     Set Resolve = Sim.NewOrConstraint(LeftSide, RightSide)
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IOperator Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IOperator_Resolve(ByVal Constraints As ConstraintStack) As IConstraint
+    Set IOperator_Resolve = Resolve(Constraints)
 End Function
