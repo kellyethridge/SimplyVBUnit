@@ -87,7 +87,7 @@ Public Sub Match_WithEqualNamesDifferenceCasing_ReturnsTrue()
     Set Test = Fixture.Tests(0)
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("Fake2Tests.Test1")
+    Call Filter.Add("fake2tests.test1")
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)
