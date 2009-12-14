@@ -37,7 +37,7 @@ Implements IToleranceUnits
 Private mExpected   As Variant
 Private mActual     As Variant
 Private mComparer   As New EqualityComparer
-Private mExpression As ExpressionBuilder
+Private mExpression As ConstraintExpression
 
 
 ''
@@ -99,7 +99,7 @@ Friend Sub Init(ByRef Expected As Variant)
     Call VariantCopyInd(mExpected, Expected)
 End Sub
 
-Friend Sub Init2(ByRef Expected As Variant, ByVal Expression As ExpressionBuilder)
+Friend Sub Init2(ByRef Expected As Variant, ByVal Expression As ConstraintExpression)
     Call Init(Expected)
     Set mExpression = Expression
 End Sub
