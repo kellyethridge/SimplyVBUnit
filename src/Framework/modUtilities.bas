@@ -69,7 +69,7 @@ Private Function SupportsEnumeration(ByVal Obj As Object) As Boolean
     End If
     
     Dim Info As InterfaceInfo
-    Set Info = TLI.InterfaceInfoFromObject(Obj)
+    Set Info = tli.InterfaceInfoFromObject(Obj)
     
     Dim Member As MemberInfo
     For Each Member In Info.Members
@@ -190,3 +190,13 @@ Private Function ArrayProxy_Release(ByRef This As ArrayProxy) As Long
     This.SA.pvData = vbNullPtr
 End Function
 
+Public Function StringCompare(ByRef String1 As String, ByRef String2 As String, Optional ByVal IgnoreCase As Boolean = False) As Long
+    Dim Method As VbCompareMethod
+    If Not IgnoreCase Then
+        Method = vbBinaryCompare
+    Else
+        Method = vbTextCompare
+    End If
+    
+    StringCompare = StrComp(String1, String2, Method)
+End Function
