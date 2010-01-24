@@ -54,21 +54,18 @@ End Property
 Public Function Equals(ByVal Other As ErrorInfo, Optional ByVal IgnoreCase As Boolean) As Boolean
     If Other Is Nothing Then Exit Function
     
-    Dim CompareMethod As VbCompareMethod
-    CompareMethod = IIf(IgnoreCase, vbTextCompare, vbBinaryCompare)
-    
     Dim Result As Boolean
     Result = (Other.Number = Me.Number)
-    Result = Result And EqualStrings(Me.Source, Other.Source, CompareMethod)
-    Result = Result And EqualStrings(Me.Description, Other.Description, CompareMethod)
+    Result = Result And EqualStrings(Me.Source, Other.Source, IgnoreCase)
+    Result = Result And EqualStrings(Me.Description, Other.Description, IgnoreCase)
     Result = Result And (Other.LastDllError = Me.LastDllError)
     
     Equals = Result
 End Function
 
-Private Function EqualStrings(ByVal Text1 As String, ByVal Text2 As String, ByVal CompareMethod As VbCompareMethod) As Boolean
+Private Function EqualStrings(ByRef Text1 As String, ByRef Text2 As String, ByVal IgnoreCase As Boolean) As Boolean
     If Len(Text1) > 0 And Len(Text2) > 0 Then
-        If StrComp(Text1, Text2, CompareMethod) <> 0 Then
+        If StringCompare(Text1, Text2, IgnoreCase) <> 0 Then
             Exit Function
         End If
     End If
