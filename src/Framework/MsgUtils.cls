@@ -61,27 +61,27 @@ Private Function AreDifferentLengths(ByRef String1 As String, ByRef String2 As S
     AreDifferentLengths = (Len(String1) <> Len(String2))
 End Function
 
-'Public Function ClipString(ByVal s As String, ByVal ClipLength As Long, ByVal ClipStart As Long) As String
-'    Dim sb As New StringBuilder
-'
-'    If ClipStart > 1 Then
-'        ClipLength = ClipLength - Len(MSG_ELLIPSIS)
-'        Call sb.Append(MSG_ELLIPSIS)
-'    End If
-'
-'    If Len(s) - ClipStart + 1 > ClipLength Then
-'        ClipLength = ClipLength - Len(MSG_ELLIPSIS)
-'        Call sb.Append(Mid$(s, ClipStart, ClipLength))
-'        Call sb.Append(MSG_ELLIPSIS)
-'    ElseIf ClipStart > 1 Then
-'        Call sb.Append(Mid$(s, ClipStart))
-'    Else
-'        Call sb.Append(s)
-'    End If
-'
-'    ClipString = sb.ToString
-'End Function
-'
+Public Function ClipString(ByVal s As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long) As String
+    Dim sb As New StringBuilder
+
+    If StartIndex > 1 Then
+        MaxStringLength = MaxStringLength - Len(MSG_ELLIPSIS)
+        Call sb.Append(MSG_ELLIPSIS)
+    End If
+
+    If Len(s) - StartIndex + 1 > MaxStringLength Then
+        MaxStringLength = MaxStringLength - Len(MSG_ELLIPSIS)
+        Call sb.Append(Mid$(s, StartIndex, MaxStringLength))
+        Call sb.Append(MSG_ELLIPSIS)
+    ElseIf StartIndex > 1 Then
+        Call sb.Append(Mid$(s, StartIndex))
+    Else
+        Call sb.Append(s)
+    End If
+
+    ClipString = sb.ToString
+End Function
+
 'Public Sub ClipExpectedAndActual(ByRef Expected As String, ByRef Actual As String, ByVal MaxDisplayLength As Long, ByVal MismatchIndex As Long)
 '    Dim MaxStringLength As Long: MaxStringLength = Max(Len(Expected), Len(Actual))
 '    If MaxStringLength <= MaxDisplayLength Then

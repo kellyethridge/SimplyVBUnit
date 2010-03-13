@@ -28,6 +28,21 @@ Attribute VB_Exposed = False
 ' Module: MsgUtilsTests
 '
 Option Explicit
+Implements ITestCaseSource
+
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
+    Select Case Test.MethodName
+        Case "ClipString_WithValues_ReturnsExpected"
+            Call Test.Use("string", 1, 6, "string")
+            Call Test.Use("string", 1, 5, "st...")
+            Call Test.Use("string", 2, 6, "......")
+            Call Test.Use("string", 2, 7, "...t...")
+            Call Test.Use("1234567890", 1, 9, "123456...")
+            Call Test.Use("1234567890", 4, 10, "...4567890")
+            
+    End Select
+End Sub
+
 
 Public Sub FindMismatchIndex_WithEqualStrings_ReturnsZero()
     Dim Utils As New MsgUtils
@@ -97,3 +112,14 @@ Public Sub FindMismatchIndex_WithDifferenceLengthStrings_ReturnsIndexOfFirstChar
     
     Assert.That Actual, Iz.EqualTo(5)
 End Sub
+
+Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long, ByVal Expected As String)
+    Dim Utils As New MsgUtils
+    
+    Dim Actual As String
+    Actual = Utils.ClipString(SourceString, StartIndex, MaxStringLength)
+    
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+
