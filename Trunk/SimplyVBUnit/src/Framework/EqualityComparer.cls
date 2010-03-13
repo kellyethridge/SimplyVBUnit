@@ -44,6 +44,7 @@ Private mAsCollection   As Boolean
 Private mComparer       As IEqualityComparer
 Private mStrict         As Boolean
 
+
 Friend Sub IgnoreCase()
     mCompareMethod = vbTextCompare
 End Sub
@@ -144,7 +145,7 @@ Private Function EqualEnumerables(ByRef Expected As Variant, ByRef Actual As Var
             Exit Do
         End If
         
-        If EqualVariants(ExpectedEnumerator.Current, ActualEnumerator.Current) = False Then
+        If Not EqualVariants(ExpectedEnumerator.Current, ActualEnumerator.Current) Then
             Exit Function
         End If
     Loop
