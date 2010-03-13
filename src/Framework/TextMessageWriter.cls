@@ -44,14 +44,51 @@ Private Const FMT_ERRORNUMBER       As String = "error {0}"
 Private Const FMT_ERRORDESCRIPTION  As String = ", {0}"
 Private Const FMT_ERRORSOURCE       As String = " from [{0}]"
 Private Const FMT_CONNECTOR         As String = " {0} "
+Private Const FMT_STRINGSDIFFER_1   As String = "String lengths are both {0}. Strings differ at index {1}."
+Private Const FMT_STRINGSDIFFER_2   As String = "Expected string length {0} but was {1}. Strings differ at index {2}."
 
 
-Private mMessage As New StringBuilder
+Private mMessage    As New StringBuilder
+Private mUtils      As New MsgUtils
 
 
 Public Function ToString() As String
     ToString = mMessage.ToString
 End Function
+
+'            int maxDisplayLength = MaxLineLength
+'                - PrefixLength   // Allow for prefix
+'                - 2;             // 2 quotation marks
+'
+'            if ( clipping )
+'                MsgUtils.ClipExpectedAndActual(ref expected, ref actual, maxDisplayLength, mismatch);
+
+Public Sub DisplayStringDifference(ByVal Expected As String, ByVal Actual As String, ByVal IgnoreCase As Boolean, ByVal Clipping As Boolean)
+    Dim MismatchIndex As Long
+    MismatchIndex = MsgUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
+    
+    If Len(Expected) = Len(Actual) Then
+        Call WriteLine(FMT_STRINGSDIFFER_1, Len(Expected), MismatchIndex)
+    Else
+        Call WriteLine(FMT_STRINGSDIFFER_2, Len(Expected), Len(Actual), MismatchIndex)
+    End If
+    
+    Dim MaxDisplayLength As Long
+    MaxDisplayLength = 64 - Len(PFX_EXPECTED) - 2
+    
+    If Clipping Then
+        Call mUtils.ClipExpectedAndActual(Expected, Actual, MaxDisplayLength, MismatchIndex)
+    End If
+    
+    MismatchIndex = mUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
+    
+    Call WriteExpectedLine(Expected)
+    Call WriteActualLine(Actual)
+    
+    Dim ArrowShaftLength As Long
+    ArrowShaftLength = Len(PFX_ACTUAL) + MismatchIndex
+    Call WriteLine(String$(ArrowShaftLength, "-") & "^")
+End Sub
 
 Public Sub DisplayConstraintDifference(ByVal Constraint As IConstraint)
     Call WriteExpectedLineConstraint(Constraint)

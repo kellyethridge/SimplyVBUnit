@@ -347,6 +347,7 @@ Public Sub WriteMessageTo_WithTrueFalse_WritesExpectedButWasClause()
 End Sub
 
 
+
 Private Function MakeLongArray(ByVal LowerBound As Long, ParamArray Args() As Variant) As Long()
     Dim Result() As Long
     ReDim Result(LowerBound To LowerBound + UBound(Args))

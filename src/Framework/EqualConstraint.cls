@@ -33,12 +33,21 @@ Implements IBasicExpression
 Implements IEqualConstraint
 Implements IToleranceUnits
 
+Const DEF_CLIPPING As Boolean = True
 
 Private mExpected   As Variant
 Private mActual     As Variant
 Private mComparer   As New EqualityComparer
 Private mExpression As ConstraintExpression
+Private mIgnoreCase As Boolean
+Private mClipping   As Boolean
 
+
+
+Public Function NoClip() As EqualConstraint
+    mClipping = False
+    Set NoClip = Me
+End Function
 
 ''
 ' Tells the constraint to perform string comparisons as case-insensitive.
@@ -47,11 +56,12 @@ Private mExpression As ConstraintExpression
 '
 Public Function IgnoreCase() As EqualConstraint
     Call mComparer.IgnoreCase
+    mIgnoreCase = True
     Set IgnoreCase = Me
 End Function
 
 Public Function Within(ByVal Tolerance As Variant) As IToleranceUnits
-    mComparer.Within Tolerance
+    Call mComparer.Within(Tolerance)
     Set Within = Me
 End Function
 
@@ -66,7 +76,7 @@ Public Function Using(ByVal Comparer As IEqualityComparer) As EqualConstraint
 End Function
 
 Public Function Strict() As EqualConstraint
-    mComparer.Strict
+    Call mComparer.Strict
     Set Strict = Me
 End Function
 
@@ -87,7 +97,11 @@ End Function
 ' @param Writer The text write that the message will be written to.
 '
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call Writer.DisplayConstraintDifference(Me)
+    If VarType(mActual) = vbString And VarType(mExpected) = vbString Then
+        Call Writer.DisplayStringDifference(mExpected, mActual, mIgnoreCase, mClipping)
+    Else
+        Call Writer.DisplayConstraintDifference(Me)
+    End If
 End Sub
 
 
@@ -127,6 +141,14 @@ Private Function Seconds() As EqualConstraint
     mComparer.ToleranceType = InSeconds
     Set Seconds = Me
 End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Class Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub Class_Initialize()
+    mClipping = DEF_CLIPPING
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -182,6 +204,10 @@ End Function
 
 Private Function IEqualConstraint_IgnoreCase() As SimplyVBUnitType.IEqualConstraint
     Set IEqualConstraint_IgnoreCase = Me.IgnoreCase
+End Function
+
+Private Function IEqualConstraint_NoClip() As SimplyVBUnitType.IEqualConstraint
+    Set IEqualConstraint_NoClip = Me.NoClip
 End Function
 
 Private Function IEqualConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression

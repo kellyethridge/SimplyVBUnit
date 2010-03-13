@@ -279,7 +279,37 @@ Public Sub WriteConnector_WithValue_WrapsValueWithSpaces()
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
+Public Sub DisplayStringDifference_WithExpectedStringShorterThanActual_WritesExpectedButWasClause()
+    Const EXPECTED_STRING  As String = "abcd"
+    Const ACTUAL_STRING    As String = "abcdef"
+    
+    Dim w As New TextMessageWriter
+    w.DisplayStringDifference EXPECTED_STRING, ACTUAL_STRING, False, True
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = "Expected string length 4 but was 6. Strings differ at index 5." & vbCrLf & _
+                               "Expected: ""abcd""" & vbCrLf & _
+                               "But was : ""abcdef""" & vbCrLf & _
+                               "---------------^" & vbCrLf
+    Assert.That Actual, Iz.EqualTo(Expected).NoClip
+End Sub
 
+Public Sub DisplayStringDifference_WithExpectedStringSameLengthAsActual_WritesExpectedBuWasClause()
+    Const EXPECTED_STRING  As String = "abcd"
+    Const ACTUAL_STRING    As String = "abcf"
+    
+    Dim w As New TextMessageWriter
+    w.DisplayStringDifference EXPECTED_STRING, ACTUAL_STRING, False, True
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = "String lengths are both 4. Strings differ at index 4." & vbCrLf & _
+                               "Expected: ""abcd""" & vbCrLf & _
+                               "But was : ""abcf""" & vbCrLf & _
+                               "--------------^" & vbCrLf
+    Assert.That Actual, Iz.EqualTo(Expected).NoClip
+End Sub
 
 
 

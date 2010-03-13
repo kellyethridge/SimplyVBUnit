@@ -82,23 +82,23 @@ Public Function ClipString(ByVal s As String, ByVal StartIndex As Long, ByVal Ma
     ClipString = sb.ToString
 End Function
 
-'Public Sub ClipExpectedAndActual(ByRef Expected As String, ByRef Actual As String, ByVal MaxDisplayLength As Long, ByVal MismatchIndex As Long)
-'    Dim MaxStringLength As Long: MaxStringLength = Max(Len(Expected), Len(Actual))
-'    If MaxStringLength <= MaxDisplayLength Then
-'        Exit Sub
-'    End If
-'
-'    Dim ClipLength  As Long: ClipLength = MaxDisplayLength - Len(MSG_ELLIPSIS)
-'    Dim ClipStart   As Long: ClipStart = MaxStringLength - ClipLength + 1
-'
-'    If ClipStart > MismatchIndex Then
-'        ClipStart = Max(1, MismatchIndex - ClipLength \ 2)
-'    End If
-'
-'    Expected = ClipString(Expected, MaxDisplayLength, ClipStart)
-'    Actual = ClipString(Actual, MaxDisplayLength, ClipStart)
-'End Sub
-'
+Public Sub ClipExpectedAndActual(ByRef Expected As String, ByRef Actual As String, ByVal MaxDisplayLength As Long, ByVal MismatchIndex As Long)
+    Dim MaxStringLength As Long: MaxStringLength = Max(Len(Expected), Len(Actual))
+    If MaxStringLength <= MaxDisplayLength Then
+        Exit Sub
+    End If
+
+    Dim ClipLength  As Long: ClipLength = MaxDisplayLength - Len(MSG_ELLIPSIS)
+    Dim ClipStart   As Long: ClipStart = MaxStringLength - ClipLength + 1
+
+    If ClipStart > MismatchIndex Then
+        ClipStart = Max(1, MismatchIndex - ClipLength \ 2)
+    End If
+
+    Expected = ClipString(Expected, MaxDisplayLength, ClipStart)
+    Actual = ClipString(Actual, MaxDisplayLength, ClipStart)
+End Sub
+
 'Public Function GetTypeRepresentation(ByRef Value As Variant) As String
 '    Dim sb As New StringBuilder
 '
@@ -164,3 +164,11 @@ End Function
 '    GetArrayIndicesAsString = sb.ToString
 'End Function
 
+
+Private Function Max(ByVal X As Long, ByVal Y As Long) As Long
+    If X > Y Then
+        Max = X
+    Else
+        Max = Y
+    End If
+End Function

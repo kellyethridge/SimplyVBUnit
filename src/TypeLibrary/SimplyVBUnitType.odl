@@ -148,6 +148,7 @@ library SimplyVBUnitType {
 		HRESULT AsCollection([out, retval] IEqualConstraint ** RetVal);
 		HRESULT Using([in] IEqualityComparer * Comparer, [out, retval] IEqualConstraint ** RetVal);
 		HRESULT Strict([out, retval] IEqualConstraint ** RetVal);
+		HRESULT NoClip([out, retval] IEqualConstraint ** RetVal);
 	}
 
 	[uuid(0331F242-579F-4210-9822-39782E51E0BF), odl]

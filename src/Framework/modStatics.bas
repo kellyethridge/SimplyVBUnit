@@ -29,6 +29,7 @@ Public Type NullListenerStatic
     Instance As New NullListener
 End Type
 
+
 Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
@@ -45,6 +46,7 @@ Public TestContext          As New TestContextStatic
 Public TestContextManager   As New TestContextManager
 Public EmptyFilter          As New EmptyFilterStatic
 Public CategoryParser       As New CategoryParser
+Public MsgUtils             As New MsgUtils
 
 Private mIz                 As New IzStatic
 

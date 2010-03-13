@@ -39,6 +39,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use("string", 2, 7, "...t...")
             Call Test.Use("1234567890", 1, 9, "123456...")
             Call Test.Use("1234567890", 4, 10, "...4567890")
+            Call Test.Use("1234567890", 5, 15, "...567890")
             
     End Select
 End Sub
