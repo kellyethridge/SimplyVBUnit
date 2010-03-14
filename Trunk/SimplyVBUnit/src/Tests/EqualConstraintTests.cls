@@ -114,17 +114,12 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             
             Dim Col1 As Collection
             Dim Col2 As Collection
-            Set Col1 = New Collection
-            Call Col1.Add(1)
-            Set Col2 = New Collection
-            Call Col2.Add(1)
+            Set Col1 = NewCollection(1)
+            Set Col2 = NewCollection(1)
             Call Test.Use(Col1, Col2, True)
             
-            Set Col1 = New Collection
-            Set Col2 = New Collection
-            Call Col1.Add(1)
-            Call Col1.Add(2)
-            Call Col2.Add(1)
+            Set Col1 = NewCollection(1, 2)
+            Set Col2 = NewCollection(1)
             Call Test.Use(Col1, Col2, False)
             
             Arr1 = Array(Array(1, 2), Array("a", "b"))
@@ -135,8 +130,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Arr2 = Array(Array(1, 2), Array("a", "c"))
             Call Test.Use(Arr1, Arr2, False)
 
-            Set Col1 = New Collection
-            Call Col1.Add(1)
+            Set Col1 = NewCollection(1)
             Arr1 = Array(1)
             Call Test.Use(Arr1, Col1, True)
             Call Test.Use(Col1, Arr1, True)
@@ -344,6 +338,23 @@ Public Sub WriteMessageTo_WithTrueFalse_WritesExpectedButWasClause()
     Const Expected As String = "Expected: True" & vbCrLf & _
                                "But was : False" & vbCrLf
     Assert.IsTrue Actual = Expected
+End Sub
+
+Public Sub WriteMessageTo_WithNonEqualStrings_WritesExpectedButWasClause()
+    Dim c As IConstraint
+    Set c = Sim.NewEqualConstraint("a")
+    Call c.Matches("ab")
+    
+    Dim w As New TextMessageWriter
+    Call c.WriteMessageTo(w)
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Const Expected As String = "Expected string length 1 but was 2. Strings differ at index 2." & vbCrLf & _
+                               "Expected: ""a""" & vbCrLf & _
+                               "But was : ""ab""" & vbCrLf & _
+                               "------------^" & vbCrLf
+    Assert.That Actual, iz.EqualTo(Expected)
 End Sub
 
 

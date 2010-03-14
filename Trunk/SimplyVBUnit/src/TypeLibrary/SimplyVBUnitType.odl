@@ -161,6 +161,7 @@ library SimplyVBUnitType {
 		HRESULT VBNull([out, retval] IBasicExpression ** RetVal);
 		HRESULT Nothing([out, retval] IBasicExpression ** RetVal);
 		HRESULT Missing([out, retval] IBasicExpression ** RetVal);
+		HRESULT Not([out, retval] IzSyntaxHelper ** RetVal);
 	}
 }
 

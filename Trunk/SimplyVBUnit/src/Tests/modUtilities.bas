@@ -37,3 +37,14 @@ End Sub
 Public Sub AssertNoCalls(ByVal ActualCalls As CallTrace)
     Call AssertCalls(ActualCalls)
 End Sub
+
+Public Function NewCollection(ParamArray Values() As Variant) As Collection
+    Dim Result  As New Collection
+    Dim Item    As Variant
+    
+    For Each Item In Values
+        Call Result.Add(Item)
+    Next
+    
+    Set NewCollection = Result
+End Function

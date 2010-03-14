@@ -47,6 +47,9 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(Iz.vbNull, 1, False)
             Call Test.Use(Iz.Missing, GetMissingVariant, True)
             Call Test.Use(Iz.Missing, 1, False)
+            Call Test.Use(Iz.EqualTo(1).OrElse.EqualTo(2), 2, True)
+            Call Test.Use(Iz.EqualTo(1).OrElse.EqualTo(2), 1, True)
+            Call Test.Use(Iz.EqualTo(1).OrElse.EqualTo(2), 3, False)
             
         
     End Select
@@ -55,11 +58,11 @@ End Sub
 Public Sub Matches_WithConstraint_ReturnsExpected(ByVal c As IConstraint, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
     Dim Actual As Boolean
     
+    Set c = c.Resolve
     Actual = c.Matches(ConstraintActual)
     
     Assert.IsTrue Actual = Expected
 End Sub
-
 
 
 Private Function GetMissingVariant(Optional ByVal Value As Variant) As Variant
