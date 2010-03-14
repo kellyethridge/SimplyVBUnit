@@ -74,7 +74,7 @@ Public Sub DisplayStringDifference(ByVal Expected As String, ByVal Actual As Str
     End If
     
     Dim MaxDisplayLength As Long
-    MaxDisplayLength = 64 - Len(PFX_EXPECTED) - 2
+    MaxDisplayLength = 64 ' - Len(PFX_EXPECTED) - 2
     
     If Clipping Then
         Call mUtils.ClipExpectedAndActual(Expected, Actual, MaxDisplayLength, MismatchIndex)

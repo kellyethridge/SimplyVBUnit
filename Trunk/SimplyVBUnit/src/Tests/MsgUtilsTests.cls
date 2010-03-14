@@ -40,10 +40,52 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use("1234567890", 1, 9, "123456...")
             Call Test.Use("1234567890", 4, 10, "...4567890")
             Call Test.Use("1234567890", 5, 15, "...567890")
+            Call Test.Use("12345678901", 1, 10, "1234567...")
+            Call Test.Use("12345678901", 2, 10, "...2345...")
+            Call Test.Use("12345678901", 3, 10, "...3456...")
             
+        Case "ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected"
+            Call Test.Use("1234567890", "1234567890", 1)
+            Call Test.Use("12345678901", "1234567...", 1)
+            Call Test.Use("12345678901", "...5678901", 11)
+            
+        Case "ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected"
+            Call Test.Use("1234567890", "1234567890", 1)
+            Call Test.Use("12345678901", "1234567...", 1)
+            Call Test.Use("12345678901", "...5678901", 11)
+        
     End Select
 End Sub
 
+
+Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long, ByVal Expected As String)
+    Dim Utils As New MsgUtils
+    
+    Dim Actual As String
+    Actual = Utils.ClipString(SourceString, StartIndex, MaxStringLength)
+    
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected(ByVal UnclippedExpected As String, ByVal Expected As String, ByVal MismatchIndex As Long)
+    Dim Utils As New MsgUtils
+    
+    Dim Actual As String
+    Actual = UnclippedExpected
+    Call Utils.ClipExpectedAndActual(Actual, UnclippedExpected, 10, MismatchIndex)
+    
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected(ByVal UnclippedActual As String, ByVal Expected As String, ByVal MismatchIndex As Long)
+    Dim Utils As New MsgUtils
+    
+    Dim Actual As String
+    Actual = UnclippedActual
+    Call Utils.ClipExpectedAndActual(UnclippedActual, Actual, 10, MismatchIndex)
+    
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
 
 Public Sub FindMismatchIndex_WithEqualStrings_ReturnsZero()
     Dim Utils As New MsgUtils
@@ -112,15 +154,6 @@ Public Sub FindMismatchIndex_WithDifferenceLengthStrings_ReturnsIndexOfFirstChar
     Actual = Utils.FindMismatchIndex("aaaaa", "aaaa", False)
     
     Assert.That Actual, Iz.EqualTo(5)
-End Sub
-
-Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long, ByVal Expected As String)
-    Dim Utils As New MsgUtils
-    
-    Dim Actual As String
-    Actual = Utils.ClipString(SourceString, StartIndex, MaxStringLength)
-    
-    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 
