@@ -54,6 +54,10 @@ Public Function Expect(ByRef Expected As Variant) As TestNameExpression
     Set Expect = Me
 End Function
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IsConstraint(ByRef Expected As Variant) As Boolean
     Dim Result As Boolean
     

@@ -50,11 +50,14 @@ Private Function GetShorterStringLength(ByRef String1 As String, ByRef String2 A
     String1Length = Len(String1)
     String2Length = Len(String2)
     
+    Dim Result As Long
     If String1Length < String2Length Then
-        GetShorterStringLength = String1Length
+        Result = String1Length
     Else
-        GetShorterStringLength = String2Length
+        Result = String2Length
     End If
+    
+    GetShorterStringLength = Result
 End Function
 
 Private Function AreDifferentLengths(ByRef String1 As String, ByRef String2 As String) As Boolean
@@ -83,20 +86,25 @@ Public Function ClipString(ByVal s As String, ByVal StartIndex As Long, ByVal Ma
 End Function
 
 Public Sub ClipExpectedAndActual(ByRef Expected As String, ByRef Actual As String, ByVal MaxDisplayLength As Long, ByVal MismatchIndex As Long)
-    Dim MaxStringLength As Long: MaxStringLength = Max(Len(Expected), Len(Actual))
+    Dim MaxStringLength As Long
+    MaxStringLength = Max(Len(Expected), Len(Actual))
+    
     If MaxStringLength <= MaxDisplayLength Then
         Exit Sub
     End If
 
-    Dim ClipLength  As Long: ClipLength = MaxDisplayLength - Len(MSG_ELLIPSIS)
-    Dim ClipStart   As Long: ClipStart = MaxStringLength - ClipLength + 1
+    Dim ClipLength  As Long
+    Dim ClipStart   As Long
+    
+    ClipLength = MaxDisplayLength - Len(MSG_ELLIPSIS)
+    ClipStart = MaxStringLength - ClipLength + 1
 
     If ClipStart > MismatchIndex Then
         ClipStart = Max(1, MismatchIndex - ClipLength \ 2)
     End If
 
-    Expected = ClipString(Expected, MaxDisplayLength, ClipStart)
-    Actual = ClipString(Actual, MaxDisplayLength, ClipStart)
+    Expected = ClipString(Expected, ClipStart, MaxDisplayLength)
+    Actual = ClipString(Actual, ClipStart, MaxDisplayLength)
 End Sub
 
 'Public Function GetTypeRepresentation(ByRef Value As Variant) As String

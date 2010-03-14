@@ -62,6 +62,45 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             
             Dim Unk As IUnknown
             Call Test.Use(Unk, "Nothing")
+            
+        Case "DisplayStringDifference_WithValues_WritesExpected"
+            Dim Expected As String
+            Expected = "Expected string length 4 but was 6. Strings differ at index 5." & vbCrLf & _
+                       "Expected: ""abcd""" & vbCrLf & _
+                       "But was : ""abcdef""" & vbCrLf & _
+                       "---------------^" & vbCrLf
+            Call Test.Use("abcd", "abcdef", False, True, Expected)
+            
+            Expected = "String lengths are both 4. Strings differ at index 4." & vbCrLf & _
+                       "Expected: ""abcd""" & vbCrLf & _
+                       "But was : ""abcf""" & vbCrLf & _
+                       "--------------^" & vbCrLf
+            Call Test.Use("abcd", "abcf", False, True, Expected)
+            
+            Expected = "String lengths are both 4. Strings differ at index 4." & vbCrLf & _
+                       "Expected: ""abcd""" & vbCrLf & _
+                       "But was : ""aBcf""" & vbCrLf & _
+                       "--------------^" & vbCrLf
+            Call Test.Use("abcd", "aBcf", True, True, Expected)
+            
+            Expected = "String lengths are both 4. Strings differ at index 2." & vbCrLf & _
+                       "Expected: ""abcd""" & vbCrLf & _
+                       "But was : ""aBcf""" & vbCrLf & _
+                       "------------^" & vbCrLf
+            Call Test.Use("abcd", "aBcf", False, True, Expected)
+            
+            Expected = "String lengths are both 70. Strings differ at index 2." & vbCrLf & _
+                       "Expected: ""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...""" & vbCrLf & _
+                       "But was : ""aBaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...""" & vbCrLf & _
+                       "------------^" & vbCrLf
+            Call Test.Use("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aBaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", False, True, Expected)
+            
+            Expected = "String lengths are both 70. Strings differ at index 69." & vbCrLf & _
+                       "Expected: ""...aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa""" & vbCrLf & _
+                       "But was : ""...aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaBa""" & vbCrLf & _
+                       "-------------------------------------------------------------------------^" & vbCrLf
+            Call Test.Use("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaBa", False, True, Expected)
+            
     End Select
 End Sub
 
@@ -94,6 +133,16 @@ Public Sub WriteExpectedValue_WithValues_WritesExpected(ByRef ExpectedValue As V
     Dim Actual As String
     Actual = w.ToString
     Assert.IsTrue Actual = Expected, "Expected: " & Expected & vbCrLf & " But was: " & Actual & vbCrLf
+End Sub
+
+Public Sub DisplayStringDifference_WithValues_WritesExpected(ByVal ExpectedString As String, ByVal ActualString As String, ByVal IgnoreCase As Boolean, ByVal Clipping As Boolean, ByVal Expected As String)
+    Dim Writer As New TextMessageWriter
+    
+    Call Writer.DisplayStringDifference(ExpectedString, ActualString, IgnoreCase, Clipping)
+    
+    Dim Actual As String
+    Actual = Writer.ToString
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub DisplayConstraintDifference_UsingConstraint_WritesExpectedButWasClause()
@@ -278,40 +327,6 @@ Public Sub WriteConnector_WithValue_WrapsValueWithSpaces()
     Const Expected As String = " and "
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
-
-Public Sub DisplayStringDifference_WithExpectedStringShorterThanActual_WritesExpectedButWasClause()
-    Const EXPECTED_STRING  As String = "abcd"
-    Const ACTUAL_STRING    As String = "abcdef"
-    
-    Dim w As New TextMessageWriter
-    w.DisplayStringDifference EXPECTED_STRING, ACTUAL_STRING, False, True
-    
-    Dim Actual As String
-    Actual = w.ToString
-    Const Expected As String = "Expected string length 4 but was 6. Strings differ at index 5." & vbCrLf & _
-                               "Expected: ""abcd""" & vbCrLf & _
-                               "But was : ""abcdef""" & vbCrLf & _
-                               "---------------^" & vbCrLf
-    Assert.That Actual, Iz.EqualTo(Expected).NoClip
-End Sub
-
-Public Sub DisplayStringDifference_WithExpectedStringSameLengthAsActual_WritesExpectedBuWasClause()
-    Const EXPECTED_STRING  As String = "abcd"
-    Const ACTUAL_STRING    As String = "abcf"
-    
-    Dim w As New TextMessageWriter
-    w.DisplayStringDifference EXPECTED_STRING, ACTUAL_STRING, False, True
-    
-    Dim Actual As String
-    Actual = w.ToString
-    Const Expected As String = "String lengths are both 4. Strings differ at index 4." & vbCrLf & _
-                               "Expected: ""abcd""" & vbCrLf & _
-                               "But was : ""abcf""" & vbCrLf & _
-                               "--------------^" & vbCrLf
-    Assert.That Actual, Iz.EqualTo(Expected).NoClip
-End Sub
-
-
 
 
 
