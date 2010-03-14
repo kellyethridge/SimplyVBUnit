@@ -17,6 +17,10 @@ Attribute VB_Name = "modMain"
 '
 Option Explicit
 
+#If False Then
+    Dim Iz
+#End If
+
 Private mBootstraps As Long
 Private mPassed     As Long
 Private mFailed     As Long

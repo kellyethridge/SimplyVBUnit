@@ -56,13 +56,6 @@ Public Function ToString() As String
     ToString = mMessage.ToString
 End Function
 
-'            int maxDisplayLength = MaxLineLength
-'                - PrefixLength   // Allow for prefix
-'                - 2;             // 2 quotation marks
-'
-'            if ( clipping )
-'                MsgUtils.ClipExpectedAndActual(ref expected, ref actual, maxDisplayLength, mismatch);
-
 Public Sub DisplayStringDifference(ByVal Expected As String, ByVal Actual As String, ByVal IgnoreCase As Boolean, ByVal Clipping As Boolean)
     Dim MismatchIndex As Long
     MismatchIndex = MsgUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
@@ -112,18 +105,6 @@ Public Sub DisplayDifference(ByRef Expected As Variant, ByRef Actual As Variant)
     Call WriteActualLine(Actual)
 End Sub
 
-Private Sub WriteExpectedLine(ByRef Expected As Variant)
-    Call WriteText(PFX_EXPECTED)
-    Call WriteExpectedValue(Expected)
-    Call WriteLine
-End Sub
-
-Private Sub WriteActualLine(ByRef Actual As Variant)
-    Call WriteText(PFX_ACTUAL)
-    Call WriteActualValue(Actual)
-    Call WriteLine
-End Sub
-
 Public Sub WriteActualValue(ByRef Value As Variant)
     Call WriteValue(Value)
 End Sub
@@ -140,6 +121,64 @@ Public Sub WriteValue(ByRef Value As Variant)
     Else
         Call WriteDefault(Value)
     End If
+End Sub
+
+Public Sub WriteLine(ParamArray Args() As Variant)
+    Dim UpperBound As Long
+    UpperBound = UBound(Args)
+    
+    If HasOneArgument(UpperBound) Then
+        Call WriteText(Args(FIRST_ARGUMENT))
+    ElseIf HasMultipleArguments(UpperBound) Then
+        Dim LocalArgs() As Variant
+        LocalArgs = Args
+        Call WriteFormattedText(CStr(LocalArgs(FIRST_ARGUMENT)), LocalArgs(SECOND_ARGUMENT), UpperBound)
+    End If
+    
+    Call WriteText(vbCrLf)
+End Sub
+
+Public Sub WriteText(ByVal Text As String, ParamArray Args() As Variant)
+    Dim UpperBound As Long
+    UpperBound = UBound(Args)
+    
+    If HasNoArguments(UpperBound) Then
+        Call mMessage.Append(Text)
+    Else
+        Dim LocalArgs() As Variant
+        LocalArgs = Args
+        Call mMessage.AppendFormatArray(Text, LocalArgs)
+    End If
+End Sub
+
+Public Sub WritePredicate(ByVal Text As String)
+    Call WriteText(FMT_PREDICATE, Text)
+End Sub
+
+Public Sub WriteConnector(ByVal Text As String)
+    Call WriteText(FMT_CONNECTOR, Text)
+End Sub
+
+Public Sub WriteErrorInfo(ByVal Info As ErrorInfo)
+    Call WriteText(FMT_ERRORNUMBER, Info.Number)
+    Call WriteOptionalText(Info.Description, FMT_ERRORDESCRIPTION)
+    Call WriteOptionalText(Info.Source, FMT_ERRORSOURCE)
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub WriteExpectedLine(ByRef Expected As Variant)
+    Call WriteText(PFX_EXPECTED)
+    Call WriteExpectedValue(Expected)
+    Call WriteLine
+End Sub
+
+Private Sub WriteActualLine(ByRef Actual As Variant)
+    Call WriteText(PFX_ACTUAL)
+    Call WriteActualValue(Actual)
+    Call WriteLine
 End Sub
 
 Private Sub WriteEnumerable(ByRef Values As Variant)
@@ -178,21 +217,6 @@ Private Sub WriteString(ByVal Value As String)
     End If
 End Sub
 
-Public Sub WriteLine(ParamArray Args() As Variant)
-    Dim UpperBound As Long
-    UpperBound = UBound(Args)
-    
-    If HasOneArgument(UpperBound) Then
-        Call WriteText(Args(FIRST_ARGUMENT))
-    ElseIf HasMultipleArguments(UpperBound) Then
-        Dim LocalArgs() As Variant
-        LocalArgs = Args
-        Call WriteFormattedText(LocalArgs(FIRST_ARGUMENT), LocalArgs(SECOND_ARGUMENT), UpperBound)
-    End If
-    
-    Call WriteText(vbCrLf)
-End Sub
-
 Private Function HasOneArgument(ByVal UpperBound As Long) As Boolean
     HasOneArgument = (UpperBound = 0)
 End Function
@@ -201,44 +225,17 @@ Private Function HasMultipleArguments(ByVal UpperBound As Long) As Boolean
     HasMultipleArguments = (UpperBound > 0)
 End Function
 
-Public Sub WriteText(ByVal Text As String, ParamArray Args() As Variant)
-    Dim UpperBound As Long
-    UpperBound = UBound(Args)
-    
-    If HasNoArguments(UpperBound) Then
-        Call mMessage.Append(Text)
-    Else
-        Dim LocalArgs() As Variant
-        LocalArgs = Args
-        Call mMessage.AppendFormatArray(Text, LocalArgs)
-    End If
-End Sub
-
 Private Function HasNoArguments(ByVal UpperBound As Long) As Boolean
     HasNoArguments = (UpperBound < 0)
 End Function
 
-Private Sub WriteFormattedText(ByVal Text As String, ByRef FirstArgument As Variant, ByVal ArgumentCount As Long)
+Private Sub WriteFormattedText(ByRef Text As String, ByRef FirstArgument As Variant, ByVal ArgumentCount As Long)
     Dim Proxy As ArrayProxy
     Call InitArrayProxy(Proxy, FirstArgument, ArgumentCount)
     Call mMessage.AppendFormatArray(Text, Proxy.Data)
 End Sub
 
-Public Sub WritePredicate(ByVal Text As String)
-    Call WriteText(FMT_PREDICATE, Text)
-End Sub
-
-Public Sub WriteConnector(ByVal Text As String)
-    Call WriteText(FMT_CONNECTOR, Text)
-End Sub
-
-Public Sub WriteErrorInfo(ByVal Info As ErrorInfo)
-    Call WriteText(FMT_ERRORNUMBER, Info.Number)
-    Call WriteOptionalText(Info.Description, FMT_ERRORDESCRIPTION)
-    Call WriteOptionalText(Info.Source, FMT_ERRORSOURCE)
-End Sub
-
-Private Sub WriteOptionalText(ByRef Text As Variant, ByVal TextFormat As String)
+Private Sub WriteOptionalText(ByRef Text As Variant, ByRef TextFormat As String)
     If Len(Text) > 0 Then
         Call WriteText(TextFormat, Text)
     End If

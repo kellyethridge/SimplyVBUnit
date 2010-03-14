@@ -53,6 +53,8 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(Nothing, "Nothing")
             Call Test.Use(, "Missing")
             Call Test.Use("string", Quote("string"))
+            Call Test.Use(NewCollection("a", 1, "b"), "< ""a"", 1, ""b"" >")
+            Call Test.Use(NewCollection(Array(1, 2, 3), Array("a", "b")), "< < 1, 2, 3 >, < ""a"", ""b"" > >")
             
             Dim List As New Collection
             List.Add 3
