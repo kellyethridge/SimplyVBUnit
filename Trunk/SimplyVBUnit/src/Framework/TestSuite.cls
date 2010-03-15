@@ -46,6 +46,10 @@ Private mName               As String
 Private mCategories         As CategoryList
 
 
+Public Property Get This() As TestSuite
+    Set This = Me
+End Property
+
 Public Property Get HasCategories() As Boolean
     If Not mCategories Is Nothing Then
         HasCategories = (mCategories.Count > 0)
