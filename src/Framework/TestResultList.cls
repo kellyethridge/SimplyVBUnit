@@ -34,9 +34,7 @@ Private mResults As New Collection
 Public Sub Add(ByVal Result As TestResult)
     If Result Is Nothing Then _
         Call Error.CannotBeNothing(Me, "Add", "Result")
-'        Call Err.Raise(ErrorCode.ArgumentNull, Resource.GetString(Src_TestResultList_Add), Resource.GetString(Arg_CannotBeNothing, "Result"))
-        
-        
+    
     Call mResults.Add(Result)
 End Sub
 
