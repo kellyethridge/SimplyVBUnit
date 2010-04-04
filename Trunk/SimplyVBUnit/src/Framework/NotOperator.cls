@@ -31,16 +31,16 @@ Option Explicit
 Implements IOperator
 
 
-Public Function Resolve(ByVal Constraints As ConstraintStack) As IConstraint
+Public Sub Reduce(ByVal Constraints As ConstraintStack)
     If Constraints.Count > 0 Then
-        Set Resolve = Sim.NewNotConstraint(Constraints.Pop)
+        Constraints.Push Sim.NewNotConstraint(Constraints.Pop)
     End If
-End Function
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IOperator Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IOperator_Resolve(ByVal Constraints As ConstraintStack) As IConstraint
-    Set IOperator_Resolve = Resolve(Constraints)
-End Function
+Private Sub IOperator_Reduce(ByVal Constraints As ConstraintStack)
+    Reduce Constraints
+End Sub

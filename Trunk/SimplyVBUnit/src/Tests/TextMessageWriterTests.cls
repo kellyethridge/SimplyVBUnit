@@ -64,6 +64,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             
             Dim Unk As IUnknown
             Call Test.Use(Unk, "Nothing")
+            Call Test.Use(New TextMessageWriterTests, "<TextMessageWriterTests>")
             
         Case "DisplayStringDifference_WithValues_WritesExpected"
             Dim Expected As String

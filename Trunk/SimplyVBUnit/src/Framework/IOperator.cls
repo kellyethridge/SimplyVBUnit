@@ -29,5 +29,5 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Public Function Resolve(ByVal Constraints As ConstraintStack) As IConstraint: End Function
+Public Sub Reduce(ByVal Constraints As ConstraintStack): End Sub
 

@@ -31,20 +31,20 @@ Option Explicit
 Implements IOperator
 
 
-Public Function Resolve(ByVal Constraints As ConstraintStack) As AndConstraint
+Public Sub Reduce(ByVal Constraints As ConstraintStack)
     Dim LeftSide    As IConstraint
     Dim RightSide   As IConstraint
     
     Set RightSide = Constraints.Pop
     Set LeftSide = Constraints.Pop
     
-    Set Resolve = Sim.NewAndConstraint(LeftSide, RightSide)
-End Function
+    Constraints.Push Sim.NewAndConstraint(LeftSide, RightSide)
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IOperator Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IOperator_Resolve(ByVal Constraints As ConstraintStack) As IConstraint
-    Set IOperator_Resolve = Resolve(Constraints)
-End Function
+Private Sub IOperator_Reduce(ByVal Constraints As ConstraintStack)
+    Reduce Constraints
+End Sub

@@ -29,17 +29,18 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mConstraints        As New ConstraintStack
-Private mOperators          As New OperatorStack
+Private mConstraints    As New ConstraintStack
+Private mOperators      As New OperatorStack
 
 
 Public Function Resolve() As IConstraint
-    ResolveConstraints
+    ReduceOperators
     Set Resolve = Release
 End Function
 
 Public Sub AddConstraint(ByVal Constraint As IConstraint)
     mConstraints.Push Constraint
+    ReduceOperators
 End Sub
 
 Public Sub AddOperator(ByVal Operator As IOperator)
@@ -50,7 +51,7 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Sub ResolveConstraints()
+Private Sub ReduceOperators()
     Do While HasOperators
         ResolveNextOperator
     Loop
@@ -68,10 +69,7 @@ Private Sub ResolveNextOperator()
     Dim Operator As IOperator
     Set Operator = mOperators.Pop
     
-    Dim c As IConstraint
-    Set c = Operator.Resolve(mConstraints)
-    
-    AddConstraint c
+    Operator.Reduce mConstraints
 End Sub
 
 Private Function Release() As IConstraint

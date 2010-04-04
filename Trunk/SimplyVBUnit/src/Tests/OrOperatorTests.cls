@@ -35,11 +35,12 @@ Public Sub Resolve_WithTwoConstraints_ReturnsOrOperatorOfTwoConstraint()
     Dim Constraints As New ConstraintStack
     Call Constraints.Push(LeftSide)
     Call Constraints.Push(RightSide)
+    
     Dim Op As New OrOperator
+    Op.Reduce Constraints
+    
     Dim c As OrConstraint
-    
-    Set c = Op.Resolve(Constraints)
-    
-    Assert.IsTrue c.LeftSide Is LeftSide
-    Assert.IsTrue c.RightSide Is RightSide
+    Set c = Constraints.Pop
+    assert.IsTrue c.LeftSide Is LeftSide
+    assert.IsTrue c.RightSide Is RightSide
 End Sub

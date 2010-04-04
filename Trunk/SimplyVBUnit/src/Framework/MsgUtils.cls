@@ -43,27 +43,6 @@ Public Function FindMismatchIndex(ByVal Expected As String, ByVal Actual As Stri
     End If
 End Function
 
-Private Function GetShorterStringLength(ByRef String1 As String, ByRef String2 As String) As Long
-    Dim String1Length As Long
-    Dim String2Length As Long
-    
-    String1Length = Len(String1)
-    String2Length = Len(String2)
-    
-    Dim Result As Long
-    If String1Length < String2Length Then
-        Result = String1Length
-    Else
-        Result = String2Length
-    End If
-    
-    GetShorterStringLength = Result
-End Function
-
-Private Function AreDifferentLengths(ByRef String1 As String, ByRef String2 As String) As Boolean
-    AreDifferentLengths = (Len(String1) <> Len(String2))
-End Function
-
 Public Function ClipString(ByVal s As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long) As String
     Dim sb As New StringBuilder
 
@@ -172,6 +151,30 @@ End Sub
 '    GetArrayIndicesAsString = sb.ToString
 'End Function
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function GetShorterStringLength(ByRef String1 As String, ByRef String2 As String) As Long
+    Dim String1Length As Long
+    Dim String2Length As Long
+    
+    String1Length = Len(String1)
+    String2Length = Len(String2)
+    
+    Dim Result As Long
+    If String1Length < String2Length Then
+        Result = String1Length
+    Else
+        Result = String2Length
+    End If
+    
+    GetShorterStringLength = Result
+End Function
+
+Private Function AreDifferentLengths(ByRef String1 As String, ByRef String2 As String) As Boolean
+    AreDifferentLengths = (Len(String1) <> Len(String2))
+End Function
 
 Private Function Max(ByVal X As Long, ByVal Y As Long) As Long
     If X > Y Then
