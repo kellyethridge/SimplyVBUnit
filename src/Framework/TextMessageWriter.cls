@@ -46,6 +46,8 @@ Private Const FMT_ERRORSOURCE       As String = " from [{0}]"
 Private Const FMT_CONNECTOR         As String = " {0} "
 Private Const FMT_STRINGSDIFFER_1   As String = "String lengths are both {0}. Strings differ at index {1}."
 Private Const FMT_STRINGSDIFFER_2   As String = "Expected string length {0} but was {1}. Strings differ at index {2}."
+Private Const FMT_DEFAULT           As String = "<{0}>"
+Private Const MAX_DISPLAY_LENGTH    As Long = 64
 
 
 Private mMessage    As New StringBuilder
@@ -66,11 +68,8 @@ Public Sub DisplayStringDifference(ByVal Expected As String, ByVal Actual As Str
         Call WriteLine(FMT_STRINGSDIFFER_2, Len(Expected), Len(Actual), MismatchIndex)
     End If
     
-    Dim MaxDisplayLength As Long
-    MaxDisplayLength = 64 ' - Len(PFX_EXPECTED) - 2
-    
     If Clipping Then
-        Call mUtils.ClipExpectedAndActual(Expected, Actual, MaxDisplayLength, MismatchIndex)
+        Call mUtils.ClipExpectedAndActual(Expected, Actual, MAX_DISPLAY_LENGTH, MismatchIndex)
     End If
     
     MismatchIndex = mUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
@@ -203,8 +202,13 @@ Private Sub WriteDefault(ByRef Value As Variant)
         Case vbString:      Call WriteString(Value)
         Case vbNull:        Call WriteText(FMT_NULL)
         Case vbEmpty:       Call WriteText(FMT_EMPTY)
-        Case vbObject:      Call WriteText(FMT_NOTHING)
-        Case vbDataObject:  Call WriteText(FMT_NOTHING)
+        Case vbObject, vbDataObject
+            If Value Is Nothing Then
+                WriteText FMT_NOTHING
+            Else
+                WriteText FMT_DEFAULT, TypeName(Value)
+            End If
+            
         Case Else:          Call WriteText(CStr(Value))
     End Select
 End Sub

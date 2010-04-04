@@ -32,7 +32,6 @@ Implements IBasicExpression
 Implements IConstraintExpression
 
 Private mBuilder As New ConstraintBuilder
-Private mHasNotConstraint As Boolean
 
 
 Public Function Resolve() As IConstraint
@@ -49,9 +48,7 @@ Public Function AndAlso() As IConstraintExpression
 End Function
 
 Public Function Not_() As IConstraintExpression
-'    Set Not_ = AddOperator(New NotOperator)
-    mHasNotConstraint = True
-    Set Not_ = Me
+    Set Not_ = AddOperator(New NotOperator)
 End Function
 
 Public Function EqualTo(ByRef Expected As Variant) As EqualConstraint
@@ -63,13 +60,7 @@ End Function
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function AddConstraint(ByVal Constraint As IConstraint) As IConstraint
-    If mHasNotConstraint Then
-        mBuilder.AddConstraint Sim.NewNotConstraint(Constraint)
-        mHasNotConstraint = False
-    Else
-        mBuilder.AddConstraint Constraint
-    End If
-    
+    mBuilder.AddConstraint Constraint
     Set AddConstraint = Constraint
 End Function
 
