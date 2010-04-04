@@ -213,7 +213,7 @@ Public Sub Matches_WithValues(ByRef ConstraintExpected As Variant, ByRef Constra
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_CaseInsensitive(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
@@ -224,7 +224,7 @@ Public Sub Matches_CaseInsensitive(ByRef ConstraintExpected As Variant, ByRef Co
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_WithTolerances(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Tolerance As Double, ByVal Expected As Boolean)
@@ -235,7 +235,7 @@ Public Sub Matches_WithTolerances(ByRef ConstraintExpected As Variant, ByRef Con
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_WithTolerancesOfDays(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
@@ -246,7 +246,7 @@ Public Sub Matches_WithTolerancesOfDays(ByVal ConstraintExpected As Date, ByVal 
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_WithTolerancesOfHours(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
@@ -257,7 +257,7 @@ Public Sub Matches_WithTolerancesOfHours(ByVal ConstraintExpected As Date, ByVal
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_WithTolerancesOfMinutes(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
@@ -268,7 +268,7 @@ Public Sub Matches_WithTolerancesOfMinutes(ByVal ConstraintExpected As Date, ByV
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_WithTolerancesOfSeconds(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Double, ByVal Expected As Boolean)
@@ -279,7 +279,7 @@ Public Sub Matches_WithTolerancesOfSeconds(ByVal ConstraintExpected As Date, ByV
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_WithArraysAsCollections(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
@@ -290,7 +290,7 @@ Public Sub Matches_WithArraysAsCollections(ByRef ConstraintExpected As Variant, 
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_WithExternalComparer(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
@@ -301,7 +301,7 @@ Public Sub Matches_WithExternalComparer(ByRef ConstraintExpected As Variant, ByR
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Matches_WithStrict(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
@@ -312,7 +312,7 @@ Public Sub Matches_WithStrict(ByRef ConstraintExpected As Variant, ByRef Constra
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
 
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub Resolve_WhenCalled_ReturnsSelf()
@@ -322,7 +322,7 @@ Public Sub Resolve_WhenCalled_ReturnsSelf()
     Dim Actual As IConstraint
     Set Actual = c.Resolve
     
-    Assert.IsTrue Actual Is c
+    assert.IsTrue Actual Is c
 End Sub
 
 Public Sub WriteMessageTo_WithTrueFalse_WritesExpectedButWasClause()
@@ -337,7 +337,7 @@ Public Sub WriteMessageTo_WithTrueFalse_WritesExpectedButWasClause()
     Actual = w.ToString
     Const Expected As String = "Expected: True" & vbCrLf & _
                                "But was : False" & vbCrLf
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub WriteMessageTo_WithNonEqualStrings_WritesExpectedButWasClause()
@@ -353,8 +353,8 @@ Public Sub WriteMessageTo_WithNonEqualStrings_WritesExpectedButWasClause()
     Const Expected As String = "Expected string length 1 but was 2. Strings differ at index 2." & vbCrLf & _
                                "Expected: ""a""" & vbCrLf & _
                                "But was : ""ab""" & vbCrLf & _
-                               "------------^" & vbCrLf
-    Assert.That Actual, Iz.EqualTo(Expected)
+                               "  ----------^" & vbCrLf
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 
