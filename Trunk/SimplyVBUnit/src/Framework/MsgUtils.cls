@@ -22,8 +22,27 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private Const MSG_ELLIPSIS  As String = "..."
-Private Const MSG_BOUNDS    As String = "{0} To {1}"
+Private Const MSG_ELLIPSIS          As String = "..."
+Private Const MSG_BOUNDS            As String = "{0} To {1}"
+
+Private Const ASC_NULL              As Long = 0
+Private Const ASC_BELL              As Long = 4
+Private Const ASC_FORMFEED          As Long = 7
+Private Const ASC_BACKSPACE         As Long = 8
+Private Const ASC_LINEFEED          As Long = 10
+Private Const ASC_CARRIAGERETURN    As Long = 13
+Private Const ASC_HORIZONTALTAB     As Long = 9
+Private Const ASC_VERTICALTAB       As Long = 11
+Private Const ESC_NULL              As String = "\0"
+Private Const ESC_BELL              As String = "\a"
+Private Const ESC_FORMFEED          As String = "\f"
+Private Const ESC_BACKSPACE         As String = "\b"
+Private Const ESC_LINEFEED          As String = "\n"
+Private Const ESC_CARRIAGERETURN    As String = "\r"
+Private Const ESC_HORIZONTALTAB     As String = "\t"
+Private Const ESC_VERTICALTAB       As String = "\v"
+Private Const ESC_HEXPREFIX         As String = "\x"
+
 
 
 Public Function FindMismatchIndex(ByVal Expected As String, ByVal Actual As String, ByVal IgnoreCase As Boolean) As Long
@@ -85,6 +104,45 @@ Public Sub ClipExpectedAndActual(ByRef Expected As String, ByRef Actual As Strin
     Expected = ClipString(Expected, ClipStart, MaxDisplayLength)
     Actual = ClipString(Actual, ClipStart, MaxDisplayLength)
 End Sub
+
+Public Function EscapeControlChars(ByVal s As String) As String
+    Dim sb As New StringBuilder
+    
+    Dim i As Long
+    For i = 1 To Len(s)
+        Dim Ch As String
+        Ch = Mid$(s, i, 1)
+        
+        Select Case AscW(Ch)
+            Case ASC_NULL:              sb.Append ESC_NULL
+            Case ASC_LINEFEED:          sb.Append ESC_LINEFEED
+            Case ASC_CARRIAGERETURN:    sb.Append ESC_CARRIAGERETURN
+            Case ASC_BACKSPACE:         sb.Append ESC_BACKSPACE
+            Case ASC_HORIZONTALTAB:     sb.Append ESC_HORIZONTALTAB
+            Case ASC_VERTICALTAB:       sb.Append ESC_VERTICALTAB
+            Case ASC_FORMFEED:          sb.Append ESC_FORMFEED
+            Case ASC_BELL:              sb.Append ESC_BELL
+            Case Is < 32:               sb.Append ESC_HEXPREFIX
+                                        sb.Append Right$("0" & Hex$(Asc(Ch)), 2)
+            Case Else:                  sb.Append Ch
+        End Select
+    Next
+        
+    Dim Result As String
+    If sb.Length > 0 Then
+        Result = sb.ToString
+    Else
+        Result = Value
+    End If
+    
+    EscapeControlChars = Result
+End Function
+
+
+
+
+
+
 
 'Public Function GetTypeRepresentation(ByRef Value As Variant) As String
 '    Dim sb As New StringBuilder

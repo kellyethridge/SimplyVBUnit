@@ -94,54 +94,6 @@ Public Sub Append(ByVal Text As String)
     Call AppendToBuffer(Text)
 End Sub
 
-Private Sub EnsureCapacity(ByVal RequiredCapacity As Long)
-    mRequiredCapacity = RequiredCapacity
-    
-    If NeedsMoreCapacity Then
-        Call CalculateNewCapacity
-        Call ExpandCapacity
-    End If
-End Sub
-
-Private Sub AppendToBuffer(ByVal Text As String)
-    Call CopyMemory(ByVal StrPtr(mBuffer) + (Length * 2), ByVal StrPtr(Text), LenB(Text))
-    Call SetLength(Text)
-End Sub
-
-Private Sub SetLength(ByVal Text As String)
-    mLength = mLength + Len(Text)
-End Sub
-
-Private Function NeedsMoreCapacity() As Boolean
-    NeedsMoreCapacity = (mRequiredCapacity > CurrentCapacity)
-End Function
-
-Private Sub CalculateNewCapacity()
-    Dim NewCapacity As Long
-    NewCapacity = CurrentCapacity
-    
-    Do While mRequiredCapacity > NewCapacity
-        NewCapacity = NewCapacity * 2
-    Loop
-    
-    mNewCapacity = NewCapacity
-End Sub
-
-Private Function CurrentCapacity() As Long
-    CurrentCapacity = Len(mBuffer)
-End Function
-
-Private Sub ExpandCapacity()
-    Dim NewBuffer As String
-    NewBuffer = String$(mNewCapacity, vbNullChar)
-    
-    Call CopyMemory(ByVal StrPtr(NewBuffer), ByVal StrPtr(mBuffer), Length * 2)
-    mBuffer = vbNullString
-    
-    StringPtr(mBuffer) = StringPtr(NewBuffer)
-    StringPtr(NewBuffer) = vbNullPtr
-End Sub
-
 
 ''
 ' Returns the current length of the string buffer.
@@ -182,6 +134,57 @@ Public Function ToString() As String
     ToString = Left$(mBuffer, Length)
 End Function
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub EnsureCapacity(ByVal RequiredCapacity As Long)
+    mRequiredCapacity = RequiredCapacity
+    
+    If NeedsMoreCapacity Then
+        Call CalculateNewCapacity
+        Call ExpandCapacity
+    End If
+End Sub
+
+Private Sub AppendToBuffer(ByRef Text As String)
+    Call CopyMemory(ByVal StrPtr(mBuffer) + (Length * 2), ByVal StrPtr(Text), LenB(Text))
+    Call SetLength(Text)
+End Sub
+
+Private Sub SetLength(ByRef Text As String)
+    mLength = mLength + Len(Text)
+End Sub
+
+Private Function NeedsMoreCapacity() As Boolean
+    NeedsMoreCapacity = (mRequiredCapacity > CurrentCapacity)
+End Function
+
+Private Sub CalculateNewCapacity()
+    Dim NewCapacity As Long
+    NewCapacity = CurrentCapacity
+    
+    Do While mRequiredCapacity > NewCapacity
+        NewCapacity = NewCapacity * 2
+    Loop
+    
+    mNewCapacity = NewCapacity
+End Sub
+
+Private Function CurrentCapacity() As Long
+    CurrentCapacity = Len(mBuffer)
+End Function
+
+Private Sub ExpandCapacity()
+    Dim NewBuffer As String
+    NewBuffer = String$(mNewCapacity, vbNullChar)
+    
+    Call CopyMemory(ByVal StrPtr(NewBuffer), ByVal StrPtr(mBuffer), Length * 2)
+    mBuffer = vbNullString
+    
+    StringPtr(mBuffer) = StringPtr(NewBuffer)
+    StringPtr(NewBuffer) = vbNullPtr
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

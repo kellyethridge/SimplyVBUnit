@@ -32,6 +32,14 @@ Implements ITestCaseSource
 
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
+        Case "FindMismatchIndex_WithValues_ReturnsExpected"
+            Call Test.Use("abcd", "abcd", True, 0)
+            Call Test.Use("abcd", "abce", True, 4)
+            Call Test.Use("abcD", "abcd", True, 0)
+            Call Test.Use("abcD", "abcd", False, 4)
+            Call Test.Use("abcd", "abcde", False, 5)
+            Call Test.Use("abcde", "abcd", False, 5)
+        
         Case "ClipString_WithValues_ReturnsExpected"
             Call Test.Use("string", 1, 6, "string")
             Call Test.Use("string", 1, 5, "st...")
@@ -54,9 +62,24 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use("12345678901", "1234567...", 1)
             Call Test.Use("12345678901", "...5678901", 11)
         
+        Case "EscapeControlChars_WithValues_ReturnsExpected"
+            Call Test.Use("abc", "abc")
+            Call Test.Use("ab" & vbCr & "cd", "ab\rcd")
+            Call Test.Use("ab" & vbCrLf & "cd", "ab\r\ncd")
+            Call Test.Use("abc" & Chr$(14) & "de", "abc\x0Ede")
+            Call Test.Use("", "")
+            
     End Select
 End Sub
 
+Public Sub FindMismatchIndex_WithValues_ReturnsExpected(ByVal ExpectedString As String, ByVal ActualString As String, ByVal IgnoreCase As Boolean, ByVal Expected As Long)
+    Dim Utils As New MsgUtils
+    
+    Dim Actual As Long
+    Actual = Utils.FindMismatchIndex(ExpectedString, ActualString, IgnoreCase)
+    
+    assert.That Actual, Iz.EqualTo(Expected)
+End Sub
 
 Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long, ByVal Expected As String)
     Dim Utils As New MsgUtils
@@ -64,7 +87,7 @@ Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, B
     Dim Actual As String
     Actual = Utils.ClipString(SourceString, StartIndex, MaxStringLength)
     
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected(ByVal UnclippedExpected As String, ByVal Expected As String, ByVal MismatchIndex As Long)
@@ -74,7 +97,7 @@ Public Sub ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected(By
     Actual = UnclippedExpected
     Call Utils.ClipExpectedAndActual(Actual, UnclippedExpected, 10, MismatchIndex)
     
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected(ByVal UnclippedActual As String, ByVal Expected As String, ByVal MismatchIndex As Long)
@@ -84,76 +107,14 @@ Public Sub ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected(ByVa
     Actual = UnclippedActual
     Call Utils.ClipExpectedAndActual(UnclippedActual, Actual, 10, MismatchIndex)
     
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
-Public Sub FindMismatchIndex_WithEqualStrings_ReturnsZero()
+Public Sub EscapeControlChars_WithValues_ReturnsExpected(ByVal Source As String, ByVal Expected As String)
     Dim Utils As New MsgUtils
     
-    Const SAME_STRING As String = "string"
-    Dim Actual As Long
-    Actual = Utils.FindMismatchIndex(SAME_STRING, SAME_STRING, False)
+    Dim Actual As String
+    Actual = Utils.EscapeControlChars(Source)
     
-    Const NO_MISMATCH_FOUND As Long = 0
-    Assert.That Actual, Iz.EqualTo(NO_MISMATCH_FOUND)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
-
-Public Sub FindMismatchIndex_WithFirstCharacterDifferent_ReturnsIndexOfFirstCharacter()
-    Dim Utils As New MsgUtils
-    
-    Dim Actual As Long
-    Actual = Utils.FindMismatchIndex("aaaa", "baaa", False)
-    
-    Const INDEX_OF_FIRST_CHARACTER As Long = 1
-    Assert.That Actual, Iz.EqualTo(INDEX_OF_FIRST_CHARACTER)
-End Sub
-
-Public Sub FindMismatchIndex_WithLastCharacterDifferent_ReturnsIndexOfLastCharacter()
-    Dim Utils As New MsgUtils
-    
-    Dim Actual As Long
-    Actual = Utils.FindMismatchIndex("aaaa", "aaab", False)
-    
-    Const INDEX_OF_LAST_CHARACTER As Long = 4
-    Assert.That Actual, Iz.EqualTo(INDEX_OF_LAST_CHARACTER)
-End Sub
-
-Public Sub FindMismatchIndex_WithCaseDifference_ReturnsIndexOfCaseDifference()
-    Dim Utils As New MsgUtils
-    
-    Dim Actual As Long
-    Actual = Utils.FindMismatchIndex("aaaa", "aAaa", False)
-    
-    Const INDEX_OF_CASE_DIFFERENCE As Long = 2
-    Assert.That Actual, Iz.EqualTo(INDEX_OF_CASE_DIFFERENCE)
-End Sub
-
-Public Sub FindMismatchIndex_WithCaseDifferenceIgnoringCase_ReturnsZero()
-    Dim Utils As New MsgUtils
-    
-    Dim Actual As Long
-    Actual = Utils.FindMismatchIndex("aaaa", "aAaa", True)
-    
-    Const NO_MISMATCH_FOUND As Long = 0
-    Assert.That Actual, Iz.EqualTo(NO_MISMATCH_FOUND)
-End Sub
-
-Public Sub FindMismatchIndex_WithDifferenceLengthStrings_ReturnsIndexOfFirstCharacterPastShortedString()
-    Dim Utils As New MsgUtils
-    
-    Dim Actual As Long
-    Actual = Utils.FindMismatchIndex("aaaa", "aaaaa", False)
-    
-    Assert.That Actual, Iz.EqualTo(5)
-End Sub
-
-Public Sub FindMismatchIndex_WithDifferenceLengthStrings_ReturnsIndexOfFirstCharacterPastShortedString2()
-    Dim Utils As New MsgUtils
-    
-    Dim Actual As Long
-    Actual = Utils.FindMismatchIndex("aaaaa", "aaaa", False)
-    
-    Assert.That Actual, Iz.EqualTo(5)
-End Sub
-
-
