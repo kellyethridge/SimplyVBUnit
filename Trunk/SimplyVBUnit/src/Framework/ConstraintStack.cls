@@ -32,7 +32,7 @@ Option Explicit
 Private mConstraints As New Stack
 
 Public Sub Push(ByVal Constraint As IConstraint)
-    Call mConstraints.Push(Constraint)
+    mConstraints.Push Constraint
 End Sub
 
 Public Function Pop() As IConstraint
@@ -46,3 +46,7 @@ End Property
 Public Property Get Peek() As IConstraint
     Set Peek = mConstraints.Peek
 End Property
+
+Public Sub Clear()
+    mConstraints.Clear
+End Sub

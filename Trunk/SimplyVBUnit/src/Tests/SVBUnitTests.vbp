@@ -60,6 +60,7 @@ Class=NotConstraintTests; NotConstraintTests.cls
 Class=ConstraintBuilderTests; ConstraintBuilderTests.cls
 Class=OrOperatorTests; OrOperatorTests.cls
 Class=MsgUtilsTests; MsgUtilsTests.cls
+Class=ConstraintExpressionTests; ConstraintExpressionTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

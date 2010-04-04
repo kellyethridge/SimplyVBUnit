@@ -6,12 +6,12 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "IConstraint"
+Attribute VB_Name = "IResolvable"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-' Copyright 2009 Kelly Ethridge
+' Copyright 2010 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
 ' you may not use this file except in compliance with the License.
@@ -25,12 +25,9 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: IConstraint
+' Module: IResolvable
 '
 Option Explicit
 
-Public Function Matches(ByRef Actual As Variant) As Boolean: End Function
-Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter): End Sub
-Public Sub WriteDescriptionTo(ByVal Writer As TextMessageWriter): End Sub
-Public Sub WriteActualValueTo(ByVal Writer As TextMessageWriter): End Sub
+Public Function Resolve() As IConstraint: End Function
 

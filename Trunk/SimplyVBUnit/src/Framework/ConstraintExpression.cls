@@ -32,28 +32,50 @@ Implements IBasicExpression
 Implements IConstraintExpression
 
 Private mBuilder As New ConstraintBuilder
+Private mHasNotConstraint As Boolean
 
 
 Public Function Resolve() As IConstraint
-    Call mBuilder.Resolve
-    Set Resolve = mBuilder.FinalConstraint
+    Set Resolve = mBuilder.Resolve
     Set mBuilder = Nothing
 End Function
 
 Public Function OrElse() As IConstraintExpression
-    Call mBuilder.AddOperator(New OrOperator)
-    Set OrElse = Me
+    Set OrElse = AddOperator(New OrOperator)
 End Function
 
 Public Function AndAlso() As IConstraintExpression
-    Call mBuilder.AddOperator(New AndOperator)
-    Set AndAlso = Me
+    Set AndAlso = AddOperator(New AndOperator)
+End Function
+
+Public Function Not_() As IConstraintExpression
+'    Set Not_ = AddOperator(New NotOperator)
+    mHasNotConstraint = True
+    Set Not_ = Me
+End Function
+
+Public Function EqualTo(ByRef Expected As Variant) As EqualConstraint
+    Set EqualTo = AddConstraint(Sim.NewEqualConstraint(Expected, Me))
 End Function
 
 
-Private Function AddConstraint(ByVal c As IConstraint) As IConstraint
-    Call mBuilder.AddConstraint(c)
-    Set AddConstraint = c
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function AddConstraint(ByVal Constraint As IConstraint) As IConstraint
+    If mHasNotConstraint Then
+        mBuilder.AddConstraint Sim.NewNotConstraint(Constraint)
+        mHasNotConstraint = False
+    Else
+        mBuilder.AddConstraint Constraint
+    End If
+    
+    Set AddConstraint = Constraint
+End Function
+
+Private Function AddOperator(ByVal Operator As IOperator) As IConstraintExpression
+    mBuilder.AddOperator Operator
+    Set AddOperator = Me
 End Function
 
 
@@ -73,14 +95,34 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IConstraintExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IConstraintExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    Set IConstraintExpression_AndAlso = AndAlso
-End Function
-
 Private Function IConstraintExpression_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
-    Set IConstraintExpression_EqualTo = AddConstraint(Sim.NewEqualConstraint2(Expected, Me))
+    Set IConstraintExpression_EqualTo = EqualTo(Expected)
 End Function
 
-Private Function IConstraintExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
-    Set IConstraintExpression_OrElse = OrElse
+Private Function IConstraintExpression_False() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_False = EqualTo(False)
+End Function
+
+Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Missing = EqualTo(GetMissingVariant)
+End Function
+
+Private Function IConstraintExpression_Not() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_Not = Not_
+End Function
+
+Private Function IConstraintExpression_Nothing() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Nothing = EqualTo(Nothing)
+End Function
+
+Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_True = EqualTo(True)
+End Function
+
+Private Function IConstraintExpression_VBEmpty() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_VBEmpty = EqualTo(Empty)
+End Function
+
+Private Function IConstraintExpression_VBNull() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_VBNull = EqualTo(Null)
 End Function

@@ -30,10 +30,6 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IzSyntaxHelper
 
-Private Function GetMissingVariant(Optional ByVal Value As Variant) As Variant
-    GetMissingVariant = Value
-End Function
-
 Private Function IzSyntaxHelper_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
     Dim Expression As IConstraintExpression
     Set Expression = New ConstraintExpression

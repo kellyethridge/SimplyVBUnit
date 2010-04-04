@@ -32,22 +32,20 @@ Option Explicit
 Public Sub Resolve_WhenEmpty_StoresNothing()
     Dim Builder As New ConstraintBuilder
     
-    Call Builder.Resolve
-    
     Dim Actual As IConstraint
-    Set Actual = Builder.FinalConstraint
-    Assert.That Actual, Iz.Nothing
+    Set Actual = Builder.Resolve
+    
+    Assert.IsTrue Actual Is Nothing
 End Sub
 
 Public Sub Resolve_WithOneConstraint_StoresAsFinalConstraint()
     Dim Fake As New StubConstraint
     Dim Builder As New ConstraintBuilder
-    Call Builder.AddConstraint(Fake)
-    
-    Call Builder.Resolve
+    Builder.AddConstraint Fake
     
     Dim Actual As IConstraint
-    Set Actual = Builder.FinalConstraint
+    Set Actual = Builder.Resolve
+    
     Assert.IsTrue Actual Is Fake
 End Sub
 
@@ -56,14 +54,13 @@ Public Sub Resolve_WithOperator_ResolvesConstraints()
     Dim FakeRight   As New StubConstraint
     Dim Op          As New AndOperator
     Dim Builder     As New ConstraintBuilder
-    Call Builder.AddConstraint(FakeLeft)
-    Call Builder.AddConstraint(FakeRight)
-    Call Builder.AddOperator(Op)
-    
-    Call Builder.Resolve
+    Builder.AddConstraint FakeLeft
+    Builder.AddConstraint FakeRight
+    Builder.AddOperator Op
     
     Dim Actual As AndConstraint
-    Set Actual = Builder.FinalConstraint
+    Set Actual = Builder.Resolve
+    
     Assert.IsTrue Actual.LeftSide Is FakeLeft
     Assert.IsTrue Actual.RightSide Is FakeRight
 End Sub

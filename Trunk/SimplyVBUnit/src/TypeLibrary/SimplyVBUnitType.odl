@@ -96,8 +96,9 @@ library SimplyVBUnitType {
 		[propput, entry("PutMem4")] HRESULT StringPtr([in] BSTR * Source, [in] long Value);
     }
     
-    // Forward definitions
-    interface IEqualConstraint;
+        // Forward definitions
+        interface IEqualConstraint;
+        interface IBasicExpression;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -114,12 +115,18 @@ library SimplyVBUnitType {
 		HRESULT Equals([in] VARIANT * X, [in] VARIANT * Y, [out, retval] boolean * RetVal);
 	}
 
-    [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
-    interface IConstraintExpression : IDispatch
-    {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+        [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
+        interface IConstraintExpression : IDispatch
+        {
 		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualConstraint ** RetVal);
+		HRESULT True([out, retval] IBasicExpression ** RetVal);
+		HRESULT False([out, retval] IBasicExpression ** RetVal);
+		HRESULT VBEmpty([out, retval] IBasicExpression ** RetVal);
+		HRESULT VBNull([out, retval] IBasicExpression ** RetVal);
+		HRESULT Nothing([out, retval] IBasicExpression ** RetVal);
+		HRESULT Missing([out, retval] IBasicExpression ** RetVal);
+		HRESULT Not([out, retval] IConstraintExpression ** RetVal);
+
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
