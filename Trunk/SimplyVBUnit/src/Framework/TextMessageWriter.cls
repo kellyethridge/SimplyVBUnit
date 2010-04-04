@@ -33,13 +33,16 @@ Private Const FIRST_ARGUMENT        As Long = 0
 Private Const SECOND_ARGUMENT       As Long = FIRST_ARGUMENT + 1
 Private Const PFX_EXPECTED          As String = "Expected: "
 Private Const PFX_ACTUAL            As String = "But was : "
-Private Const FMT_EMPTYSTRING       As String = "<Empty String>"
 Private Const FMT_STRING            As String = """{0}"""
 Private Const FMT_NULL              As String = "Null"
 Private Const FMT_EMPTY             As String = "Empty"
 Private Const FMT_NOTHING           As String = "Nothing"
 Private Const FMT_MISSING           As String = "Missing"
+Private Const FMT_CURRENCY          As String = "0.0000@"
+Private Const FMT_EMPTYARRAY        As String = "<empty>"
 Private Const FMT_PREDICATE         As String = "{0} "
+Private Const FMT_MODIFIER          As String = ", {0}"
+Private Const FMT_TOLERANCE         As String = "+/-"
 Private Const FMT_ERRORNUMBER       As String = "error {0}"
 Private Const FMT_ERRORDESCRIPTION  As String = ", {0}"
 Private Const FMT_ERRORSOURCE       As String = " from [{0}]"
@@ -48,6 +51,12 @@ Private Const FMT_STRINGSDIFFER_1   As String = "String lengths are both {0}. St
 Private Const FMT_STRINGSDIFFER_2   As String = "Expected string length {0} but was {1}. Strings differ at index {2}."
 Private Const FMT_DEFAULT           As String = "<{0}>"
 Private Const MAX_DISPLAY_LENGTH    As Long = 64
+
+Private Const SYM_SINGLE            As String = "!"
+Private Const SYM_DOUBLE            As String = "#"
+Private Const SYM_CURRENCY          As String = "@"
+Private Const SYM_DECIMAL           As String = "D"
+
 
 
 Private mMessage    As New StringBuilder
@@ -77,9 +86,10 @@ Public Sub DisplayStringDifference(ByVal Expected As String, ByVal Actual As Str
     Call WriteExpectedLine(Expected)
     Call WriteActualLine(Actual)
     
-    Dim ArrowShaftLength As Long
-    ArrowShaftLength = Len(PFX_ACTUAL) + MismatchIndex
-    Call WriteLine(String$(ArrowShaftLength, "-") & "^")
+'    Dim ArrowShaftLength As Long
+'    ArrowShaftLength = Len(PFX_ACTUAL) + MismatchIndex
+'    Call WriteLine(String$(ArrowShaftLength, "-") & "^")
+    WriteCaretLine MismatchIndex
 End Sub
 
 Public Sub DisplayConstraintDifference(ByVal Constraint As IConstraint)
@@ -113,12 +123,24 @@ Public Sub WriteExpectedValue(ByRef Value As Variant)
 End Sub
 
 Public Sub WriteValue(ByRef Value As Variant)
-    If IsEnumerable(Value) Then
-        Call WriteEnumerable(Value)
-    ElseIf IsMissing(Value) Then
-        Call WriteText(FMT_MISSING)
+    If IsArray(Value) Then
+        WriteArray Value
     Else
-        Call WriteDefault(Value)
+        Select Case VarType(Value)
+            Case vbString:                  WriteString Value
+            Case vbLong, vbInteger, vbByte: WriteText Value
+            Case vbBoolean:                 WriteText Value
+            Case vbSingle:                  WriteWithDecimalPoint Value, SYM_SINGLE
+            Case vbDouble:                  WriteWithDecimalPoint Value, SYM_DOUBLE
+            Case vbCurrency:                WriteCurrency Value
+            Case vbDecimal:                 WriteWithDecimalPoint Value, SYM_DECIMAL
+            Case vbDate:                    WriteText Value
+            Case vbObject, vbDataObject:    WriteObject Value
+            Case vbNull:                    WriteText FMT_NULL
+            Case vbEmpty:                   WriteText FMT_EMPTY
+            Case vbError:                   WriteText FMT_MISSING
+            Case Else:                      WriteDefault Value
+        End Select
     End If
 End Sub
 
@@ -164,6 +186,58 @@ Public Sub WriteErrorInfo(ByVal Info As ErrorInfo)
     Call WriteOptionalText(Info.Source, FMT_ERRORSOURCE)
 End Sub
 
+Public Sub WriteCollectionElements(ByRef Values As Variant, ByVal StartIndex As Long, ByVal Count As Long)
+    Dim Index       As Long
+    Dim PassedFirst As Boolean
+    Dim Element     As Variant
+    
+    Index = GetLBound(Values)
+    
+    WriteText "< "
+    
+    For Each Element In Values
+        If Count = 0 Then
+            WriteText "..."
+            Exit For
+        End If
+        
+        If Index >= StartIndex Then
+            If Index > StartIndex Then
+                WriteText ", "
+            End If
+        
+            WriteValue Element
+            
+            Count = Count - 1
+        End If
+        
+        Index = Index + 1
+    Next Element
+    
+    WriteText " >"
+End Sub
+
+Public Sub WriteTypePredicate(ByRef Value As Variant)
+    Call WriteText("type of <{0}> ", TypeName(Value))
+End Sub
+
+Public Sub WriteError(ByVal Info As ErrorInfo)
+    Call WriteText(FMT_ERRORNUMBER, Info.Number)
+    
+    Dim Connector As String
+    If Len(Info.Description) > 0 Then
+        Call WriteText(FMT_MODIFIER, Info.Description)
+        Connector = FMT_CONNECTOR
+    Else
+        Connector = FMT_MODIFIER
+    End If
+    
+    If Len(Info.Source) > 0 Then
+        Call WriteText(Connector, "From")
+        Call WriteText(FMT_ERRORSOURCE, Info.Source)
+    End If
+End Sub
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -178,47 +252,6 @@ Private Sub WriteActualLine(ByRef Actual As Variant)
     Call WriteText(PFX_ACTUAL)
     Call WriteActualValue(Actual)
     Call WriteLine
-End Sub
-
-Private Sub WriteEnumerable(ByRef Values As Variant)
-    Call WriteText("< ")
-    
-    Dim FirstIsWritten  As Boolean
-    Dim Value           As Variant
-    For Each Value In Values
-        If FirstIsWritten Then
-            Call WriteText(", ")
-        End If
-        
-        Call WriteValue(Value)
-        FirstIsWritten = True
-    Next
-    
-    Call WriteText(" >")
-End Sub
-
-Private Sub WriteDefault(ByRef Value As Variant)
-    Select Case VarType(Value)
-        Case vbString:      Call WriteString(Value)
-        Case vbNull:        Call WriteText(FMT_NULL)
-        Case vbEmpty:       Call WriteText(FMT_EMPTY)
-        Case vbObject, vbDataObject
-            If Value Is Nothing Then
-                WriteText FMT_NOTHING
-            Else
-                WriteText FMT_DEFAULT, TypeName(Value)
-            End If
-            
-        Case Else:          Call WriteText(CStr(Value))
-    End Select
-End Sub
-
-Private Sub WriteString(ByVal Value As String)
-    If Len(Value) = 0 Then
-        Call WriteText(FMT_EMPTYSTRING)
-    Else
-        Call WriteText(FMT_STRING, Value)
-    End If
 End Sub
 
 Private Function HasOneArgument(ByVal UpperBound As Long) As Boolean
@@ -245,10 +278,103 @@ Private Sub WriteOptionalText(ByRef Text As Variant, ByRef TextFormat As String)
     End If
 End Sub
 
+Private Sub WriteString(ByVal Value As String)
+    Call WriteText(FMT_STRING, Value)
+End Sub
 
+Private Sub WriteWithDecimalPoint(ByVal Value As String, ByVal Symbol As String)
+    If InStr(Value, ".") > 0 Then
+        Call WriteText(Value & Symbol)
+    Else
+        Call WriteText(Value & ".0" & Symbol)
+    End If
+End Sub
 
+Private Sub WriteCurrency(ByVal Value As Currency)
+    Call WriteText(Format$(Value, FMT_CURRENCY))
+End Sub
 
+Private Sub WriteObject(ByRef Value As Variant)
+    If Value Is Nothing Then
+        Call WriteText(FMT_NOTHING)
+    ElseIf TypeOf Value Is Collection Then
+        Call WriteCollectionElements(Value, 1, 10)
+    ElseIf TypeOf Value Is ErrorInfo Then
+        Call WriteError(Value)
+    Else
+        Call WriteDefault(TypeName(Value))
+    End If
+End Sub
 
+Private Sub WriteDefault(ByRef Value As Variant)
+    Call WriteText(FMT_DEFAULT, Value)
+End Sub
 
+Private Sub WriteArray(ByRef Arr As Variant)
+    Dim Rank As Long
+    Rank = SafeArrayGetDim(GetArrayPointer(Arr))
+    
+    Select Case Rank
+        Case 0: WriteText FMT_NULL
+        Case 1
+            If UBound(Arr) >= LBound(Arr) Then
+                WriteCollectionElements Arr, LBound(Arr), 10
+            Else
+                WriteDefault "empty"
+            End If
+            
+        Case Else:
+            If UBound(Arr) >= LBound(Arr) Then
+                Dim Dimensions() As Long
+                Dimensions = GetSizeOfEachDimension(Arr, Rank)
+                
+                Dim Count   As Long
+                Dim Element As Variant
+                For Each Element In Arr
+                    If Count > 0 Then
+                        WriteText ", "
+                    End If
+                                    
+                    WriteCheveronForDimensions Dimensions, Count, "< "
+                    
+                    WriteValue Element
+                    Count = Count + 1
+                    
+                    WriteCheveronForDimensions Dimensions, Count, " >"
+                Next Element
+            Else
+                WriteDefault "empty"
+            End If
+    End Select
+End Sub
 
+Private Sub WriteCaretLine(ByVal MismatchIndex As Long)
+    Call WriteLine("  {0}^", String$(Len(PFX_EXPECTED) + MismatchIndex - 2, "-"))
+End Sub
+
+Private Function GetSizeOfEachDimension(ByRef Arr As Variant, ByVal Rank As Long) As Long()
+    Dim Result() As Long
+    ReDim Result(0 To Rank - 1)
+    
+    Dim PrevSize As Long
+    PrevSize = 1
+    
+    Dim i As Long
+    For i = 1 To Rank
+        Result(i - 1) = PrevSize * (UBound(Arr, i) - LBound(Arr, i) + 1)
+        PrevSize = Result(i - 1)
+    Next i
+
+    GetSizeOfEachDimension = Result
+End Function
+
+Private Sub WriteCheveronForDimensions(ByRef Dimensions() As Long, ByVal Count As Long, ByVal Cheveron As String)
+    Dim i As Long
+    
+    For i = 0 To UBound(Dimensions)
+        If (Count Mod Dimensions(i)) = 0 Then
+            WriteText Cheveron
+        End If
+    Next i
+End Sub
 

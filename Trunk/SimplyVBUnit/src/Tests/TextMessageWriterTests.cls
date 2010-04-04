@@ -36,17 +36,17 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(True, "True")
             Call Test.Use(False, "False")
             Call Test.Use("actual", Quote("actual"))
-            Call Test.Use(1.234, "1.234")
-            
+            Call Test.Use(1.234, "1.234#")
+
             
         Case "WriteExpectedValue_WithValues_WritesExpected"
             Call Test.Use(True, "True")
             Call Test.Use(False, "False")
             Call Test.Use("expected", Quote("expected"))
-            Call Test.Use(1.234, "1.234")
+            Call Test.Use(1.234, "1.234#")
             
         Case "WriteValue_WithValues_WritesExpected"
-            Call Test.Use("", "<Empty String>")
+            Call Test.Use("", Quote(""))
             Call Test.Use(Null, "Null")
             Call Test.Use(Empty, "Empty")
             Call Test.Use(Array(1, 2, 3), "< 1, 2, 3 >")
@@ -55,7 +55,21 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use("string", Quote("string"))
             Call Test.Use(NewCollection("a", 1, "b"), "< ""a"", 1, ""b"" >")
             Call Test.Use(NewCollection(Array(1, 2, 3), Array("a", "b")), "< < 1, 2, 3 >, < ""a"", ""b"" > >")
-            
+            Call Test.Use(123456, "123456")
+            Call Test.Use(123.45, "123.45#")
+            Call Test.Use(123#, "123.0#")
+            Call Test.Use(0#, "0.0#")
+            Call Test.Use(123!, "123.0!")
+            Call Test.Use(123.456!, "123.456!")
+            Call Test.Use(1234@, "1234.0000@")
+            Call Test.Use(-1234@, "-1234.0000@")
+            Call Test.Use(0@, "0.0000@")
+            Call Test.Use(CDec(0), "0.0D")
+            Call Test.Use(CDec("123451234512345"), "123451234512345.0D")
+            Call Test.Use(CDec("12345.1234"), "12345.1234D")
+            Call Test.Use(Array(), "<empty>")
+            Call Test.Use(Array(1, "name", Array("hi", "bye"), 2#), "< 1, ""name"", < ""hi"", ""bye"" >, 2.0# >")
+
             Dim List As New Collection
             List.Add 3
             List.Add 2
@@ -66,42 +80,53 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(Unk, "Nothing")
             Call Test.Use(New TextMessageWriterTests, "<TextMessageWriterTests>")
             
+            Set List = New Collection
+            Dim i As Long
+            For i = 1 To 20
+                List.Add i
+            Next i
+            Call Test.Use(List, "< 1, 2, 3, 4, 5, 6, 7, 8, 9, 10... >")
+            
+            Dim Multi() As Long
+            ReDim Multi(0 To 1, 2 To 3)
+            Call Test.Use(Multi, "< < 0, 0 >, < 0, 0 > >")
+
         Case "DisplayStringDifference_WithValues_WritesExpected"
             Dim Expected As String
             Expected = "Expected string length 4 but was 6. Strings differ at index 5." & vbCrLf & _
                        "Expected: ""abcd""" & vbCrLf & _
                        "But was : ""abcdef""" & vbCrLf & _
-                       "---------------^" & vbCrLf
+                       "  -------------^" & vbCrLf
             Call Test.Use("abcd", "abcdef", False, True, Expected)
             
             Expected = "String lengths are both 4. Strings differ at index 4." & vbCrLf & _
                        "Expected: ""abcd""" & vbCrLf & _
                        "But was : ""abcf""" & vbCrLf & _
-                       "--------------^" & vbCrLf
+                       "  ------------^" & vbCrLf
             Call Test.Use("abcd", "abcf", False, True, Expected)
             
             Expected = "String lengths are both 4. Strings differ at index 4." & vbCrLf & _
                        "Expected: ""abcd""" & vbCrLf & _
                        "But was : ""aBcf""" & vbCrLf & _
-                       "--------------^" & vbCrLf
+                       "  ------------^" & vbCrLf
             Call Test.Use("abcd", "aBcf", True, True, Expected)
             
             Expected = "String lengths are both 4. Strings differ at index 2." & vbCrLf & _
                        "Expected: ""abcd""" & vbCrLf & _
                        "But was : ""aBcf""" & vbCrLf & _
-                       "------------^" & vbCrLf
+                       "  ----------^" & vbCrLf
             Call Test.Use("abcd", "aBcf", False, True, Expected)
             
             Expected = "String lengths are both 70. Strings differ at index 2." & vbCrLf & _
                        "Expected: ""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...""" & vbCrLf & _
                        "But was : ""aBaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...""" & vbCrLf & _
-                       "------------^" & vbCrLf
+                       "  ----------^" & vbCrLf
             Call Test.Use("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aBaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", False, True, Expected)
             
             Expected = "String lengths are both 70. Strings differ at index 69." & vbCrLf & _
                        "Expected: ""...aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa""" & vbCrLf & _
                        "But was : ""...aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaBa""" & vbCrLf & _
-                       "-------------------------------------------------------------------------^" & vbCrLf
+                       "  -----------------------------------------------------------------------^" & vbCrLf
             Call Test.Use("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaBa", False, True, Expected)
             
     End Select
@@ -115,7 +140,7 @@ Public Sub WriteValue_WithValues_WritesExpected(ByRef ActualValue As Variant, By
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = Expected, "  Expected: " & Expected & vbCrLf & "  But was:  " & Actual & vbCrLf
+    assert.IsTrue Actual = Expected, "  Expected: " & Expected & vbCrLf & "  But was:  " & Actual & vbCrLf
 End Sub
 
 Public Sub WriteActualValue_WithValues_WritesExpected(ByRef ActualValue As Variant, ByVal Expected As String)
@@ -125,7 +150,7 @@ Public Sub WriteActualValue_WithValues_WritesExpected(ByRef ActualValue As Varia
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = Expected, "  Expected: " & Expected & vbCrLf & "  But was:  " & Actual & vbCrLf
+    assert.IsTrue Actual = Expected, "  Expected: " & Expected & vbCrLf & "  But was:  " & Actual & vbCrLf
 End Sub
 
 Public Sub WriteExpectedValue_WithValues_WritesExpected(ByRef ExpectedValue As Variant, ByVal Expected As String)
@@ -135,7 +160,7 @@ Public Sub WriteExpectedValue_WithValues_WritesExpected(ByRef ExpectedValue As V
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = Expected, "Expected: " & Expected & vbCrLf & " But was: " & Actual & vbCrLf
+    assert.IsTrue Actual = Expected, "Expected: " & Expected & vbCrLf & " But was: " & Actual & vbCrLf
 End Sub
 
 Public Sub DisplayStringDifference_WithValues_WritesExpected(ByVal ExpectedString As String, ByVal ActualString As String, ByVal IgnoreCase As Boolean, ByVal Clipping As Boolean, ByVal Expected As String)
@@ -145,7 +170,7 @@ Public Sub DisplayStringDifference_WithValues_WritesExpected(ByVal ExpectedStrin
     
     Dim Actual As String
     Actual = Writer.ToString
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub DisplayConstraintDifference_UsingConstraint_WritesExpectedButWasClause()
@@ -158,7 +183,7 @@ Public Sub DisplayConstraintDifference_UsingConstraint_WritesExpectedButWasClaus
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = "Expected: False" & vbCrLf & "But was : True" & vbCrLf
+    assert.IsTrue Actual = "Expected: False" & vbCrLf & "But was : True" & vbCrLf
 End Sub
 
 Public Sub WriteLine_WithNoArgs_AppendsCrLfToMessage()
@@ -168,7 +193,7 @@ Public Sub WriteLine_WithNoArgs_AppendsCrLfToMessage()
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = vbCrLf
+    assert.IsTrue Actual = vbCrLf
 End Sub
 
 Public Sub WriteLine_WithText_AppendsTextThenCrLf()
@@ -178,7 +203,7 @@ Public Sub WriteLine_WithText_AppendsTextThenCrLf()
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = "Text" & vbCrLf
+    assert.IsTrue Actual = "Text" & vbCrLf
 End Sub
 
 Public Sub WriteLine_WithArgs_AppendsFormattedArgs()
@@ -188,7 +213,7 @@ Public Sub WriteLine_WithArgs_AppendsFormattedArgs()
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = "Some text" & vbCrLf
+    assert.IsTrue Actual = "Some text" & vbCrLf
 End Sub
 
 Public Sub DisplayDifference_WithTrueAndFalse_WritesExpectedButWasClause()
@@ -199,7 +224,7 @@ Public Sub DisplayDifference_WithTrueAndFalse_WritesExpectedButWasClause()
     Dim Actual As String
     Actual = w.ToString
     Const Expected As String = "Expected: True" & vbCrLf & "But was : False" & vbCrLf
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub DisplayDifference_WithFalseAndTrue_WritesExpectedButWasClause()
@@ -210,7 +235,7 @@ Public Sub DisplayDifference_WithFalseAndTrue_WritesExpectedButWasClause()
     Dim Actual As String
     Actual = w.ToString
     Const Expected As String = "Expected: False" & vbCrLf & "But was : True" & vbCrLf
-    Assert.IsTrue Actual = Expected
+    assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub WriteText_WhenCalledMultipleTimes_AppendTextToMessage()
@@ -221,7 +246,7 @@ Public Sub WriteText_WhenCalledMultipleTimes_AppendTextToMessage()
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = "hibye"
+    assert.IsTrue Actual = "hibye"
 End Sub
 
 Public Sub WriteText_WithArgs_AppendsFormattedArgs()
@@ -231,7 +256,7 @@ Public Sub WriteText_WithArgs_AppendsFormattedArgs()
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = "Some text"
+    assert.IsTrue Actual = "Some text"
 End Sub
 
 Public Sub WriteText_WithVariantArgs_ReturnsFormattedText()
@@ -243,7 +268,7 @@ Public Sub WriteText_WithVariantArgs_ReturnsFormattedText()
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = "hello,bye"
+    assert.IsTrue Actual = "hello,bye"
 End Sub
 
 Public Sub WriteLine_WithVariantArgs_ReturnsFormattedText()
@@ -255,7 +280,7 @@ Public Sub WriteLine_WithVariantArgs_ReturnsFormattedText()
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.IsTrue Actual = "hello,bye" & vbCrLf
+    assert.IsTrue Actual = "hello,bye" & vbCrLf
 End Sub
 
 Public Sub WritePredicate_WithValue_AppendValueToMessage()
@@ -265,7 +290,7 @@ Public Sub WritePredicate_WithValue_AppendValueToMessage()
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.That Actual, Iz.EqualTo("predicate ")
+    assert.That Actual, Iz.EqualTo("predicate ")
 End Sub
 
 Public Sub WriteErrorInfo_WithErrorNumber_WritesNumberOnly()
@@ -278,7 +303,7 @@ Public Sub WriteErrorInfo_WithErrorNumber_WritesNumberOnly()
     Dim Actual As String
     Actual = w.ToString
     Const Expected As String = "error 1"
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub WriteErrorInfo_WithErrorNumberAndDescription_WritesNumberAndDescription()
@@ -291,7 +316,7 @@ Public Sub WriteErrorInfo_WithErrorNumberAndDescription_WritesNumberAndDescripti
     Dim Actual As String
     Actual = w.ToString
     Const Expected As String = "error 1, description"
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub WriteErrorInfo_WithNumberDescriptionSource_WritesNumberDescriptionSource()
@@ -304,7 +329,7 @@ Public Sub WriteErrorInfo_WithNumberDescriptionSource_WritesNumberDescriptionSou
     Dim Actual As String
     Actual = w.ToString
     Const Expected As String = "error 1, description from [src]"
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub WriteErrorInfo_WithNumberAndSource_WritesNumberAndSource()
@@ -317,7 +342,7 @@ Public Sub WriteErrorInfo_WithNumberAndSource_WritesNumberAndSource()
     Dim Actual As String
     Actual = w.ToString
     Const Expected As String = "error 1 from [src]"
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub WriteConnector_WithValue_WrapsValueWithSpaces()
@@ -328,7 +353,7 @@ Public Sub WriteConnector_WithValue_WrapsValueWithSpaces()
     Dim Actual As String
     Actual = w.ToString
     Const Expected As String = " and "
-    Assert.That Actual, Iz.EqualTo(Expected)
+    assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 

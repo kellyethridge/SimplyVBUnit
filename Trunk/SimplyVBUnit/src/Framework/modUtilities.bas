@@ -21,9 +21,10 @@ Attribute VB_Name = "modUtilities"
 '
 Option Explicit
 
-Public Const SIZEOF_VARIANT     As Long = 16
-Public Const ARRAY_DIMENSIONS   As Long = 1
-Public Const ENUM_MEMBERID      As Long = -4
+Public Const SIZEOF_VARIANT         As Long = 16
+Public Const ARRAY_DIMENSIONS       As Long = 1
+Public Const ENUM_MEMBERID          As Long = -4
+Public Const LBOUND_OF_COLLECTION   As Long = 1
 
 ''
 ' Structure represents a proxy array to an already existing Variant array.
@@ -36,6 +37,18 @@ Public Type ArrayProxy
     SA          As SafeArray1d
 End Type
 
+
+Public Function GetLBound(ByRef Value As Variant) As Long
+    Dim Result As Long
+    
+    If IsArray(Value) Then
+        Result = LBound(Value)
+    Else
+        Result = LBOUND_OF_COLLECTION
+    End If
+    
+    GetLBound = Result
+End Function
 
 Public Function GetMissingVariant(Optional ByVal Value As Variant) As Variant
     GetMissingVariant = Value
