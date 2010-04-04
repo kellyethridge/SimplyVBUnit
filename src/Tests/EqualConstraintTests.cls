@@ -316,7 +316,7 @@ Public Sub Matches_WithStrict(ByRef ConstraintExpected As Variant, ByRef Constra
 End Sub
 
 Public Sub Resolve_WhenCalled_ReturnsSelf()
-    Dim c As IConstraint
+    Dim c As IResolvable
     Set c = Sim.NewEqualConstraint(1)
     
     Dim Actual As IConstraint
@@ -354,7 +354,7 @@ Public Sub WriteMessageTo_WithNonEqualStrings_WritesExpectedButWasClause()
                                "Expected: ""a""" & vbCrLf & _
                                "But was : ""ab""" & vbCrLf & _
                                "------------^" & vbCrLf
-    Assert.That Actual, iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 

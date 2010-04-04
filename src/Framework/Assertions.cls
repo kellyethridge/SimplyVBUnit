@@ -85,10 +85,18 @@ Public Sub AreEqual(ByRef Expected As Variant, ByRef Actual As Variant, Optional
     Call That(Actual, Iz.EqualTo(Expected), Message)
 End Sub
 
-Public Sub That(ByRef Actual As Variant, ByVal Constraint As IConstraint, Optional ByVal Message As String)
-    Set Constraint = Constraint.Resolve
+Public Sub That(ByRef Actual As Variant, ByVal Constraint As Object, Optional ByVal Message As String)
+    Dim ResolvedConstraint As IConstraint
     
-    If Constraint.Matches(Actual) Then
+    If TypeOf Constraint Is IResolvable Then
+        Dim Resolvable As IResolvable
+        Set Resolvable = Constraint
+        Set ResolvedConstraint = Resolvable.Resolve
+    Else
+        Set ResolvedConstraint = Constraint
+    End If
+    
+    If ResolvedConstraint.Matches(Actual) Then
         Call IncrementCount
     Else
         Dim Writer As New TextMessageWriter
@@ -97,7 +105,7 @@ Public Sub That(ByRef Actual As Variant, ByVal Constraint As IConstraint, Option
             Call Writer.WriteLine(Message)
         End If
         
-        Call Constraint.WriteMessageTo(Writer)
+        Call ResolvedConstraint.WriteMessageTo(Writer)
         Call Fail(Writer.ToString)
     End If
 End Sub

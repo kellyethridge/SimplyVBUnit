@@ -29,6 +29,7 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 Implements IConstraint
+Implements IResolvable
 Implements IBasicExpression
 Implements IEqualConstraint
 Implements IToleranceUnits
@@ -109,12 +110,8 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Expected As Variant)
+Friend Sub Init(ByRef Expected As Variant, ByVal Expression As ConstraintExpression)
     Call VariantCopyInd(mExpected, Expected)
-End Sub
-
-Friend Sub Init2(ByRef Expected As Variant, ByVal Expression As ConstraintExpression)
-    Call Init(Expected)
     Set mExpression = Expression
 End Sub
 
@@ -170,14 +167,6 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
     IConstraint_Matches = Matches(Actual)
 End Function
 
-Private Function IConstraint_Resolve() As IConstraint
-    If mExpression Is Nothing Then
-        Set IConstraint_Resolve = Me
-    Else
-        Set IConstraint_Resolve = mExpression.Resolve
-    End If
-End Function
-
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
     Call Writer.WriteActualValue(mActual)
 End Sub
@@ -224,6 +213,22 @@ End Function
 
 Private Function IEqualConstraint_Within(ByVal Tolerance As Variant) As SimplyVBUnitType.IToleranceUnits
     Set IEqualConstraint_Within = Within(Tolerance)
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IResolvable Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IResolvable_Resolve() As IConstraint
+    Dim Result As IConstraint
+    
+    If mExpression Is Nothing Then
+        Set Result = Me
+    Else
+        Set Result = mExpression.Resolve
+    End If
+    
+    Set IResolvable_Resolve = Result
 End Function
 
 

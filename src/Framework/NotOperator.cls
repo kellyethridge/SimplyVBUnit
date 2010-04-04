@@ -6,12 +6,12 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "IConstraint"
+Attribute VB_Name = "NotOperator"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-' Copyright 2009 Kelly Ethridge
+' Copyright 2010 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
 ' you may not use this file except in compliance with the License.
@@ -25,12 +25,22 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: IConstraint
+' Module: NotOperator
 '
 Option Explicit
+Implements IOperator
 
-Public Function Matches(ByRef Actual As Variant) As Boolean: End Function
-Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter): End Sub
-Public Sub WriteDescriptionTo(ByVal Writer As TextMessageWriter): End Sub
-Public Sub WriteActualValueTo(ByVal Writer As TextMessageWriter): End Sub
 
+Public Function Resolve(ByVal Constraints As ConstraintStack) As IConstraint
+    If Constraints.Count > 0 Then
+        Set Resolve = Sim.NewNotConstraint(Constraints.Pop)
+    End If
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IOperator Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IOperator_Resolve(ByVal Constraints As ConstraintStack) As IConstraint
+    Set IOperator_Resolve = Resolve(Constraints)
+End Function

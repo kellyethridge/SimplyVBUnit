@@ -75,9 +75,9 @@ Public Function NewTestCaseDataBuilder(ByVal MethodName As String, ByVal DataSto
     Call NewTestCaseDataBuilder.Init(MethodName, DataStore)
 End Function
 
-Public Function NewEqualConstraint(ByRef Expected As Variant) As EqualConstraint
+Public Function NewEqualConstraint(ByRef Expected As Variant, Optional ByVal Expression As ConstraintExpression) As EqualConstraint
     Set NewEqualConstraint = New EqualConstraint
-    Call NewEqualConstraint.Init(Expected)
+    Call NewEqualConstraint.Init(Expected, Expression)
 End Function
 
 Public Function NewArrayEnumerator(ByRef Arr As Variant) As ArrayEnumerator
@@ -141,7 +141,3 @@ Public Function NewArgWithReturnTestMethod(ByVal TestClass As Object, ByVal Memb
 End Function
 
 
-Friend Function NewEqualConstraint2(ByRef Expected As Variant, ByVal Expression As ConstraintExpression) As EqualConstraint
-    Set NewEqualConstraint2 = New EqualConstraint
-    Call NewEqualConstraint2.Init2(Expected, Expression)
-End Function

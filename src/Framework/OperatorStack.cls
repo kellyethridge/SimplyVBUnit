@@ -32,7 +32,7 @@ Option Explicit
 Private mOperators As New Stack
 
 Public Sub Push(ByVal Operator As IOperator)
-    Call mOperators.Push(Operator)
+    mOperators.Push Operator
 End Sub
 
 Public Function Pop() As IOperator
@@ -47,3 +47,6 @@ Public Property Get Peek() As IOperator
     Set Peek = mOperators.Peek
 End Property
 
+Public Sub Clear()
+    mOperators.Clear
+End Sub

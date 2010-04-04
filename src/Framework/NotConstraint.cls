@@ -69,10 +69,6 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
     IConstraint_Matches = Matches(Actual)
 End Function
 
-Private Function IConstraint_Resolve() As IConstraint
-
-End Function
-
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
     Call WriteActualValueTo(Writer)
 End Sub

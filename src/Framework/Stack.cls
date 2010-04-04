@@ -41,9 +41,9 @@ End Property
 
 Public Sub Push(ByRef Value As Variant)
     If Me.IsEmpty Then
-        Call mItems.Add(Value)
+        mItems.Add Value
     Else
-        Call mItems.Add(Value, before:=TOP_ITEM_INDEX)
+        mItems.Add Value, before:=TOP_ITEM_INDEX
     End If
 End Sub
 
@@ -52,24 +52,24 @@ Public Property Get IsEmpty() As Boolean
 End Property
     
 Public Function Peek() As Variant
-    Call GetTopItem(Peek)
+    GetTopItem Peek
 End Function
 
 Public Function Pop() As Variant
-    Call GetTopItem(Pop)
-    Call RemoveTopItem
+    GetTopItem Pop
+    RemoveTopItem
 End Function
 
 Private Sub GetTopItem(ByRef Result As Variant)
-    Call VariantCopyInd(Result, mItems(TOP_ITEM_INDEX))
+    VariantCopyInd Result, mItems(TOP_ITEM_INDEX)
 End Sub
 
 Private Sub RemoveTopItem()
-    Call mItems.Remove(TOP_ITEM_INDEX)
+    mItems.Remove TOP_ITEM_INDEX
 End Sub
 
 Public Sub Clear()
-    Call Initialize
+    Initialize
 End Sub
 
 
@@ -85,5 +85,5 @@ End Sub
 '   Class Events
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
-    Call Initialize
+    Initialize
 End Sub

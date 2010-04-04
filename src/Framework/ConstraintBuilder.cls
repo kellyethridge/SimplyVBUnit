@@ -29,24 +29,39 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mFinalConstraint    As IConstraint
 Private mConstraints        As New ConstraintStack
 Private mOperators          As New OperatorStack
 
 
-Public Sub Resolve()
-    Call ResolveConstraints
-    Call StoreFinalConstraint
+Public Function Resolve() As IConstraint
+    ResolveConstraints
+    Set Resolve = Release
+End Function
+
+Public Sub AddConstraint(ByVal Constraint As IConstraint)
+    mConstraints.Push Constraint
 End Sub
 
+Public Sub AddOperator(ByVal Operator As IOperator)
+    mOperators.Push Operator
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ResolveConstraints()
     Do While HasOperators
-        Call ResolveNextOperator
+        ResolveNextOperator
     Loop
 End Sub
 
 Private Function HasOperators() As Boolean
-    HasOperators = mOperators.Count > 0
+    HasOperators = (mOperators.Count > 0)
+End Function
+
+Private Function HasConstraints() As Boolean
+    HasConstraints = (mConstraints.Count > 0)
 End Function
 
 Private Sub ResolveNextOperator()
@@ -55,23 +70,19 @@ Private Sub ResolveNextOperator()
     
     Dim c As IConstraint
     Set c = Operator.Resolve(mConstraints)
-    Call AddConstraint(c)
+    
+    AddConstraint c
 End Sub
 
-Private Sub StoreFinalConstraint()
-    If mConstraints.Count > 0 Then
-        Set mFinalConstraint = mConstraints.Pop
+Private Function Release() As IConstraint
+    Dim Result As IConstraint
+    
+    If HasConstraints Then
+        Set Result = mConstraints.Pop
     End If
-End Sub
-
-Public Property Get FinalConstraint() As IConstraint
-    Set FinalConstraint = mFinalConstraint
-End Property
-
-Public Sub AddConstraint(ByVal Constraint As IConstraint)
-    Call mConstraints.Push(Constraint)
-End Sub
-
-Public Sub AddOperator(ByVal Operator As IOperator)
-    Call mOperators.Push(Operator)
-End Sub
+    
+    mConstraints.Clear
+    mOperators.Clear
+    
+    Set Release = Result
+End Function

@@ -37,6 +37,10 @@ Public Type ArrayProxy
 End Type
 
 
+Public Function GetMissingVariant(Optional ByVal Value As Variant) As Variant
+    GetMissingVariant = Value
+End Function
+
 Public Function GetEnumerator(ByRef Enumerable As Variant) As IEnumerator
     If IsArray(Enumerable) Then
         Set GetEnumerator = Sim.NewArrayEnumerator(Enumerable)

@@ -55,11 +55,12 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
     End Select
 End Sub
 
-Public Sub Matches_WithConstraint_ReturnsExpected(ByVal c As IConstraint, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
-    Dim Actual As Boolean
+Public Sub Matches_WithConstraint_ReturnsExpected(ByVal Resolvable As IResolvable, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
+    Dim Constraint As IConstraint
+    Set Constraint = Resolvable.Resolve
     
-    Set c = c.Resolve
-    Actual = c.Matches(ConstraintActual)
+    Dim Actual As Boolean
+    Actual = Constraint.Matches(ConstraintActual)
     
     Assert.IsTrue Actual = Expected
 End Sub
