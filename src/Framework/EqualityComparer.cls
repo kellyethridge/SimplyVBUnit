@@ -45,6 +45,9 @@ Private mComparer       As IEqualityComparer
 Private mStrict         As Boolean
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub IgnoreCase()
     mCompareMethod = vbTextCompare
 End Sub
@@ -87,6 +90,10 @@ Friend Function EqualVariants(ByRef Expected As Variant, ByRef Actual As Variant
     EqualVariants = Result
 End Function
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function EqualArrays(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
     If Not mAsCollection Then
         If Not EqualArraySizes(Expected, Actual) Then
