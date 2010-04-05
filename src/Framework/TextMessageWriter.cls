@@ -72,23 +72,20 @@ Public Sub DisplayStringDifference(ByVal Expected As String, ByVal Actual As Str
     MismatchIndex = MsgUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
     
     If Len(Expected) = Len(Actual) Then
-        Call WriteLine(FMT_STRINGSDIFFER_1, Len(Expected), MismatchIndex)
+        WriteLine FMT_STRINGSDIFFER_1, Len(Expected), MismatchIndex
     Else
-        Call WriteLine(FMT_STRINGSDIFFER_2, Len(Expected), Len(Actual), MismatchIndex)
+        WriteLine FMT_STRINGSDIFFER_2, Len(Expected), Len(Actual), MismatchIndex
     End If
     
     If Clipping Then
-        Call mUtils.ClipExpectedAndActual(Expected, Actual, MAX_DISPLAY_LENGTH, MismatchIndex)
+        mUtils.ClipExpectedAndActual Expected, Actual, MAX_DISPLAY_LENGTH, MismatchIndex
     End If
     
     MismatchIndex = mUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
     
-    Call WriteExpectedLine(Expected)
-    Call WriteActualLine(Actual)
+    WriteExpectedLine Expected
+    WriteActualLine Actual
     
-'    Dim ArrowShaftLength As Long
-'    ArrowShaftLength = Len(PFX_ACTUAL) + MismatchIndex
-'    Call WriteLine(String$(ArrowShaftLength, "-") & "^")
     WriteCaretLine MismatchIndex
 End Sub
 
