@@ -132,7 +132,7 @@ Public Function EscapeControlChars(ByVal s As String) As String
     If sb.Length > 0 Then
         Result = sb.ToString
     Else
-        Result = Value
+        Result = s
     End If
     
     EscapeControlChars = Result

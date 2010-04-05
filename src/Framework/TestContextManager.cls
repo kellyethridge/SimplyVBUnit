@@ -35,7 +35,7 @@ Private mDefault        As New TestContext
 
 
 Public Property Get CurrentContext() As TestContext
-    Set CurrentContext = TestUtils.GetObjectFromPointer(mContextPointer)
+    Set CurrentContext = TestUtils.ObjectFromPointer(mContextPointer)
 End Property
 
 Public Sub BeginContext(ByVal Context As TestContext)
