@@ -41,12 +41,12 @@ Friend Sub ClearParents(ByVal List As TestList)
     Next
 End Sub
 
-Friend Function GetObjectFromPointer(ByVal Ptr As Long) As Object
+Friend Function ObjectFromPointer(ByVal Ptr As Long) As Object
     If Ptr <> vbNullPtr Then
         Dim Unk As IUnknown
         
         ObjectPtr(Unk) = Ptr
-        Set GetObjectFromPointer = Unk
+        Set ObjectFromPointer = Unk
         ObjectPtr(Unk) = vbNullPtr
     End If
 End Function

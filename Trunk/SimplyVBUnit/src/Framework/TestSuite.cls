@@ -92,7 +92,7 @@ Public Sub Sort(Optional ByVal Comparer As ITestComparer)
 End Sub
 
 Public Property Get Parent() As ITest
-    Set Parent = TestUtils.GetObjectFromPointer(mParent)
+    Set Parent = TestUtils.ObjectFromPointer(mParent)
 End Property
 
 Public Property Set Parent(ByVal RHS As ITest)

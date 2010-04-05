@@ -96,7 +96,7 @@ Public Property Set Parent(ByVal RHS As ITest)
 End Property
 
 Public Property Get Parent() As ITest
-    Set Parent = TestUtils.GetObjectFromPointer(mParent)
+    Set Parent = TestUtils.ObjectFromPointer(mParent)
 End Property
 
 Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
