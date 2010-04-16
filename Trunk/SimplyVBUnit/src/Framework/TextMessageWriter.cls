@@ -124,14 +124,14 @@ Public Sub WriteValue(ByRef Value As Variant)
         WriteArray Value
     Else
         Select Case VarType(Value)
-            Case vbString:                  WriteString Value
-            Case vbLong, vbInteger, vbByte: WriteText Value
-            Case vbBoolean:                 WriteText Value
-            Case vbSingle:                  WriteWithDecimalPoint Value, SYM_SINGLE
-            Case vbDouble:                  WriteWithDecimalPoint Value, SYM_DOUBLE
-            Case vbCurrency:                WriteCurrency Value
-            Case vbDecimal:                 WriteWithDecimalPoint Value, SYM_DECIMAL
-            Case vbDate:                    WriteText Value
+            Case vbString:                  WriteString CStr(Value)
+            Case vbLong, vbInteger, vbByte: WriteText CStr(Value)
+            Case vbBoolean:                 WriteText CStr(Value)
+            Case vbSingle:                  WriteWithDecimalPoint CStr(Value), SYM_SINGLE
+            Case vbDouble:                  WriteWithDecimalPoint CStr(Value), SYM_DOUBLE
+            Case vbCurrency:                WriteCurrency CCur(Value)
+            Case vbDecimal:                 WriteWithDecimalPoint CStr(Value), SYM_DECIMAL
+            Case vbDate:                    WriteText CStr(Value)
             Case vbObject, vbDataObject:    WriteObject Value
             Case vbNull:                    WriteText FMT_NULL
             Case vbEmpty:                   WriteText FMT_EMPTY
@@ -146,7 +146,7 @@ Public Sub WriteLine(ParamArray Args() As Variant)
     UpperBound = UBound(Args)
     
     If HasOneArgument(UpperBound) Then
-        Call WriteText(Args(FIRST_ARGUMENT))
+        Call WriteText(CStr(Args(FIRST_ARGUMENT)))
     ElseIf HasMultipleArguments(UpperBound) Then
         Dim LocalArgs() As Variant
         LocalArgs = Args
@@ -156,7 +156,7 @@ Public Sub WriteLine(ParamArray Args() As Variant)
     Call WriteText(vbCrLf)
 End Sub
 
-Public Sub WriteText(ByVal Text As String, ParamArray Args() As Variant)
+Public Sub WriteText(ByRef Text As String, ParamArray Args() As Variant)
     Dim UpperBound As Long
     UpperBound = UBound(Args)
     
@@ -169,11 +169,11 @@ Public Sub WriteText(ByVal Text As String, ParamArray Args() As Variant)
     End If
 End Sub
 
-Public Sub WritePredicate(ByVal Text As String)
+Public Sub WritePredicate(ByRef Text As String)
     Call WriteText(FMT_PREDICATE, Text)
 End Sub
 
-Public Sub WriteConnector(ByVal Text As String)
+Public Sub WriteConnector(ByRef Text As String)
     Call WriteText(FMT_CONNECTOR, Text)
 End Sub
 
@@ -275,11 +275,11 @@ Private Sub WriteOptionalText(ByRef Text As Variant, ByRef TextFormat As String)
     End If
 End Sub
 
-Private Sub WriteString(ByVal Value As String)
+Private Sub WriteString(ByRef Value As String)
     Call WriteText(FMT_STRING, Value)
 End Sub
 
-Private Sub WriteWithDecimalPoint(ByVal Value As String, ByVal Symbol As String)
+Private Sub WriteWithDecimalPoint(ByRef Value As String, ByRef Symbol As String)
     If InStr(Value, ".") > 0 Then
         Call WriteText(Value & Symbol)
     Else
@@ -365,7 +365,7 @@ Private Function GetSizeOfEachDimension(ByRef Arr As Variant, ByVal Rank As Long
     GetSizeOfEachDimension = Result
 End Function
 
-Private Sub WriteCheveronForDimensions(ByRef Dimensions() As Long, ByVal Count As Long, ByVal Cheveron As String)
+Private Sub WriteCheveronForDimensions(ByRef Dimensions() As Long, ByVal Count As Long, ByRef Cheveron As String)
     Dim i As Long
     
     For i = 0 To UBound(Dimensions)

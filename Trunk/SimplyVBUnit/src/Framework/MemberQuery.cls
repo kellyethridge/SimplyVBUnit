@@ -39,9 +39,13 @@ Public Function Execute(ByVal TestClass As Object) As QueryResult
     Set Execute = Release
 End Function
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Init(ByVal TestClass As Object)
     Set mResult = New QueryResult
-    Set mInfo = TLI.InterfaceInfoFromObject(TestClass)
+    Set mInfo = tli.InterfaceInfoFromObject(TestClass)
 End Sub
 
 Private Sub FindMembers()
