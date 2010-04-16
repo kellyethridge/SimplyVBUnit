@@ -45,7 +45,7 @@ Private Const ESC_HEXPREFIX         As String = "\x"
 
 
 
-Public Function FindMismatchIndex(ByVal Expected As String, ByVal Actual As String, ByVal IgnoreCase As Boolean) As Long
+Public Function FindMismatchIndex(ByRef Expected As String, ByRef Actual As String, ByVal IgnoreCase As Boolean) As Long
     Dim MaxIndex As Long
     MaxIndex = GetShorterStringLength(Expected, Actual)
     
@@ -62,7 +62,7 @@ Public Function FindMismatchIndex(ByVal Expected As String, ByVal Actual As Stri
     End If
 End Function
 
-Public Function ClipString(ByVal s As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long) As String
+Public Function ClipString(ByRef s As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long) As String
     Dim sb As New StringBuilder
 
     If StartIndex > 1 Then
@@ -105,7 +105,7 @@ Public Sub ClipExpectedAndActual(ByRef Expected As String, ByRef Actual As Strin
     Actual = ClipString(Actual, ClipStart, MaxDisplayLength)
 End Sub
 
-Public Function EscapeControlChars(ByVal s As String) As String
+Public Function EscapeControlChars(ByRef s As String) As String
     Dim sb As New StringBuilder
     
     Dim i As Long

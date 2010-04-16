@@ -39,36 +39,43 @@ Private mSA     As SafeArray1d
 Private mIndex  As Long
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByRef Arr As Variant)
     If Not IsArray(Arr) Then _
-        Call Err.Raise(ErrorCode.Argument, "ArrayEnumerator.Init", "Arr must be an Array.")
+        Err.Raise ErrorCode.Argument, "ArrayEnumerator.Init", "Arr must be an Array."
         
     Dim pSA As Long
     pSA = GetArrayPointer(Arr)
     
     If ArrayExists(pSA) Then
-        Call CreateProxy(Arr, pSA)
+        CreateProxy Arr, pSA
     Else
-        Call CreateEmptyProxy
+        CreateEmptyProxy
     End If
 End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function ArrayExists(ByVal Ptr As Long) As Boolean
     ArrayExists = (Ptr <> vbNullPtr)
 End Function
 
 Private Sub CreateProxy(ByRef Arr As Variant, ByVal PtrSA As Long)
-    Call FillDescriptor(PtrSA)
+    FillDescriptor PtrSA
     
     If HasElements Then
-        Call CreateArrayProxy(Arr)
+        CreateArrayProxy Arr
     Else
-        Call CreateEmptyProxy
+        CreateEmptyProxy
     End If
 End Sub
 
 Private Sub FillDescriptor(ByVal Ptr As Long)
-    Call CopyMemory(mSA, ByVal Ptr, LenB(mSA))
+    CopyMemory mSA, ByVal Ptr, LenB(mSA)
 End Sub
 
 Private Function HasElements() As Boolean
@@ -98,12 +105,20 @@ Private Sub CreateEmptyProxy()
     mSA.cElements = EMPTY_ARRAY
 End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Class Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Terminate()
-    Call ZeroMemory(mArray, SIZEOF_VARIANT)
+    ZeroMemory mArray, SIZEOF_VARIANT
 End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IEnumerator Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Property Get IEnumerator_Current() As Variant
-    Call VariantCopyInd(IEnumerator_Current, mArray(mIndex))
+    VariantCopyInd IEnumerator_Current, mArray(mIndex)
 End Property
 
 Private Function IEnumerator_MoveNext() As Boolean

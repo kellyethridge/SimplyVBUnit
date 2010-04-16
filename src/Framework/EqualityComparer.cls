@@ -224,7 +224,7 @@ Private Function EqualStrings(ByRef Expected As Variant, ByRef Actual As Variant
 End Function
 
 Private Function EqualNumbers(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If IsNumber(VarType(Actual)) Then
+    If IsNumber(Actual) Then
         Dim Diff As Variant
         Diff = Abs(Expected - Actual)
         EqualNumbers = (Diff <= mTolerance)
@@ -281,14 +281,17 @@ Private Function GetDateDifferenceMultiplier() As Long
     GetDateDifferenceMultiplier = Result
 End Function
 
-Private Function IsNumber(ByVal VarType As VbVarType) As Boolean
-    Select Case VarType
+Private Function IsNumber(ByRef Value As Variant) As Boolean
+    Select Case VarType(Value)
         Case vbLong, vbInteger, vbByte, vbDouble, vbSingle, vbCurrency, vbDecimal
             IsNumber = True
     End Select
 End Function
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Class Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
     mCompareMethod = vbBinaryCompare
     mTolerance = 0

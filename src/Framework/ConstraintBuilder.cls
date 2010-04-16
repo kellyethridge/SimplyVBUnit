@@ -53,7 +53,7 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ReduceOperators()
     Do While HasOperators
-        ResolveNextOperator
+        ReduceNextOperator
     Loop
 End Sub
 
@@ -65,7 +65,7 @@ Private Function HasConstraints() As Boolean
     HasConstraints = (mConstraints.Count > 0)
 End Function
 
-Private Sub ResolveNextOperator()
+Private Sub ReduceNextOperator()
     Dim Operator As IOperator
     Set Operator = mOperators.Pop
     

@@ -39,53 +39,49 @@ Public Enum AssertCode
     #End If
 End Enum
 
-Private Sub IncrementCount()
-    Call TestContext.IncrementAssertCount
-End Sub
-
-Public Sub Ignore(Optional ByVal Reason As String)
+Public Sub Ignore(Optional ByRef Reason As String)
     Call Err.Raise(AssertCode.IgnoreCode, , Reason)
 End Sub
 
-Public Sub Fail(Optional ByVal Message As String)
+Public Sub Fail(Optional ByRef Message As String)
     Call IncrementCount
     Call Err.Raise(AssertCode.FailureCode, , Message)
 End Sub
 
-Public Sub Pass(Optional ByVal Message As String)
+Public Sub Pass(Optional ByRef Message As String)
     Call IncrementCount
     Call Err.Raise(AssertCode.SuccessCode, , Message)
 End Sub
 
-Public Sub IsTrue(ByVal Condition As Boolean, Optional ByVal Message As String)
+Public Sub IsTrue(ByVal Condition As Boolean, Optional ByRef Message As String)
     Call That(Condition, Iz.True, Message)
 End Sub
 
-Public Sub IsFalse(ByVal Condition As Boolean, Optional ByVal Message As String)
+Public Sub IsFalse(ByVal Condition As Boolean, Optional ByRef Message As String)
     Call That(Condition, Iz.False, Message)
 End Sub
 
-Public Sub IsVBEmpty(ByRef Actual As Variant, Optional ByVal Message As String)
+Public Sub IsVBEmpty(ByRef Actual As Variant, Optional ByRef Message As String)
     Call That(Actual, Iz.vbEmpty, Message)
 End Sub
 
-Public Sub IsVBNull(ByRef Actual As Variant, Optional ByVal Message As String)
+Public Sub IsVBNull(ByRef Actual As Variant, Optional ByRef Message As String)
     Call That(Actual, Iz.vbNull, Message)
 End Sub
 
-Public Sub IsMissing(ByRef Actual As Variant, Optional ByVal Message As String)
+Public Sub IsMissing(ByRef Actual As Variant, Optional ByRef Message As String)
     Call That(Actual, Iz.Missing, Message)
 End Sub
 
-Public Sub IsNothing(ByRef Actual As Variant, Optional ByVal Message As String)
+Public Sub IsNothing(ByRef Actual As Variant, Optional ByRef Message As String)
     Call That(Actual, Iz.Nothing, Message)
 End Sub
 
-Public Sub AreEqual(ByRef Expected As Variant, ByRef Actual As Variant, Optional ByVal Message As String)
+Public Sub AreEqual(ByRef Expected As Variant, ByRef Actual As Variant, Optional ByRef Message As String)
     Call That(Actual, Iz.EqualTo(Expected), Message)
 End Sub
 
-Public Sub That(ByRef Actual As Variant, ByVal Constraint As Object, Optional ByVal Message As String)
+Public Sub That(ByRef Actual As Variant, ByVal Constraint As Object, Optional ByRef Message As String)
     Dim ResolvedConstraint As IConstraint
     
     If TypeOf Constraint Is IResolvable Then
@@ -110,7 +106,7 @@ Public Sub That(ByRef Actual As Variant, ByVal Constraint As Object, Optional By
     End If
 End Sub
 
-Public Sub Throws(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String)
+Public Sub Throws(ByVal Number As Long, Optional ByRef Source As String, Optional ByRef Description As String)
     Dim Info        As ErrorInfo
     Dim Constraint  As ThrowsConstraint
     
@@ -119,3 +115,13 @@ Public Sub Throws(ByVal Number As Long, Optional ByVal Source As String, Optiona
     
     Set TestContext.Throws = Constraint
 End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub IncrementCount()
+    Call TestContext.IncrementAssertCount
+End Sub
+
+
