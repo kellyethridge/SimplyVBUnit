@@ -36,12 +36,25 @@ Implements IToleranceUnits
 
 Const DEF_CLIPPING As Boolean = True
 
-Private mExpected   As Variant
-Private mActual     As Variant
-Private mComparer   As New EqualityComparer
-Private mExpression As ConstraintExpression
-Private mIgnoreCase As Boolean
-Private mClipping   As Boolean
+Private Enum ToleranceType
+    Linear
+    InDays
+    InHours
+    InMinutes
+    InSeconds
+End Enum
+
+Private mExpression     As ConstraintExpression
+Private mExpected       As Variant
+Private mActual         As Variant
+Private mIgnoreCase     As Boolean
+Private mClipping       As Boolean
+Private mCompareMethod  As VbCompareMethod
+Private mTolerance      As Variant
+Private mToleranceType  As ToleranceType
+Private mAsCollection   As Boolean
+Private mComparer       As IEqualityComparer
+Private mStrict         As Boolean
 
 
 
@@ -56,28 +69,28 @@ End Function
 ' @return Returns a reference to itself to make it easier to chain commands together.
 '
 Public Function IgnoreCase() As EqualConstraint
-    Call mComparer.IgnoreCase
     mIgnoreCase = True
+    mCompareMethod = vbTextCompare
     Set IgnoreCase = Me
 End Function
 
-Public Function Within(ByVal Tolerance As Variant) As IToleranceUnits
-    Call mComparer.Within(Tolerance)
+Public Function Within(ByRef Tolerance As Variant) As IToleranceUnits
+    mTolerance = Tolerance
     Set Within = Me
 End Function
 
 Public Function AsCollection() As EqualConstraint
-    Call mComparer.AsCollection
+    mAsCollection = True
     Set AsCollection = Me
 End Function
 
 Public Function Using(ByVal Comparer As IEqualityComparer) As EqualConstraint
-    Call mComparer.Using(Comparer)
+    Set mComparer = Comparer
     Set Using = Me
 End Function
 
 Public Function Strict() As EqualConstraint
-    Call mComparer.Strict
+    mStrict = True
     Set Strict = Me
 End Function
 
@@ -89,7 +102,7 @@ End Function
 '
 Public Function Matches(ByRef Actual As Variant) As Boolean
     Call VariantCopyInd(mActual, Actual)
-    Matches = mComparer.EqualVariants(mExpected, mActual)
+    Matches = EqualVariants(mExpected, Actual)
 End Function
 
 ''
@@ -120,23 +133,231 @@ End Sub
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function Days() As EqualConstraint
-    mComparer.ToleranceType = InDays
+    mToleranceType = InDays
     Set Days = Me
 End Function
 
 Private Function Hours() As EqualConstraint
-    mComparer.ToleranceType = InHours
+    mToleranceType = InHours
     Set Hours = Me
 End Function
 
 Private Function Minutes() As EqualConstraint
-    mComparer.ToleranceType = InMinutes
+    mToleranceType = InMinutes
     Set Minutes = Me
 End Function
 
 Private Function Seconds() As EqualConstraint
-    mComparer.ToleranceType = InSeconds
+    mToleranceType = InSeconds
     Set Seconds = Me
+End Function
+
+Private Function EqualVariants(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim Result As Boolean
+    
+    If IsArray(Expected) And IsArray(Actual) Then
+        Result = EqualArrays(Expected, Actual)
+    ElseIf IsEnumerable(Expected) And IsEnumerable(Actual) Then
+        Result = EqualEnumerables(Expected, Actual)
+    Else
+        Result = EqualValues(Expected, Actual)
+    End If
+    
+    EqualVariants = Result
+End Function
+
+Private Function EqualArrays(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    If Not mAsCollection Then
+        If Not EqualArraySizes(Expected, Actual) Then
+            Exit Function
+        End If
+    End If
+    
+    EqualArrays = EqualEnumerables(Expected, Actual)
+End Function
+
+Private Function EqualArraySizes(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    If EqualArrayRanks(Expected, Actual) Then
+        EqualArraySizes = EqualArrayBounds(Expected, Actual)
+    End If
+End Function
+
+Private Function EqualArrayRanks(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim ExpectedRank    As Long
+    Dim ActualRank      As Long
+    
+    ExpectedRank = GetArrayRank(Expected)
+    ActualRank = GetArrayRank(Actual)
+    
+    EqualArrayRanks = (ExpectedRank = ActualRank)
+End Function
+
+Private Function EqualArrayBounds(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim i As Long
+    For i = 1 To GetArrayRank(Expected)
+        If LBound(Actual, i) <> LBound(Expected, i) Then
+            Exit Function
+        End If
+        If UBound(Actual, i) <> UBound(Expected, i) Then
+            Exit Function
+        End If
+    Next
+    
+    EqualArrayBounds = True
+End Function
+
+Private Function EqualEnumerables(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim ExpectedEnumerator  As IEnumerator
+    Dim ActualEnumerator    As IEnumerator
+    
+    Set ExpectedEnumerator = GetEnumerator(Expected)
+    Set ActualEnumerator = GetEnumerator(Actual)
+    
+    Dim ExpectedHasMore As Boolean
+    Dim ActualHasMore   As Boolean
+    
+    Do
+        ExpectedHasMore = ExpectedEnumerator.MoveNext
+        ActualHasMore = ActualEnumerator.MoveNext
+        
+        If ExpectedHasMore = False Or ActualHasMore = False Then
+            Exit Do
+        End If
+        
+        If Not EqualVariants(ExpectedEnumerator.Current, ActualEnumerator.Current) Then
+            Exit Function
+        End If
+    Loop
+    
+    EqualEnumerables = (ExpectedHasMore = False And ActualHasMore = False)
+End Function
+
+Private Function EqualValues(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim Result As Boolean
+    
+    If mComparer Is Nothing Then
+        Result = InternalEqualValues(Expected, Actual)
+    Else
+        Result = mComparer.Equals(Expected, Actual)
+    End If
+    
+    EqualValues = Result
+End Function
+
+Private Function InternalEqualValues(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim Result As Boolean
+    
+    If CanCompareValues(Expected, Actual) Then
+        Select Case VarType(Expected)
+            Case vbString
+                Result = EqualStrings(Expected, Actual)
+                
+            Case vbLong, vbInteger, vbByte, vbDouble, vbSingle, vbCurrency, vbDecimal
+                Result = EqualNumbers(Expected, Actual)
+                
+            Case vbObject, vbDataObject
+                Result = EqualObjects(Expected, Actual)
+                
+            Case vbBoolean
+                Result = EqualBooleans(Expected, Actual)
+                
+            Case vbDate
+                Result = EqualDates(Expected, Actual)
+            
+            Case vbEmpty
+                Result = IsEmpty(Actual)
+                
+            Case vbNull
+                Result = IsNull(Actual)
+                
+            Case vbError
+                Result = (IsMissing(Expected) And IsMissing(Actual))
+                
+        End Select
+    End If
+    
+    InternalEqualValues = Result
+End Function
+
+Private Function CanCompareValues(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    If mStrict Then
+        If VarType(Expected) <> VarType(Actual) Then
+            Exit Function
+        End If
+    End If
+    
+    CanCompareValues = True
+End Function
+
+Private Function EqualStrings(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    If VarType(Actual) = vbString Then
+        EqualStrings = (StrComp(Expected, Actual, mCompareMethod) = 0)
+    End If
+End Function
+
+Private Function EqualNumbers(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    If IsNumber(Actual) Then
+        Dim Diff As Variant
+        Diff = Abs(Expected - Actual)
+        EqualNumbers = (Diff <= mTolerance)
+    End If
+End Function
+
+Private Function EqualObjects(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    If IsObject(Actual) Then
+        EqualObjects = (Actual Is Expected)
+    End If
+End Function
+
+Private Function GetEnumerator(ByRef Enumerable As Variant) As IEnumerator
+    If IsArray(Enumerable) Then
+        Set GetEnumerator = Sim.NewArrayEnumerator(Enumerable)
+    Else
+        Set GetEnumerator = Sim.NewEnumVariantEnumerator(Enumerable)
+    End If
+End Function
+
+Private Function EqualBooleans(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    If VarType(Actual) = vbBoolean Then
+        EqualBooleans = (Actual = Expected)
+    End If
+End Function
+
+Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    If VarType(Actual) = vbDate Then
+        Dim ActualDifference As Double
+        ActualDifference = Abs(DateDiff("s", Expected, Actual))
+        
+        Dim MaximumDifference As Double
+        MaximumDifference = CDbl(mTolerance) * GetDateDifferenceMultiplier
+        
+        EqualDates = (ActualDifference <= MaximumDifference)
+    End If
+End Function
+
+Private Function GetDateDifferenceMultiplier() As Long
+    Const SECONDS_PER_DAY       As Long = 86400
+    Const SECONDS_PER_HOUR      As Long = 3600
+    Const SECONDS_PER_MINUTE    As Long = 60
+    Const SECONDS_PER_SECOND    As Long = 1
+    
+    Dim Result As Long
+        
+    Select Case mToleranceType
+        Case InDays:    Result = SECONDS_PER_DAY
+        Case InHours:   Result = SECONDS_PER_HOUR
+        Case InMinutes: Result = SECONDS_PER_MINUTE
+        Case InSeconds: Result = SECONDS_PER_SECOND
+    End Select
+        
+    GetDateDifferenceMultiplier = Result
+End Function
+
+Private Function IsNumber(ByRef Value As Variant) As Boolean
+    Select Case VarType(Value)
+        Case vbLong, vbInteger, vbByte, vbDouble, vbSingle, vbCurrency, vbDecimal
+            IsNumber = True
+    End Select
 End Function
 
 
