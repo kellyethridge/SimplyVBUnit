@@ -78,7 +78,7 @@ Public Sub FindMismatchIndex_WithValues_ReturnsExpected(ByVal ExpectedString As 
     Dim Actual As Long
     Actual = Utils.FindMismatchIndex(ExpectedString, ActualString, IgnoreCase)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long, ByVal Expected As String)
@@ -87,7 +87,7 @@ Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, B
     Dim Actual As String
     Actual = Utils.ClipString(SourceString, StartIndex, MaxStringLength)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected(ByVal UnclippedExpected As String, ByVal Expected As String, ByVal MismatchIndex As Long)
@@ -97,7 +97,7 @@ Public Sub ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected(By
     Actual = UnclippedExpected
     Call Utils.ClipExpectedAndActual(Actual, UnclippedExpected, 10, MismatchIndex)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected(ByVal UnclippedActual As String, ByVal Expected As String, ByVal MismatchIndex As Long)
@@ -107,7 +107,7 @@ Public Sub ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected(ByVa
     Actual = UnclippedActual
     Call Utils.ClipExpectedAndActual(UnclippedActual, Actual, 10, MismatchIndex)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub EscapeControlChars_WithValues_ReturnsExpected(ByVal Source As String, ByVal Expected As String)
@@ -116,5 +116,5 @@ Public Sub EscapeControlChars_WithValues_ReturnsExpected(ByVal Source As String,
     Dim Actual As String
     Actual = Utils.EscapeControlChars(Source)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub

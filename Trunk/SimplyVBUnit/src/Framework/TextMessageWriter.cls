@@ -29,8 +29,10 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
+Private Const DEF_MAXDISPLAYLENGTH  As Long = 64
 Private Const FIRST_ARGUMENT        As Long = 0
 Private Const SECOND_ARGUMENT       As Long = FIRST_ARGUMENT + 1
+
 Private Const PFX_EXPECTED          As String = "Expected: "
 Private Const PFX_ACTUAL            As String = "But was : "
 Private Const FMT_STRING            As String = """{0}"""
@@ -47,10 +49,8 @@ Private Const FMT_ERRORNUMBER       As String = "error {0}"
 Private Const FMT_ERRORDESCRIPTION  As String = ", {0}"
 Private Const FMT_ERRORSOURCE       As String = " from [{0}]"
 Private Const FMT_CONNECTOR         As String = " {0} "
-Private Const FMT_STRINGSDIFFER_1   As String = "String lengths are both {0}. Strings differ at index {1}."
-Private Const FMT_STRINGSDIFFER_2   As String = "Expected string length {0} but was {1}. Strings differ at index {2}."
 Private Const FMT_DEFAULT           As String = "<{0}>"
-Private Const MAX_DISPLAY_LENGTH    As Long = 64
+Private Const FMT_TYPEOF            As String = "type of <{0}> "
 
 Private Const SYM_SINGLE            As String = "!"
 Private Const SYM_DOUBLE            As String = "#"
@@ -59,64 +59,73 @@ Private Const SYM_DECIMAL           As String = "D"
 
 
 
-Private mMessage    As New StringBuilder
-Private mUtils      As New MsgUtils
+Private mMaxDisplayLength   As Long
+Private mMessage            As New StringBuilder
+Private mUtils              As New MsgUtils
 
+
+Public Property Get MaxDisplayLength() As Long
+    MaxDisplayLength = mMaxDisplayLength
+End Property
+
+Public Property Let MaxDisplayLength(ByVal RHS As Long)
+    mMaxDisplayLength = RHS
+End Property
 
 Public Function ToString() As String
     ToString = mMessage.ToString
 End Function
 
-Public Sub DisplayStringDifference(ByVal Expected As String, ByVal Actual As String, ByVal IgnoreCase As Boolean, ByVal Clipping As Boolean)
-    Dim MismatchIndex As Long
-    MismatchIndex = MsgUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
-    
-    If Len(Expected) = Len(Actual) Then
-        WriteLine FMT_STRINGSDIFFER_1, Len(Expected), MismatchIndex
-    Else
-        WriteLine FMT_STRINGSDIFFER_2, Len(Expected), Len(Actual), MismatchIndex
-    End If
-    
+Public Sub DisplayStringDifferences(ByVal Expected As String, ByVal Actual As String, ByVal MismatchIndex As Long, ByVal IgnoreCase As Boolean, ByVal Clipping As Boolean)
     If Clipping Then
-        mUtils.ClipExpectedAndActual Expected, Actual, MAX_DISPLAY_LENGTH, MismatchIndex
+        mUtils.ClipExpectedAndActual Expected, Actual, Me.MaxDisplayLength, MismatchIndex
     End If
+    
+    Expected = mUtils.EscapeControlChars(Expected)
+    Actual = mUtils.EscapeControlChars(Actual)
     
     MismatchIndex = mUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
     
-    WriteExpectedLine Expected
-    WriteActualLine Actual
+    WriteText PFX_EXPECTED
+    WriteValue Expected
     
+    If IgnoreCase Then
+        WriteModifier "ignoring case"
+    End If
+    
+    WriteLine
+    WriteActualLine Actual
     WriteCaretLine MismatchIndex
 End Sub
 
 Public Sub DisplayConstraintDifference(ByVal Constraint As IConstraint)
-    Call WriteExpectedLineConstraint(Constraint)
-    Call WriteActualLineConstraint(Constraint)
+    WriteExpectedLineConstraint Constraint
+    WriteActualLineConstraint Constraint
 End Sub
 
 Private Sub WriteExpectedLineConstraint(ByVal Constraint As IConstraint)
-    Call WriteText(PFX_EXPECTED)
-    Call Constraint.WriteDescriptionTo(Me)
-    Call WriteLine
+    WriteText PFX_EXPECTED
+    Constraint.WriteDescriptionTo Me
+    WriteLine
 End Sub
 
 Private Sub WriteActualLineConstraint(ByVal Constraint As IConstraint)
-    Call WriteText(PFX_ACTUAL)
-    Call Constraint.WriteActualValueTo(Me)
-    Call WriteLine
+    WriteText PFX_ACTUAL
+    Constraint.WriteActualValueTo Me
+    WriteLine
 End Sub
 
 Public Sub DisplayDifference(ByRef Expected As Variant, ByRef Actual As Variant)
-    Call WriteExpectedLine(Expected)
-    Call WriteActualLine(Actual)
+    WriteExpectedLine Expected
+    WriteActualLine Actual
 End Sub
 
 Public Sub WriteActualValue(ByRef Value As Variant)
-    Call WriteValue(Value)
+    WriteValue Value
 End Sub
 
 Public Sub WriteExpectedValue(ByRef Value As Variant)
-    Call WriteValue(Value)
+    WriteValue Value
 End Sub
 
 Public Sub WriteValue(ByRef Value As Variant)
@@ -146,11 +155,11 @@ Public Sub WriteLine(ParamArray Args() As Variant)
     UpperBound = UBound(Args)
     
     If HasOneArgument(UpperBound) Then
-        Call WriteText(CStr(Args(FIRST_ARGUMENT)))
+        WriteText CStr(Args(FIRST_ARGUMENT))
     ElseIf HasMultipleArguments(UpperBound) Then
         Dim LocalArgs() As Variant
         LocalArgs = Args
-        Call WriteFormattedText(CStr(LocalArgs(FIRST_ARGUMENT)), LocalArgs(SECOND_ARGUMENT), UpperBound)
+        WriteFormattedText CStr(LocalArgs(FIRST_ARGUMENT)), LocalArgs(SECOND_ARGUMENT), UpperBound
     End If
     
     Call WriteText(vbCrLf)
@@ -161,26 +170,33 @@ Public Sub WriteText(ByRef Text As String, ParamArray Args() As Variant)
     UpperBound = UBound(Args)
     
     If HasNoArguments(UpperBound) Then
-        Call mMessage.Append(Text)
+        mMessage.Append Text
     Else
         Dim LocalArgs() As Variant
         LocalArgs = Args
-        Call mMessage.AppendFormatArray(Text, LocalArgs)
+        mMessage.AppendFormatArray Text, LocalArgs
     End If
 End Sub
 
 Public Sub WritePredicate(ByRef Text As String)
-    Call WriteText(FMT_PREDICATE, Text)
+    WriteText FMT_PREDICATE, Text
+End Sub
+
+Public Sub WriteModifier(ByRef Text As String)
+    WriteText FMT_MODIFIER, Text
 End Sub
 
 Public Sub WriteConnector(ByRef Text As String)
-    Call WriteText(FMT_CONNECTOR, Text)
+    WriteText FMT_CONNECTOR, Text
 End Sub
 
 Public Sub WriteErrorInfo(ByVal Info As ErrorInfo)
-    Call WriteText(FMT_ERRORNUMBER, Info.Number)
-    Call WriteOptionalText(Info.Description, FMT_ERRORDESCRIPTION)
-    Call WriteOptionalText(Info.Source, FMT_ERRORSOURCE)
+    If Info Is Nothing Then _
+        Error.CannotBeNothing Me, "WriteErrorInfo", "Info"
+    
+    WriteText FMT_ERRORNUMBER, Info.Number
+    WriteOptionalText Info.Description, FMT_ERRORDESCRIPTION
+    WriteOptionalText Info.Source, FMT_ERRORSOURCE
 End Sub
 
 Public Sub WriteCollectionElements(ByRef Values As Variant, ByVal StartIndex As Long, ByVal Count As Long)
@@ -214,24 +230,24 @@ Public Sub WriteCollectionElements(ByRef Values As Variant, ByVal StartIndex As 
     WriteText " >"
 End Sub
 
-Public Sub WriteTypePredicate(ByRef Value As Variant)
-    Call WriteText("type of <{0}> ", TypeName(Value))
+Public Sub WriteTypeOfPredicate(ByRef Value As Variant)
+    WriteText FMT_TYPEOF, TypeName(Value)
 End Sub
 
 Public Sub WriteError(ByVal Info As ErrorInfo)
-    Call WriteText(FMT_ERRORNUMBER, Info.Number)
+    WriteText FMT_ERRORNUMBER, Info.Number
     
     Dim Connector As String
     If Len(Info.Description) > 0 Then
-        Call WriteText(FMT_MODIFIER, Info.Description)
+        WriteModifier Info.Description
         Connector = FMT_CONNECTOR
     Else
         Connector = FMT_MODIFIER
     End If
     
     If Len(Info.Source) > 0 Then
-        Call WriteText(Connector, "From")
-        Call WriteText(FMT_ERRORSOURCE, Info.Source)
+        WriteText Connector, "From"
+        WriteText FMT_ERRORSOURCE, Info.Source
     End If
 End Sub
 
@@ -240,15 +256,15 @@ End Sub
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub WriteExpectedLine(ByRef Expected As Variant)
-    Call WriteText(PFX_EXPECTED)
-    Call WriteExpectedValue(Expected)
-    Call WriteLine
+    WriteText PFX_EXPECTED
+    WriteExpectedValue Expected
+    WriteLine
 End Sub
 
 Private Sub WriteActualLine(ByRef Actual As Variant)
-    Call WriteText(PFX_ACTUAL)
-    Call WriteActualValue(Actual)
-    Call WriteLine
+    WriteText PFX_ACTUAL
+    WriteActualValue Actual
+    WriteLine
 End Sub
 
 Private Function HasOneArgument(ByVal UpperBound As Long) As Boolean
@@ -265,46 +281,46 @@ End Function
 
 Private Sub WriteFormattedText(ByRef Text As String, ByRef FirstArgument As Variant, ByVal ArgumentCount As Long)
     Dim Proxy As ArrayProxy
-    Call InitArrayProxy(Proxy, FirstArgument, ArgumentCount)
-    Call mMessage.AppendFormatArray(Text, Proxy.Data)
+    InitArrayProxy Proxy, FirstArgument, ArgumentCount
+    mMessage.AppendFormatArray Text, Proxy.Data
 End Sub
 
 Private Sub WriteOptionalText(ByRef Text As Variant, ByRef TextFormat As String)
     If Len(Text) > 0 Then
-        Call WriteText(TextFormat, Text)
+        WriteText TextFormat, Text
     End If
 End Sub
 
 Private Sub WriteString(ByRef Value As String)
-    Call WriteText(FMT_STRING, Value)
+    WriteText FMT_STRING, Value
 End Sub
 
 Private Sub WriteWithDecimalPoint(ByRef Value As String, ByRef Symbol As String)
     If InStr(Value, ".") > 0 Then
-        Call WriteText(Value & Symbol)
+        WriteText Value & Symbol
     Else
-        Call WriteText(Value & ".0" & Symbol)
+        WriteText Value & ".0" & Symbol
     End If
 End Sub
 
 Private Sub WriteCurrency(ByVal Value As Currency)
-    Call WriteText(Format$(Value, FMT_CURRENCY))
+    WriteText Format$(Value, FMT_CURRENCY)
 End Sub
 
 Private Sub WriteObject(ByRef Value As Variant)
     If Value Is Nothing Then
-        Call WriteText(FMT_NOTHING)
+        WriteText FMT_NOTHING
     ElseIf TypeOf Value Is Collection Then
-        Call WriteCollectionElements(Value, 1, 10)
+        WriteCollectionElements Value, 1, 10
     ElseIf TypeOf Value Is ErrorInfo Then
-        Call WriteError(Value)
+        WriteError Value
     Else
-        Call WriteDefault(TypeName(Value))
+        WriteDefault TypeName(Value)
     End If
 End Sub
 
 Private Sub WriteDefault(ByRef Value As Variant)
-    Call WriteText(FMT_DEFAULT, Value)
+    WriteText FMT_DEFAULT, Value
 End Sub
 
 Private Sub WriteArray(ByRef Arr As Variant)
@@ -346,7 +362,7 @@ Private Sub WriteArray(ByRef Arr As Variant)
 End Sub
 
 Private Sub WriteCaretLine(ByVal MismatchIndex As Long)
-    Call WriteLine("  {0}^", String$(Len(PFX_EXPECTED) + MismatchIndex - 2, "-"))
+    WriteLine "  {0}^", String$(Len(PFX_EXPECTED) + MismatchIndex - 2, "-")
 End Sub
 
 Private Function GetSizeOfEachDimension(ByRef Arr As Variant, ByVal Rank As Long) As Long()
@@ -375,3 +391,10 @@ Private Sub WriteCheveronForDimensions(ByRef Dimensions() As Long, ByVal Count A
     Next i
 End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Class Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub Class_Initialize()
+    Me.MaxDisplayLength = DEF_MAXDISPLAYLENGTH
+End Sub
