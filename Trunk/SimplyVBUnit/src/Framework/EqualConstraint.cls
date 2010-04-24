@@ -36,6 +36,11 @@ Implements IToleranceUnits
 
 Private Const MSG_STRINGSDIFFERBYINDEX          As String = "String lengths are both {0}. Strings differ at index {1}."
 Private Const MSG_STRINGSDIFFERBYLENGTHANDINDEX As String = "Expected string length {0} but was {1}. Strings differ at index {2}."
+Private Const MSG_COLLECTIONTYPE_1              As String = "Expected and actual are both {0}"
+Private Const MSG_COLLECTIONTYPE_2              As String = "Expected is {0}, actual is {1}"
+Private Const MSG_VALUESDIFFER_1                As String = "  Values differ at index [{0}]"
+Private Const MSG_VALUESDIFFER_2                As String = "  Values differ at expected index [{0}], actual index [{1}]"
+
 Private Const DEF_CLIPPING                      As Boolean = True
 
 Private Enum ToleranceType
@@ -56,6 +61,7 @@ Private mToleranceType  As ToleranceType
 Private mAsCollection   As Boolean
 Private mComparer       As IEqualityComparer
 Private mStrict         As Boolean
+Private mFailurePoint   As Variant
 
 
 
@@ -102,6 +108,7 @@ End Function
 '
 Public Function Matches(ByRef Actual As Variant) As Boolean
     Call VariantCopyInd(mActual, Actual)
+    mFailurePoint = Empty
     Matches = EqualVariants(mExpected, Actual)
 End Function
 
@@ -372,6 +379,105 @@ Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
     
     Call Writer.DisplayStringDifferences(CStr(mExpected), CStr(mActual), MismatchIndex, mIgnoreCase, mClipping)
 End Sub
+
+Private Sub DisplayArrayDifferences(ByVal Writer As TextMessageWriter)
+    Call DisplayCollectionTypesAndSizes(Writer)
+    
+    If Not IsEmpty(mFailurePoint) Then
+        If mAsCollection Then
+            Dim sExpected   As String
+            Dim sActual     As String
+            
+            sExpected = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, mFailurePoint))
+            sActual = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mActual, mFailurePoint))
+            
+            Call Writer.WriteLine(MSG_VALUESDIFFER_2, sExpected, sActual)
+        Else
+            Call Writer.WriteLine(MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, mFailurePoint)))
+        End If
+        
+        Call Writer.DisplayDifference(GetValue(mExpected, mFailurePoint), GetValue(mActual, mFailurePoint))
+    End If
+End Sub
+
+Private Function GetValue(ByRef Source As Variant, ByVal Index As Long) As Variant
+    If IsArray(Source) Then
+        Call VariantCopyInd(GetValue, GetArrayElement(Source, Index))
+        Exit Function
+    Else
+        Call VariantCopyInd(GetValue, Source(Index))
+        Exit Function
+    End If
+End Function
+
+Private Sub DisplayCollectionDifferences(ByVal Writer As TextMessageWriter)
+    Call DisplayCollectionTypesAndSizes(Writer)
+    
+    If Not IsEmpty(mFailurePoint) Then
+        Call DisplayCollectionFailurePoint(Writer)
+        
+        If mExpected.Count < mActual.Count Then
+            ' too many
+            Call Writer.WriteText("  Extra: ")
+            Call Writer.WriteCollectionElements(mActual, mFailurePoint + 1, 3)
+            Call Writer.WriteLine
+            
+        ElseIf mExpected.Count > mActual.Count Then
+            ' too few
+            Call Writer.WriteText("  Missing: ")
+            Call Writer.WriteCollectionElements(mExpected, mFailurePoint + 1, 3)
+            Call Writer.WriteLine
+        Else
+            Call Writer.DisplayDifference(GetValue(mExpected, mFailurePoint + 1), GetValue(mActual, mFailurePoint + 1))
+        End If
+    End If
+End Sub
+
+Private Sub DisplayCollectionTypesAndSizes(ByVal Writer As TextMessageWriter)
+    Dim sExpected As String
+    sExpected = MsgUtils.GetTypeRepresentation(mExpected)
+    
+    Dim Count As Long
+    If TryGetCount(mExpected, Count) Then
+        sExpected = sExpected & " with " & Count & " element"
+        
+        If Count <> 1 Then
+            sExpected = sExpected & "s"
+        End If
+    End If
+    
+    Dim sActual As String
+    sActual = MsgUtils.GetTypeRepresentation(mActual)
+    
+    If TryGetCount(mActual, Count) Then
+        sActual = sActual & " with " & Count & " element"
+        
+        If Count <> 1 Then
+            sActual = sActual & "s"
+        End If
+    End If
+    
+    If sExpected = sActual Then
+        Call Writer.WriteLine(MSG_COLLECTIONTYPE_1, sExpected)
+    Else
+        Call Writer.WriteLine(MSG_COLLECTIONTYPE_2, sExpected, sActual)
+    End If
+End Sub
+
+Private Sub DisplayCollectionFailurePoint(ByVal Writer As TextMessageWriter)
+    Call Writer.WriteLine(MSG_VALUESDIFFER_1, mFailurePoint + 1)
+End Sub
+
+Private Function TryGetCount(ByVal Source As Object, ByRef Result As Long) As Boolean
+    On Error GoTo errTrap
+    
+    Result = Source.Count
+    TryGetCount = True
+    Exit Function
+    
+errTrap:
+    Result = 0
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

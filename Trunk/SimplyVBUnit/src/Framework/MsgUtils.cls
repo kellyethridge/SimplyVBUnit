@@ -138,76 +138,70 @@ Public Function EscapeControlChars(ByRef s As String) As String
     EscapeControlChars = Result
 End Function
 
+Public Function GetTypeRepresentation(ByRef Value As Variant) As String
+    Dim sb As New StringBuilder
 
+    Call sb.Append("<")
 
+    If IsArray(Value) Then
+        Call sb.Append(TypeName(Value))
+        sb.Length = sb.Length - 1
 
+        Dim i As Long
+        For i = 1 To GetArrayRank(Value)
+            If i > 1 Then
+                Call sb.Append(", ")
+            End If
 
+            Call sb.AppendFormat(MSG_BOUNDS, LBound(Value, i), UBound(Value, i))
+        Next i
 
+        Call sb.Append(")")
+    Else
+        Call sb.Append(TypeName(Value))
+    End If
 
-'Public Function GetTypeRepresentation(ByRef Value As Variant) As String
-'    Dim sb As New StringBuilder
-'
-'    Call sb.Append("<")
-'
-'    If IsArray(Value) Then
-'        Call sb.Append(TypeName(Value))
-'        sb.Length = sb.Length - 1
-'
-'        Dim i As Long
-'        For i = 1 To GetArrayRank(Value)
-'            If i > 1 Then
-'                Call sb.Append(", ")
-'            End If
-'
-'            Call sb.AppendFormat(MSG_BOUNDS, LBound(Value, i), UBound(Value, i))
-'        Next i
-'
-'        Call sb.Append(")")
-'    Else
-'        Call sb.Append(TypeName(Value))
-'    End If
-'
-'    Call sb.Append(">")
-'    GetTypeRepresentation = sb.ToString
-'End Function
-'
-'Public Function GetArrayIndicesFromCollectionIndex(ByRef Value As Variant, ByVal Index As Long) As Long()
-'    Dim Result() As Long
-'
-'    If IsArray(Value) Then
-'        Dim Rank As Long
-'        Rank = GetArrayRank(Value)
-'
-'        ReDim Result(0 To Rank - 1)
-'
-'        Dim i As Long
-'        For i = 1 To Rank
-'            Dim j As Long
-'            j = UBound(Value, i) - LBound(Value, i) + 1
-'            Result(i - 1) = LBound(Value, i) + (Index Mod j)
-'            Index = Index \ j
-'        Next i
-'    Else
-'        ReDim Result(0)
-'        Result(0) = Index
-'    End If
-'
-'    GetArrayIndicesFromCollectionIndex = Result
-'End Function
-'
-'Public Function GetArrayIndicesAsString(ByRef Indices() As Long) As String
-'    Dim sb As New StringBuilder
-'    Dim i As Long
-'    For i = 0 To UBound(Indices)
-'        If i > 0 Then
-'            Call sb.Append(", ")
-'        End If
-'
-'        Call sb.Append(Indices(i))
-'    Next i
-'
-'    GetArrayIndicesAsString = sb.ToString
-'End Function
+    Call sb.Append(">")
+    GetTypeRepresentation = sb.ToString
+End Function
+
+Public Function GetArrayIndicesFromCollectionIndex(ByRef Value As Variant, ByVal Index As Long) As Long()
+    Dim Result() As Long
+
+    If IsArray(Value) Then
+        Dim Rank As Long
+        Rank = GetArrayRank(Value)
+
+        ReDim Result(0 To Rank - 1)
+
+        Dim i As Long
+        For i = 1 To Rank
+            Dim j As Long
+            j = UBound(Value, i) - LBound(Value, i) + 1
+            Result(i - 1) = LBound(Value, i) + (Index Mod j)
+            Index = Index \ j
+        Next i
+    Else
+        ReDim Result(0)
+        Result(0) = Index
+    End If
+
+    GetArrayIndicesFromCollectionIndex = Result
+End Function
+
+Public Function GetArrayIndicesAsString(ByRef Indices() As Long) As String
+    Dim sb As New StringBuilder
+    Dim i As Long
+    For i = 0 To UBound(Indices)
+        If i > 0 Then
+            Call sb.Append(", ")
+        End If
+
+        Call sb.Append(Indices(i))
+    Next i
+
+    GetArrayIndicesAsString = sb.ToString
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
