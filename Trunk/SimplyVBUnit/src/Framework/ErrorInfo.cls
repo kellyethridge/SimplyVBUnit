@@ -56,21 +56,11 @@ Public Function Equals(ByVal Other As ErrorInfo, Optional ByVal IgnoreCase As Bo
     
     Dim Result As Boolean
     Result = (Other.Number = Me.Number)
-    Result = Result And EqualStrings(Me.Source, Other.Source, IgnoreCase)
-    Result = Result And EqualStrings(Me.Description, Other.Description, IgnoreCase)
+    Result = Result And EqualStringsIfBothExist(Me.Source, Other.Source, IgnoreCase)
+    Result = Result And EqualStringsIfBothExist(Me.Description, Other.Description, IgnoreCase)
     Result = Result And (Other.LastDllError = Me.LastDllError)
     
     Equals = Result
-End Function
-
-Private Function EqualStrings(ByRef Text1 As String, ByRef Text2 As String, ByVal IgnoreCase As Boolean) As Boolean
-    If Len(Text1) > 0 And Len(Text2) > 0 Then
-        If StringCompare(Text1, Text2, IgnoreCase) <> 0 Then
-            Exit Function
-        End If
-    End If
-    
-    EqualStrings = True
 End Function
 
 
@@ -83,5 +73,26 @@ Friend Sub Init(ByVal Number As Long, ByVal Source As String, ByVal Description 
     mDescription = Description
     mLastDllError = LastDllError
 End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function EqualStringsIfBothExist(ByRef String1 As String, ByRef String2 As String, ByVal IgnoreCase As Boolean) As Boolean
+    If ShouldCompare(String1, String2) Then
+        If Not EqualStrings(String1, String2, IgnoreCase) Then
+            Exit Function
+        End If
+    End If
+    
+    EqualStringsIfBothExist = True
+End Function
+
+Private Function ShouldCompare(ByRef Text1 As String, ByRef Text2 As String) As Boolean
+    If Len(Text1) > 0 Then
+        ShouldCompare = (Len(Text2) > 0)
+    End If
+End Function
+
 
 

@@ -49,7 +49,6 @@ Private mExpected       As Variant
 Private mActual         As Variant
 Private mIgnoreCase     As Boolean
 Private mClipping       As Boolean
-Private mCompareMethod  As VbCompareMethod
 Private mTolerance      As Variant
 Private mToleranceType  As ToleranceType
 Private mAsCollection   As Boolean
@@ -70,7 +69,6 @@ End Function
 '
 Public Function IgnoreCase() As EqualConstraint
     mIgnoreCase = True
-    mCompareMethod = vbTextCompare
     Set IgnoreCase = Me
 End Function
 
@@ -291,7 +289,8 @@ End Function
 
 Private Function EqualStrings(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
     If VarType(Actual) = vbString Then
-        EqualStrings = (StrComp(Expected, Actual, mCompareMethod) = 0)
+'        EqualStrings = (StrComp(Expected, Actual, mCompareMethod) = 0)
+        EqualStrings = modUtilities.EqualStrings(Expected, Actual, mIgnoreCase)
     End If
 End Function
 
