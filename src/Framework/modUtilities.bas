@@ -158,6 +158,41 @@ Public Function GetArrayRank(ByRef Arr As Variant) As Long
     GetArrayRank = SafeArrayGetDim(Ptr)
 End Function
 
+Public Function GetArrayElement(ByRef Arr As Variant, ByVal Index As Long) As Variant
+    Dim Src As Variant
+    Dim SA  As SafeArray1d
+    Dim pSA As Long
+    pSA = GetArrayPointer(Arr)
+    
+    On Error GoTo errTrap
+    If pSA <> 0 Then
+        Call CopyMemory(SA, ByVal pSA, LenB(SA))
+        
+        If SA.cDims > 0 Then
+            Dim Count As Long
+            Count = 1
+            
+            Dim i As Long
+            For i = 1 To SA.cDims
+                Count = Count * (UBound(Arr, i) - LBound(Arr, i) + 1)
+            Next i
+        
+            VariantType(Src) = VarType(Arr)
+            MemLong(VarPtr(Src) + VARIANTDATA_OFFSET) = VarPtr(SA)
+            
+            SA.lLbound = 0
+            SA.cElements = Count
+            SA.cDims = 1
+            
+            Call VariantCopyInd(GetArrayElement, Src(Index))
+        End If
+    End If
+
+errTrap:
+    Call ZeroMemory(Src, 16)
+End Function
+
+
 ''
 ' Initializes an ArrayProxy structure with the array elements it will represent.
 '

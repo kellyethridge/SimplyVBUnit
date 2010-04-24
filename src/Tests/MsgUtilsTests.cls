@@ -68,6 +68,18 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use("ab" & vbCrLf & "cd", "ab\r\ncd")
             Call Test.Use("abc" & Chr$(14) & "de", "abc\x0Ede")
             Call Test.Use("", "")
+        
+        Case "GetTypeRepresentation_WithValues_ReturnsExpected"
+            Test.Use CInt(1), "<Integer>"
+            Dim Arr As Variant
+            Arr = Array(1, 2)
+            Test.Use Arr, "<Variant(0 To 1)>"
+            
+            ReDim Arr(1 To 2) As Long
+            Test.Use Arr, "<Long(1 To 2)>"
+            
+            ReDim Arr(1 To 2, 3 To 4) As Long
+            Test.Use Arr, "<Long(1 To 2, 3 To 4)>"
             
     End Select
 End Sub
@@ -115,6 +127,15 @@ Public Sub EscapeControlChars_WithValues_ReturnsExpected(ByVal Source As String,
     
     Dim Actual As String
     Actual = Utils.EscapeControlChars(Source)
+    
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub GetTypeRepresentation_WithValues_ReturnsExpected(ByRef Value As Variant, ByVal Expected As String)
+    Dim Utils As New MsgUtils
+    
+    Dim Actual As String
+    Actual = Utils.GetTypeRepresentation(Value)
     
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
