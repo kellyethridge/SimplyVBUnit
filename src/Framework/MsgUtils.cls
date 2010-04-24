@@ -51,7 +51,7 @@ Public Function FindMismatchIndex(ByRef Expected As String, ByRef Actual As Stri
     
     Dim i As Long
     For i = 1 To MaxIndex
-        If StringCompare(Mid$(Expected, i, 1), Mid$(Actual, i, 1), IgnoreCase) <> 0 Then
+        If Not EqualStrings(Mid$(Expected, i, 1), Mid$(Actual, i, 1), IgnoreCase) Then
             FindMismatchIndex = i
             Exit Function
         End If

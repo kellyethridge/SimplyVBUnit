@@ -207,7 +207,7 @@ Private Function ArrayProxy_Release(ByRef This As ArrayProxy) As Long
     This.SA.pvData = vbNullPtr
 End Function
 
-Public Function StringCompare(ByRef String1 As String, ByRef String2 As String, Optional ByVal IgnoreCase As Boolean = False) As Long
+Public Function EqualStrings(ByRef String1 As Variant, ByRef String2 As Variant, Optional ByVal IgnoreCase As Boolean) As Boolean
     Dim Method As VbCompareMethod
     If Not IgnoreCase Then
         Method = vbBinaryCompare
@@ -215,5 +215,5 @@ Public Function StringCompare(ByRef String1 As String, ByRef String2 As String, 
         Method = vbTextCompare
     End If
     
-    StringCompare = StrComp(String1, String2, Method)
+    EqualStrings = (StrComp(String1, String2, Method) = 0)
 End Function
