@@ -90,6 +90,10 @@ End Sub
 ' @param Text The string to be appended to the buffer.
 '
 Public Sub Append(ByVal Text As String)
+    AppendQuick Text
+End Sub
+
+Public Sub AppendQuick(ByRef Text As String)
     Call EnsureCapacity(Length + Len(Text))
     Call AppendToBuffer(Text)
 End Sub

@@ -34,7 +34,9 @@ Implements IBasicExpression
 Implements IEqualConstraint
 Implements IToleranceUnits
 
-Const DEF_CLIPPING As Boolean = True
+Private Const MSG_STRINGSDIFFERBYINDEX          As String = "String lengths are both {0}. Strings differ at index {1}."
+Private Const MSG_STRINGSDIFFERBYLENGTHANDINDEX As String = "Expected string length {0} but was {1}. Strings differ at index {2}."
+Private Const DEF_CLIPPING                      As Boolean = True
 
 Private Enum ToleranceType
     Linear
@@ -110,7 +112,7 @@ End Function
 '
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
     If VarType(mActual) = vbString And VarType(mExpected) = vbString Then
-        Call Writer.DisplayStringDifference(mExpected, mActual, mIgnoreCase, mClipping)
+        DisplayStringDifferences Writer
     Else
         Call Writer.DisplayConstraintDifference(Me)
     End If
@@ -289,7 +291,6 @@ End Function
 
 Private Function EqualStrings(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
     If VarType(Actual) = vbString Then
-'        EqualStrings = (StrComp(Expected, Actual, mCompareMethod) = 0)
         EqualStrings = modUtilities.EqualStrings(Expected, Actual, mIgnoreCase)
     End If
 End Function
@@ -358,6 +359,19 @@ Private Function IsNumber(ByRef Value As Variant) As Boolean
             IsNumber = True
     End Select
 End Function
+
+Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
+    Dim MismatchIndex As Long
+    MismatchIndex = MsgUtils.FindMismatchIndex(CStr(mExpected), CStr(mActual), mIgnoreCase)
+    
+    If Len(mExpected) = Len(mActual) Then
+        Call Writer.WriteLine(MSG_STRINGSDIFFERBYINDEX, Len(mExpected), MismatchIndex)
+    Else
+        Call Writer.WriteLine(MSG_STRINGSDIFFERBYLENGTHANDINDEX, Len(mExpected), Len(mActual), MismatchIndex)
+    End If
+    
+    Call Writer.DisplayStringDifferences(CStr(mExpected), CStr(mActual), MismatchIndex, mIgnoreCase, mClipping)
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
