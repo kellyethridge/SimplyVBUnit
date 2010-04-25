@@ -29,10 +29,72 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mValue As Variant
+Public Enum ToleranceMode
+    LinearMode
+    PercentMode
+    SecondsMode
+    MinutesMode
+    HoursMode
+    DaysMode
+    WeeksMode
+    MonthsMode
+    QuartersMode
+    YearsMode
+End Enum
+
+Private mValue  As Variant
+Private mMode   As ToleranceMode
 
 
+Public Property Get Value() As Variant
+    Value = mValue
+End Property
 
-Friend Sub Init(ByRef Value As Variant)
+Public Property Get Mode() As ToleranceMode
+    Mode = mMode
+End Property
+
+Public Property Get Seconds() As Tolerance
+    Set Seconds = Sim.NewTolerance(mValue, SecondsMode)
+End Property
+
+Public Property Get Minutes() As Tolerance
+    Set Minutes = Sim.NewTolerance(mValue, MinutesMode)
+End Property
+
+Public Property Get Hours() As Tolerance
+    Set Hours = Sim.NewTolerance(mValue, HoursMode)
+End Property
+
+Public Property Get Days() As Tolerance
+    Set Days = Sim.NewTolerance(mValue, DaysMode)
+End Property
+
+Public Property Get Weeks() As Tolerance
+    Set Weeks = Sim.NewTolerance(mValue, WeeksMode)
+End Property
+
+Public Property Get Months() As Tolerance
+    Set Months = Sim.NewTolerance(mValue, MonthsMode)
+End Property
+
+Public Property Get Quarters() As Tolerance
+    Set Quarters = Sim.NewTolerance(mValue, QuartersMode)
+End Property
+
+Public Property Get Years() As Tolerance
+    Set Years = Sim.NewTolerance(mValue, YearsMode)
+End Property
+
+Public Property Get Percent() As Tolerance
+    Set Percent = Sim.NewTolerance(mValue, PercentMode)
+End Property
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByRef Value As Variant, ByVal Mode As ToleranceMode)
     mValue = Value
+    mMode = Mode
 End Sub
