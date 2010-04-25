@@ -7,8 +7,8 @@ BEGIN
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
 Attribute VB_Name = "SimConstructors"
-Attribute VB_GlobalNameSpace = True
-Attribute VB_Creatable = True
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 ' Copyright 2009 Kelly Ethridge
@@ -139,5 +139,11 @@ Public Function NewArgWithReturnTestMethod(ByVal TestClass As Object, ByVal Memb
     Set NewArgWithReturnTestMethod = New ArgWithReturnTestMethod
     Call NewArgWithReturnTestMethod.Init(TestClass, Member, TestCaseData)
 End Function
+
+Public Function NewTolerance(ByRef Value As Variant, Optional ByVal Mode As ToleranceMode) As Tolerance
+    Set NewTolerance = New Tolerance
+    NewTolerance.Init Value, Mode
+End Function
+
 
 

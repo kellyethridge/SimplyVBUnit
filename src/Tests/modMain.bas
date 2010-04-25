@@ -75,6 +75,7 @@ Private Sub RunTestClassTests()
     Call Suite.Add(New OrOperatorTests)
     Call Suite.Add(New MsgUtilsTests)
     Call Suite.Add(New ConstraintExpressionTests)
+    Suite.Add New ToleranceTests
     
     
     Dim Result As TestResult
