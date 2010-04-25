@@ -98,6 +98,15 @@ Public Sub DisplayStringDifferences(ByVal Expected As String, ByVal Actual As St
     WriteCaretLine MismatchIndex
 End Sub
 
+Public Sub DisplayFloatDifferences(ByVal Expected As Variant, ByVal Actual As Variant, ByVal Tolerance As Variant)
+    Call WriteText(PFX_EXPECTED)
+    Call WriteValue(Expected)
+    Call WriteConnector(FMT_TOLERANCE)
+    Call WriteValue(Tolerance)
+    Call WriteLine
+    Call WriteActualLine(Actual)
+End Sub
+
 Public Sub DisplayConstraintDifference(ByVal Constraint As IConstraint)
     WriteExpectedLineConstraint Constraint
     WriteActualLineConstraint Constraint

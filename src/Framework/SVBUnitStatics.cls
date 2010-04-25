@@ -79,7 +79,7 @@ Public Enum RunState
 End Enum
 
 
-Public Function Sim() As SVBUnitConstructors
+Public Function Sim() As SimConstructors
     Set Sim = modStatics.Sim
 End Function
 

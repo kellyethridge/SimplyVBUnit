@@ -121,7 +121,9 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Dim IntArray() As Integer
             Test.Use IntArray, "type of <Integer()> "
             Test.Use Array(), "type of <Variant()> "
-                        
+        
+        Case "DisplayFloatDifferences_WithValues_ReturnsExpected"
+            Test.Use 1.1, 1.1, 1
     End Select
 End Sub
 
@@ -180,6 +182,16 @@ Public Sub DisplayStringDifferences_WithClipping_WritesExpected(ByVal ExpectedSt
     Actual = Writer.ToString
     Assert.That Actual, Iz.EqualTo(Expected).NoClip
 End Sub
+
+'Public Sub DisplayFloatDifferences_WithValues_ReturnsExpected(ByVal ExpectedValue As Variant, ByVal ActualValue As Variant, ByVal Tolerance As Variant, ByVal Expected As String)
+'    Dim Writer As New TextMessageWriter
+'
+'    Writer.DisplayFloatDifferences ExpectedValue, ActualValue, Tolerance
+'
+'    Dim Actual As String
+'    Actual = Writer.ToString
+'    Assert.That Actual, Iz.EqualTo(Expected)
+'End Sub
 
 Public Sub DisplayStringDifferences_WithIgnoreCase_WritesIgnoringCase()
     Dim Writer As New TextMessageWriter
