@@ -34,7 +34,7 @@ Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
 
-Public Sim                  As New SVBUnitConstructors
+Public Sim                  As New SimConstructors
 Public Error                As New ErrorHelper
 Public TestUtils            As New TestUtils
 Public ErrorInfo            As New ErrorInfoStatic
