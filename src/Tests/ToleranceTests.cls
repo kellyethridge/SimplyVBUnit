@@ -28,16 +28,6 @@ Attribute VB_Exposed = False
 ' Module: ToleranceTests
 '
 Option Explicit
-Implements ITestCaseSource
-
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
-    Select Case Test.MethodName
-        Case "IsWithin_WithAmounts_ReturnsExpected"
-            Test.Use 1, 1, 0, True
-            
-        
-    End Select
-End Sub
 
 Public Sub Constructor_WhenCalled_StoresValue()
     Dim Tol As Tolerance
@@ -49,14 +39,22 @@ Public Sub Constructor_WhenCalled_StoresValue()
     Assert.That Actual, Iz.EqualTo(1)
 End Sub
 
-Public Sub IsWithin_WithAmounts_ReturnsExpected(ByRef ExpectedValue As Variant, ByRef ActualValue As Variant, ByRef Amount As Variant, ByVal Expected As Boolean)
+Public Sub Constructor_WhenCalled_StoresValue2()
     Dim Tol As Tolerance
-    Set Tol = Sim.NewTolerance(Amount)
     
-    Dim Actual As Boolean
-    Actual = Tol.IsWithin(ExpectedValue, ActualValue)
+    Set Tol = Sim.NewTolerance(1)
     
-    Assert.That Actual, Iz.EqualTo(Expected)
+    Dim Actual As ToleranceMode
+    Actual = Tol.Mode
+    Assert.That Actual, Iz.EqualTo(ToleranceMode.LinearMode)
+End Sub
+
+Public Sub Constructor_WhenCalled_SetsDefaults()
+    Dim Tol As New Tolerance
+    
+    Assert.That Tol.IsEmpty, Iz.True
+    Assert.That Tol.Mode, Iz.EqualTo(ToleranceMode.NoneMode)
+    Assert.That Tol.Interval, Iz.EqualTo("")
 End Sub
 
 'Public Sub Seconds_WhenCalled_ReturnsToleranceInSeconds()
@@ -65,7 +63,8 @@ End Sub
 '
 '    Set Tol = Tol.Seconds
 '
-'    AssertTolerance Tol, 2, SecondsMode
+'    Assert.That Tol.Amount, Iz.EqualTo(2)
+'
 'End Sub
 '
 'Public Sub Minutes_WhenCalled_ReturnsToleranceInMinutes()
