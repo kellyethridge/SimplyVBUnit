@@ -47,6 +47,7 @@ Public TestContextManager   As New TestContextManager
 Public EmptyFilter          As New EmptyFilterStatic
 Public CategoryParser       As New CategoryParser
 Public MsgUtils             As New MsgUtils
+Public GlobalSettings       As New GlobalSettings
 
 Private mIz                 As New IzStatic
 

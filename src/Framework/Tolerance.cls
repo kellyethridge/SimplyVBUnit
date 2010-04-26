@@ -46,6 +46,10 @@ Private mValue  As Variant
 Private mMode   As ToleranceMode
 
 
+Public Property Get IsEmpty() As Boolean
+    IsEmpty = VBA.IsEmpty(mValue)
+End Property
+
 Public Property Get Value() As Variant
     Value = mValue
 End Property
