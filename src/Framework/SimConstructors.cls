@@ -140,9 +140,9 @@ Public Function NewArgWithReturnTestMethod(ByVal TestClass As Object, ByVal Memb
     Call NewArgWithReturnTestMethod.Init(TestClass, Member, TestCaseData)
 End Function
 
-Public Function NewTolerance(ByRef Value As Variant, Optional ByVal Mode As ToleranceMode) As Tolerance
+Public Function NewTolerance(ByRef Amount As Variant) As Tolerance
     Set NewTolerance = New Tolerance
-    NewTolerance.Init Value, Mode
+    NewTolerance.Init Amount
 End Function
 
 
