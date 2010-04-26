@@ -34,7 +34,10 @@ Public Function EqualNumbers(ByRef Expected As Variant, ByRef Actual As Variant,
 End Function
 
 Private Function EqualDoubles(ByVal Expected As Double, ByVal Actual As Double, ByVal Tolerance As Tolerance) As Boolean
+    Dim EffectiveTolerance As Double
     
+    Dim EffectiveDifference As Double
+    EffectiveDifference = Abs(Actual - Expected)
     
 End Function
 

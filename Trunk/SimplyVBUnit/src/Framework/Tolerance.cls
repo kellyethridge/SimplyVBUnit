@@ -30,75 +30,92 @@ Attribute VB_Exposed = True
 Option Explicit
 
 Public Enum ToleranceMode
+    NoneMode
     LinearMode
     PercentMode
-    SecondsMode
-    MinutesMode
-    HoursMode
-    DaysMode
-    WeeksMode
-    MonthsMode
-    QuartersMode
-    YearsMode
 End Enum
 
-Private mValue  As Variant
-Private mMode   As ToleranceMode
+Private mAmount     As Variant
+Private mMode       As ToleranceMode
+Private mDateUnits  As String
 
 
 Public Property Get IsEmpty() As Boolean
-    IsEmpty = VBA.IsEmpty(mValue)
+    IsEmpty = VBA.IsEmpty(mAmount)
 End Property
 
-Public Property Get Value() As Variant
-    Value = mValue
+Public Property Get Amount() As Variant
+    Amount = mAmount
 End Property
 
 Public Property Get Mode() As ToleranceMode
     Mode = mMode
 End Property
 
-Public Property Get Seconds() As Tolerance
-    Set Seconds = Sim.NewTolerance(mValue, SecondsMode)
-End Property
+'Public Property Get Seconds() As Tolerance
+'    Set Seconds = Sim.NewTolerance(mAmount, SecondsMode)
+'End Property
+'
+'Public Property Get Minutes() As Tolerance
+'    Set Minutes = Sim.NewTolerance(mValue, MinutesMode)
+'End Property
+'
+'Public Property Get Hours() As Tolerance
+'    Set Hours = Sim.NewTolerance(mValue, HoursMode)
+'End Property
+'
+'Public Property Get Days() As Tolerance
+'    Set Days = Sim.NewTolerance(mValue, DaysMode)
+'End Property
+'
+'Public Property Get Weeks() As Tolerance
+'    Set Weeks = Sim.NewTolerance(mValue, WeeksMode)
+'End Property
+'
+'Public Property Get Months() As Tolerance
+'    Set Months = Sim.NewTolerance(mValue, MonthsMode)
+'End Property
+'
+'Public Property Get Quarters() As Tolerance
+'    Set Quarters = Sim.NewTolerance(mValue, QuartersMode)
+'End Property
+'
+'Public Property Get Years() As Tolerance
+'    Set Years = Sim.NewTolerance(mValue, YearsMode)
+'End Property
+'
+'Public Property Get Percent() As Tolerance
+'    Set Percent = Sim.NewTolerance(mValue, PercentMode)
+'End Property
 
-Public Property Get Minutes() As Tolerance
-    Set Minutes = Sim.NewTolerance(mValue, MinutesMode)
-End Property
-
-Public Property Get Hours() As Tolerance
-    Set Hours = Sim.NewTolerance(mValue, HoursMode)
-End Property
-
-Public Property Get Days() As Tolerance
-    Set Days = Sim.NewTolerance(mValue, DaysMode)
-End Property
-
-Public Property Get Weeks() As Tolerance
-    Set Weeks = Sim.NewTolerance(mValue, WeeksMode)
-End Property
-
-Public Property Get Months() As Tolerance
-    Set Months = Sim.NewTolerance(mValue, MonthsMode)
-End Property
-
-Public Property Get Quarters() As Tolerance
-    Set Quarters = Sim.NewTolerance(mValue, QuartersMode)
-End Property
-
-Public Property Get Years() As Tolerance
-    Set Years = Sim.NewTolerance(mValue, YearsMode)
-End Property
-
-Public Property Get Percent() As Tolerance
-    Set Percent = Sim.NewTolerance(mValue, PercentMode)
-End Property
+Public Function IsWithin(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim ExpectedType    As VbVarType
+    Dim ActualType      As VbVarType
+    
+    ExpectedType = VarType(Expected)
+    ActualType = VarType(Actual)
+    
+    IsWithin = IsWithinInt32(Expected, Actual)
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Value As Variant, ByVal Mode As ToleranceMode)
-    mValue = Value
-    mMode = Mode
+Friend Sub Init(ByRef Amount As Variant)
+    mAmount = Amount
+    mMode = LinearMode
+    mDateUnits = "s"
 End Sub
+
+
+Private Function IsWithinInt32(ByVal Expected As Long, ByVal Actual As Long) As Boolean
+    Dim Tol As Long
+    Dim Result As Boolean
+    
+    If mMode = NoneMode Then
+        Result = (Expected = Actual)
+    End If
+    
+    IsWithinInt32 = Result
+End Function
