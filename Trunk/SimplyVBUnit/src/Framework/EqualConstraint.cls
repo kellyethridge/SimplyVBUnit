@@ -56,8 +56,7 @@ Private mExpected       As Variant
 Private mActual         As Variant
 Private mIgnoreCase     As Boolean
 Private mClipping       As Boolean
-Private mTolerance      As Variant
-Private mToleranceType  As ToleranceType
+Private mTolerance      As Tolerance
 Private mAsCollection   As Boolean
 Private mComparer       As IEqualityComparer
 Private mStrict         As Boolean
@@ -80,8 +79,8 @@ Public Function IgnoreCase() As EqualConstraint
     Set IgnoreCase = Me
 End Function
 
-Public Function Within(ByRef Tolerance As Variant) As IToleranceUnits
-    mTolerance = Tolerance
+Public Function Within(ByRef Amount As Variant) As IToleranceUnits
+    Set mTolerance = Sim.NewTolerance(Amount)
     Set Within = Me
 End Function
 
@@ -140,22 +139,22 @@ End Sub
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function Days() As EqualConstraint
-    mToleranceType = InDays
+    Set mTolerance = mTolerance.Days
     Set Days = Me
 End Function
 
 Private Function Hours() As EqualConstraint
-    mToleranceType = InHours
+    Set mTolerance = mTolerance.Hours
     Set Hours = Me
 End Function
 
 Private Function Minutes() As EqualConstraint
-    mToleranceType = InMinutes
+    Set mTolerance = mTolerance.Minutes
     Set Minutes = Me
 End Function
 
 Private Function Seconds() As EqualConstraint
-    mToleranceType = InSeconds
+    Set mTolerance = mTolerance.Seconds
     Set Seconds = Me
 End Function
 
@@ -303,11 +302,14 @@ Private Function EqualStrings(ByRef Expected As Variant, ByRef Actual As Variant
 End Function
 
 Private Function EqualNumbers(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If IsNumber(Actual) Then
-        Dim Diff As Variant
-        Diff = Abs(Expected - Actual)
-        EqualNumbers = (Diff <= mTolerance)
-    End If
+'    If IsNumber(Actual) Then
+''        Dim Diff As Variant
+''        Diff = Abs(Expected - Actual)
+''        EqualNumbers = (Diff <= mTolerance)
+'
+'        EqualNumbers = (Expected = Actual)
+'    End If
+    EqualNumbers = modNumerics.EqualNumbers(Expected, Actual, mTolerance)
 End Function
 
 Private Function EqualObjects(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
@@ -332,32 +334,22 @@ End Function
 
 Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
     If VarType(Actual) = vbDate Then
-        Dim ActualDifference As Double
-        ActualDifference = Abs(DateDiff("s", Expected, Actual))
+        Dim Interval As String
         
-        Dim MaximumDifference As Double
-        MaximumDifference = CDbl(mTolerance) * GetDateDifferenceMultiplier
+        If mTolerance.IsEmpty Then
+            Interval = GlobalSettings.DefaultDateToleranceInterval
+        Else
+            Interval = mTolerance.Interval
+        End If
+            
+        Dim ActualDifference As Long
+        ActualDifference = Abs(DateDiff(Interval, Expected, Actual))
+        
+        Dim MaximumDifference As Long
+        MaximumDifference = CLng(mTolerance.Amount)
         
         EqualDates = (ActualDifference <= MaximumDifference)
     End If
-End Function
-
-Private Function GetDateDifferenceMultiplier() As Long
-    Const SECONDS_PER_DAY       As Long = 86400
-    Const SECONDS_PER_HOUR      As Long = 3600
-    Const SECONDS_PER_MINUTE    As Long = 60
-    Const SECONDS_PER_SECOND    As Long = 1
-    
-    Dim Result As Long
-        
-    Select Case mToleranceType
-        Case InDays:    Result = SECONDS_PER_DAY
-        Case InHours:   Result = SECONDS_PER_HOUR
-        Case InMinutes: Result = SECONDS_PER_MINUTE
-        Case InSeconds: Result = SECONDS_PER_SECOND
-    End Select
-        
-    GetDateDifferenceMultiplier = Result
 End Function
 
 Private Function IsNumber(ByRef Value As Variant) As Boolean
@@ -485,6 +477,7 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
     mClipping = DEF_CLIPPING
+    Set mTolerance = EmptyTolerance.Instance
 End Sub
 
 

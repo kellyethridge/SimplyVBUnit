@@ -29,5 +29,10 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Public DefaultFloatingPointTolerance As Double
+Public DefaultFloatingPointTolerance    As Double
+Public DefaultDateToleranceInterval     As String
 
+
+Private Sub Class_Initialize()
+    DefaultDateToleranceInterval = "s"
+End Sub

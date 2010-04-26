@@ -29,10 +29,14 @@ Public Type NullListenerStatic
     Instance As New NullListener
 End Type
 
+Public Type EmptyTolerance
+    Instance As New Tolerance
+End Type
 
 Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
+Public EmptyTolerance       As EmptyTolerance
 
 Public Sim                  As New SimConstructors
 Public Error                As New ErrorHelper

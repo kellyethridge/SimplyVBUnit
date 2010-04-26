@@ -8,7 +8,7 @@ BEGIN
 END
 Attribute VB_Name = "Tolerance"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 ' Copyright 2010 Kelly Ethridge
@@ -37,7 +37,7 @@ End Enum
 
 Private mAmount     As Variant
 Private mMode       As ToleranceMode
-Private mDateUnits  As String
+Private mInterval   As String
 
 
 Public Property Get IsEmpty() As Boolean
@@ -52,51 +52,45 @@ Public Property Get Mode() As ToleranceMode
     Mode = mMode
 End Property
 
-'Public Property Get Seconds() As Tolerance
-'    Set Seconds = Sim.NewTolerance(mAmount, SecondsMode)
-'End Property
-'
-'Public Property Get Minutes() As Tolerance
-'    Set Minutes = Sim.NewTolerance(mValue, MinutesMode)
-'End Property
-'
-'Public Property Get Hours() As Tolerance
-'    Set Hours = Sim.NewTolerance(mValue, HoursMode)
-'End Property
-'
-'Public Property Get Days() As Tolerance
-'    Set Days = Sim.NewTolerance(mValue, DaysMode)
-'End Property
-'
-'Public Property Get Weeks() As Tolerance
-'    Set Weeks = Sim.NewTolerance(mValue, WeeksMode)
-'End Property
-'
-'Public Property Get Months() As Tolerance
-'    Set Months = Sim.NewTolerance(mValue, MonthsMode)
-'End Property
-'
-'Public Property Get Quarters() As Tolerance
-'    Set Quarters = Sim.NewTolerance(mValue, QuartersMode)
-'End Property
-'
-'Public Property Get Years() As Tolerance
-'    Set Years = Sim.NewTolerance(mValue, YearsMode)
-'End Property
+Public Property Get Interval() As String
+    Interval = mInterval
+End Property
+
+Public Property Get Seconds() As Tolerance
+    Set Seconds = NewToleranceWithInterval("s")
+End Property
+
+Public Property Get Minutes() As Tolerance
+    Set Minutes = NewToleranceWithInterval("n")
+End Property
+
+Public Property Get Hours() As Tolerance
+    Set Hours = NewToleranceWithInterval("h")
+End Property
+
+Public Property Get Days() As Tolerance
+    Set Days = NewToleranceWithInterval("d")
+End Property
+
+Public Property Get Weeks() As Tolerance
+    Set Weeks = NewToleranceWithInterval("ww")
+End Property
+
+Public Property Get Months() As Tolerance
+    Set Months = NewToleranceWithInterval("m")
+End Property
+
+Public Property Get Quarters() As Tolerance
+    Set Quarters = NewToleranceWithInterval("q")
+End Property
+
+Public Property Get Years() As Tolerance
+    Set Years = NewToleranceWithInterval("yyyy")
+End Property
 '
 'Public Property Get Percent() As Tolerance
 '    Set Percent = Sim.NewTolerance(mValue, PercentMode)
 'End Property
-
-Public Function IsWithin(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    Dim ExpectedType    As VbVarType
-    Dim ActualType      As VbVarType
-    
-    ExpectedType = VarType(Expected)
-    ActualType = VarType(Actual)
-    
-    IsWithin = IsWithinInt32(Expected, Actual)
-End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -105,17 +99,17 @@ End Function
 Friend Sub Init(ByRef Amount As Variant)
     mAmount = Amount
     mMode = LinearMode
-    mDateUnits = "s"
 End Sub
 
+Friend Property Let Interval(ByRef RHS As String)
+    mInterval = RHS
+End Property
 
-Private Function IsWithinInt32(ByVal Expected As Long, ByVal Actual As Long) As Boolean
-    Dim Tol As Long
-    Dim Result As Boolean
+Private Function NewToleranceWithInterval(ByRef Interval As String) As Tolerance
+    Dim Result As Tolerance
+    Set Result = Sim.NewTolerance(mAmount)
+    Result.Interval = Interval
     
-    If mMode = NoneMode Then
-        Result = (Expected = Actual)
-    End If
-    
-    IsWithinInt32 = Result
+    Set NewToleranceWithInterval = Result
 End Function
+

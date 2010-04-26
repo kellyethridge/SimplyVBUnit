@@ -27,7 +27,10 @@ Public Function EqualNumbers(ByRef Expected As Variant, ByRef Actual As Variant,
     Dim Result As Boolean
     If ExpectedType = vbDouble And ActualType = vbDouble Then
         Result = EqualDoubles(Expected, Actual, Tolerance)
-    
+    ElseIf ExpectedType = vbSingle And ActualType = vbSingle Then
+        Result = EqualDoubles(Expected, Actual, Tolerance)
+    Else
+        Result = (CLng(Expected) = CLng(Actual))
     End If
     
     EqualNumbers = Result
@@ -36,8 +39,15 @@ End Function
 Private Function EqualDoubles(ByVal Expected As Double, ByVal Actual As Double, ByVal Tolerance As Tolerance) As Boolean
     Dim EffectiveTolerance As Double
     
+    If Tolerance.IsEmpty Then
+        EffectiveTolerance = GlobalSettings.DefaultFloatingPointTolerance
+    Else
+        EffectiveTolerance = CDbl(Tolerance.Amount)
+    End If
+    
     Dim EffectiveDifference As Double
     EffectiveDifference = Abs(Actual - Expected)
     
+    EqualDoubles = (EffectiveDifference <= EffectiveTolerance)
 End Function
 
