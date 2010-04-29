@@ -34,108 +34,141 @@ Public Sub Constructor_WhenCalled_StoresValue()
     
     Set Tol = Sim.NewTolerance(1)
     
-    Dim Actual As Variant
-    Actual = Tol.Amount
-    Assert.That Actual, Iz.EqualTo(1)
-End Sub
-
-Public Sub Constructor_WhenCalled_StoresValue2()
-    Dim Tol As Tolerance
-    
-    Set Tol = Sim.NewTolerance(1)
-    
-    Dim Actual As ToleranceMode
-    Actual = Tol.Mode
-    Assert.That Actual, Iz.EqualTo(ToleranceMode.LinearMode)
+    AssertTolerance Tol, 1, LinearMode, ""
 End Sub
 
 Public Sub Constructor_WhenCalled_SetsDefaults()
-    Dim Tol As New Tolerance
+    Dim Tol As Tolerance
+
+    Set Tol = New Tolerance
     
-    Assert.That Tol.IsEmpty, Iz.True
-    Assert.That Tol.Mode, Iz.EqualTo(ToleranceMode.NoneMode)
-    Assert.That Tol.Interval, Iz.EqualTo("")
+    AssertTolerance Tol, Empty, NoneMode, ""
 End Sub
 
-'Public Sub Seconds_WhenCalled_ReturnsToleranceInSeconds()
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(2)
-'
-'    Set Tol = Tol.Seconds
-'
-'    Assert.That Tol.Amount, Iz.EqualTo(2)
-'
-'End Sub
-'
-'Public Sub Minutes_WhenCalled_ReturnsToleranceInMinutes()
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(3)
-'
-'    Set Tol = Tol.Minutes
-'
-'    AssertTolerance Tol, 3, MinutesMode
-'End Sub
-'
-'Public Sub Hours_WhenCalled_ReturnsToleranceInHours()
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(1)
-'
-'    Set Tol = Tol.Hours
-'
-'    AssertTolerance Tol, 1, HoursMode
-'End Sub
-'
-'Public Sub Days_WhenCalled_ReturnsToleranceInDays()
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(1)
-'
-'    Set Tol = Tol.Days
-'
-'    AssertTolerance Tol, 1, DaysMode
-'End Sub
-'
-'Public Sub Weeks_WhenCalled_ReturnsToleranceInWeeks()
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(1)
-'
-'    Set Tol = Tol.Weeks
-'
-'    AssertTolerance Tol, 1, WeeksMode
-'End Sub
-'
-'Public Sub Quarters_WhenCalled_ReturnsToleranceInQuarters()
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(1)
-'
-'    Set Tol = Tol.Quarters
-'
-'    AssertTolerance Tol, 1, QuartersMode
-'End Sub
-'
-'Public Sub Years_WhenCalled_ReturnsToleranceInYears()
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(1)
-'
-'    Set Tol = Tol.Years
-'
-'    AssertTolerance Tol, 1, YearsMode
-'End Sub
-'
-'Public Sub Percent_WhenCalled_ReturnsToleranceInPercent()
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(1)
-'
-'    Set Tol = Tol.Percent
-'
-'    AssertTolerance Tol, 1, PercentMode
-'End Sub
+Public Sub Seconds_WhenCalled_ReturnsToleranceInSeconds()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(2)
+
+    Set Tol = Tol.Seconds
+
+    AssertTolerance Tol, 2, LinearMode, "s"
+End Sub
+
+Public Sub Minutes_WhenCalled_ReturnsToleranceInMinutes()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(3)
+
+    Set Tol = Tol.Minutes
+
+    AssertTolerance Tol, 3, LinearMode, "n"
+End Sub
+
+Public Sub Hours_WhenCalled_ReturnsToleranceInHours()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+
+    Set Tol = Tol.Hours
+
+    AssertTolerance Tol, 1, LinearMode, "h"
+End Sub
+
+Public Sub Days_WhenCalled_ReturnsToleranceInDays()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+
+    Set Tol = Tol.Days
+
+    AssertTolerance Tol, 1, LinearMode, "d"
+End Sub
+
+Public Sub Weeks_WhenCalled_ReturnsToleranceInWeeks()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+
+    Set Tol = Tol.Weeks
+
+    AssertTolerance Tol, 1, LinearMode, "ww"
+End Sub
+
+Public Sub Months_WhenCalled_ReturnsToleranceInMonths()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+    
+    Set Tol = Tol.Months
+    
+    AssertTolerance Tol, 1, LinearMode, "m"
+End Sub
+
+Public Sub Quarters_WhenCalled_ReturnsToleranceInQuarters()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+
+    Set Tol = Tol.Quarters
+
+    AssertTolerance Tol, 1, LinearMode, "q"
+End Sub
+
+Public Sub Years_WhenCalled_ReturnsToleranceInYears()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+
+    Set Tol = Tol.Years
+
+    AssertTolerance Tol, 1, LinearMode, "yyyy"
+End Sub
+
+Public Sub Percent_WhenCalled_ReturnsToleranceInPercent()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+
+    Set Tol = Tol.Percent
+
+    AssertTolerance Tol, 1, PercentMode, ""
+End Sub
+
+Public Sub TotalSeconds_WhenCalled_ReturnsToleranceInSeconds()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+    
+    Set Tol = Tol.TotalSeconds
+    
+    AssertTolerance Tol, 1, LinearMode, "s"
+End Sub
+
+Public Sub TotalMinutes_WhenCalled_ReturnsToleranceScaledToSeconds()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+    
+    Set Tol = Tol.TotalMinutes
+    
+    AssertTolerance Tol, 60, LinearMode, "s"
+End Sub
+
+Public Sub TotalHours_WhenCalled_ReturnsToleranceScaledToSeconds()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+    
+    Set Tol = Tol.TotalHours
+    
+    AssertTolerance Tol, 3600, LinearMode, "s"
+End Sub
+
+Public Sub TotalDays_WhenCalled_ReturnsToleranceScaledToSeconds()
+    Dim Tol As Tolerance
+    Set Tol = Sim.NewTolerance(1)
+    
+    Set Tol = Tol.TotalDays
+    
+    AssertTolerance Tol, 86400, LinearMode, "s"
+End Sub
 
 
 
-'Private Sub AssertTolerance(ByVal Tol As Tolerance, ByVal ExpectedValue As Variant, ByVal ExpectedMode As ToleranceMode)
-'    Assert.That Tol.Value, Iz.EqualTo(ExpectedValue), "Wrong value"
-'    Assert.That Tol.Mode, Iz.EqualTo(ExpectedMode), "Wrong mode"
-'End Sub
+Private Sub AssertTolerance(ByVal Tol As Tolerance, ByVal ExpectedAmount As Variant, ByVal ExpectedMode As ToleranceMode, ByVal ExpectedInterval As String)
+    assert.That Tol.Amount, Iz.EqualTo(ExpectedAmount), "Wrong amount"
+    assert.That Tol.Mode, Iz.EqualTo(ExpectedMode), "Wrong mode"
+    assert.That Tol.Interval, Iz.EqualTo(ExpectedInterval), "Wrong interval"
+End Sub
 
 
 

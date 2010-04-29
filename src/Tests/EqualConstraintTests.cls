@@ -148,7 +148,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(100, 101, 1, True)
             Call Test.Use(100, 102, 1, False)
             
-        Case "Matches_WithTolerancesOfDays"
+        Case "Matches_WithTolerancesOfTotalDays"
             Call Test.Use(#1/1/2001#, #1/2/2001#, 1, True)
             Call Test.Use(#1/2/2001#, #1/1/2001#, 1, True)
             Call Test.Use(#1/1/2001#, #1/3/2001#, 1, False)
@@ -156,18 +156,18 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(#1/1/2001#, #1/2/2001 12:00:01 AM#, 1, False)
             Call Test.Use(#1/2/2001 12:00:01 AM#, #1/1/2001#, 1, False)
             
-        Case "Matches_WithTolerancesOfHours"
+        Case "Matches_WithTolerancesOfTotalHours"
             Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 9:00:00 AM#, 1, True)
             Call Test.Use(#1/1/2001 9:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True)
             Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 9:00:01 AM#, 1, False)
             Call Test.Use(#1/1/2001 9:00:01 AM#, #1/1/2001 8:00:00 AM#, 1, False)
             
-        Case "Matches_WithTolerancesOfMinutes"
+        Case "Matches_WithTolerancesOfTotalMinutes"
             Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True)
             Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:01:00 AM#, 1, True)
             Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:01:01 AM#, 1, False)
             
-        Case "Matches_WithTolerancesOfSeconds"
+        Case "Matches_WithTolerancesOfTotalSeconds"
             Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True)
             Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:01 AM#, 1, True)
             Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:02 AM#, 1, False)
@@ -238,10 +238,10 @@ Public Sub Matches_WithTolerances(ByRef ConstraintExpected As Variant, ByRef Con
     assert.IsTrue Actual = Expected
 End Sub
 
-Public Sub Matches_WithTolerancesOfDays(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
+Public Sub Matches_WithTolerancesOfTotalDays(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance).Days
+    Call c.Within(Tolerance).TotalDays
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -249,10 +249,10 @@ Public Sub Matches_WithTolerancesOfDays(ByVal ConstraintExpected As Date, ByVal 
     assert.IsTrue Actual = Expected
 End Sub
 
-Public Sub Matches_WithTolerancesOfHours(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
+Public Sub Matches_WithTolerancesOfTotalHours(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance).Hours
+    Call c.Within(Tolerance).TotalHours
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -260,10 +260,10 @@ Public Sub Matches_WithTolerancesOfHours(ByVal ConstraintExpected As Date, ByVal
     assert.IsTrue Actual = Expected
 End Sub
 
-Public Sub Matches_WithTolerancesOfMinutes(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
+Public Sub Matches_WithTolerancesOfTotalMinutes(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance).Minutes
+    Call c.Within(Tolerance).TotalMinutes
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -271,10 +271,10 @@ Public Sub Matches_WithTolerancesOfMinutes(ByVal ConstraintExpected As Date, ByV
     assert.IsTrue Actual = Expected
 End Sub
 
-Public Sub Matches_WithTolerancesOfSeconds(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Double, ByVal Expected As Boolean)
+Public Sub Matches_WithTolerancesOfTotalSeconds(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Double, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance).Seconds
+    Call c.Within(Tolerance).TotalSeconds
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
