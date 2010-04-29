@@ -80,8 +80,7 @@ Public Function IgnoreCase() As EqualConstraint
 End Function
 
 Public Function Within(ByRef Amount As Variant) As IToleranceUnits
-    Set mTolerance = Sim.NewTolerance(Amount)
-    Set Within = Me
+    Set Within = SetTolerance(Sim.NewTolerance(Amount))
 End Function
 
 Public Function AsCollection() As EqualConstraint
@@ -138,24 +137,61 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function Years() As EqualConstraint
+    Set Years = SetTolerance(mTolerance.Years)
+End Function
+
+Private Function Quarters() As EqualConstraint
+    Set Quarters = SetTolerance(mTolerance.Quarters)
+End Function
+
+Private Function Months() As EqualConstraint
+    Set Months = SetTolerance(mTolerance.Months)
+End Function
+
+Private Function Weeks() As EqualConstraint
+    Set Weeks = SetTolerance(mTolerance.Weeks)
+End Function
+
 Private Function Days() As EqualConstraint
-    Set mTolerance = mTolerance.Days
-    Set Days = Me
+    Set Days = SetTolerance(mTolerance.Days)
 End Function
 
 Private Function Hours() As EqualConstraint
-    Set mTolerance = mTolerance.Hours
-    Set Hours = Me
+    Set Hours = SetTolerance(mTolerance.Hours)
 End Function
 
 Private Function Minutes() As EqualConstraint
-    Set mTolerance = mTolerance.Minutes
-    Set Minutes = Me
+    Set Minutes = SetTolerance(mTolerance.Minutes)
 End Function
 
 Private Function Seconds() As EqualConstraint
-    Set mTolerance = mTolerance.Seconds
-    Set Seconds = Me
+    Set Seconds = SetTolerance(mTolerance.Seconds)
+End Function
+
+Private Function TotalDays() As EqualConstraint
+    Set TotalDays = SetTolerance(mTolerance.TotalDays)
+End Function
+
+Private Function TotalHours() As EqualConstraint
+    Set TotalHours = SetTolerance(mTolerance.TotalHours)
+End Function
+
+Private Function TotalMinutes() As EqualConstraint
+    Set TotalMinutes = SetTolerance(mTolerance.TotalMinutes)
+End Function
+
+Private Function TotalSeconds() As EqualConstraint
+    Set TotalSeconds = SetTolerance(mTolerance.TotalSeconds)
+End Function
+
+Private Function Percent() As EqualConstraint
+    Set Percent = SetTolerance(mTolerance.Percent)
+End Function
+
+Private Function SetTolerance(ByVal Tolerance As Tolerance) As EqualConstraint
+    Set mTolerance = Tolerance
+    Set SetTolerance = Me
 End Function
 
 Private Function EqualVariants(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
@@ -302,14 +338,9 @@ Private Function EqualStrings(ByRef Expected As Variant, ByRef Actual As Variant
 End Function
 
 Private Function EqualNumbers(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-'    If IsNumber(Actual) Then
-''        Dim Diff As Variant
-''        Diff = Abs(Expected - Actual)
-''        EqualNumbers = (Diff <= mTolerance)
-'
-'        EqualNumbers = (Expected = Actual)
-'    End If
-    EqualNumbers = modNumerics.EqualNumbers(Expected, Actual, mTolerance)
+    If IsNumber(Actual) Then
+        EqualNumbers = modNumerics.EqualNumbers(Expected, Actual, mTolerance)
+    End If
 End Function
 
 Private Function EqualObjects(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
@@ -342,13 +373,13 @@ Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) 
             Interval = mTolerance.Interval
         End If
             
-        Dim ActualDifference As Long
-        ActualDifference = Abs(DateDiff(Interval, Expected, Actual))
+        Dim EffectiveDifference As Double
+        EffectiveDifference = Abs(DateDiff(Interval, Expected, Actual))
         
-        Dim MaximumDifference As Long
-        MaximumDifference = CLng(mTolerance.Amount)
+        Dim AllowableDifference As Double
+        AllowableDifference = CDbl(mTolerance.Amount)
         
-        EqualDates = (ActualDifference <= MaximumDifference)
+        EqualDates = (EffectiveDifference <= AllowableDifference)
     End If
 End Function
 
@@ -580,6 +611,42 @@ Private Function IToleranceUnits_Minutes() As SimplyVBUnitType.IEqualConstraint
     Set IToleranceUnits_Minutes = Minutes
 End Function
 
+Private Function IToleranceUnits_Months() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Months = Months
+End Function
+
+Private Function IToleranceUnits_Percent() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Percent = Percent
+End Function
+
+Private Function IToleranceUnits_Quarters() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Quarters = Quarters
+End Function
+
 Private Function IToleranceUnits_Seconds() As SimplyVBUnitType.IEqualConstraint
     Set IToleranceUnits_Seconds = Seconds
+End Function
+
+Private Function IToleranceUnits_TotalDays() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_TotalDays = TotalDays
+End Function
+
+Private Function IToleranceUnits_TotalHours() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_TotalHours = TotalHours
+End Function
+
+Private Function IToleranceUnits_TotalMinutes() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_TotalMinutes = TotalMinutes
+End Function
+
+Private Function IToleranceUnits_TotalSeconds() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_TotalSeconds = TotalSeconds
+End Function
+
+Private Function IToleranceUnits_Weeks() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Weeks = Weeks
+End Function
+
+Private Function IToleranceUnits_Years() As SimplyVBUnitType.IEqualConstraint
+    Set IToleranceUnits_Years = Years
 End Function

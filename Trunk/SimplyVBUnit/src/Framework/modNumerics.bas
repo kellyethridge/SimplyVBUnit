@@ -30,7 +30,7 @@ Public Function EqualNumbers(ByRef Expected As Variant, ByRef Actual As Variant,
     ElseIf ExpectedType = vbSingle And ActualType = vbSingle Then
         Result = EqualDoubles(Expected, Actual, Tolerance)
     Else
-        Result = (CLng(Expected) = CLng(Actual))
+        Result = EqualLongs(Expected, Actual, Tolerance)
     End If
     
     EqualNumbers = Result
@@ -51,3 +51,15 @@ Private Function EqualDoubles(ByVal Expected As Double, ByVal Actual As Double, 
     EqualDoubles = (EffectiveDifference <= EffectiveTolerance)
 End Function
 
+Private Function EqualLongs(ByVal Expected As Long, ByVal Actual As Long, ByVal Tolerance As Tolerance) As Boolean
+    Dim AllowableDifference As Long
+    
+    If Not Tolerance.IsEmpty Then
+        AllowableDifference = CLng(Tolerance.Amount)
+    End If
+    
+    Dim EffectiveDifference As Long
+    EffectiveDifference = Abs(Actual - Expected)
+    
+    EqualLongs = (EffectiveDifference <= AllowableDifference)
+End Function

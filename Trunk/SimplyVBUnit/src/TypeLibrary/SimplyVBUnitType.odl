@@ -66,7 +66,7 @@ library SimplyVBUnitType {
         [entry("VariantCopy")]      HRESULT VariantCopy([in] VARIANT * pvarDest, [in] void * pvarSrc);
         [entry("SafeArrayGetDim")]  long    SafeArrayGetDim([in] long psa);
     }
-    
+
     [
         dllname("ole32.dll"),
         helpstring("Access to API functions within the Ole32.dll system file.")
@@ -139,10 +139,19 @@ library SimplyVBUnitType {
 	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
 	interface IToleranceUnits : IDispatch
 	{
+                HRESULT Years([out, retval] IEqualConstraint ** RetVal);
+                HRESULT Quarters([out, retval] IEqualConstraint ** RetVal);
+                HRESULT Months([out, retval] IEqualConstraint ** RetVal);
+                HRESULT Weeks([out, retval] IEqualConstraint ** RetVal);
 		HRESULT Days([out, retval] IEqualConstraint ** RetVal);
 		HRESULT Hours([out, retval] IEqualConstraint ** RetVal);
 		HRESULT Minutes([out, retval] IEqualConstraint ** RetVal);
 		HRESULT Seconds([out, retval] IEqualConstraint ** RetVal);
+		HRESULT TotalDays([out, retval] IEqualConstraint ** RetVal);
+		HRESULT TotalHours([out, retval] IEqualConstraint ** RetVal);
+                HRESULT TotalMinutes([out, retval] IEqualConstraint ** RetVal);
+                HRESULT TotalSeconds([out, retval] IEqualConstraint ** RetVal);
+                HRESULT Percent([out, retval] IEqualConstraint ** RetVal);
 	}
 
 	[uuid(3249766A-0390-4dda-8F3C-B481688485F9), odl]
