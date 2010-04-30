@@ -367,7 +367,7 @@ Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) 
     If VarType(Actual) = vbDate Then
         Dim Interval As String
         
-        If mTolerance.IsEmpty Then
+        If mTolerance.Mode = NoneMode Then
             Interval = GlobalSettings.DefaultDateToleranceInterval
         Else
             Interval = mTolerance.Interval
@@ -383,12 +383,6 @@ Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) 
     End If
 End Function
 
-Private Function IsNumber(ByRef Value As Variant) As Boolean
-    Select Case VarType(Value)
-        Case vbLong, vbInteger, vbByte, vbDouble, vbSingle, vbCurrency, vbDecimal
-            IsNumber = True
-    End Select
-End Function
 
 Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
     Dim MismatchIndex As Long
