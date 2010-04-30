@@ -46,10 +46,6 @@ Private mMode       As ToleranceMode
 Private mInterval   As String
 
 
-Public Property Get IsEmpty() As Boolean
-    IsEmpty = VBA.IsEmpty(mAmount)
-End Property
-
 Public Property Get Amount() As Variant
     Amount = mAmount
 End Property
@@ -120,6 +116,9 @@ End Property
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByRef Amount As Variant)
+    If Not IsNumber(Amount) Then _
+        Err.Raise ErrorCode.Argument, , "Tolerance must be numeric."
+    
     mAmount = Amount
     mMode = LinearMode
 End Sub
@@ -132,6 +131,10 @@ Friend Property Let Mode(ByVal RHS As ToleranceMode)
     mMode = RHS
 End Property
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function NewToleranceWithInterval(ByRef Interval As String) As Tolerance
     Dim Result As Tolerance
     Set Result = Sim.NewTolerance(mAmount)
