@@ -210,7 +210,6 @@ End Sub
 
 Public Sub WriteCollectionElements(ByRef Values As Variant, ByVal StartIndex As Long, ByVal Count As Long)
     Dim Index       As Long
-    Dim PassedFirst As Boolean
     Dim Element     As Variant
     
     Index = GetLBound(Values)

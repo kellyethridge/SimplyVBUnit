@@ -43,14 +43,6 @@ Private Const MSG_VALUESDIFFER_2                As String = "  Values differ at 
 
 Private Const DEF_CLIPPING                      As Boolean = True
 
-Private Enum ToleranceType
-    Linear
-    InDays
-    InHours
-    InMinutes
-    InSeconds
-End Enum
-
 Private mExpression     As ConstraintExpression
 Private mExpected       As Variant
 Private mActual         As Variant
