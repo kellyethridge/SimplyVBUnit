@@ -44,7 +44,7 @@ Private Function IzSyntaxHelper_Missing() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Missing = Sim.NewEqualConstraint(GetMissingVariant)
 End Function
 
-Private Function IzSyntaxHelper_Not() As SimplyVBUnitType.IzSyntaxHelper
+Private Function IzSyntaxHelper_Not() As SimplyVBUnitType.IConstraintExpression
     
 End Function
 
