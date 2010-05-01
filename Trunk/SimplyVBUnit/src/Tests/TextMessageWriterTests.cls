@@ -33,63 +33,71 @@ Implements ITestCaseSource
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
         Case "WriteActualValue_WithValues_WritesExpected"
-            Call Test.Use(True, "True")
-            Call Test.Use(False, "False")
-            Call Test.Use("actual", Quote("actual"))
-            Call Test.Use(1.234, "1.234#")
+            Test.Use True, "True"
+            Test.Use False, "False"
+            Test.Use "actual", Quote("actual")
+            Test.Use 1.234, "1.234#"
 
             
         Case "WriteExpectedValue_WithValues_WritesExpected"
-            Call Test.Use(True, "True")
-            Call Test.Use(False, "False")
-            Call Test.Use("expected", Quote("expected"))
-            Call Test.Use(1.234, "1.234#")
+            Test.Use True, "True"
+            Test.Use False, "False"
+            Test.Use "expected", Quote("expected")
+            Test.Use 1.234, "1.234#"
+            Test.Use CDec(1), "1D"
+            Test.Use CDec(1.2), "1.2D"
+            Test.Use 1@, "1@"
+            Test.Use 1.1@, "1.1@"
+            
             
         Case "WriteValue_WithValues_WritesExpected"
-            Call Test.Use("", Quote(""))
-            Call Test.Use(Null, "Null")
-            Call Test.Use(Empty, "Empty")
-            Call Test.Use(Array(1, 2, 3), "< 1, 2, 3 >")
-            Call Test.Use(Nothing, "Nothing")
-            Call Test.Use(, "Missing")
-            Call Test.Use("string", Quote("string"))
-            Call Test.Use(NewCollection("a", 1, "b"), "< ""a"", 1, ""b"" >")
-            Call Test.Use(NewCollection(Array(1, 2, 3), Array("a", "b")), "< < 1, 2, 3 >, < ""a"", ""b"" > >")
-            Call Test.Use(123456, "123456")
-            Call Test.Use(123.45, "123.45#")
-            Call Test.Use(123#, "123.0#")
-            Call Test.Use(0#, "0.0#")
-            Call Test.Use(123!, "123.0!")
-            Call Test.Use(123.456!, "123.456!")
-            Call Test.Use(1234@, "1234.0000@")
-            Call Test.Use(-1234@, "-1234.0000@")
-            Call Test.Use(0@, "0.0000@")
-            Call Test.Use(CDec(0), "0.0D")
-            Call Test.Use(CDec("123451234512345"), "123451234512345.0D")
-            Call Test.Use(CDec("12345.1234"), "12345.1234D")
-            Call Test.Use(Array(), "<empty>")
-            Call Test.Use(Array(1, "name", Array("hi", "bye"), 2#), "< 1, ""name"", < ""hi"", ""bye"" >, 2.0# >")
+            Test.Use "", Quote("")
+            Test.Use Null, "Null"
+            Test.Use Empty, "Empty"
+            Test.Use Array(1, 2, 3), "< 1, 2, 3 >"
+            Test.Use Nothing, "Nothing"
+            Test.Use , "Missing"
+            Test.Use "string", Quote("string")
+            Test.Use NewCollection("a", 1, "b"), "< ""a"", 1, ""b"" >"
+            Test.Use NewCollection(Array(1, 2, 3), Array("a", "b")), "< < 1, 2, 3 >, < ""a"", ""b"" > >"
+            Test.Use 123456, "123456"
+            Test.Use 123.45, "123.45#"
+            Test.Use 123#, "123.0#"
+            Test.Use 0#, "0.0#"
+            Test.Use 0!, "0.0!"
+            Test.Use 123!, "123.0!"
+            Test.Use 123.456!, "123.456!"
+            Test.Use 1234@, "1234@"
+            Test.Use 1234.5@, "1234.5@"
+            Test.Use -1234@, "-1234@"
+            Test.Use -1234.5@, "-1234.5@"
+            Test.Use 0@, "0@"
+            Test.Use CDec(0), "0D"
+            Test.Use CDec("123451234512345"), "123451234512345D"
+            Test.Use CDec("12345.1234"), "12345.1234D"
+            Test.Use Array(), "<empty>"
+            Test.Use Array(1, "name", Array("hi", "bye"), 2#), "< 1, ""name"", < ""hi"", ""bye"" >, 2.0# >"
 
             Dim List As New Collection
             List.Add 3
             List.Add 2
             List.Add 1
-            Call Test.Use(List, "< 3, 2, 1 >")
+            Test.Use List, "< 3, 2, 1 >"
             
             Dim Unk As IUnknown
-            Call Test.Use(Unk, "Nothing")
-            Call Test.Use(New TextMessageWriterTests, "<TextMessageWriterTests>")
+            Test.Use Unk, "Nothing"
+            Test.Use New TextMessageWriterTests, "<TextMessageWriterTests>"
             
             Set List = New Collection
             Dim i As Long
             For i = 1 To 20
                 List.Add i
             Next i
-            Call Test.Use(List, "< 1, 2, 3, 4, 5, 6, 7, 8, 9, 10... >")
+            Test.Use List, "< 1, 2, 3, 4, 5, 6, 7, 8, 9, 10... >"
             
             Dim Multi() As Long
             ReDim Multi(0 To 1, 2 To 3)
-            Call Test.Use(Multi, "< < 0, 0 >, < 0, 0 > >")
+            Test.Use Multi, "< < 0, 0 >, < 0, 0 > >"
 
         Case "DisplayStringDifferences_WithDifferentMismatchIndexes_WritesCorrectCarrotLine"
             Test.Use "abcd", "1bcd", 1, "^"
@@ -122,8 +130,6 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Test.Use IntArray, "type of <Integer()> "
             Test.Use Array(), "type of <Variant()> "
         
-        Case "DisplayFloatDifferences_WithValues_ReturnsExpected"
-            Test.Use 1.1, 1.1, 1
     End Select
 End Sub
 
@@ -183,10 +189,12 @@ Public Sub DisplayStringDifferences_WithClipping_WritesExpected(ByVal ExpectedSt
     Assert.That Actual, Iz.EqualTo(Expected).NoClip
 End Sub
 
-'Public Sub DisplayFloatDifferences_WithValues_ReturnsExpected(ByVal ExpectedValue As Variant, ByVal ActualValue As Variant, ByVal Tolerance As Variant, ByVal Expected As String)
+'Public Sub DisplayFloatDifferences_WithValues_ReturnsExpected()
 '    Dim Writer As New TextMessageWriter
+'    Dim Tol As Tolerance
+'    Set Tol = Sim.NewTolerance(1)
 '
-'    Writer.DisplayFloatDifferences ExpectedValue, ActualValue, Tolerance
+'    Writer.DisplayFloatDifferences ExpectedValue, ActualValue, Tol
 '
 '    Dim Actual As String
 '    Actual = Writer.ToString

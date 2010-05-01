@@ -50,7 +50,7 @@ Public Sub Match_WithTestNames_ReturnsTrue(ByVal FullName As String)
     Stub.FullName = FullName
     
     Dim Actual As Boolean
-    Actual = EmptyFilter.Instance.Match(Stub)
+    Actual = TestFilter.EmptyFilter.Match(Stub)
     
     Assert.IsTrue Actual = True
 End Sub
@@ -60,7 +60,7 @@ Public Sub Pass_WithTestNames_ReturnsTrue(ByVal FullName As String)
     Stub.FullName = FullName
     
     Dim Actual As Boolean
-    Actual = EmptyFilter.Instance.Pass(Stub)
+    Actual = TestFilter.EmptyFilter.Pass(Stub)
     
     Assert.IsTrue Actual = True
 End Sub

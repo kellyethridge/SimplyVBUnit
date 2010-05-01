@@ -103,7 +103,12 @@ Public Function TestContext() As TestContextStatic
     Set TestContext = modStatics.TestContext
 End Function
 
-Public Function EmptyFilter() As EmptyFilterStatic
-    Set EmptyFilter = modStatics.EmptyFilter
+Public Function TestFilter() As TestFilterStatic
+    Set TestFilter = modStatics.TestFilter
 End Function
+
+Public Property Get Tolerance() As ToleranceStatic
+    Set Tolerance = modStatics.Tolerance
+End Property
+
 

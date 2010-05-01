@@ -633,7 +633,7 @@ Public Sub CountTestCases_WithPassingFilter_ReturnsOne()
     Set Test = Fixture.Tests(0)
     
     Dim Actual As Long
-    Actual = Test.CountTestCases(EmptyFilter.Instance)
+    Actual = Test.CountTestCases(TestFilter.EmptyFilter)
     
     Const Expected As Long = 1
     Assert.That Actual, Iz.EqualTo(Expected)

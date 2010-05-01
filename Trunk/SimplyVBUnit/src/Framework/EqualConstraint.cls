@@ -494,7 +494,7 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
     mClipping = DEF_CLIPPING
-    Set mTolerance = EmptyTolerance.Instance
+    Set mTolerance = Tolerance.EmptyTolerance
 End Sub
 
 
