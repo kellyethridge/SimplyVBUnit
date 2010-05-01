@@ -29,14 +29,9 @@ Public Type NullListenerStatic
     Instance As New NullListener
 End Type
 
-Public Type EmptyTolerance
-    Instance As New Tolerance
-End Type
-
 Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
-Public EmptyTolerance       As EmptyTolerance
 
 Public Sim                  As New SimConstructors
 Public Error                As New ErrorHelper
@@ -48,10 +43,11 @@ Public TestCaseBuilder      As New TestCaseBuilder
 Public Assert               As New Assertions
 Public TestContext          As New TestContextStatic
 Public TestContextManager   As New TestContextManager
-Public EmptyFilter          As New EmptyFilterStatic
+Public TestFilter           As New TestFilterStatic
 Public CategoryParser       As New CategoryParser
 Public MsgUtils             As New MsgUtils
 Public GlobalSettings       As New GlobalSettings
+Public Tolerance            As New ToleranceStatic
 
 Private mIz                 As New IzStatic
 

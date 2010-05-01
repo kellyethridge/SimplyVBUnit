@@ -40,7 +40,6 @@ Private Const FMT_NULL              As String = "Null"
 Private Const FMT_EMPTY             As String = "Empty"
 Private Const FMT_NOTHING           As String = "Nothing"
 Private Const FMT_MISSING           As String = "Missing"
-Private Const FMT_CURRENCY          As String = "0.0000@"
 Private Const FMT_EMPTYARRAY        As String = "<empty>"
 Private Const FMT_PREDICATE         As String = "{0} "
 Private Const FMT_MODIFIER          As String = ", {0}"
@@ -98,7 +97,7 @@ Public Sub DisplayStringDifferences(ByVal Expected As String, ByVal Actual As St
     WriteCaretLine MismatchIndex
 End Sub
 
-Public Sub DisplayFloatDifferences(ByVal Expected As Variant, ByVal Actual As Variant, ByVal Tolerance As Variant)
+Public Sub DisplayFloatDifferences(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Tolerance As Variant)
     Call WriteText(PFX_EXPECTED)
     Call WriteValue(Expected)
     Call WriteConnector(FMT_TOLERANCE)
@@ -148,7 +147,7 @@ Public Sub WriteValue(ByRef Value As Variant)
             Case vbSingle:                  WriteWithDecimalPoint CStr(Value), SYM_SINGLE
             Case vbDouble:                  WriteWithDecimalPoint CStr(Value), SYM_DOUBLE
             Case vbCurrency:                WriteCurrency CCur(Value)
-            Case vbDecimal:                 WriteWithDecimalPoint CStr(Value), SYM_DECIMAL
+            Case vbDecimal:                 WriteDecimal Value
             Case vbDate:                    WriteText CStr(Value)
             Case vbObject, vbDataObject:    WriteObject Value
             Case vbNull:                    WriteText FMT_NULL
@@ -171,7 +170,7 @@ Public Sub WriteLine(ParamArray Args() As Variant)
         WriteFormattedText CStr(LocalArgs(FIRST_ARGUMENT)), LocalArgs(SECOND_ARGUMENT), UpperBound
     End If
     
-    Call WriteText(vbCrLf)
+    WriteText vbCrLf
 End Sub
 
 Public Sub WriteText(ByRef Text As String, ParamArray Args() As Variant)
@@ -311,8 +310,12 @@ Private Sub WriteWithDecimalPoint(ByRef Value As String, ByRef Symbol As String)
     End If
 End Sub
 
+Private Sub WriteDecimal(ByRef Value As Variant)
+    WriteText CStr(Value) & SYM_DECIMAL
+End Sub
+
 Private Sub WriteCurrency(ByVal Value As Currency)
-    WriteText Format$(Value, FMT_CURRENCY)
+    WriteText CStr(Value) & SYM_CURRENCY
 End Sub
 
 Private Sub WriteObject(ByRef Value As Variant)

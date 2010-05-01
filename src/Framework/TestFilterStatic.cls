@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "EmptyFilterStatic"
+Attribute VB_Name = "TestFilterStatic"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -29,8 +29,8 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mInstance As New EmptyFilter
+Private mEmptyFilter As New EmptyFilter
 
-Public Function Instance() As ITestFilter
-    Set Instance = mInstance
+Public Function EmptyFilter() As ITestFilter
+    Set EmptyFilter = mEmptyFilter
 End Function

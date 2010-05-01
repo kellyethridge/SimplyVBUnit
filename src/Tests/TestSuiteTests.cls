@@ -299,7 +299,7 @@ Public Sub CountTestCases_WithPassingFilter_ReturnsFour()
     Call Suite.Add(New Fake2Tests)
     
     Dim Actual As Long
-    Actual = Suite.CountTestCases(EmptyFilter.Instance)
+    Actual = Suite.CountTestCases(TestFilter.EmptyFilter)
     
     Const Expected As Long = 4
     Assert.That Actual, Iz.EqualTo(Expected)

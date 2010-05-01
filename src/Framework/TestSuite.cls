@@ -138,7 +138,7 @@ Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Fi
         Set Listener = NullListener.Instance
     End If
     If Filter Is Nothing Then
-        Set Filter = EmptyFilter.Instance
+        Set Filter = TestFilter.EmptyFilter
     End If
     
     Dim Result As TestResult
