@@ -36,7 +36,7 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private Const DEF_CAPACITY  As Long = 32
+Private Const DEF_CAPACITY  As Long = 128
 Private Const MIN_LENGTH    As Long = 0
 
 
@@ -53,10 +53,10 @@ Private mNewCapacity        As Long
 ' @param Text The text that contains indices to be formatted.
 ' @param Args A list of arguments to replace the indices with.
 '
-Public Sub AppendFormat(ByVal Text As String, ParamArray Args() As Variant)
+Public Sub AppendFormat(ByRef Format As String, ParamArray Args() As Variant)
     Dim LocalArgs() As Variant
     LocalArgs = Args
-    Call AppendFormatArray(Text, LocalArgs)
+    AppendFormatArray Format, LocalArgs
 End Sub
 
 ''
@@ -65,10 +65,10 @@ End Sub
 ' @param Text The text that contains indices to be formatted.
 ' @param Args A list of arguments to replace the indices with.
 '
-Public Sub AppendFormatArray(ByVal Text As String, ByRef Args() As Variant)
+Public Sub AppendFormatArray(ByRef Format As String, ByRef Args() As Variant)
     Dim Segments() As String
-    Segments = Split(Text, "{{")
-    
+    Segments = Split(Format, "{{")
+
     Dim j As Long
     For j = 0 To UBound(Segments)
         Dim i As Long
@@ -76,22 +76,21 @@ Public Sub AppendFormatArray(ByVal Text As String, ByRef Args() As Variant)
             Segments(j) = Replace$(Segments(j), "{" & i & "}", Args(i))
         Next
     Next
-    
-    Text = Join(Segments, "{")
-    Text = Replace$(Text, "}}", "}")
-    
-    Call Append(Text)
-End Sub
 
+    Dim Result As String
+    Result = Join(Segments, "{")
+    Result = Replace$(Result, "}}", "}")
+    
+    AppendText Result
+End Sub
 
 ''
 ' Appends text to the end of the current string buffer.
 '
 ' @param Text The string to be appended to the buffer.
 '
-Public Sub Append(ByVal Text As String)
-    Call EnsureCapacity(Length + Len(Text))
-    Call AppendToBuffer(Text)
+Public Sub Append(ByVal Value As String)
+    AppendText Value
 End Sub
 
 ''
@@ -103,7 +102,6 @@ Public Property Get Length() As Long
     Length = mLength
 End Property
 
-
 ''
 ' Sets the length for the current string buffer.
 '
@@ -111,18 +109,17 @@ End Property
 '
 Public Property Let Length(ByVal RHS As Long)
     If RHS < MIN_LENGTH Then _
-        Call Error.CannotBeNegative(Me, "Length", "Length")
+        Error.CannotBeNegative Me, "Length", "Length"
     
     If RHS > mLength Then
         Dim FillSpace As String
         FillSpace = Space$(RHS - mLength)
         
-        Call Append(FillSpace)
+        Append FillSpace
     Else
         mLength = RHS
     End If
 End Property
-
 
 ''
 ' Returns the current string buffer.
@@ -137,22 +134,18 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub AppendText(ByRef Text As String)
+    EnsureCapacity Length + Len(Text)
+    AppendToBuffer Text
+End Sub
+
 Private Sub EnsureCapacity(ByVal RequiredCapacity As Long)
     mRequiredCapacity = RequiredCapacity
     
     If NeedsMoreCapacity Then
-        Call CalculateNewCapacity
-        Call ExpandCapacity
+        CalculateNewCapacity
+        ExpandCapacity
     End If
-End Sub
-
-Private Sub AppendToBuffer(ByRef Text As String)
-    Call CopyMemory(ByVal StrPtr(mBuffer) + (Length * 2), ByVal StrPtr(Text), LenB(Text))
-    Call SetLength(Text)
-End Sub
-
-Private Sub SetLength(ByRef Text As String)
-    mLength = mLength + Len(Text)
 End Sub
 
 Private Function NeedsMoreCapacity() As Boolean
@@ -178,11 +171,20 @@ Private Sub ExpandCapacity()
     Dim NewBuffer As String
     NewBuffer = String$(mNewCapacity, vbNullChar)
     
-    Call CopyMemory(ByVal StrPtr(NewBuffer), ByVal StrPtr(mBuffer), Length * 2)
+    CopyMemory ByVal StrPtr(NewBuffer), ByVal StrPtr(mBuffer), Length * 2
     mBuffer = vbNullString
     
     StringPtr(mBuffer) = StringPtr(NewBuffer)
     StringPtr(NewBuffer) = vbNullPtr
+End Sub
+
+Private Sub AppendToBuffer(ByRef Text As String)
+    CopyMemory ByVal StrPtr(mBuffer) + (Length * 2), ByVal StrPtr(Text), LenB(Text)
+    SetLength Text
+End Sub
+
+Private Sub SetLength(ByRef Text As String)
+    mLength = mLength + Len(Text)
 End Sub
 
 

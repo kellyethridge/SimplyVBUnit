@@ -77,8 +77,8 @@ Public Sub IsTrue_WithMessageOnFalseCondition_IncludesMessageWithError()
     
 errTrap:
     Const Expected As String = ASSERT_MESSAGE & vbCrLf & _
-                               "Expected: True" & vbCrLf & _
-                               "But was : False" & vbCrLf
+                               "  Expected: True" & vbCrLf & _
+                               "  But was : False" & vbCrLf
     Debug.Assert Err.Description = Expected
 End Sub
 
@@ -172,8 +172,8 @@ Public Sub IsFalse_WithMessage_IncludesMessage()
     
 errTrap:
     Const Expected As String = ASSERT_MESSAGE & vbCrLf & _
-                               "Expected: False" & vbCrLf & _
-                               "But was : True" & vbCrLf
+                               "  Expected: False" & vbCrLf & _
+                               "  But was : True" & vbCrLf
     Assert.IsTrue Err.Description = Expected, "Wrong message."
 End Sub
 
@@ -206,8 +206,8 @@ Public Sub AreEqual_WithMessage_IncludesMessage()
     
 errTrap:
     Const Expected As String = ASSERT_MESSAGE & vbCrLf & _
-                               "Expected: 1" & vbCrLf & _
-                               "But was : 2" & vbCrLf
+                               "  Expected: 1" & vbCrLf & _
+                               "  But was : 2" & vbCrLf
     Assert.IsTrue Err.Description = Expected, "Wrong message."
 End Sub
 

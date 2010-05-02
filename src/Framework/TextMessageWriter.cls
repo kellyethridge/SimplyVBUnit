@@ -33,8 +33,8 @@ Private Const DEF_MAXDISPLAYLENGTH  As Long = 64
 Private Const FIRST_ARGUMENT        As Long = 0
 Private Const SECOND_ARGUMENT       As Long = FIRST_ARGUMENT + 1
 
-Private Const PFX_EXPECTED          As String = "Expected: "
-Private Const PFX_ACTUAL            As String = "But was : "
+Private Const PFX_EXPECTED          As String = "  Expected: "
+Private Const PFX_ACTUAL            As String = "  But was : "
 Private Const FMT_STRING            As String = """{0}"""
 Private Const FMT_NULL              As String = "Null"
 Private Const FMT_EMPTY             As String = "Empty"
@@ -97,13 +97,17 @@ Public Sub DisplayStringDifferences(ByVal Expected As String, ByVal Actual As St
     WriteCaretLine MismatchIndex
 End Sub
 
-Public Sub DisplayFloatDifferences(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Tolerance As Variant)
-    Call WriteText(PFX_EXPECTED)
-    Call WriteValue(Expected)
-    Call WriteConnector(FMT_TOLERANCE)
-    Call WriteValue(Tolerance)
-    Call WriteLine
-    Call WriteActualLine(Actual)
+Public Sub DisplayDifferences(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Tolerance As Tolerance)
+    WriteText PFX_EXPECTED
+    WriteValue Expected
+    
+    If Tolerance.Mode <> NoneMode Then
+        WriteConnector FMT_TOLERANCE
+        WriteValue Tolerance.Amount
+    End If
+    
+    WriteLine
+    WriteActualLine Actual
 End Sub
 
 Public Sub DisplayConstraintDifference(ByVal Constraint As IConstraint)

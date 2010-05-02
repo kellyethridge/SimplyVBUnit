@@ -34,10 +34,10 @@ Implements IBasicExpression
 Implements IEqualConstraint
 Implements IToleranceUnits
 
-Private Const MSG_STRINGSDIFFERBYINDEX          As String = "String lengths are both {0}. Strings differ at index {1}."
-Private Const MSG_STRINGSDIFFERBYLENGTHANDINDEX As String = "Expected string length {0} but was {1}. Strings differ at index {2}."
-Private Const MSG_COLLECTIONTYPE_1              As String = "Expected and actual are both {0}"
-Private Const MSG_COLLECTIONTYPE_2              As String = "Expected is {0}, actual is {1}"
+Private Const MSG_STRINGSDIFFERBYINDEX          As String = "  String lengths are both {0}. Strings differ at index {1}."
+Private Const MSG_STRINGSDIFFERBYLENGTHANDINDEX As String = "  Expected string length {0} but was {1}. Strings differ at index {2}."
+Private Const MSG_COLLECTIONTYPE_1              As String = "  Expected and actual are both {0}"
+Private Const MSG_COLLECTIONTYPE_2              As String = "  Expected is {0}, actual is {1}"
 Private Const MSG_VALUESDIFFER_1                As String = "  Values differ at index [{0}]"
 Private Const MSG_VALUESDIFFER_2                As String = "  Values differ at expected index [{0}], actual index [{1}]"
 
@@ -52,7 +52,7 @@ Private mTolerance      As Tolerance
 Private mAsCollection   As Boolean
 Private mComparer       As IEqualityComparer
 Private mStrict         As Boolean
-Private mFailurePoint   As Variant
+Private mFailurePoints  As New Stack
 
 
 
@@ -97,8 +97,9 @@ End Function
 ' @return The result of the comparison.
 '
 Public Function Matches(ByRef Actual As Variant) As Boolean
-    Call VariantCopyInd(mActual, Actual)
-    mFailurePoint = Empty
+    VariantCopyInd mActual, Actual
+    mFailurePoints.Clear
+    
     Matches = EqualVariants(mExpected, Actual)
 End Function
 
@@ -108,7 +109,9 @@ End Function
 ' @param Writer The text write that the message will be written to.
 '
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    If VarType(mActual) = vbString And VarType(mExpected) = vbString Then
+    If IsArray(mExpected) And IsArray(mActual) Then
+        DisplayArrayDifferences Writer
+    ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
         DisplayStringDifferences Writer
     Else
         Call Writer.DisplayConstraintDifference(Me)
@@ -250,20 +253,32 @@ Private Function EqualEnumerables(ByRef Expected As Variant, ByRef Actual As Var
     Dim ExpectedHasMore As Boolean
     Dim ActualHasMore   As Boolean
     
+    Dim RetVal  As Boolean
+    Dim Count   As Long
     Do
         ExpectedHasMore = ExpectedEnumerator.MoveNext
         ActualHasMore = ActualEnumerator.MoveNext
         
-        If ExpectedHasMore = False Or ActualHasMore = False Then
+        If ExpectedHasMore = False And ActualHasMore = False Then
+            RetVal = True
+            Exit Do
+        End If
+        
+        If ExpectedHasMore <> ActualHasMore Then
+            RetVal = False
             Exit Do
         End If
         
         If Not EqualVariants(ExpectedEnumerator.Current, ActualEnumerator.Current) Then
-            Exit Function
+            mFailurePoints.Push Count
+            RetVal = False
+            Exit Do
         End If
+        
+        Count = Count + 1
     Loop
     
-    EqualEnumerables = (ExpectedHasMore = False And ActualHasMore = False)
+    EqualEnumerables = RetVal
 End Function
 
 Private Function EqualValues(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
@@ -392,20 +407,23 @@ End Sub
 Private Sub DisplayArrayDifferences(ByVal Writer As TextMessageWriter)
     Call DisplayCollectionTypesAndSizes(Writer)
     
-    If Not IsEmpty(mFailurePoint) Then
+    If mFailurePoints.Count > 0 Then
+        Dim Point As Long
+        Point = mFailurePoints.Pop
+        
         If mAsCollection Then
             Dim sExpected   As String
             Dim sActual     As String
             
-            sExpected = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, mFailurePoint))
-            sActual = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mActual, mFailurePoint))
+            sExpected = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, Point))
+            sActual = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mActual, Point))
             
             Call Writer.WriteLine(MSG_VALUESDIFFER_2, sExpected, sActual)
         Else
-            Call Writer.WriteLine(MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, mFailurePoint)))
+            Call Writer.WriteLine(MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, Point)))
         End If
         
-        Call Writer.DisplayDifference(GetValue(mExpected, mFailurePoint), GetValue(mActual, mFailurePoint))
+        Call Writer.DisplayDifference(GetValue(mExpected, Point), GetValue(mActual, Point))
     End If
 End Sub
 
@@ -419,28 +437,28 @@ Private Function GetValue(ByRef Source As Variant, ByVal Index As Long) As Varia
     End If
 End Function
 
-Private Sub DisplayCollectionDifferences(ByVal Writer As TextMessageWriter)
-    Call DisplayCollectionTypesAndSizes(Writer)
-    
-    If Not IsEmpty(mFailurePoint) Then
-        Call DisplayCollectionFailurePoint(Writer)
-        
-        If mExpected.Count < mActual.Count Then
-            ' too many
-            Call Writer.WriteText("  Extra: ")
-            Call Writer.WriteCollectionElements(mActual, mFailurePoint + 1, 3)
-            Call Writer.WriteLine
-            
-        ElseIf mExpected.Count > mActual.Count Then
-            ' too few
-            Call Writer.WriteText("  Missing: ")
-            Call Writer.WriteCollectionElements(mExpected, mFailurePoint + 1, 3)
-            Call Writer.WriteLine
-        Else
-            Call Writer.DisplayDifference(GetValue(mExpected, mFailurePoint + 1), GetValue(mActual, mFailurePoint + 1))
-        End If
-    End If
-End Sub
+'Private Sub DisplayCollectionDifferences(ByVal Writer As TextMessageWriter)
+'    Call DisplayCollectionTypesAndSizes(Writer)
+'
+'    If Not IsEmpty(mFailurePoint) Then
+'        Call DisplayCollectionFailurePoint(Writer)
+'
+'        If mExpected.Count < mActual.Count Then
+'            ' too many
+'            Call Writer.WriteText("  Extra: ")
+'            Call Writer.WriteCollectionElements(mActual, mFailurePoint + 1, 3)
+'            Call Writer.WriteLine
+'
+'        ElseIf mExpected.Count > mActual.Count Then
+'            ' too few
+'            Call Writer.WriteText("  Missing: ")
+'            Call Writer.WriteCollectionElements(mExpected, mFailurePoint + 1, 3)
+'            Call Writer.WriteLine
+'        Else
+'            Call Writer.DisplayDifference(GetValue(mExpected, mFailurePoint + 1), GetValue(mActual, mFailurePoint + 1))
+'        End If
+'    End If
+'End Sub
 
 Private Sub DisplayCollectionTypesAndSizes(ByVal Writer As TextMessageWriter)
     Dim sExpected As String
@@ -473,20 +491,11 @@ Private Sub DisplayCollectionTypesAndSizes(ByVal Writer As TextMessageWriter)
     End If
 End Sub
 
-Private Sub DisplayCollectionFailurePoint(ByVal Writer As TextMessageWriter)
-    Call Writer.WriteLine(MSG_VALUESDIFFER_1, mFailurePoint + 1)
-End Sub
+'Private Sub DisplayCollectionFailurePoint(ByVal Writer As TextMessageWriter)
+'    Call Writer.WriteLine(MSG_VALUESDIFFER_1, mFailurePoint + 1)
+'End Sub
 
-Private Function TryGetCount(ByVal Source As Object, ByRef Result As Long) As Boolean
-    On Error GoTo errTrap
-    
-    Result = Source.Count
-    TryGetCount = True
-    Exit Function
-    
-errTrap:
-    Result = 0
-End Function
+
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -518,15 +527,15 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
-    Call Writer.WriteActualValue(mActual)
+    Writer.WriteActualValue mActual
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Call Writer.WriteExpectedValue(mExpected)
+    Writer.WriteExpectedValue mExpected
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call WriteMessageTo(Writer)
+    WriteMessageTo Writer
 End Sub
 
 

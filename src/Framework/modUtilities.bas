@@ -252,3 +252,40 @@ Public Function EqualStrings(ByRef String1 As Variant, ByRef String2 As Variant,
     
     EqualStrings = (StrComp(String1, String2, Method) = 0)
 End Function
+
+Public Function TryGetCount(ByRef Source As Variant, ByRef Result As Long) As Boolean
+    On Error GoTo errTrap
+    
+    If Not IsArray(Source) Then
+        Result = Source.Count
+        TryGetCount = True
+    End If
+    
+    Exit Function
+    
+errTrap:
+    Result = 0
+End Function
+
+Public Function NewLongs(ByVal Size As Long) As Long()
+    SAPtrLong(NewLongs) = SafeArrayCreateVector(vbLong, 0, Size)
+End Function
+
+Public Function IsEmptyOrNullArray(ByRef Arr As Variant) As Boolean
+    On Error GoTo errTrap
+    
+    If UBound(Arr) < LBound(Arr) Then
+        IsEmptyOrNullArray = True
+    End If
+    
+    Exit Function
+    
+errTrap:
+    Const SUBSCRIPT_OUT_OF_RANGE As Long = 9
+    
+    If Err.Number = SUBSCRIPT_OUT_OF_RANGE Then
+        IsEmptyOrNullArray = True
+    Else
+        Err.Raise Err.Number, , Err.Description
+    End If
+End Function

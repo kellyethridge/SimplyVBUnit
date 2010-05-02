@@ -120,7 +120,8 @@ Public Sub WriteMessageTo_WithMatchesNotCalled_WritesExpectedErrorMessage()
 
     Dim Actual As String
     Actual = w.ToString
-    Const Expected As String = "Expected: an error" & vbCrLf & "But was : no error raised" & vbCrLf
+    Const Expected As String = "  Expected: an error" & vbCrLf & _
+                               "  But was : no error raised" & vbCrLf
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
@@ -136,7 +137,8 @@ Public Sub WriteMessageTo_WithWrongErrorRaised_WritesWrongErrorMessage()
     
     Dim Actual As String
     Actual = w.ToString
-    Const Expected = "Expected: error 1" & vbCrLf & "But was : error 100" & vbCrLf
+    Const Expected = "  Expected: error 1" & vbCrLf & _
+                     "  But was : error 100" & vbCrLf
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
