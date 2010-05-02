@@ -62,9 +62,10 @@ library SimplyVBUnitType {
     ]
     module OleAut32
     {
-        [entry("VariantCopyInd")]   HRESULT VariantCopyInd([in] VARIANT * pvarDest, [in] void * pvarSrc);
-        [entry("VariantCopy")]      HRESULT VariantCopy([in] VARIANT * pvarDest, [in] void * pvarSrc);
-        [entry("SafeArrayGetDim")]  long    SafeArrayGetDim([in] long psa);
+        [entry("VariantCopyInd")]        HRESULT VariantCopyInd([in] VARIANT * pvarDest, [in] void * pvarSrc);
+        [entry("VariantCopy")]           HRESULT VariantCopy([in] VARIANT * pvarDest, [in] void * pvarSrc);
+        [entry("SafeArrayGetDim")]       long SafeArrayGetDim([in] long psa);
+        [entry("SafeArrayCreateVector")] long SafeArrayCreateVector([in] VbVarType vt, [in] long lLBound, [in] long cElements);
     }
 
     [
@@ -93,7 +94,9 @@ library SimplyVBUnitType {
         [propget, entry("GetMem2")] HRESULT VariantType([in] VARIANT * Source, [out, retval] short * RetVal);
         [propput, entry("PutMem2")] HRESULT VariantType([in] VARIANT * Source, [in] short RHS);
         [propget, entry("GetMem4")] HRESULT StringPtr([in] BSTR * Source, [out, retval] long * RetVal);
-		[propput, entry("PutMem4")] HRESULT StringPtr([in] BSTR * Source, [in] long Value);
+	[propput, entry("PutMem4")] HRESULT StringPtr([in] BSTR * Source, [in] long Value);
+	[propget, entry("GetMem4")] HRESULT SAPtrLong([in] SAFEARRAY(long) * Array, [out, retval] long * RetVal);
+	[propput, entry("PutMem4")] HRESULT SAPtrLong([in] SAFEARRAY(long) * Array, [in] long RHS);
     }
     
         // Forward definitions

@@ -109,8 +109,8 @@ Public Sub WriteMessageTo_WhenCalled_WritesBothConstraintMessages()
     
     Dim Actual As String
     Actual = w.ToString
-    Const Expected As String = "Expected: equal left or equal right" & vbCrLf & _
-                              "But was : 1" & vbCrLf
+    Const Expected As String = "  Expected: equal left or equal right" & vbCrLf & _
+                               "  But was : 1" & vbCrLf
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 

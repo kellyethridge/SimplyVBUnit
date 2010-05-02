@@ -122,8 +122,9 @@ Public Function EscapeControlChars(ByRef s As String) As String
             Case ASC_VERTICALTAB:       sb.Append ESC_VERTICALTAB
             Case ASC_FORMFEED:          sb.Append ESC_FORMFEED
             Case ASC_BELL:              sb.Append ESC_BELL
-            Case Is < 32:               sb.Append ESC_HEXPREFIX
-                                        sb.Append Right$("0" & Hex$(Asc(Ch)), 2)
+            Case Is < 32, Is > 127
+                                        sb.Append ESC_HEXPREFIX
+                                        sb.Append Right$("0000" & Hex$(AscW(Ch)), 4)
             Case Else:                  sb.Append Ch
         End Select
     Next
@@ -169,38 +170,57 @@ Public Function GetArrayIndicesFromCollectionIndex(ByRef Value As Variant, ByVal
     Dim Result() As Long
 
     If IsArray(Value) Then
-        Dim Rank As Long
-        Rank = GetArrayRank(Value)
-
-        ReDim Result(0 To Rank - 1)
-
-        Dim i As Long
-        For i = 1 To Rank
-            Dim j As Long
-            j = UBound(Value, i) - LBound(Value, i) + 1
-            Result(i - 1) = LBound(Value, i) + (Index Mod j)
-            Index = Index \ j
-        Next i
+        If Not IsEmptyOrNullArray(Value) Then
+            Dim Rank As Long
+            Rank = GetArrayRank(Value)
+    
+            ReDim Result(0 To Rank - 1)
+    
+            Dim i As Long
+            For i = 1 To Rank
+                Dim j As Long
+                j = UBound(Value, i) - LBound(Value, i) + 1
+                
+                Result(i - 1) = LBound(Value, i) + (Index Mod j)
+                Index = Index \ j
+            Next i
+        Else
+            Result = NewLongs(0)
+        End If
     Else
-        ReDim Result(0)
-        Result(0) = Index
+        Dim Count As Long
+        TryGetCount Value, Count
+        
+        If Count > 0 Then
+            ReDim Result(0)
+            Result(0) = Index
+        Else
+            Result = NewLongs(0)
+        End If
     End If
 
     GetArrayIndicesFromCollectionIndex = Result
 End Function
 
 Public Function GetArrayIndicesAsString(ByRef Indices() As Long) As String
-    Dim sb As New StringBuilder
-    Dim i As Long
-    For i = 0 To UBound(Indices)
-        If i > 0 Then
-            Call sb.Append(", ")
+    
+    On Error GoTo errTrap
+    
+    Dim sb  As New StringBuilder
+    Dim i   As Long
+    For i = LBound(Indices) To UBound(Indices)
+        If i > LBound(Indices) Then
+            sb.Append ","
         End If
 
-        Call sb.Append(Indices(i))
+        sb.Append Indices(i)
     Next i
 
     GetArrayIndicesAsString = sb.ToString
+    Exit Function
+    
+errTrap:
+    GetArrayIndicesAsString = vbNullString
 End Function
 
 

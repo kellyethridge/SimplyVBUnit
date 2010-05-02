@@ -72,7 +72,7 @@ Public Sub WriteMessageTo_WhenCalled_WritesBaseConstraintMessage()
     
     Dim Actual As String
     Actual = w.ToString
-    Const Expected As String = "Expected: not equals" & vbCrLf & _
-                               "But was : 1" & vbCrLf
+    Const Expected As String = "  Expected: not equals" & vbCrLf & _
+                               "  But was : 1" & vbCrLf
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub

@@ -40,8 +40,10 @@ errTrap:
 End Sub
 
 Public Sub MoveNext_WithEmptyArray_ReturnsFalse()
+    Dim Arr As Variant
+    Arr = Array()
     Dim En As IEnumerator
-    Set En = Sim.NewArrayEnumerator(Array())
+    Set En = Sim.NewArrayEnumerator(Arr)
     
     Dim Actual As Boolean
     Actual = En.MoveNext
@@ -50,8 +52,10 @@ Public Sub MoveNext_WithEmptyArray_ReturnsFalse()
 End Sub
 
 Public Sub MoveNext_WithOneItem_ReturnsTrue()
+    Dim Arr As Variant
+    Arr = Array(1)
     Dim En As IEnumerator
-    Set En = Sim.NewArrayEnumerator(Array(1))
+    Set En = Sim.NewArrayEnumerator(Arr)
     
     Dim Actual As Boolean
     Actual = En.MoveNext

@@ -48,3 +48,31 @@ Public Function NewCollection(ParamArray Values() As Variant) As Collection
     
     Set NewCollection = Result
 End Function
+
+Public Function MakeLongArray(ByVal LowerBound As Long, ParamArray Args() As Variant) As Long()
+    Dim Result() As Long
+    ReDim Result(LowerBound To LowerBound + UBound(Args))
+    
+    Dim i As Long
+    For i = 0 To UBound(Args)
+        Result(LowerBound + i) = Args(i)
+    Next
+    
+    MakeLongArray = Result
+End Function
+
+Public Sub AssertEmptyArray(ByRef Arr As Variant)
+    Dim lb As Long
+    Dim ub As Long
+    
+    lb = LBound(Arr)
+    lb = UBound(Arr)
+    
+    If lb <= ub Then
+        Err.Raise AssertCode.FailureCode, , "Array should be empty."
+    End If
+End Sub
+
+Public Function NewLongs(ByVal Size As Long) As Long()
+    SAPtrLong(NewLongs) = SafeArrayCreateVector(vbLong, 0, Size)
+End Function

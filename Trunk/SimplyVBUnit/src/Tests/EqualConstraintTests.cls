@@ -31,10 +31,12 @@ Option Explicit
 Implements ITestCaseSource
 
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
-    Dim Multi1() As Long
-    Dim Multi2() As Long
-    Dim Arr1 As Variant
-    Dim Arr2 As Variant
+    Dim Long1() As Long
+    Dim Long2() As Long
+    Dim Array1  As Variant
+    Dim Array2  As Variant
+    Dim Col1    As Collection
+    Dim Col2    As Collection
 
     Select Case Test.MethodName
         Case "Matches_WithValues"
@@ -92,29 +94,27 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(Array(Obj), Array(Obj), True)
             Call Test.Use(Array(1, 2, 3), Array(1#, 2#, 3#), True)
             
-            ReDim Arr1(0 To 1) As Long
-            ReDim Arr2(0 To 1) As Integer
-            Call Test.Use(Arr1, Arr2, True)
+            ReDim Array1(0 To 1) As Long
+            ReDim Array2(0 To 1) As Integer
+            Call Test.Use(Array1, Array2, True)
             
-            ReDim Multi1(1, 1)
-            ReDim Multi2(1, 1)
-            Call Test.Use(Multi1, Multi2, True)
+            ReDim Long1(1, 1)
+            ReDim Long2(1, 1)
+            Call Test.Use(Long1, Long2, True)
             
-            ReDim Multi1(1, 1)
-            ReDim Multi2(1, 1)
-            Multi1(1, 1) = 1
-            Call Test.Use(Multi1, Multi2, False)
+            ReDim Long1(1, 1)
+            ReDim Long2(1, 1)
+            Long1(1, 1) = 1
+            Call Test.Use(Long1, Long2, False)
             
-            ReDim Multi1(1, 1)
-            ReDim Multi2(1, 2)
-            Call Test.Use(Multi1, Multi2, False)
+            ReDim Long1(1, 1)
+            ReDim Long2(1, 2)
+            Call Test.Use(Long1, Long2, False)
             
-            ReDim Multi1(0 To 1, 0 To 1)
-            ReDim Multi2(0 To 1, 0 To 1, 0 To 1)
-            Call Test.Use(Multi1, Multi2, False)
+            ReDim Long1(0 To 1, 0 To 1)
+            ReDim Long2(0 To 1, 0 To 1, 0 To 1)
+            Call Test.Use(Long1, Long2, False)
             
-            Dim Col1 As Collection
-            Dim Col2 As Collection
             Set Col1 = NewCollection(1)
             Set Col2 = NewCollection(1)
             Call Test.Use(Col1, Col2, True)
@@ -123,18 +123,18 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Set Col2 = NewCollection(1)
             Call Test.Use(Col1, Col2, False)
             
-            Arr1 = Array(Array(1, 2), Array("a", "b"))
-            Arr2 = Array(Array(1, 2), Array("a", "b"))
-            Call Test.Use(Arr1, Arr2, True)
+            Array1 = Array(Array(1, 2), Array("a", "b"))
+            Array2 = Array(Array(1, 2), Array("a", "b"))
+            Call Test.Use(Array1, Array2, True)
             
-            Arr1 = Array(Array(1, 2), Array("a", "b"))
-            Arr2 = Array(Array(1, 2), Array("a", "c"))
-            Call Test.Use(Arr1, Arr2, False)
+            Array1 = Array(Array(1, 2), Array("a", "b"))
+            Array2 = Array(Array(1, 2), Array("a", "c"))
+            Call Test.Use(Array1, Array2, False)
 
             Set Col1 = NewCollection(1)
-            Arr1 = Array(1)
-            Call Test.Use(Arr1, Col1, True)
-            Call Test.Use(Col1, Arr1, True)
+            Array1 = Array(1)
+            Call Test.Use(Array1, Col1, True)
+            Call Test.Use(Col1, Array1, True)
             
         Case "Matches_CaseInsensitive"
             Call Test.Use("lower", "lower", True)
@@ -178,18 +178,18 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
         Case "Matches_WithArraysAsCollections"
             Call Test.Use(Array(1, 2, 3), Array(1, 2, 3), True)
             
-            ReDim Multi1(0 To 1, 1 To 2)
-            ReDim Multi2(2 To 3, 3 To 4)
-            Call Test.Use(Multi1, Multi2, True)
+            ReDim Long1(0 To 1, 1 To 2)
+            ReDim Long2(2 To 3, 3 To 4)
+            Call Test.Use(Long1, Long2, True)
         
-            ReDim Multi1(0 To 1, 1 To 2)
-            ReDim Multi2(2 To 3, 3 To 4)
-            Multi1(0, 1) = 1
-            Call Test.Use(Multi1, Multi2, False)
+            ReDim Long1(0 To 1, 1 To 2)
+            ReDim Long2(2 To 3, 3 To 4)
+            Long1(0, 1) = 1
+            Call Test.Use(Long1, Long2, False)
         
-            ReDim Multi1(0 To 1, 1 To 2)
-            ReDim Multi2(0 To 3)
-            Call Test.Use(Multi1, Multi2, True)
+            ReDim Long1(0 To 1, 1 To 2)
+            ReDim Long2(0 To 3)
+            Call Test.Use(Long1, Long2, True)
             
         Case "Matches_WithExternalComparer"
             Call Test.Use(1, 3, True)
@@ -200,9 +200,9 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(CLng(1), CInt(1), False)
             Call Test.Use(CLng(1), CLng(1), True)
             
-            ReDim Arr1(0 To 1) As Long
-            ReDim Arr2(0 To 1) As Integer
-            Call Test.Use(Arr1, Arr2, False)
+            ReDim Array1(0 To 1) As Long
+            ReDim Array2(0 To 1) As Integer
+            Call Test.Use(Array1, Array2, False)
         
         Case "Matches_WithToleranceInPercent"
             Test.Use 1000, 900, 10, True
@@ -221,6 +221,36 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Test.Use 0#, 1#, 10, False
             Test.Use 0@, 0@, 10, True
             Test.Use 0@, 1@, 10, False
+        
+        Case "WriteMessageTo_WithValues_WritesExpected"
+            Dim Expected As String
+            Expected = "  Expected: True" & vbCrLf & _
+                       "  But was : False" & vbCrLf
+            Test.Use True, False, Expected
+            
+            Expected = "  Expected string length 1 but was 2. Strings differ at index 2." & vbCrLf & _
+                       "  Expected: ""a""" & vbCrLf & _
+                       "  But was : ""ab""" & vbCrLf & _
+                       "  ------------^" & vbCrLf
+            Test.Use "a", "ab", Expected
+        
+            Array1 = Array(1, 2, 3, 4)
+            Array2 = Array(1, 2, 3, 5)
+            Expected = "  Expected and actual are both <Variant(0 To 3)>" & vbCrLf & _
+                       "  Values differ at index [3]" & vbCrLf & _
+                       "  Expected: 4" & vbCrLf & _
+                       "  But was : 5" & vbCrLf
+            Test.Use Array1, Array2, Expected
+            
+            ReDim Long1(0 To 1, 0 To 2)
+            ReDim Long2(0 To 1, 0 To 2)
+            Long1(1, 2) = 1
+            Expected = "  Expected and actual are both <Long(0 To 1, 0 To 2)>" & vbCrLf & _
+                       "  Values differ at index [1,2]" & vbCrLf & _
+                       "  Expected: 1" & vbCrLf & _
+                       "  But was : 0" & vbCrLf
+            Test.Use Long1, Long2, Expected
+            
             
     End Select
     
@@ -355,51 +385,21 @@ Public Sub Resolve_WhenCalled_ReturnsSelf()
     Assert.IsTrue Actual Is c
 End Sub
 
-Public Sub WriteMessageTo_WithTrueFalse_WritesExpectedButWasClause()
+Public Sub WriteMessageTo_WithValues_WritesExpected(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As String)
     Dim c As IConstraint
-    Set c = Sim.NewEqualConstraint(True)
-    Call c.Matches(False)
+    Set c = Sim.NewEqualConstraint(ConstraintExpected)
+    c.Matches ConstraintActual
     
     Dim w As New TextMessageWriter
     c.WriteMessageTo w
     
     Dim Actual As String
     Actual = w.ToString
-    Const Expected As String = "Expected: True" & vbCrLf & _
-                               "But was : False" & vbCrLf
-    Assert.IsTrue Actual = Expected
-End Sub
-
-Public Sub WriteMessageTo_WithNonEqualStrings_WritesExpectedButWasClause()
-    Dim c As IConstraint
-    Set c = Sim.NewEqualConstraint("a")
-    Call c.Matches("ab")
-    
-    Dim w As New TextMessageWriter
-    Call c.WriteMessageTo(w)
-    
-    Dim Actual As String
-    Actual = w.ToString
-    Const Expected As String = "Expected string length 1 but was 2. Strings differ at index 2." & vbCrLf & _
-                               "Expected: ""a""" & vbCrLf & _
-                               "But was : ""ab""" & vbCrLf & _
-                               "  ----------^" & vbCrLf
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 
 
-Private Function MakeLongArray(ByVal LowerBound As Long, ParamArray Args() As Variant) As Long()
-    Dim Result() As Long
-    ReDim Result(LowerBound To LowerBound + UBound(Args))
-    
-    Dim i As Long
-    For i = 0 To UBound(Args)
-        Result(LowerBound + i) = Args(i)
-    Next
-    
-    MakeLongArray = Result
-End Function
 
 Private Function MakeMissing(Optional ByVal Value As Variant) As Variant
     MakeMissing = Value

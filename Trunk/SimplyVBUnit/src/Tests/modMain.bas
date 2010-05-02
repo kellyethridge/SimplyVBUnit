@@ -26,63 +26,65 @@ Private mPassed     As Long
 Private mFailed     As Long
 
 Private Sub RunTestClassTests()
-    Call Init
+    Init
     
     Dim Suite As New TestSuite
     
-    Call Suite.Add(New TestFixtureTests)
-    Call Suite.Add(New TestResultTests)
-    Call Suite.Add(New TestListTests)
-    Call Suite.Add(New TestResultListTests)
-    Call Suite.Add(New TestSuiteTests)
-    Call Suite.Add(New TestCaseTests)
-    Call Suite.Add(New AssertionsTests)
-    Call Suite.Add(New NoArgTestMethodTests)
-    Call Suite.Add(New ErrorInfoTests)
-    Call Suite.Add(New MemberQueryTests)
-    Call Suite.Add(New TestCaseDataBuilderTests)
-    Call Suite.Add(New TestCaseDataTests)
-    Call Suite.Add(New ArgOnlyTestMethodTests)
-    Call Suite.Add(New TestCaseBuilderTests)
-    Call Suite.Add(New TestListEnumeratorTests)
-    Call Suite.Add(New StringBuilderTests)
-    Call Suite.Add(New TextMessageWriterTests)
-    Call Suite.Add(New EqualConstraintTests)
-    Call Suite.Add(New IzTests)
-    Call Suite.Add(New ArrayEnumeratorTests)
-    Call Suite.Add(New EnumVariantEnumeratorTests)
-    Call Suite.Add(New TestOutputTests)
-    Call Suite.Add(New StackTests)
-    Call Suite.Add(New TestContextTests)
-    Call Suite.Add(New TestContextManagerTests)
-    Call Suite.Add(New TestRunnerTests)
-    Call Suite.Add(New EmptyFilterTests)
-    Call Suite.Add(New FullNameFilterTests)
-    Call Suite.Add(New CategoryListTests)
-    Call Suite.Add(New CategoryParserTests)
-    Call Suite.Add(New OrFilterTests)
-    Call Suite.Add(New AndFilterTests)
-    Call Suite.Add(New NotFilterTests)
-    Call Suite.Add(New AndConstraintTests)
-    Call Suite.Add(New OrConstraintTests)
-    Call Suite.Add(New NotConstraintTests)
-    Call Suite.Add(New ErrorHelperTests)
-    Call Suite.Add(New ThrowsConstraintTests)
-    Call Suite.Add(New TestCaseModifierTests)
-    Call Suite.Add(New ArgWithReturnTestMethodTests)
-    Call Suite.Add(New ConstraintBuilderTests)
-    Call Suite.Add(New AndOperatorTests)
-    Call Suite.Add(New OrOperatorTests)
-    Call Suite.Add(New MsgUtilsTests)
-    Call Suite.Add(New ConstraintExpressionTests)
+    Suite.Add New TestFixtureTests
+    Suite.Add New TestResultTests
+    Suite.Add New TestListTests
+    Suite.Add New TestResultListTests
+    Suite.Add New TestSuiteTests
+    Suite.Add New TestCaseTests
+    Suite.Add New AssertionsTests
+    Suite.Add New NoArgTestMethodTests
+    Suite.Add New ErrorInfoTests
+    Suite.Add New MemberQueryTests
+    Suite.Add New TestCaseDataBuilderTests
+    Suite.Add New TestCaseDataTests
+    Suite.Add New ArgOnlyTestMethodTests
+    Suite.Add New TestCaseBuilderTests
+    Suite.Add New TestListEnumeratorTests
+    Suite.Add New StringBuilderTests
+    Suite.Add New TextMessageWriterTests
+    Suite.Add New EqualConstraintTests
+    Suite.Add New IzTests
+    Suite.Add New ArrayEnumeratorTests
+    Suite.Add New EnumVariantEnumeratorTests
+    Suite.Add New TestOutputTests
+    Suite.Add New StackTests
+    Suite.Add New TestContextTests
+    Suite.Add New TestContextManagerTests
+    Suite.Add New TestRunnerTests
+    Suite.Add New EmptyFilterTests
+    Suite.Add New FullNameFilterTests
+    Suite.Add New CategoryListTests
+    Suite.Add New CategoryParserTests
+    Suite.Add New OrFilterTests
+    Suite.Add New AndFilterTests
+    Suite.Add New NotFilterTests
+    Suite.Add New AndConstraintTests
+    Suite.Add New OrConstraintTests
+    Suite.Add New NotConstraintTests
+    Suite.Add New ErrorHelperTests
+    Suite.Add New ThrowsConstraintTests
+    Suite.Add New TestCaseModifierTests
+    Suite.Add New ArgWithReturnTestMethodTests
+    Suite.Add New ConstraintBuilderTests
+    Suite.Add New AndOperatorTests
+    Suite.Add New OrOperatorTests
+    Suite.Add New MsgUtilsTests
+    Suite.Add New ConstraintExpressionTests
     Suite.Add New ToleranceTests
     
     
     Dim Result As TestResult
     Set Result = Suite.Run
-    Call PrintResults(Result)
-    Call PrintSummary(Result)
+    PrintResults Result
+    PrintSummary Result
 End Sub
+
+
 
 Private Sub Init()
     Debug.Print String$(50, "-")
