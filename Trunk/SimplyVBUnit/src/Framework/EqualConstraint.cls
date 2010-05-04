@@ -405,7 +405,7 @@ Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
 End Sub
 
 Private Sub DisplayArrayDifferences(ByVal Writer As TextMessageWriter)
-    Call DisplayCollectionTypesAndSizes(Writer)
+    DisplayCollectionTypesAndSizes Writer
     
     If mFailurePoints.Count > 0 Then
         Dim Point As Long
@@ -418,12 +418,12 @@ Private Sub DisplayArrayDifferences(ByVal Writer As TextMessageWriter)
             sExpected = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, Point))
             sActual = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mActual, Point))
             
-            Call Writer.WriteLine(MSG_VALUESDIFFER_2, sExpected, sActual)
+            Writer.WriteLine MSG_VALUESDIFFER_2, sExpected, sActual
         Else
-            Call Writer.WriteLine(MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, Point)))
+            Writer.WriteLine MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, Point))
         End If
         
-        Call Writer.DisplayDifference(GetValue(mExpected, Point), GetValue(mActual, Point))
+        Writer.DisplayDifference GetValue(mExpected, Point), GetValue(mActual, Point)
     End If
 End Sub
 
