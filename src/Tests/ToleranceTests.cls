@@ -141,7 +141,7 @@ Public Sub TotalMinutes_WhenCalled_ReturnsToleranceScaledToSeconds()
     
     Set Tol = Tol.TotalMinutes
     
-    AssertTolerance Tol, 60, LinearMode, "s"
+    AssertTolerance Tol, 1, LinearMode, "tn"
 End Sub
 
 Public Sub TotalHours_WhenCalled_ReturnsToleranceScaledToSeconds()
@@ -150,7 +150,7 @@ Public Sub TotalHours_WhenCalled_ReturnsToleranceScaledToSeconds()
     
     Set Tol = Tol.TotalHours
     
-    AssertTolerance Tol, 3600, LinearMode, "s"
+    AssertTolerance Tol, 1, LinearMode, "th"
 End Sub
 
 Public Sub TotalDays_WhenCalled_ReturnsToleranceScaledToSeconds()
@@ -159,15 +159,15 @@ Public Sub TotalDays_WhenCalled_ReturnsToleranceScaledToSeconds()
     
     Set Tol = Tol.TotalDays
     
-    AssertTolerance Tol, 86400, LinearMode, "s"
+    AssertTolerance Tol, 1, LinearMode, "td"
 End Sub
 
 
 
 Private Sub AssertTolerance(ByVal Tol As Tolerance, ByVal ExpectedAmount As Variant, ByVal ExpectedMode As ToleranceMode, ByVal ExpectedInterval As String)
-    assert.That Tol.Amount, Iz.EqualTo(ExpectedAmount), "Wrong amount"
-    assert.That Tol.Mode, Iz.EqualTo(ExpectedMode), "Wrong mode"
-    assert.That Tol.Interval, Iz.EqualTo(ExpectedInterval), "Wrong interval"
+    Assert.That Tol.Amount, Iz.EqualTo(ExpectedAmount), "Wrong amount"
+    Assert.That Tol.Mode, Iz.EqualTo(ExpectedMode), "Wrong mode"
+    Assert.That Tol.Interval, Iz.EqualTo(ExpectedInterval), "Wrong interval"
 End Sub
 
 

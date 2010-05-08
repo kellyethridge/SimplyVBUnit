@@ -50,7 +50,7 @@ Private Const FMT_ERRORSOURCE       As String = " from [{0}]"
 Private Const FMT_CONNECTOR         As String = " {0} "
 Private Const FMT_DEFAULT           As String = "<{0}>"
 Private Const FMT_TYPEOF            As String = "type of <{0}> "
-
+Private Const FMT_DATE              As String = "yyyy-MM-dd h:nn:ss AM/PM"
 Private Const SYM_SINGLE            As String = "!"
 Private Const SYM_DOUBLE            As String = "#"
 Private Const SYM_CURRENCY          As String = "@"
@@ -97,20 +97,38 @@ Public Sub DisplayStringDifferences(ByVal Expected As String, ByVal Actual As St
     WriteCaretLine MismatchIndex
 End Sub
 
-Public Sub DisplayDifferences(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Tolerance As Tolerance)
+Public Sub DisplayDifferences(ByRef Expected As Variant, ByRef Actual As Variant, Optional ByVal Tolerance As Tolerance)
+    If Tolerance Is Nothing Then
+        Set Tolerance = modStatics.Tolerance.EmptyTolerance
+    End If
+    
     WriteText PFX_EXPECTED
     WriteValue Expected
     
     If Tolerance.Mode <> NoneMode Then
         WriteConnector FMT_TOLERANCE
-        WriteValue Tolerance.Amount
+        WriteText Tolerance.Amount
+        
+        Select Case Tolerance.Interval
+            Case "h":       WriteText " hour(s)"
+            Case "n":       WriteText " minute(s)"
+            Case "s":       WriteText " second(s)"
+            Case "d":       WriteText " day(s)"
+            Case "yyyy":    WriteText " year(s)"
+            Case "ww":      WriteText " weeks(s)"
+            Case "m":       WriteText " month(s)"
+            Case "q":       WriteText " quarter(s)"
+            Case "td":      WriteText " total day(s)"
+            Case "th":      WriteText " total hour(s)"
+            Case "tn":      WriteText " total minute(s)"
+        End Select
     End If
     
     WriteLine
     WriteActualLine Actual
 End Sub
 
-Public Sub DisplayConstraintDifference(ByVal Constraint As IConstraint)
+Public Sub DisplayConstraintDifferences(ByVal Constraint As IConstraint)
     WriteExpectedLineConstraint Constraint
     WriteActualLineConstraint Constraint
 End Sub
@@ -125,11 +143,6 @@ Private Sub WriteActualLineConstraint(ByVal Constraint As IConstraint)
     WriteText PFX_ACTUAL
     Constraint.WriteActualValueTo Me
     WriteLine
-End Sub
-
-Public Sub DisplayDifference(ByRef Expected As Variant, ByRef Actual As Variant)
-    WriteExpectedLine Expected
-    WriteActualLine Actual
 End Sub
 
 Public Sub WriteActualValue(ByRef Value As Variant)
@@ -152,7 +165,7 @@ Public Sub WriteValue(ByRef Value As Variant)
             Case vbDouble:                  WriteWithDecimalPoint CStr(Value), SYM_DOUBLE
             Case vbCurrency:                WriteCurrency CCur(Value)
             Case vbDecimal:                 WriteDecimal Value
-            Case vbDate:                    WriteText CStr(Value)
+            Case vbDate:                    WriteText Format$(Value, FMT_DATE)
             Case vbObject, vbDataObject:    WriteObject Value
             Case vbNull:                    WriteText FMT_NULL
             Case vbEmpty:                   WriteText FMT_EMPTY

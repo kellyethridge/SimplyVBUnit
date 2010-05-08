@@ -52,6 +52,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             
         Case "WriteValue_WithValues_WritesExpected"
             Test.Use "", Quote("")
+            Test.Use #1/2/2003 8:00:00 AM#, "2003-01-02 8:00:00 AM"
             Test.Use Null, "Null"
             Test.Use Empty, "Empty"
             Test.Use Array(1, 2, 3), "< 1, 2, 3 >"
@@ -129,9 +130,46 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Test.Use IntArray, "type of <Integer()> "
             Test.Use Array(), "type of <Variant()> "
         
+        Case "DisplayDifferences_WithTolerances_WritesExpected"
+            Expected = "  Expected: 1 +/- 0.1" & vbCrLf & _
+                       "  But was : 2" & vbCrLf
+            Test.Use 1, 2, Sim.NewTolerance(0.1), Expected
+            
+            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 1 hour(s)" & vbCrLf & _
+                       "  But was : 2001-01-02 8:00:00 AM" & vbCrLf
+            Test.Use #1/2/2001 6:00:00 AM#, #1/2/2001 8:00:00 AM#, Sim.NewTolerance(1).Hours, Expected
+            
+            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 15 minute(s)" & vbCrLf & _
+                       "  But was : 2001-01-02 6:30:00 AM" & vbCrLf
+            Test.Use #1/2/2001 6:00:00 AM#, #1/2/2001 6:30:00 AM#, Sim.NewTolerance(15).Minutes, Expected
+            
+            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 5 second(s)" & vbCrLf & _
+                       "  But was : 2001-01-02 6:00:10 AM" & vbCrLf
+            Test.Use #1/2/2001 6:00:00 AM#, #1/2/2001 6:00:10 AM#, Sim.NewTolerance(5).Seconds, Expected
+    
+            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1 day(s)" & vbCrLf & _
+                       "  But was : 2001-01-04 12:00:00 AM" & vbCrLf
+            Test.Use #1/2/2001#, #1/4/2001#, Sim.NewTolerance(1).Days, Expected
+    
+            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1 year(s)" & vbCrLf & _
+                       "  But was : 2001-01-04 12:00:00 AM" & vbCrLf
+            Test.Use #1/2/2001#, #1/4/2001#, Sim.NewTolerance(1).Years, Expected
+    
+            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1.5 total day(s)" & vbCrLf & _
+                       "  But was : 2001-01-04 12:00:00 AM" & vbCrLf
+            Test.Use #1/2/2001#, #1/4/2001#, Sim.NewTolerance(1.5).TotalDays, Expected
     End Select
 End Sub
 
+Public Sub DisplayDifferences_WithTolerances_WritesExpected(ByRef ExpectedValue As Variant, ByRef ActualValue As Variant, ByVal Tolerance As Tolerance, ByVal Expected As String)
+    Dim w As New TextMessageWriter
+    
+    w.DisplayDifferences ExpectedValue, ActualValue, Tolerance
+    
+    Dim Actual As String
+    Actual = w.ToString
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
 
 Public Sub WriteValue_WithValues_WritesExpected(ByRef ActualValue As Variant, ByVal Expected As String)
     Dim w As New TextMessageWriter
@@ -188,18 +226,6 @@ Public Sub DisplayStringDifferences_WithClipping_WritesExpected(ByVal ExpectedSt
     Assert.That Actual, Iz.EqualTo(Expected).NoClip
 End Sub
 
-'Public Sub DisplayFloatDifferences_WithValues_ReturnsExpected()
-'    Dim Writer As New TextMessageWriter
-'    Dim Tol As Tolerance
-'    Set Tol = Sim.NewTolerance(1)
-'
-'    Writer.DisplayFloatDifferences ExpectedValue, ActualValue, Tol
-'
-'    Dim Actual As String
-'    Actual = Writer.ToString
-'    Assert.That Actual, Iz.EqualTo(Expected)
-'End Sub
-
 Public Sub DisplayStringDifferences_WithIgnoreCase_WritesIgnoringCase()
     Dim Writer As New TextMessageWriter
 
@@ -219,7 +245,7 @@ Public Sub DisplayConstraintDifference_UsingConstraint_WritesExpectedButWasClaus
     Stub.Description = False
     Dim w As New TextMessageWriter
     
-    Call w.DisplayConstraintDifference(Stub)
+    Call w.DisplayConstraintDifferences(Stub)
     
     Dim Actual As String
     Actual = w.ToString
@@ -261,7 +287,7 @@ End Sub
 Public Sub DisplayDifference_WithTrueAndFalse_WritesExpectedButWasClause()
     Dim w As New TextMessageWriter
     
-    Call w.DisplayDifference(True, False)
+    Call w.DisplayDifferences(True, False)
     
     Dim Actual As String
     Actual = w.ToString
@@ -273,7 +299,7 @@ End Sub
 Public Sub DisplayDifference_WithFalseAndTrue_WritesExpectedButWasClause()
     Dim w As New TextMessageWriter
     
-    Call w.DisplayDifference(False, True)
+    Call w.DisplayDifferences(False, True)
     
     Dim Actual As String
     Actual = w.ToString

@@ -56,6 +56,10 @@ Public Function CreateEnumerator(ByVal Obj As IEnumerator) As stdole.IUnknown
     ObjectPtr(CreateEnumerator) = This
 End Function
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Init()
     If mpVTable = vbNullPtr Then
         Call InitGUIDS
@@ -167,6 +171,7 @@ Private Sub Delete(ByRef This As UserEnumWrapper)
    Set This.UserEnum = Nothing
    Call CoTaskMemFree(VarPtr(This))
 End Sub
+
 
 Private Function IEnumVariant_Next(ByRef This As UserEnumWrapper, ByVal celt As Long, ByRef prgVar As Variant, ByVal pceltFetched As Long) As Long
     If This.UserEnum.MoveNext Then
