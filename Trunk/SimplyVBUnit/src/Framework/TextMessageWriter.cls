@@ -98,32 +98,9 @@ Public Sub DisplayStringDifferences(ByVal Expected As String, ByVal Actual As St
 End Sub
 
 Public Sub DisplayDifferences(ByRef Expected As Variant, ByRef Actual As Variant, Optional ByVal Tolerance As Tolerance)
-    If Tolerance Is Nothing Then
-        Set Tolerance = modStatics.Tolerance.EmptyTolerance
-    End If
-    
     WriteText PFX_EXPECTED
     WriteValue Expected
-    
-    If Tolerance.Mode <> NoneMode Then
-        WriteConnector FMT_TOLERANCE
-        WriteText Tolerance.Amount
-        
-        Select Case Tolerance.Interval
-            Case "h":       WriteText " hour(s)"
-            Case "n":       WriteText " minute(s)"
-            Case "s":       WriteText " second(s)"
-            Case "d":       WriteText " day(s)"
-            Case "yyyy":    WriteText " year(s)"
-            Case "ww":      WriteText " weeks(s)"
-            Case "m":       WriteText " month(s)"
-            Case "q":       WriteText " quarter(s)"
-            Case "td":      WriteText " total day(s)"
-            Case "th":      WriteText " total hour(s)"
-            Case "tn":      WriteText " total minute(s)"
-        End Select
-    End If
-    
+    WriteTolerance Tolerance
     WriteLine
     WriteActualLine Actual
 End Sub
@@ -131,18 +108,6 @@ End Sub
 Public Sub DisplayConstraintDifferences(ByVal Constraint As IConstraint)
     WriteExpectedLineConstraint Constraint
     WriteActualLineConstraint Constraint
-End Sub
-
-Private Sub WriteExpectedLineConstraint(ByVal Constraint As IConstraint)
-    WriteText PFX_EXPECTED
-    Constraint.WriteDescriptionTo Me
-    WriteLine
-End Sub
-
-Private Sub WriteActualLineConstraint(ByVal Constraint As IConstraint)
-    WriteText PFX_ACTUAL
-    Constraint.WriteActualValueTo Me
-    WriteLine
 End Sub
 
 Public Sub WriteActualValue(ByRef Value As Variant)
@@ -279,6 +244,18 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub WriteExpectedLineConstraint(ByVal Constraint As IConstraint)
+    WriteText PFX_EXPECTED
+    Constraint.WriteDescriptionTo Me
+    WriteLine
+End Sub
+
+Private Sub WriteActualLineConstraint(ByVal Constraint As IConstraint)
+    WriteText PFX_ACTUAL
+    Constraint.WriteActualValueTo Me
+    WriteLine
+End Sub
+
 Private Sub WriteExpectedLine(ByRef Expected As Variant)
     WriteText PFX_EXPECTED
     WriteExpectedValue Expected
@@ -417,6 +394,40 @@ Private Sub WriteCheveronForDimensions(ByRef Dimensions() As Long, ByVal Count A
             WriteText Cheveron
         End If
     Next i
+End Sub
+
+Private Sub WriteTolerance(ByVal Tolerance As Tolerance)
+    If Tolerance Is Nothing Then
+        Exit Sub
+    End If
+    
+    If Tolerance.Mode <> NoneMode Then
+        WriteConnector FMT_TOLERANCE
+        
+        If Len(Tolerance.Interval) = 0 Then
+            WriteValue Tolerance.Amount
+        Else
+            WriteText Tolerance.Amount
+        
+            Select Case Tolerance.Interval
+                Case "s":       WriteText " second"
+                Case "n":       WriteText " minute"
+                Case "h":       WriteText " hour"
+                Case "d":       WriteText " day"
+                Case "m":       WriteText " month"
+                Case "yyyy":    WriteText " year"
+                Case "td":      WriteText " total day"
+                Case "th":      WriteText " total hour"
+                Case "tn":      WriteText " total minute"
+                Case "ww":      WriteText " weeks"
+                Case "q":       WriteText " quarter"
+            End Select
+            
+            If Tolerance.Amount <> 1 Then
+                WriteText "s"
+            End If
+        End If
+    End If
 End Sub
 
 

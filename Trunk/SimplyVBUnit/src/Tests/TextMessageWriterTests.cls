@@ -131,31 +131,35 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Test.Use Array(), "type of <Variant()> "
         
         Case "DisplayDifferences_WithTolerances_WritesExpected"
-            Expected = "  Expected: 1 +/- 0.1" & vbCrLf & _
+            Expected = "  Expected: 1 +/- 0.1#" & vbCrLf & _
                        "  But was : 2" & vbCrLf
             Test.Use 1, 2, Sim.NewTolerance(0.1), Expected
             
-            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 1 hour(s)" & vbCrLf & _
+            Expected = "  Expected: 1 +/- 0.1@" & vbCrLf & _
+                       "  But was : 2" & vbCrLf
+            Test.Use 1, 2, Sim.NewTolerance(0.1@), Expected
+            
+            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 1 hour" & vbCrLf & _
                        "  But was : 2001-01-02 8:00:00 AM" & vbCrLf
             Test.Use #1/2/2001 6:00:00 AM#, #1/2/2001 8:00:00 AM#, Sim.NewTolerance(1).Hours, Expected
             
-            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 15 minute(s)" & vbCrLf & _
+            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 15 minutes" & vbCrLf & _
                        "  But was : 2001-01-02 6:30:00 AM" & vbCrLf
             Test.Use #1/2/2001 6:00:00 AM#, #1/2/2001 6:30:00 AM#, Sim.NewTolerance(15).Minutes, Expected
             
-            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 5 second(s)" & vbCrLf & _
+            Expected = "  Expected: 2001-01-02 6:00:00 AM +/- 5 seconds" & vbCrLf & _
                        "  But was : 2001-01-02 6:00:10 AM" & vbCrLf
             Test.Use #1/2/2001 6:00:00 AM#, #1/2/2001 6:00:10 AM#, Sim.NewTolerance(5).Seconds, Expected
     
-            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1 day(s)" & vbCrLf & _
+            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1 day" & vbCrLf & _
                        "  But was : 2001-01-04 12:00:00 AM" & vbCrLf
             Test.Use #1/2/2001#, #1/4/2001#, Sim.NewTolerance(1).Days, Expected
     
-            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1 year(s)" & vbCrLf & _
+            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1 year" & vbCrLf & _
                        "  But was : 2001-01-04 12:00:00 AM" & vbCrLf
             Test.Use #1/2/2001#, #1/4/2001#, Sim.NewTolerance(1).Years, Expected
     
-            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1.5 total day(s)" & vbCrLf & _
+            Expected = "  Expected: 2001-01-02 12:00:00 AM +/- 1.5 total days" & vbCrLf & _
                        "  But was : 2001-01-04 12:00:00 AM" & vbCrLf
             Test.Use #1/2/2001#, #1/4/2001#, Sim.NewTolerance(1.5).TotalDays, Expected
     End Select

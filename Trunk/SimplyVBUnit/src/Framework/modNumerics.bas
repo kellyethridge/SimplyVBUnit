@@ -113,7 +113,7 @@ Private Function EqualDecimals(ByRef Expected As Variant, ByRef Actual As Varian
             Result = (Abs(Expected - Actual) <= Tol)
             
         Case PercentMode
-            If Expected = 0@ Then
+            If Expected = CDec(0) Then
                 Result = (Expected = Actual)
             Else
                 Dim RelativeDifference As Double
