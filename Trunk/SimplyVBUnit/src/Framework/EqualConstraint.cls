@@ -34,6 +34,11 @@ Implements IBasicExpression
 Implements IEqualConstraint
 Implements IToleranceUnits
 
+Private Const SECONDS_PER_SECOND                As Long = 1
+Private Const SECONDS_PER_MINUTE                As Long = SECONDS_PER_SECOND * 60
+Private Const SECONDS_PER_HOUR                  As Long = SECONDS_PER_MINUTE * 60
+Private Const SECONDS_PER_DAY                   As Long = SECONDS_PER_HOUR * 24
+
 Private Const MSG_STRINGSDIFFERBYINDEX          As String = "  String lengths are both {0}. Strings differ at index {1}."
 Private Const MSG_STRINGSDIFFERBYLENGTHANDINDEX As String = "  Expected string length {0} but was {1}. Strings differ at index {2}."
 Private Const MSG_COLLECTIONTYPE_1              As String = "  Expected and actual are both {0}"
@@ -42,6 +47,12 @@ Private Const MSG_VALUESDIFFER_1                As String = "  Values differ at 
 Private Const MSG_VALUESDIFFER_2                As String = "  Values differ at expected index [{0}], actual index [{1}]"
 
 Private Const DEF_CLIPPING                      As Boolean = True
+
+Private Const ASC_LOWERT                        As Long = 116
+Private Const ASC_LOWERD                        As Long = 100
+Private Const ASC_LOWERH                        As Long = 104
+Private Const ASC_LOWERN                        As Long = 110
+
 
 Private mExpression     As ConstraintExpression
 Private mExpected       As Variant
@@ -52,7 +63,7 @@ Private mTolerance      As Tolerance
 Private mAsCollection   As Boolean
 Private mComparer       As IEqualityComparer
 Private mStrict         As Boolean
-Private mFailurePoints  As New Stack
+Private mFailurePoints  As Collection
 
 
 
@@ -98,7 +109,7 @@ End Function
 '
 Public Function Matches(ByRef Actual As Variant) As Boolean
     VariantCopyInd mActual, Actual
-    mFailurePoints.Clear
+    Set mFailurePoints = New Collection
     
     Matches = EqualVariants(mExpected, Actual)
 End Function
@@ -114,7 +125,7 @@ Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
     ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
         DisplayStringDifferences Writer
     Else
-        Call Writer.DisplayConstraintDifference(Me)
+        Call Writer.DisplayConstraintDifferences(Me)
     End If
 End Sub
 
@@ -270,7 +281,7 @@ Private Function EqualEnumerables(ByRef Expected As Variant, ByRef Actual As Var
         End If
         
         If Not EqualVariants(ExpectedEnumerator.Current, ActualEnumerator.Current) Then
-            mFailurePoints.Push Count
+            mFailurePoints.Add Count
             RetVal = False
             Exit Do
         End If
@@ -372,21 +383,30 @@ End Function
 
 Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
     If VarType(Actual) = vbDate Then
-        Dim Interval As String
+        Dim Interval    As String
+        Dim Tolerance   As Double
         
         If mTolerance.Mode = NoneMode Then
             Interval = GlobalSettings.DefaultDateToleranceInterval
         Else
+            Tolerance = mTolerance.Amount
             Interval = mTolerance.Interval
-        End If
             
-        Dim EffectiveDifference As Double
-        EffectiveDifference = Abs(DateDiff(Interval, Expected, Actual))
+            If AscW(Interval) = ASC_LOWERT Then
+                Select Case AscW(Right$(Interval, 1))
+                    Case ASC_LOWERD: Tolerance = Tolerance * SECONDS_PER_DAY
+                    Case ASC_LOWERH: Tolerance = Tolerance * SECONDS_PER_HOUR
+                    Case ASC_LOWERN: Tolerance = Tolerance * SECONDS_PER_MINUTE
+                End Select
+                
+                Interval = "s"
+            End If
+        End If
         
-        Dim AllowableDifference As Double
-        AllowableDifference = CDbl(mTolerance.Amount)
+        Dim Difference As Double
+        Difference = Abs(DateDiff(Interval, Expected, Actual))
         
-        EqualDates = (EffectiveDifference <= AllowableDifference)
+        EqualDates = (Difference <= Tolerance)
     End If
 End Function
 
@@ -409,7 +429,8 @@ Private Sub DisplayArrayDifferences(ByVal Writer As TextMessageWriter)
     
     If mFailurePoints.Count > 0 Then
         Dim Point As Long
-        Point = mFailurePoints.Pop
+        Point = mFailurePoints(1)
+        mFailurePoints.Remove 1
         
         If mAsCollection Then
             Dim sExpected   As String
@@ -423,7 +444,7 @@ Private Sub DisplayArrayDifferences(ByVal Writer As TextMessageWriter)
             Writer.WriteLine MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, Point))
         End If
         
-        Writer.DisplayDifference GetValue(mExpected, Point), GetValue(mActual, Point)
+        Writer.DisplayDifferences GetValue(mExpected, Point), GetValue(mActual, Point)
     End If
 End Sub
 

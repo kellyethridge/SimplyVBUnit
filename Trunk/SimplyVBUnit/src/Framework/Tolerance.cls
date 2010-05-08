@@ -29,12 +29,6 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private Const SECONDS_PER_SECOND    As Long = 1
-Private Const SECONDS_PER_MINUTE    As Long = SECONDS_PER_SECOND * 60
-Private Const SECONDS_PER_HOUR      As Long = SECONDS_PER_MINUTE * 60
-Private Const SECONDS_PER_DAY       As Long = SECONDS_PER_HOUR * 24
-
-
 Public Enum ToleranceMode
     NoneMode
     LinearMode
@@ -91,19 +85,19 @@ Public Property Get Years() As Tolerance
 End Property
 
 Public Property Get TotalDays() As Tolerance
-    Set TotalDays = NewToleranceInSeconds(CDbl(mAmount) * SECONDS_PER_DAY)
+    Set TotalDays = NewToleranceWithInterval("td")
 End Property
 
 Public Property Get TotalHours() As Tolerance
-    Set TotalHours = NewToleranceInSeconds(CDbl(mAmount) * SECONDS_PER_HOUR)
+    Set TotalHours = NewToleranceWithInterval("th")
 End Property
 
 Public Property Get TotalMinutes() As Tolerance
-    Set TotalMinutes = NewToleranceInSeconds(CDbl(mAmount) * SECONDS_PER_MINUTE)
+    Set TotalMinutes = NewToleranceWithInterval("tn")
 End Property
 
 Public Property Get TotalSeconds() As Tolerance
-    Set TotalSeconds = NewToleranceInSeconds(CDbl(mAmount) * SECONDS_PER_SECOND)
+    Set TotalSeconds = NewToleranceWithInterval("s")
 End Property
 
 Public Property Get Percent() As Tolerance
@@ -141,13 +135,5 @@ Private Function NewToleranceWithInterval(ByRef Interval As String) As Tolerance
     Result.Interval = Interval
     
     Set NewToleranceWithInterval = Result
-End Function
-
-Private Function NewToleranceInSeconds(ByVal Amount As Double) As Tolerance
-    Dim Result As Tolerance
-    Set Result = Sim.NewTolerance(Amount)
-    Result.Interval = "s"
-    
-    Set NewToleranceInSeconds = Result
 End Function
 
