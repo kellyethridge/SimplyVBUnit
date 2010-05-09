@@ -149,6 +149,8 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(CDec(100), CDec(110), CDec(10), True)
             Call Test.Use(100, 101, 1, True)
             Call Test.Use(100, 102, 1, False)
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:02 AM#, 1, False
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:02 AM#, 2, True
             
         Case "Matches_WithTolerancesOfTotalDays"
             Call Test.Use(#1/1/2001#, #1/2/2001#, 1, True)

@@ -386,10 +386,11 @@ Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) 
         Dim Interval    As String
         Dim Tolerance   As Double
         
-        If mTolerance.Mode = NoneMode Then
+        Tolerance = mTolerance.Amount
+        
+        If mTolerance.Mode = NoneMode Or Len(mTolerance.Interval) = 0 Then
             Interval = GlobalSettings.DefaultDateToleranceInterval
         Else
-            Tolerance = mTolerance.Amount
             Interval = mTolerance.Interval
             
             If AscW(Interval) = ASC_LOWERT Then
