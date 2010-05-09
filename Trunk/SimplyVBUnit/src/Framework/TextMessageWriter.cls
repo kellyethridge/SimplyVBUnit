@@ -60,7 +60,6 @@ Private Const SYM_DECIMAL           As String = "D"
 
 Private mMaxDisplayLength   As Long
 Private mMessage            As New StringBuilder
-Private mUtils              As New MsgUtils
 
 
 Public Property Get MaxDisplayLength() As Long
@@ -77,13 +76,13 @@ End Function
 
 Public Sub DisplayStringDifferences(ByVal Expected As String, ByVal Actual As String, ByVal MismatchIndex As Long, ByVal IgnoreCase As Boolean, ByVal Clipping As Boolean)
     If Clipping Then
-        mUtils.ClipExpectedAndActual Expected, Actual, Me.MaxDisplayLength, MismatchIndex
+        MsgUtils.ClipExpectedAndActual Expected, Actual, Me.MaxDisplayLength, MismatchIndex
     End If
     
-    Expected = mUtils.EscapeControlChars(Expected)
-    Actual = mUtils.EscapeControlChars(Actual)
+    Expected = MsgUtils.EscapeControlChars(Expected)
+    Actual = MsgUtils.EscapeControlChars(Actual)
     
-    MismatchIndex = mUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
+    MismatchIndex = MsgUtils.FindMismatchIndex(Expected, Actual, IgnoreCase)
     
     WriteText PFX_EXPECTED
     WriteValue Expected
