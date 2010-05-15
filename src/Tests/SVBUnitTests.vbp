@@ -62,6 +62,7 @@ Class=OrOperatorTests; OrOperatorTests.cls
 Class=MsgUtilsTests; MsgUtilsTests.cls
 Class=ConstraintExpressionTests; ConstraintExpressionTests.cls
 Class=ToleranceTests; ToleranceTests.cls
+Module=modWinApi; modWinApi.bas
 Startup="Sub Main"
 HelpFile=""
 Command32=""

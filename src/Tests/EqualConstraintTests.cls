@@ -40,171 +40,193 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
 
     Select Case Test.MethodName
         Case "Matches_WithValues"
-            Call Test.Use(True, True, True)
-            Call Test.Use(True, False, False)
-            Call Test.Use(False, False, True)
-            Call Test.Use(False, True, False)
-            Call Test.Use(True, "True", False)
-            Call Test.Use(True, CInt(True), False)
-            Call Test.Use("a", "a", True)
-            Call Test.Use("A", "a", False)
-            Call Test.Use("a", "A", False)
-            Call Test.Use("1", 1, False)
-            Call Test.Use("True", True, False)
-            Call Test.Use(CInt(1), CInt(1), True)
-            Call Test.Use(CLng(1), CInt(1), True)
-            Call Test.Use(CByte(1), CInt(1), True)
-            Call Test.Use(CDbl(1), CInt(1), True)
-            Call Test.Use(CSng(1), CInt(1), True)
-            Call Test.Use(CCur(1), CInt(1), True)
-            Call Test.Use(CInt(1), CLng(1), True)
-            Call Test.Use(CDec(1), CLng(1), True)
-            Call Test.Use(1, 2, False)
-            Call Test.Use(#1/1/2001#, #1/1/2001#, True)
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:01 AM#, False)
-            Call Test.Use(Nothing, Nothing, True)
-            Call Test.Use(Nothing, New FakeTest, False)
-            Call Test.Use(New FakeTest, Nothing, False)
-            Call Test.Use(Nothing, 1, False)
-            Call Test.Use(1, Nothing, False)
-            Call Test.Use(1999999999, 2E+09!, False)
-            Call Test.Use(2E+09!, 1999999999, False)
-            Call Test.Use(12345678901234.5, 12345678901234.5@, True)
-            Call Test.Use(0.0001, 0.0001@, True)
-            Call Test.Use(0.0001@, 0.0002@, False)
-            Call Test.Use(#1/1/2001#, "1/1/2001", False)
-            Call Test.Use(Empty, Empty, True)
-            Call Test.Use(Empty, 1, False)
-            Call Test.Use(1, Empty, False)
-            Call Test.Use(Null, Null, True)
-            Call Test.Use(Null, 1, False)
-            Call Test.Use(1, Null, False)
-            Call Test.Use(MakeMissing, MakeMissing, True)
-            Call Test.Use(MakeMissing, 1, False)
-            Call Test.Use(1, MakeMissing, False)
+            Test.Use True, True, True
+            Test.Use True, False, False
+            Test.Use False, False, True
+            Test.Use False, True, False
+            Test.Use True, "True", False
+            Test.Use "True", True, False
+            Test.Use True, CInt(True), False
+            Test.Use CInt(True), True, False
+            Test.Use "False", False, False
+            Test.Use False, "False", False
+            Test.Use False, 0, False
+            Test.Use 0, False, False
+            Test.Use "a", "a", True
+            Test.Use "A", "a", False
+            Test.Use "a", "A", False
+            Test.Use "1", 1, False
+            Test.Use 1&, "1", False
+            Test.Use 1&, 1, True
+            Test.Use 1&, 1&, True
+            Test.Use 1&, 1@, True
+            Test.Use 1&, 1!, True
+            Test.Use 1&, 1#, True
+            Test.Use 1&, CDec(1), True
+            Test.Use 1&, CByte(1), True
+            Test.Use 1@, "1", False
+            Test.Use 1@, 1&, True
+            Test.Use 1@, 1!, True
+            Test.Use 1@, 1#, True
+            Test.Use 1@, CDec(1), True
+            Test.Use 1@, 1@, True
+            Test.Use 1#, 1&, True
+            Test.Use 1#, 1!, True
+            Test.Use 1#, 1@, True
+            Test.Use 1#, CDec(1), True
+            Test.Use 1#, 1#, True
+            Test.Use 1#, "1.0", False
+            Test.Use CDec(1), 1, True
+            Test.Use CDec(1), 1#, True
+            Test.Use CDec(1), 1!, True
+            Test.Use CDec(1), 1@, True
+            Test.Use CDec(1), CDec(1), True
+            Test.Use CDec(1), "1", False
+            Test.Use 1, 2, False
+            Test.Use #1/1/2001#, #1/1/2001#, True
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:01 AM#, False
+            Test.Use Nothing, Nothing, True
+            Test.Use Nothing, New FakeTest, False
+            Test.Use New FakeTest, Nothing, False
+            Test.Use Nothing, 1, False
+            Test.Use 1, Nothing, False
+            Test.Use 1999999999, 2E+09!, False
+            Test.Use 2E+09!, 1999999999, False
+            Test.Use 12345678901234.5, 12345678901234.5@, True
+            Test.Use 0.0001, 0.0001@, True
+            Test.Use 0.0001@, 0.0002@, False
+            Test.Use #1/1/2001#, "1/1/2001", False
+            Test.Use Empty, Empty, True
+            Test.Use Empty, 1, False
+            Test.Use 1, Empty, False
+            Test.Use Null, Null, True
+            Test.Use Null, 1, False
+            Test.Use 1, Null, False
+            Test.Use MakeMissing, MakeMissing, True
+            Test.Use MakeMissing, 1, False
+            Test.Use 1, MakeMissing, False
             
             Dim Obj As New FakeTest
-            Call Test.Use(Obj, Obj, True)
-            Call Test.Use(Array(), Array(), True)
-            Call Test.Use(Array(1), Array(0), False)
-            Call Test.Use(MakeLongArray(1, 1, 2, 3), MakeLongArray(1, 1, 2, 3), True)
-            Call Test.Use(MakeLongArray(0, 1, 2, 3), MakeLongArray(1, 1, 2, 3), False)
-            Call Test.Use(Array(1, "2"), Array("1", 2), False)
-            Call Test.Use(Array(1), Array(1, 2), False)
-            Call Test.Use(Array(Obj), Array(Obj), True)
-            Call Test.Use(Array(1, 2, 3), Array(1#, 2#, 3#), True)
-            
-            ReDim Array1(0 To 1) As Long
-            ReDim Array2(0 To 1) As Integer
-            Call Test.Use(Array1, Array2, True)
-            
-            ReDim Long1(1, 1)
-            ReDim Long2(1, 1)
-            Call Test.Use(Long1, Long2, True)
-            
-            ReDim Long1(1, 1)
-            ReDim Long2(1, 1)
-            Long1(1, 1) = 1
-            Call Test.Use(Long1, Long2, False)
-            
-            ReDim Long1(1, 1)
-            ReDim Long2(1, 2)
-            Call Test.Use(Long1, Long2, False)
+            Test.Use Obj, Obj, True
+            Test.Use Array(), Array(), True
+            Test.Use Array(1), Array(0), False
+            Test.Use NewLongsLb(1, 1, 2, 3), NewLongsLb(1, 1, 2, 3), True
+            Test.Use NewLongsLb(0, 1, 2, 3), NewLongsLb(1, 1, 2, 3), False
+            Test.Use Array(1, "2"), Array("1", 2), False
+            Test.Use Array(1), Array(1, 2), False
+            Test.Use Array(Obj), Array(Obj), True
+            Test.Use Array(1, 2, 3), Array(1#, 2#, 3#), True
+            Test.Use NewLongs(1, 2, 3), NewDoubles(1, 2, 3), True
+            Test.Use NewLongs(1, 1), NewLongs(1, 1), True
+            Test.Use NewLongs(1, 2), NewLongs(1, 3), False
+            Test.Use NewLongs(1, 1), NewLongs(1, 1, 1), False
+            Test.Use NewLongs(1, 2, 3), NewDoubles(1, 2, 3), True
             
             ReDim Long1(0 To 1, 0 To 1)
             ReDim Long2(0 To 1, 0 To 1, 0 To 1)
-            Call Test.Use(Long1, Long2, False)
+            Test.Use Long1, Long2, False
             
-            Set Col1 = NewCollection(1)
-            Set Col2 = NewCollection(1)
-            Call Test.Use(Col1, Col2, True)
-            
-            Set Col1 = NewCollection(1, 2)
-            Set Col2 = NewCollection(1)
-            Call Test.Use(Col1, Col2, False)
-            
-            Array1 = Array(Array(1, 2), Array("a", "b"))
-            Array2 = Array(Array(1, 2), Array("a", "b"))
-            Call Test.Use(Array1, Array2, True)
-            
-            Array1 = Array(Array(1, 2), Array("a", "b"))
-            Array2 = Array(Array(1, 2), Array("a", "c"))
-            Call Test.Use(Array1, Array2, False)
-
-            Set Col1 = NewCollection(1)
-            Array1 = Array(1)
-            Call Test.Use(Array1, Col1, True)
-            Call Test.Use(Col1, Array1, True)
+            Test.Use NewCollection(1, 2), NewCollection(1, 2), True
+            Test.Use NewCollection(1), NewCollection(1, 2), False
+            Test.Use NewCollection(1, 2), NewCollection(1), False
+            Test.Use Array(NewLongs(1, 2), Array("a", "b")), Array(NewLongs(1, 2), Array("a", "b")), True
+            Test.Use Array(NewLongs(1, 2), Array("a", "b")), Array(NewLongs(1, 2), Array("a", "c")), False
+            Test.Use NewCollection(1, 2), NewLongs(1, 2), True
+            Test.Use NewCollection(1, 2), NewLongs(1), False
+            Test.Use NewLongs(1, 2), NewCollection(1, 2), True
+            Test.Use NewLongs(1, 2), NewCollection(1), False
             
         Case "Matches_CaseInsensitive"
-            Call Test.Use("lower", "lower", True)
-            Call Test.Use("lower", "LOWER", True)
-            Call Test.Use(Array("HELLO", "hello"), Array("hello", "HELLO"), True)
-            
+            Test.Use "lower", "lower", True
+            Test.Use "lower", "LOWER", True
+            Test.Use Array("HELLO", "hello"), Array("hello", "HELLO"), True
             
         Case "Matches_WithTolerances"
-            Call Test.Use(1#, 1#, 0, True)
-            Call Test.Use(1#, 1.1, 0.11, True)
-            Call Test.Use(1#, 1.11, 0.1, False)
-            Call Test.Use(CDec(100), CDec(110), CDec(10), True)
-            Call Test.Use(100, 101, 1, True)
-            Call Test.Use(100, 102, 1, False)
+            Test.Use 1#, 1.1, 0.11, True
+            Test.Use 1#, 1.1!, 0.11, True
+            Test.Use 1#, CDec(1.1), 0.11, True
+            Test.Use 1#, 1.1@, 0.11, True
+            Test.Use 1@, 1.1, 0.11, True
+            Test.Use 1@, 1.1!, 0.11, True
+            Test.Use 1@, CDec(1.1), 0.11, True
+            Test.Use 1@, 1.1@, 0.11, True
+            Test.Use CDec(1), 1.1, 0.11, True
+            Test.Use CDec(1), 1.1!, 0.11, True
+            Test.Use CDec(1), 1.1@, 0.11, True
+            Test.Use CDec(1), CDec(1.1), 0.11, True
+            
+            Test.Use 1#, 1.11, 0.1, False
+            Test.Use 1#, 1.11!, 0.1, False
+            Test.Use 1#, CDec(1.11), 0.1, False
+            Test.Use 1#, 1.11@, 0.1, False
+            Test.Use 1@, 1.11, 0.1, False
+            Test.Use 1@, 1.11!, 0.1, False
+            Test.Use 1@, CDec(1.11), 0.1, False
+            Test.Use 1@, 1.11@, 0.1, False
+            Test.Use CDec(1), 1.11, 0.1, False
+            Test.Use CDec(1), 1.11!, 0.1, False
+            Test.Use CDec(1), 1.11@, 0.1, False
+            Test.Use CDec(1), CDec(1.11), 0.1, False
+            
+            Test.Use 100, 101, 1, True
+            Test.Use 100, 102, 1, False
             Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:02 AM#, 1, False
             Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:02 AM#, 2, True
             
         Case "Matches_WithTolerancesOfTotalDays"
-            Call Test.Use(#1/1/2001#, #1/2/2001#, 1, True)
-            Call Test.Use(#1/2/2001#, #1/1/2001#, 1, True)
-            Call Test.Use(#1/1/2001#, #1/3/2001#, 1, False)
-            Call Test.Use(#1/3/2001#, #1/1/2001#, 1, False)
-            Call Test.Use(#1/1/2001#, #1/2/2001 12:00:01 AM#, 1, False)
-            Call Test.Use(#1/2/2001 12:00:01 AM#, #1/1/2001#, 1, False)
+            Test.Use #1/1/2001#, #1/2/2001#, 1, True
+            Test.Use #1/2/2001#, #1/1/2001#, 1, True
+            Test.Use #1/1/2001#, #1/3/2001#, 1, False
+            Test.Use #1/3/2001#, #1/1/2001#, 1, False
+            Test.Use #1/1/2001#, #1/2/2001 12:00:01 AM#, 1, False
+            Test.Use #1/2/2001 12:00:01 AM#, #1/1/2001#, 1, False
             
         Case "Matches_WithTolerancesOfTotalHours"
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 9:00:00 AM#, 1, True)
-            Call Test.Use(#1/1/2001 9:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True)
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 9:00:01 AM#, 1, False)
-            Call Test.Use(#1/1/2001 9:00:01 AM#, #1/1/2001 8:00:00 AM#, 1, False)
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 9:00:00 AM#, 1, True
+            Test.Use #1/1/2001 9:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 9:00:01 AM#, 1, False
+            Test.Use #1/1/2001 9:00:01 AM#, #1/1/2001 8:00:00 AM#, 1, False
             
         Case "Matches_WithTolerancesOfTotalMinutes"
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True)
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:01:00 AM#, 1, True)
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:01:01 AM#, 1, False)
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:01:00 AM#, 1, True
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:01:01 AM#, 1, False
             
         Case "Matches_WithTolerancesOfTotalSeconds"
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True)
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:01 AM#, 1, True)
-            Call Test.Use(#1/1/2001 8:00:00 AM#, #1/1/2001 8:00:02 AM#, 1, False)
-            Call Test.Use(#1/1/100#, #12/31/9999 11:59:59 PM#, 312413759999#, True)
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:00 AM#, 1, True
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:01 AM#, 1, True
+            Test.Use #1/1/2001 8:00:00 AM#, #1/1/2001 8:00:02 AM#, 1, False
+            Test.Use #1/1/100#, #12/31/9999 11:59:59 PM#, 312413759999#, True
             
         Case "Matches_WithArraysAsCollections"
-            Call Test.Use(Array(1, 2, 3), Array(1, 2, 3), True)
+            Test.Use Array(1, 2, 3), Array(1, 2, 3), True
+            Test.Use NewLongsLb(-10, 1, 2, 3, 4), NewLongsLb(10, 1, 2, 3, 4), True
             
             ReDim Long1(0 To 1, 1 To 2)
             ReDim Long2(2 To 3, 3 To 4)
-            Call Test.Use(Long1, Long2, True)
+            Test.Use Long1, Long2, True
         
             ReDim Long1(0 To 1, 1 To 2)
             ReDim Long2(2 To 3, 3 To 4)
             Long1(0, 1) = 1
-            Call Test.Use(Long1, Long2, False)
+            Test.Use Long1, Long2, False
         
             ReDim Long1(0 To 1, 1 To 2)
             ReDim Long2(0 To 3)
-            Call Test.Use(Long1, Long2, True)
+            Test.Use Long1, Long2, True
             
         Case "Matches_WithExternalComparer"
-            Call Test.Use(1, 3, True)
-            Call Test.Use(1, 2, False)
-            Call Test.Use(2, 4, True)
+            Test.Use 1, 3, True
+            Test.Use 1, 2, False
+            Test.Use 2, 4, True
             
         Case "Matches_WithStrict"
-            Call Test.Use(CLng(1), CInt(1), False)
-            Call Test.Use(CLng(1), CLng(1), True)
+            Test.Use CLng(1), CInt(1), False
+            Test.Use CLng(1), CLng(1), True
             
             ReDim Array1(0 To 1) As Long
             ReDim Array2(0 To 1) As Integer
-            Call Test.Use(Array1, Array2, False)
+            Test.Use Array1, Array2, False
         
         Case "Matches_WithToleranceInPercent"
             Test.Use 1000, 900, 10, True
@@ -253,20 +275,29 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
                        "  But was : 0" & vbCrLf
             Test.Use Long1, Long2, Expected
             
+            ReDim Long1(0 To 1)
+            ReDim int1(0 To 1) As Integer
+            Expected = "  Expected is <Long(0 To 1)>, actual is <Integer(0 To 1)>" & vbCrLf
+            Test.Use Long1, int1, Expected
+            
+            Expected = "  Expected and actual are both <Variant(0 To 2)>" & vbCrLf & _
+                       "  Values differ at index [1]" & vbCrLf & _
+                       "    Expected and actual are both <Long(0 To 3)>" & vbCrLf & _
+                       "    Values differ at index [2]" & vbCrLf & _
+                       "  Expected: 5" & vbCrLf & _
+                       "  But was : 3" & vbCrLf
+            Test.Use Array(1, NewLongs(1, 2, 5, 6), 3), Array(1, NewLongs(1, 2, 3, 4), 3), Expected
             
     End Select
     
 End Sub
 
-Public Sub Matches_WithToleranceInPercent(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByRef Tolerance As Variant, ByVal Expected As Boolean)
-    Dim c As EqualConstraint
-    Set c = Sim.NewEqualConstraint(ConstraintExpected).Within(Tolerance).Percent
-    
-    Dim Actual As Boolean
-    Actual = c.Matches(ConstraintActual)
-    
-    Assert.IsTrue Actual = Expected
-End Sub
+'  Expected and actual are both <System.Object[3]>
+'  Values differ at index [1]
+'    Expected and actual are both <System.Object[4]>
+'    Values differ at index [2]
+'  Expected: 5
+'  But was:  3
 
 Public Sub Matches_WithValues(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
     Dim c As EqualConstraint
@@ -377,14 +408,14 @@ Public Sub Matches_WithStrict(ByRef ConstraintExpected As Variant, ByRef Constra
     Assert.IsTrue Actual = Expected
 End Sub
 
-Public Sub Resolve_WhenCalled_ReturnsSelf()
-    Dim c As IResolvable
-    Set c = Sim.NewEqualConstraint(1)
+Public Sub Matches_WithToleranceInPercent(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByRef Tolerance As Variant, ByVal Expected As Boolean)
+    Dim c As EqualConstraint
+    Set c = Sim.NewEqualConstraint(ConstraintExpected).Within(Tolerance).Percent
     
-    Dim Actual As IConstraint
-    Set Actual = c.Resolve
+    Dim Actual As Boolean
+    Actual = c.Matches(ConstraintActual)
     
-    Assert.IsTrue Actual Is c
+    Assert.IsTrue Actual = Expected
 End Sub
 
 Public Sub WriteMessageTo_WithValues_WritesExpected(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As String)
@@ -397,9 +428,38 @@ Public Sub WriteMessageTo_WithValues_WritesExpected(ByRef ConstraintExpected As 
     
     Dim Actual As String
     Actual = w.ToString
-    Assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected).NoClip
 End Sub
 
+Public Sub Resolve_WhenCalled_ReturnsSelf()
+    Dim c As IResolvable
+    Set c = Sim.NewEqualConstraint(1)
+    
+    Dim Actual As IConstraint
+    Set Actual = c.Resolve
+    
+    Assert.IsTrue Actual Is c
+End Sub
+
+
+'Public Sub WRiteMessageTo_WithNonEqualArrayInArray_WritesExpected()
+'    Dim ActualArrayInner As Variant
+'    Dim ActualArrayOuter As Variant
+'    Dim ExpectedArrayInner As Variant
+'    Dim ExpectedArrayOuter As Variant
+'    ActualArrayInner = Array(1, 2, 3, 4)
+'    ActualArrayOuter = Array(1, 2, ActualArrayInner, 3)
+'    ExpectedArrayInner = Array(1, 2, 5, 6)
+'    ExpectedArrayOuter = Array(1, 2, ExpectedArrayInner, 3)
+'    Dim c As EqualConstraint
+'    Set c = Sim.NewEqualConstraint(ExpectedArrayOuter)
+'    c.Matches ActualArrayOuter
+'
+'    Dim Writer As New TextMessageWriter
+'    c.WriteMessageTo Writer
+'
+'
+'End Sub
 
 
 
