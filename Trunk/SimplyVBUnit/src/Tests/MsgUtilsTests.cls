@@ -86,29 +86,29 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
         
         Case "GetArrayIndicesAsString_WithValues_ReturnsExpected"
             Dim Longs() As Long
-            Longs = MakeLongArray(1, 1, 2, 3)
+            Longs = NewLongsLb(1, 1, 2, 3)
             Test.Use Longs, "1,2,3"
             
             Erase Longs
             Test.Use Longs, ""
             
         Case "GetArrayIndicesFromCollectionIndex_WithValues_ReturnsExpected"
-            Test.Use New Collection, 1, NewLongs(0)
-            Test.Use NewCollection(1, 2), 2, MakeLongArray(0, 2)
-            Test.Use MakeLongArray(0, 1, 2), 1, MakeLongArray(0, 1)
-            Test.Use Array(), 0, NewLongs(0)
+            Test.Use New Collection, 1, NewLongs()
+            Test.Use NewCollection(1, 2), 2, NewLongs(2)
+            Test.Use NewLongs(1, 2), 1, NewLongs(1)
+            Test.Use Array(), 0, NewLongs()
             
             Dim Long1() As Long
             ReDim Long1(0 To 2, 0 To 2, 0 To 3)
-            Test.Use Long1, 0, MakeLongArray(0, 0, 0, 0)
-            Test.Use Long1, 5, MakeLongArray(0, 2, 1, 0)
-            Test.Use Long1, 8, MakeLongArray(0, 2, 2, 0)
-            Test.Use Long1, 14, MakeLongArray(0, 2, 1, 1)
-            Test.Use Long1, 24, MakeLongArray(0, 0, 2, 2)
-            Test.Use Long1, 11, MakeLongArray(0, 2, 0, 1)
-            Test.Use Long1, 19, MakeLongArray(0, 1, 0, 2)
-            Test.Use Long1, 25, MakeLongArray(0, 1, 2, 2)
-            Test.Use Long1, 31, MakeLongArray(0, 1, 1, 3)
+            Test.Use Long1, 0, NewLongs(0, 0, 0)
+            Test.Use Long1, 5, NewLongs(2, 1, 0)
+            Test.Use Long1, 8, NewLongs(2, 2, 0)
+            Test.Use Long1, 14, NewLongs(2, 1, 1)
+            Test.Use Long1, 24, NewLongs(0, 2, 2)
+            Test.Use Long1, 11, NewLongs(2, 0, 1)
+            Test.Use Long1, 19, NewLongs(1, 0, 2)
+            Test.Use Long1, 25, NewLongs(1, 2, 2)
+            Test.Use Long1, 31, NewLongs(1, 1, 3)
             
     End Select
 End Sub
@@ -157,7 +157,7 @@ Public Sub FindMismatchIndex_WithValues_ReturnsExpected(ByVal ExpectedString As 
     Dim Actual As Long
     Actual = Utils.FindMismatchIndex(ExpectedString, ActualString, IgnoreCase)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, ByVal StartIndex As Long, ByVal MaxStringLength As Long, ByVal Expected As String)
@@ -166,7 +166,7 @@ Public Sub ClipString_WithValues_ReturnsExpected(ByVal SourceString As String, B
     Dim Actual As String
     Actual = Utils.ClipString(SourceString, StartIndex, MaxStringLength)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected(ByVal UnclippedExpected As String, ByVal Expected As String, ByVal MismatchIndex As Long)
@@ -176,7 +176,7 @@ Public Sub ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected(By
     Actual = UnclippedExpected
     Call Utils.ClipExpectedAndActual(Actual, UnclippedExpected, 10, MismatchIndex)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected(ByVal UnclippedActual As String, ByVal Expected As String, ByVal MismatchIndex As Long)
@@ -186,7 +186,7 @@ Public Sub ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected(ByVa
     Actual = UnclippedActual
     Call Utils.ClipExpectedAndActual(UnclippedActual, Actual, 10, MismatchIndex)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub EscapeControlChars_WithValues_ReturnsExpected(ByVal Source As String, ByVal Expected As String)
@@ -195,7 +195,7 @@ Public Sub EscapeControlChars_WithValues_ReturnsExpected(ByVal Source As String,
     Dim Actual As String
     Actual = Utils.EscapeControlChars(Source)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub GetTypeRepresentation_WithValues_ReturnsExpected(ByRef Value As Variant, ByVal Expected As String)
@@ -204,7 +204,7 @@ Public Sub GetTypeRepresentation_WithValues_ReturnsExpected(ByRef Value As Varia
     Dim Actual As String
     Actual = Utils.GetTypeRepresentation(Value)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub GetArrayIndicesAsString_WithValues_ReturnsExpected(ByRef Values() As Long, ByVal Expected As String)
@@ -213,7 +213,7 @@ Public Sub GetArrayIndicesAsString_WithValues_ReturnsExpected(ByRef Values() As 
     Dim Actual As String
     Actual = Utils.GetArrayIndicesAsString(Values)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
 Public Sub GetArrayIndicesFromCollectionIndex_WithValues_ReturnsExpected(ByRef Value As Variant, ByVal Index As Long, ByRef Expected() As Long)
@@ -222,5 +222,5 @@ Public Sub GetArrayIndicesFromCollectionIndex_WithValues_ReturnsExpected(ByRef V
     Dim Actual() As Long
     Actual = Utils.GetArrayIndicesFromCollectionIndex(Value, Index)
     
-    assert.That Actual, Iz.EqualTo(Expected)
+    Assert.That Actual, Iz.EqualTo(Expected)
 End Sub

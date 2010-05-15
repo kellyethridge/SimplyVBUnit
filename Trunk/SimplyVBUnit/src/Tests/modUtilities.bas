@@ -15,9 +15,9 @@ Public Sub AssertError(ByVal ActualError As ErrObject, ByVal ExpectedNumber As L
     Set Expected = Sim.NewErrorInfo(ExpectedNumber, ExpectedSource, ExpectedDescription)
     
     If Actual.Number = ErrorCode.NoError Then
-        Call Err.Raise(AssertCode.FailureCode, , "Expected an error to be raised.")
+        Err.Raise AssertCode.FailureCode, , "Expected an error to be raised."
     ElseIf Actual.Equals(Expected) = False Then
-        Call Err.Raise(AssertCode.FailureCode, , "Wrong error raised.")
+        Err.Raise AssertCode.FailureCode, , "Wrong error raised."
     End If
 End Sub
 
@@ -26,16 +26,16 @@ Public Sub AssertCalls(ByVal ActualCalls As CallTrace, ParamArray ExpectedCalls(
     Dim Name        As Variant
     
     For Each Name In ExpectedCalls
-        Call Expected.Add(Name)
+        Expected.Add Name
     Next
     
     If ActualCalls.Equals(Expected) = False Then
-        Call Err.Raise(AssertCode.FailureCode, , "Expected Calls: [" & Expected.ToString & "] - Actual Calls: [" & ActualCalls.ToString & "]")
+        Err.Raise AssertCode.FailureCode, , "Expected Calls: [" & Expected.ToString & "] - Actual Calls: [" & ActualCalls.ToString & "]"
     End If
 End Sub
 
 Public Sub AssertNoCalls(ByVal ActualCalls As CallTrace)
-    Call AssertCalls(ActualCalls)
+    AssertCalls ActualCalls
 End Sub
 
 Public Function NewCollection(ParamArray Values() As Variant) As Collection
@@ -43,22 +43,10 @@ Public Function NewCollection(ParamArray Values() As Variant) As Collection
     Dim Item    As Variant
     
     For Each Item In Values
-        Call Result.Add(Item)
+        Result.Add Item
     Next
     
     Set NewCollection = Result
-End Function
-
-Public Function MakeLongArray(ByVal LowerBound As Long, ParamArray Args() As Variant) As Long()
-    Dim Result() As Long
-    ReDim Result(LowerBound To LowerBound + UBound(Args))
-    
-    Dim i As Long
-    For i = 0 To UBound(Args)
-        Result(LowerBound + i) = Args(i)
-    Next
-    
-    MakeLongArray = Result
 End Function
 
 Public Sub AssertEmptyArray(ByRef Arr As Variant)
@@ -73,6 +61,39 @@ Public Sub AssertEmptyArray(ByRef Arr As Variant)
     End If
 End Sub
 
-Public Function NewLongs(ByVal Size As Long) As Long()
-    SAPtrLong(NewLongs) = SafeArrayCreateVector(vbLong, 0, Size)
+Public Function NewLongs(ParamArray Values() As Variant) As Long()
+    Dim RetVal() As Long
+    PutSAPtr RetVal, SafeArrayCreateVector(vbLong, 0, UBound(Values) + 1)
+    
+    Dim i As Long
+    For i = 0 To UBound(Values)
+        RetVal(i) = Values(i)
+    Next
+    
+    NewLongs = RetVal
 End Function
+
+Public Function NewLongsLb(ByVal LowerBound As Long, ParamArray Values() As Variant) As Long()
+    Dim RetVal() As Long
+    PutSAPtr RetVal, SafeArrayCreateVector(vbLong, LowerBound, UBound(Values) + 1)
+    
+    Dim i As Long
+    For i = 0 To UBound(Values)
+        RetVal(i + LowerBound) = Values(i)
+    Next
+    
+    NewLongsLb = RetVal
+End Function
+
+Public Function NewDoubles(ParamArray Values() As Variant) As Double()
+    Dim RetVal() As Double
+    PutSAPtr RetVal, SafeArrayCreateVector(vbDouble, 0, UBound(Values) + 1)
+    
+    Dim i As Long
+    For i = 0 To UBound(Values)
+        RetVal(i) = Values(i)
+    Next
+    
+    NewDoubles = RetVal
+End Function
+

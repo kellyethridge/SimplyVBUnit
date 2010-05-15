@@ -40,45 +40,45 @@ Public Enum AssertCode
 End Enum
 
 Public Sub Ignore(Optional ByRef Reason As String)
-    Call Err.Raise(AssertCode.IgnoreCode, , Reason)
+    Err.Raise AssertCode.IgnoreCode, , Reason
 End Sub
 
 Public Sub Fail(Optional ByRef Message As String)
-    Call IncrementCount
-    Call Err.Raise(AssertCode.FailureCode, , Message)
+    IncrementCount
+    Err.Raise AssertCode.FailureCode, , Message
 End Sub
 
 Public Sub Pass(Optional ByRef Message As String)
-    Call IncrementCount
-    Call Err.Raise(AssertCode.SuccessCode, , Message)
+    IncrementCount
+    Err.Raise AssertCode.SuccessCode, , Message
 End Sub
 
 Public Sub IsTrue(ByVal Condition As Boolean, Optional ByRef Message As String)
-    Call That(Condition, Iz.True, Message)
+    That Condition, Iz.True, Message
 End Sub
 
 Public Sub IsFalse(ByVal Condition As Boolean, Optional ByRef Message As String)
-    Call That(Condition, Iz.False, Message)
+    That Condition, Iz.False, Message
 End Sub
 
 Public Sub IsVBEmpty(ByRef Actual As Variant, Optional ByRef Message As String)
-    Call That(Actual, Iz.vbEmpty, Message)
+    That Actual, Iz.vbEmpty, Message
 End Sub
 
 Public Sub IsVBNull(ByRef Actual As Variant, Optional ByRef Message As String)
-    Call That(Actual, Iz.vbNull, Message)
+    That Actual, Iz.vbNull, Message
 End Sub
 
 Public Sub IsMissing(ByRef Actual As Variant, Optional ByRef Message As String)
-    Call That(Actual, Iz.Missing, Message)
+    That Actual, Iz.Missing, Message
 End Sub
 
 Public Sub IsNothing(ByRef Actual As Variant, Optional ByRef Message As String)
-    Call That(Actual, Iz.Nothing, Message)
+    That Actual, Iz.Nothing, Message
 End Sub
 
 Public Sub AreEqual(ByRef Expected As Variant, ByRef Actual As Variant, Optional ByRef Message As String)
-    Call That(Actual, Iz.EqualTo(Expected), Message)
+    That Actual, Iz.EqualTo(Expected), Message
 End Sub
 
 Public Sub That(ByRef Actual As Variant, ByVal Constraint As Object, Optional ByRef Message As String)
@@ -93,16 +93,16 @@ Public Sub That(ByRef Actual As Variant, ByVal Constraint As Object, Optional By
     End If
     
     If ResolvedConstraint.Matches(Actual) Then
-        Call IncrementCount
+        IncrementCount
     Else
         Dim Writer As New TextMessageWriter
         
         If Len(Message) > 0 Then
-            Call Writer.WriteLine(Message)
+            Writer.WriteLine Message
         End If
         
-        Call ResolvedConstraint.WriteMessageTo(Writer)
-        Call Fail(Writer.ToString)
+        ResolvedConstraint.WriteMessageTo Writer
+        Fail Writer.ToString
     End If
 End Sub
 
@@ -121,7 +121,7 @@ End Sub
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub IncrementCount()
-    Call TestContext.IncrementAssertCount
+    TestContext.IncrementAssertCount
 End Sub
 
 

@@ -1,6 +1,10 @@
 Attribute VB_Name = "Constants"
 Option Explicit
 
+#If False Then
+    Dim Assert
+#End If
+
 Public Const TEST1_METHOD           As String = "Test1"
 Public Const TEST2_METHOD           As String = "Test2"
 Public Const TEST_ANY               As String = "Test*"
