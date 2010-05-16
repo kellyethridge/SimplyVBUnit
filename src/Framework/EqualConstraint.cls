@@ -120,9 +120,7 @@ End Function
 ' @param Writer The text write that the message will be written to.
 '
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    If IsArray(mExpected) And IsArray(mActual) Then
-        DisplayCollectionDifferences mExpected, mActual, Writer, 0
-    ElseIf IsCollection(mExpected) And IsCollection(mActual) Then
+    If IsEnumerable(mExpected) And IsEnumerable(mActual) Then
         DisplayCollectionDifferences mExpected, mActual, Writer, 0
     ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
         DisplayStringDifferences Writer
@@ -278,6 +276,7 @@ Private Function EqualEnumerables(ByRef Expected As Variant, ByRef Actual As Var
         End If
         
         If ExpectedHasMore <> ActualHasMore Then
+            mFailurePoints.Push Count
             RetVal = False
             Exit Do
         End If
@@ -413,7 +412,6 @@ Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) 
     End If
 End Function
 
-
 Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
     Dim MismatchIndex As Long
     MismatchIndex = MsgUtils.FindMismatchIndex(CStr(mExpected), CStr(mActual), mIgnoreCase)
@@ -426,33 +424,6 @@ Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
     
     Call Writer.DisplayStringDifferences(CStr(mExpected), CStr(mActual), MismatchIndex, mIgnoreCase, mClipping)
 End Sub
-
-'Private Sub DisplayArrayDifferences(ByVal Writer As TextMessageWriter)
-'
-'    Exit Sub
-'
-''    DisplayCollectionTypesAndSizes Writer
-''
-''    If mFailurePoints.Count > 0 Then
-''        Dim Point As Long
-''        Point = mFailurePoints(1)
-''        mFailurePoints.Remove 1
-''
-''        If mAsCollection Then
-''            Dim sExpected   As String
-''            Dim sActual     As String
-''
-''            sExpected = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, Point))
-''            sActual = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mActual, Point))
-''
-''            Writer.WriteLine MSG_VALUESDIFFER_2, sExpected, sActual
-''        Else
-''            Writer.WriteLine MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(mExpected, Point))
-''        End If
-''
-''        Writer.DisplayDifferences GetValue(mExpected, Point), GetValue(mActual, Point)
-''    End If
-'End Sub
 
 Private Function GetValue(ByRef Source As Variant, ByVal Index As Long) As Variant
     If IsArray(Source) Then
@@ -469,7 +440,7 @@ Private Sub DisplayCollectionDifferences(ByRef Expected As Variant, ByRef Actual
         Dim Index As Long
         Index = mFailurePoints.Pop
 
-        DisplayCollectionFailurePoint Expected, Writer, Index, Indent
+        DisplayCollectionFailurePoint Expected, Actual, Writer, Index, Indent
 
         If mFailurePoints.Count > 0 Then
             DisplayCollectionDifferences GetValue(Expected, Index), GetValue(Actual, Index), Writer, Indent + 2
@@ -530,14 +501,24 @@ Private Sub AppendElementCountInfo(ByRef Value As Variant, ByRef s As String)
     End If
 End Sub
 
-Private Sub DisplayCollectionFailurePoint(ByRef Expected As Variant, ByVal Writer As TextMessageWriter, ByVal Index As Long, ByVal Indent As Long)
+Private Sub DisplayCollectionFailurePoint(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Writer As TextMessageWriter, ByVal Index As Long, ByVal Indent As Long)
     Writer.WriteText Space$(Indent)
     
     If IsCollection(Expected) Then
         Index = Index + 1
     End If
     
-    Writer.WriteLine MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Expected, Index))
+    Dim ExpectedIndices As String
+    ExpectedIndices = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Expected, Index))
+    
+    Dim ActualIndices As String
+    ActualIndices = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Actual, Index))
+    
+    If ExpectedIndices = ActualIndices Then
+        Writer.WriteLine MSG_VALUESDIFFER_1, ExpectedIndices
+    Else
+        Writer.WriteLine MSG_VALUESDIFFER_2, ExpectedIndices, ActualIndices
+    End If
 End Sub
 
 

@@ -296,18 +296,38 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
                        "  But was : 3" & vbCrLf
             Test.Use NewCollection(1, NewCollection(1, 2, 5, 6), 3), NewCollection(1, NewCollection(1, 2, 3, 4), 3), Expected
             
+            Expected = "  Expected is <VBA.Collection> with 3 elements, actual is <VBA.Collection> with 2 elements" & vbCrLf & _
+                       "  Values differ at index [3]" & vbCrLf & _
+                       "  Missing: < 3 >" & vbCrLf
+            Test.Use NewCollection(1, 2, 3), NewCollection(1, 2), Expected
             
+            Expected = "  Expected is <VBA.Collection> with 2 elements, actual is <VBA.Collection> with 3 elements" & vbCrLf & _
+                       "  Values differ at index [3]" & vbCrLf & _
+                       "  Extra: < 3 >" & vbCrLf
+            Test.Use NewCollection(1, 2), NewCollection(1, 2, 3), Expected
+            
+            ReDim Array1(0 To 1, 0 To 2) As Variant
+            ReDim Array2(0 To 1, 0 To 2) As Variant
+            Array1(1, 2) = Array(1, 2, 3)
+            Array2(1, 2) = Array(1, 3, 3)
+            Expected = "  Expected and actual are both <Variant(0 To 1, 0 To 2)>" & vbCrLf & _
+                       "  Values differ at index [1,2]" & vbCrLf & _
+                       "    Expected and actual are both <Variant(0 To 2)>" & vbCrLf & _
+                       "    Values differ at index [1]" & vbCrLf & _
+                       "  Expected: 2" & vbCrLf & _
+                       "  But was : 3" & vbCrLf
+            Test.Use Array1, Array2, Expected
     End Select
     
 End Sub
 
-'  Expected and actual are both <System.Collections.Generic.List`1[System.Object]> with 3 elements
-'  Values differ at index [1]
-'    Expected and actual are both <System.Collections.Generic.List`1[System.Object]> with 4 elements
-'    Values differ at index [2]
-'  Expected: 5
+'  Expected and actual are both <System.Object[2,2]>
+'  Values differ at index [1,1]
+'    Expected and actual are both <System.Object[3]>
+'    Values differ at index [1]
+'  Expected: 2
 '  But was:  3
-
+  
 Public Sub Matches_WithValues(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
@@ -440,6 +460,30 @@ Public Sub WriteMessageTo_WithValues_WritesExpected(ByRef ConstraintExpected As 
     Assert.That Actual, Iz.EqualTo(Expected).NoClip
 End Sub
 
+Public Sub WriteMessageTo_WithMultiDimensionalArraysAsCollection_WritesExpected()
+    ReDim Array1(0 To 1, 0 To 2) As Variant
+    ReDim Array2(1 To 2, 1 To 3) As Variant
+    Array1(1, 2) = Array(1, 2, 3)
+    Array2(2, 3) = Array(1, 3, 3)
+    Dim c As EqualConstraint
+    Set c = Sim.NewEqualConstraint(Array1).AsCollection
+    c.Matches Array2
+    Dim w As New TextMessageWriter
+    c.WriteMessageTo w
+    
+    Dim Actual As String
+    Actual = w.ToString
+    
+    Dim Expected As String
+    Expected = "  Expected is <Variant(0 To 1, 0 To 2)>, actual is <Variant(1 To 2, 1 To 3)>" & vbCrLf & _
+               "  Values differ at expected index [1,2], actual index [2,3]" & vbCrLf & _
+               "    Expected and actual are both <Variant(0 To 2)>" & vbCrLf & _
+               "    Values differ at index [1]" & vbCrLf & _
+               "  Expected: 2" & vbCrLf & _
+               "  But was : 3" & vbCrLf
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
 Public Sub Resolve_WhenCalled_ReturnsSelf()
     Dim c As IResolvable
     Set c = Sim.NewEqualConstraint(1)
@@ -450,25 +494,6 @@ Public Sub Resolve_WhenCalled_ReturnsSelf()
     Assert.IsTrue Actual Is c
 End Sub
 
-
-'Public Sub WRiteMessageTo_WithNonEqualArrayInArray_WritesExpected()
-'    Dim ActualArrayInner As Variant
-'    Dim ActualArrayOuter As Variant
-'    Dim ExpectedArrayInner As Variant
-'    Dim ExpectedArrayOuter As Variant
-'    ActualArrayInner = Array(1, 2, 3, 4)
-'    ActualArrayOuter = Array(1, 2, ActualArrayInner, 3)
-'    ExpectedArrayInner = Array(1, 2, 5, 6)
-'    ExpectedArrayOuter = Array(1, 2, ExpectedArrayInner, 3)
-'    Dim c As EqualConstraint
-'    Set c = Sim.NewEqualConstraint(ExpectedArrayOuter)
-'    c.Matches ActualArrayOuter
-'
-'    Dim Writer As New TextMessageWriter
-'    c.WriteMessageTo Writer
-'
-'
-'End Sub
 
 
 

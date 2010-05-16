@@ -78,12 +78,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Test.Use CDec("12345.1234"), "12345.1234D"
             Test.Use Array(), "<empty>"
             Test.Use Array(1, "name", Array("hi", "bye"), 2#), "< 1, ""name"", < ""hi"", ""bye"" >, 2.0# >"
-
-            Dim List As New Collection
-            List.Add 3
-            List.Add 2
-            List.Add 1
-            Test.Use List, "< 3, 2, 1 >"
+            Test.Use NewCollection(3, 2, 1), "< 3, 2, 1 >"
             
             Dim Unk As IUnknown
             Test.Use Unk, "Nothing"
@@ -178,7 +173,7 @@ End Sub
 Public Sub WriteValue_WithValues_WritesExpected(ByRef ActualValue As Variant, ByVal Expected As String)
     Dim w As New TextMessageWriter
     
-    Call w.WriteValue(ActualValue)
+    w.WriteValue ActualValue
     
     Dim Actual As String
     Actual = w.ToString
