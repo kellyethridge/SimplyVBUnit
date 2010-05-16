@@ -204,7 +204,7 @@ Public Function GetArrayIndicesFromCollectionIndex(ByRef Value As Variant, ByVal
         
         If Count > 0 Then
             ReDim Result(0)
-            Result(0) = Index
+            Result(0) = Index + 1
         Else
             Result = NewLongs(0)
         End If

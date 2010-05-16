@@ -317,16 +317,16 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
                        "  Expected: 2" & vbCrLf & _
                        "  But was : 3" & vbCrLf
             Test.Use Array1, Array2, Expected
+            
+            Expected = "  Expected is <VBA.Collection> with 3 elements, actual is <Variant(0 To 1)>" & vbCrLf & _
+                       "  Values differ at expected index [1], actual index [0]" & vbCrLf & _
+                       "  Expected: 1" & vbCrLf & _
+                       "  But was : 2" & vbCrLf
+            Test.Use NewCollection(1, 2, 3), Array(2, 2), Expected
     End Select
     
 End Sub
 
-'  Expected and actual are both <System.Object[2,2]>
-'  Values differ at index [1,1]
-'    Expected and actual are both <System.Object[3]>
-'    Values differ at index [1]
-'  Expected: 2
-'  But was:  3
   
 Public Sub Matches_WithValues(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
     Dim c As EqualConstraint

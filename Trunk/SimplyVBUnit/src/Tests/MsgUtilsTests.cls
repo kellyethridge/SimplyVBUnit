@@ -94,7 +94,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             
         Case "GetArrayIndicesFromCollectionIndex_WithValues_ReturnsExpected"
             Test.Use New Collection, 1, NewLongs()
-            Test.Use NewCollection(1, 2), 2, NewLongs(2)
+            Test.Use NewCollection(1, 2), 1, NewLongs(2)
             Test.Use NewLongs(1, 2), 1, NewLongs(1)
             Test.Use Array(), 0, NewLongs()
             
