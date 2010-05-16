@@ -82,7 +82,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             ReDim Arr(1 To 2, 3 To 4) As Long
             Test.Use Arr, "<Long(1 To 2, 3 To 4)>"
             
-            Test.Use New Collection, "<Collection>"
+            Test.Use New Collection, "<VBA.Collection>"
         
         Case "GetArrayIndicesAsString_WithValues_ReturnsExpected"
             Dim Longs() As Long

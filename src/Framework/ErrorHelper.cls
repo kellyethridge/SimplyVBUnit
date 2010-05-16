@@ -40,7 +40,7 @@ Private Const METHOD_ENUMERATIONNOTSUPPORTED    As String = "EnumerationNotSuppo
 
 
 Public Sub CannotBeNothing(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String)
-    Call ValidateParameters(SourceObject, SourceMethod, ArgName, METHOD_CANNOTBENOTHING)
+    ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_CANNOTBENOTHING
     
     Dim Source As String
     Source = BuildSource(SourceObject, SourceMethod)
@@ -48,11 +48,11 @@ Public Sub CannotBeNothing(ByVal SourceObject As Object, ByVal SourceMethod As S
     Dim Description As String
     Description = Resource.GetString(Arg_CannotBeNothing, ArgName)
 
-    Call Err.Raise(ErrorCode.ArgumentNull, Source, Description)
+    Err.Raise ErrorCode.ArgumentNull, Source, Description
 End Sub
 
 Public Sub CannotBeEmpty(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String)
-    Call ValidateParameters(SourceObject, SourceMethod, ArgName, METHOD_CANNOTBEEMPTY)
+    ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_CANNOTBEEMPTY
         
     Dim Source As String
     Source = BuildSource(SourceObject, SourceMethod)
@@ -60,11 +60,11 @@ Public Sub CannotBeEmpty(ByVal SourceObject As Object, ByVal SourceMethod As Str
     Dim Description As String
     Description = Resource.GetString(Arg_CannotBeEmpty, ArgName)
     
-    Call Err.Raise(ErrorCode.Argument, Source, Description)
+    Err.Raise ErrorCode.Argument, Source, Description
 End Sub
 
 Public Sub CannotBeNegative(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String)
-    Call ValidateParameters(SourceObject, SourceMethod, ArgName, METHOD_CANNOTBENEGATIVE)
+    ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_CANNOTBENEGATIVE
     
     Dim Source As String
     Source = BuildSource(SourceObject, SourceMethod)
@@ -72,11 +72,11 @@ Public Sub CannotBeNegative(ByVal SourceObject As Object, ByVal SourceMethod As 
     Dim Description As String
     Description = Resource.GetString(Arg_CannotBeNegative, ArgName)
     
-    Call Err.Raise(ErrorCode.ArgumentOutOfRange, Source, Description)
+    Err.Raise ErrorCode.ArgumentOutOfRange, Source, Description
 End Sub
 
 Public Sub IndexOutOfRange(ByVal SourceObject As Object, ByVal SourceMethod As String)
-    Call ValidateParameters(SourceObject, SourceMethod, "Index", METHOD_INDEXOUTOFRANGE)
+    ValidateParameters SourceObject, SourceMethod, "Index", METHOD_INDEXOUTOFRANGE
     
     Dim Source As String
     Source = BuildSource(SourceObject, SourceMethod)
@@ -84,11 +84,11 @@ Public Sub IndexOutOfRange(ByVal SourceObject As Object, ByVal SourceMethod As S
     Dim Description As String
     Description = Resource.GetString(Arg_IndexOutOfRange)
     
-    Call Err.Raise(ErrorCode.IndexOutOfRange, Source, Description)
+    Err.Raise ErrorCode.IndexOutOfRange, Source, Description
 End Sub
 
 Public Sub EnumerationNotSupported(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String)
-    Call ValidateParameters(SourceObject, SourceMethod, ArgName, METHOD_ENUMERATIONNOTSUPPORTED)
+    ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_ENUMERATIONNOTSUPPORTED
     
     Dim Source As String
     Source = BuildSource(SourceObject, SourceMethod)
@@ -96,7 +96,7 @@ Public Sub EnumerationNotSupported(ByVal SourceObject As Object, ByVal SourceMet
     Dim Description As String
     Description = Resource.GetString(Arg_EnumerationNonSupported)
     
-    Call Err.Raise(ErrorCode.Argument, Source, Description)
+    Err.Raise ErrorCode.Argument, Source, Description
 End Sub
 
 
@@ -105,13 +105,13 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ValidateParameters(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String, ByVal ErrorHelperMethod As String)
     If SourceObject Is Nothing Then
-        Call CannotBeNothing(Me, ErrorHelperMethod, SOURCE_OBJECT)
+        CannotBeNothing Me, ErrorHelperMethod, SOURCE_OBJECT
     End If
     If Len(SourceMethod) = 0 Then
-        Call CannotBeEmpty(Me, ErrorHelperMethod, SOURCE_METHOD)
+        CannotBeEmpty Me, ErrorHelperMethod, SOURCE_METHOD
     End If
     If Len(ArgName) = 0 Then
-        Call CannotBeEmpty(Me, ErrorHelperMethod, ARG_NAME)
+        CannotBeEmpty Me, ErrorHelperMethod, ARG_NAME
     End If
 End Sub
 

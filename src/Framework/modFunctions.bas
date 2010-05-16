@@ -1,4 +1,4 @@
-Attribute VB_Name = "modUtilities"
+Attribute VB_Name = "modFunctions"
 ' Copyright 2009 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,15 +50,23 @@ Public Function GetLBound(ByRef Value As Variant) As Long
     GetLBound = Result
 End Function
 
-Public Function GetMissingVariant(Optional ByVal Value As Variant) As Variant
-    GetMissingVariant = Value
-End Function
+Public Property Get MissingVariant(Optional ByVal Value As Variant) As Variant
+    MissingVariant = Value
+End Property
 
 Public Function GetEnumerator(ByRef Enumerable As Variant) As IEnumerator
     If IsArray(Enumerable) Then
         Set GetEnumerator = Sim.NewArrayEnumerator(Enumerable)
     Else
         Set GetEnumerator = Sim.NewEnumVariantEnumerator(Enumerable)
+    End If
+End Function
+
+Public Function IsCollection(ByRef Value As Variant) As Boolean
+    If IsObject(Value) Then
+        If Not Value Is Nothing Then
+            IsCollection = TypeOf Value Is Collection
+        End If
     End If
 End Function
 
@@ -79,28 +87,6 @@ Public Function IsEnumerable(ByRef Value As Variant) As Boolean
     
     IsEnumerable = Result
 End Function
-
-Private Function SupportsEnumeration(ByVal Obj As Object) As Boolean
-    If Obj Is Nothing Then
-        Exit Function
-    End If
-    
-    Dim Info As InterfaceInfo
-    Set Info = tli.InterfaceInfoFromObject(Obj)
-    
-    Dim Member As MemberInfo
-    For Each Member In Info.Members
-        If IsEnumerationMember(Member) Then
-            SupportsEnumeration = True
-            Exit Function
-        End If
-    Next
-End Function
-
-Private Function IsEnumerationMember(ByVal Member As MemberInfo) As Boolean
-    IsEnumerationMember = (Member.MemberId = ENUM_MEMBERID)
-End Function
-
 
 
 ''
@@ -205,25 +191,6 @@ Public Sub InitArrayProxy(ByRef Proxy As ArrayProxy, ByRef FirstArgument As Vari
     Call FillProxy(Proxy)
 End Sub
 
-Private Sub FillDescriptor(ByRef Descriptor As SafeArray1d, ByRef FirstArgument As Variant, ByVal Count As Long)
-    With Descriptor
-        .cbElements = SIZEOF_VARIANT
-        .cDims = ARRAY_DIMENSIONS
-        .cElements = Count
-        .pvData = VarPtr(FirstArgument)
-    End With
-End Sub
-
-Private Sub FillProxy(ByRef Proxy As ArrayProxy)
-    With Proxy
-        .pVTable = VarPtr(.pVTable)
-        .pRelease = FuncAddr(AddressOf ArrayProxy_Release)
-        SAPtr(.Data) = VarPtr(.SA)
-        ObjectPtr(.This) = VarPtr(.pVTable)
-    End With
-End Sub
-
-
 ''
 ' A helper function to retrieve the address result from using the AddressOf keyword.
 '
@@ -289,3 +256,49 @@ errTrap:
         Err.Raise Err.Number, , Err.Description
     End If
 End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub FillDescriptor(ByRef Descriptor As SafeArray1d, ByRef FirstArgument As Variant, ByVal Count As Long)
+    With Descriptor
+        .cbElements = SIZEOF_VARIANT
+        .cDims = ARRAY_DIMENSIONS
+        .cElements = Count
+        .pvData = VarPtr(FirstArgument)
+    End With
+End Sub
+
+Private Sub FillProxy(ByRef Proxy As ArrayProxy)
+    With Proxy
+        .pVTable = VarPtr(.pVTable)
+        .pRelease = FuncAddr(AddressOf ArrayProxy_Release)
+        SAPtr(.Data) = VarPtr(.SA)
+        ObjectPtr(.This) = VarPtr(.pVTable)
+    End With
+End Sub
+
+Private Function SupportsEnumeration(ByVal Obj As Object) As Boolean
+    If Obj Is Nothing Then
+        Exit Function
+    End If
+    
+    Dim Info As InterfaceInfo
+    Set Info = tli.InterfaceInfoFromObject(Obj)
+    
+    Dim Member As MemberInfo
+    For Each Member In Info.Members
+        If IsEnumerationMember(Member) Then
+            SupportsEnumeration = True
+            Exit Function
+        End If
+    Next
+End Function
+
+Private Function IsEnumerationMember(ByVal Member As MemberInfo) As Boolean
+    IsEnumerationMember = (Member.MemberId = ENUM_MEMBERID)
+End Function
+
+
+

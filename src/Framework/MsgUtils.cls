@@ -47,7 +47,7 @@ Private Const ESC_HEXPREFIX         As String = "\x"
 
 Public Function FindMismatchIndex(ByRef Expected As String, ByRef Actual As String, ByVal IgnoreCase As Boolean) As Long
     Dim MaxIndex As Long
-    MaxIndex = GetShorterStringLength(Expected, Actual)
+    MaxIndex = Min(Len(Expected), Len(Actual))
     
     Dim i As Long
     For i = 1 To MaxIndex
@@ -57,7 +57,7 @@ Public Function FindMismatchIndex(ByRef Expected As String, ByRef Actual As Stri
         End If
     Next i
     
-    If AreDifferentLengths(Expected, Actual) Then
+    If Len(Expected) <> Len(Actual) Then
         FindMismatchIndex = MaxIndex + 1
     End If
 End Function
@@ -67,17 +67,17 @@ Public Function ClipString(ByRef s As String, ByVal StartIndex As Long, ByVal Ma
 
     If StartIndex > 1 Then
         MaxStringLength = MaxStringLength - Len(MSG_ELLIPSIS)
-        Call sb.Append(MSG_ELLIPSIS)
+        sb.Append MSG_ELLIPSIS
     End If
 
     If Len(s) - StartIndex + 1 > MaxStringLength Then
         MaxStringLength = MaxStringLength - Len(MSG_ELLIPSIS)
-        Call sb.Append(Mid$(s, StartIndex, MaxStringLength))
-        Call sb.Append(MSG_ELLIPSIS)
+        sb.Append Mid$(s, StartIndex, MaxStringLength)
+        sb.Append MSG_ELLIPSIS
     ElseIf StartIndex > 1 Then
-        Call sb.Append(Mid$(s, StartIndex))
+        sb.Append Mid$(s, StartIndex)
     Else
-        Call sb.Append(s)
+        sb.Append s
     End If
 
     ClipString = sb.ToString
@@ -142,27 +142,38 @@ End Function
 Public Function GetTypeRepresentation(ByRef Value As Variant) As String
     Dim sb As New StringBuilder
 
-    Call sb.Append("<")
+    sb.Append "<"
 
     If IsArray(Value) Then
-        Call sb.Append(TypeName(Value))
+        sb.Append TypeName(Value)
         sb.Length = sb.Length - 1
 
         Dim i As Long
         For i = 1 To GetArrayRank(Value)
             If i > 1 Then
-                Call sb.Append(", ")
+                sb.Append ", "
             End If
 
-            Call sb.AppendFormat(MSG_BOUNDS, LBound(Value, i), UBound(Value, i))
+            sb.AppendFormat MSG_BOUNDS, LBound(Value, i), UBound(Value, i)
         Next i
 
-        Call sb.Append(")")
+        sb.Append ")"
     Else
-        Call sb.Append(TypeName(Value))
+        On Error GoTo errTrap
+        
+        If IsObject(Value) Then
+            Dim Info As TypeInfo
+            Set Info = tli.ClassInfoFromObject(Value)
+            sb.Append Info.Parent.Name
+            sb.Append "."
+        End If
+    
+errTrap:
+        sb.Append TypeName(Value)
+        Err.Clear
     End If
 
-    Call sb.Append(">")
+    sb.Append ">"
     GetTypeRepresentation = sb.ToString
 End Function
 
@@ -227,31 +238,18 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function GetShorterStringLength(ByRef String1 As String, ByRef String2 As String) As Long
-    Dim String1Length As Long
-    Dim String2Length As Long
-    
-    String1Length = Len(String1)
-    String2Length = Len(String2)
-    
-    Dim Result As Long
-    If String1Length < String2Length Then
-        Result = String1Length
-    Else
-        Result = String2Length
-    End If
-    
-    GetShorterStringLength = Result
-End Function
-
-Private Function AreDifferentLengths(ByRef String1 As String, ByRef String2 As String) As Boolean
-    AreDifferentLengths = (Len(String1) <> Len(String2))
-End Function
-
 Private Function Max(ByVal X As Long, ByVal Y As Long) As Long
     If X > Y Then
         Max = X
     Else
         Max = Y
+    End If
+End Function
+
+Private Function Min(ByVal X As Long, ByVal Y As Long) As Long
+    If X < Y Then
+        Min = X
+    Else
+        Min = Y
     End If
 End Function
