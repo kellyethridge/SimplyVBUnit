@@ -237,10 +237,6 @@ Friend Sub Init(ByVal Name As String, ByVal TestMethod As ITestMethod)
     Set mTestMethod = TestMethod
 End Sub
 
-Friend Property Get Context() As ContextMethods
-    Set Context = mContext
-End Property
-
 Friend Property Set Context(ByVal RHS As ContextMethods)
     If Not RHS Is Nothing Then
         Set mContext = RHS

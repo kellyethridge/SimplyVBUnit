@@ -83,11 +83,11 @@ Public Property Let RunState(ByVal RHS As RunState)
 End Property
 
 Public Sub Sort(Optional ByVal Comparer As ITestComparer)
-    Call mTests.Sort(Comparer)
+    mTests.Sort Comparer
     
     Dim Test As ITest
     For Each Test In mTests
-        Call Test.Sort(Comparer)
+        Test.Sort Comparer
     Next
 End Sub
 
@@ -105,7 +105,7 @@ End Property
 
 Public Sub Add(ByVal TestClass As Object)
     If TestClass Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Add", "TestClass")
+        Error.CannotBeNothing Me, "Add", "TestClass"
     
     Dim Test As ITest
     If TypeOf TestClass Is ITest Then
@@ -115,7 +115,7 @@ Public Sub Add(ByVal TestClass As Object)
     End If
     
     Set Test.Parent = Me
-    Call mTests.Add(Test)
+    mTests.Add Test
 End Sub
 
 Public Property Get TestCount() As Long
@@ -145,24 +145,25 @@ Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Fi
     Set Result = Sim.NewTestResult(Me)
     
     With New TestContext
-        Call Listener.TestSuiteStarted(Me)
+        Listener.TestSuiteStarted Me
+        
         If Me.RunState = RunnableRunState Then
             If Filter.Pass(Me) Then
-                Call Result.Success
-                Call InitMetrics
+                Result.Success
+                InitMetrics
                 
                 If RunFixtureSetup(Result) = True Then
-                    Call RunTests(Result)
+                    RunTests Result
                 End If
                 
-                Call RunFixtureTeardown
-                Call RecordMetrics(Result)
+                RunFixtureTeardown
+                RecordMetrics Result
             End If
         Else
-            Call Result.Invalid
+            Result.Invalid
         End If
         
-        Call Listener.TestSuiteFinished(Result)
+        Listener.TestSuiteFinished Result
     End With
     
     Set Run = Result
@@ -173,12 +174,12 @@ Private Sub RunTests(ByVal Result As TestResult)
     
     For Each Test In mTests
         Test.RunState = Me.RunState
-        Call Result.AddResult(Test.Run)
+        Result.AddResult Test.Run
     Next
 End Sub
 
 Private Sub InitMetrics()
-    Call StartTiming
+    StartTiming
 End Sub
 
 Private Sub StartTiming()
@@ -219,20 +220,20 @@ End Sub
 
 Friend Sub InitTestFixture(ByVal TestClass As Object)
     If TestClass Is Nothing Then _
-        Call Error.CannotBeNothing(New TestFixture, "Init", "TestClass")
+        Error.CannotBeNothing New TestFixture, "Init", "TestClass"
         
     Set mTestClass = TestClass
-    Call InitTestSuite(TypeName(TestClass))
-    Call BuildFixture
+    InitTestSuite TypeName(TestClass)
+    BuildFixture
 End Sub
 
 Private Sub BuildFixture()
     Dim Result As QueryResult
     Set Result = QueryTestClass
     
-    Call AssignContextMethods(Result)
-    Call BuildTestCasesFromMembers(Result.TestCaseMembers)
-    Call SetContext(mTests)
+    AssignContextMethods Result
+    BuildTestCasesFromMembers Result.TestCaseMembers
+    SetContext mTests
 End Sub
 
 Private Function QueryTestClass() As QueryResult
@@ -241,8 +242,8 @@ Private Function QueryTestClass() As QueryResult
 End Function
 
 Private Sub AssignContextMethods(ByVal Result As QueryResult)
-    Call AssignTestCaseContext(Result.SetupMember, Result.TeardownMember)
-    Call AssignTestFixtureContext(Result.FixtureSetupMember, Result.FixtureTeardownMember)
+    AssignTestCaseContext Result.SetupMember, Result.TeardownMember
+    AssignTestFixtureContext Result.FixtureSetupMember, Result.FixtureTeardownMember
 End Sub
 
 Private Sub AssignTestCaseContext(ByVal SetupMember As MemberInfo, ByVal TeardownMember As MemberInfo)
@@ -275,7 +276,7 @@ Private Sub BuildTestCasesFromMembers(ByVal Members As Collection)
     Dim Member As MemberInfo
     
     For Each Member In Members
-        Call BuildTestCases(Member)
+        BuildTestCases Member
     Next
 End Sub
 
@@ -283,22 +284,22 @@ Private Sub BuildTestCases(ByVal Member As MemberInfo)
     Dim Test As ITest
     
     For Each Test In TestCaseBuilder.BuildFrom(mTestClass, Member)
-        Call AddTestCase(Test)
+        AddTestCase Test
     Next
 End Sub
 
 Private Sub AddTestCase(ByVal Test As ITest)
     Set Test.Parent = Me
-    Call mTests.Add(Test)
+    mTests.Add Test
 End Sub
 
 Private Sub SetContext(ByVal Tests As TestList)
     Dim Test As ITest
     For Each Test In Tests
         If Test.IsSuite Then
-            Call SetContext(Test.Tests)
+            SetContext Test.Tests
         Else
-            Call AssignContextToTestCase(Test)
+            AssignContextToTestCase Test
         End If
     Next
 End Sub
@@ -310,14 +311,14 @@ End Sub
 Private Function RunFixtureSetup(ByVal FixtureResult As TestResult) As Boolean
     On Error GoTo errTrap
     
-    Call mFixtureSetup.Run
+    mFixtureSetup.Run
     
     RunFixtureSetup = True
     Exit Function
     
 errTrap:
-    Call FixtureResult.Error(Resource.GetString(Msg_FixtureSetupFailed), SetupSite)
-    Call FailAllTests(mTests, FixtureResult)
+    FixtureResult.Error Resource.GetString(Msg_FixtureSetupFailed), SetupSite
+    FailAllTests mTests, FixtureResult
 End Function
 
 Private Sub FailAllTests(ByVal Tests As TestList, ByVal ParentResult As TestResult)
@@ -325,11 +326,11 @@ Private Sub FailAllTests(ByVal Tests As TestList, ByVal ParentResult As TestResu
     For Each Test In Tests
         Dim Result As TestResult
         Set Result = Sim.NewTestResult(Test)
-        Call Result.Failure(Resource.GetString(Msg_FixtureSetupFailed), ParentSite)
-        Call ParentResult.AddResult(Result)
+        Result.Failure Resource.GetString(Msg_FixtureSetupFailed), ParentSite
+        ParentResult.AddResult Result
         
         If Test.IsSuite Then
-            Call FailAllTests(Test.Tests, Result)
+            FailAllTests Test.Tests, Result
         End If
     Next
 End Sub
@@ -337,7 +338,7 @@ End Sub
 Private Sub RunFixtureTeardown()
     On Error GoTo errTrap
     
-    Call mFixtureTeardown.Run
+    mFixtureTeardown.Run
 errTrap:
 End Sub
 
@@ -346,13 +347,13 @@ End Sub
 '   Class Events
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
-    Call InitTestSuite(DEF_NAME)
+    InitTestSuite DEF_NAME
     Set mFixtureSetup = NullMethod.Instance
     Set mFixtureTeardown = NullMethod.Instance
 End Sub
 
 Private Sub Class_Terminate()
-    Call TestUtils.ClearParents(mTests)
+    TestUtils.ClearParents mTests
 End Sub
 
 
@@ -394,10 +395,6 @@ End Property
 Private Property Get ITest_Name() As String
     ITest_Name = Name
 End Property
-
-Private Sub ITest_Reset()
-
-End Sub
 
 Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult
     Set ITest_Run = Run(Listener, Filter)

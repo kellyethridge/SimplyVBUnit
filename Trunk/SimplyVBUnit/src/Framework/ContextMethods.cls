@@ -25,7 +25,7 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestCaseContext
+' Module: ContextMethods
 '
 Option Explicit
 
@@ -34,14 +34,17 @@ Private mTeardown   As ITestMethod
 
 
 Public Sub RunSetup()
-    Call mSetup.Run
+    mSetup.Run
 End Sub
 
 Public Sub RunTeardown()
-    Call mTeardown.Run
+    mTeardown.Run
 End Sub
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal SetupMethod As ITestMethod, ByVal TeardownMethod As ITestMethod)
     Set mSetup = SetupMethod
     Set mTeardown = TeardownMethod
