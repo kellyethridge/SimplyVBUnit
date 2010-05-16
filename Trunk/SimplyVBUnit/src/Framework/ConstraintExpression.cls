@@ -95,7 +95,7 @@ Private Function IConstraintExpression_False() As SimplyVBUnitType.IBasicExpress
 End Function
 
 Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpression
-    Set IConstraintExpression_Missing = EqualTo(GetMissingVariant)
+    Set IConstraintExpression_Missing = EqualTo(MissingVariant)
 End Function
 
 Private Function IConstraintExpression_Not() As SimplyVBUnitType.IConstraintExpression

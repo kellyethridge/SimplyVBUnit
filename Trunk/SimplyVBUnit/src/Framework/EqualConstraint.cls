@@ -122,7 +122,7 @@ End Function
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
     If IsArray(mExpected) And IsArray(mActual) Then
         DisplayCollectionDifferences mExpected, mActual, Writer, 0
-    ElseIf IsEnumerable(mExpected) And IsEnumerable(mActual) Then
+    ElseIf IsCollection(mExpected) And IsCollection(mActual) Then
         DisplayCollectionDifferences mExpected, mActual, Writer, 0
     ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
         DisplayStringDifferences Writer
@@ -353,7 +353,7 @@ End Function
 
 Private Function EqualStrings(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
     If VarType(Actual) = vbString Then
-        EqualStrings = modUtilities.EqualStrings(Expected, Actual, mIgnoreCase)
+        EqualStrings = modFunctions.EqualStrings(Expected, Actual, mIgnoreCase)
     End If
 End Function
 
@@ -504,26 +504,11 @@ End Sub
 Private Sub DisplayCollectionTypesAndSizes(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Writer As TextMessageWriter, Optional ByVal Indent As Long)
     Dim sExpected As String
     sExpected = MsgUtils.GetTypeRepresentation(Expected)
-    
-    Dim Count As Long
-    If TryGetCount(mExpected, Count) Then
-        sExpected = sExpected & " with " & Count & " element"
-
-        If Count <> 1 Then
-            sExpected = sExpected & "s"
-        End If
-    End If
-    
+    AppendElementCountInfo Expected, sExpected
+        
     Dim sActual As String
     sActual = MsgUtils.GetTypeRepresentation(Actual)
-    
-    If TryGetCount(mActual, Count) Then
-        sActual = sActual & " with " & Count & " element"
-
-        If Count <> 1 Then
-            sActual = sActual & "s"
-        End If
-    End If
+    AppendElementCountInfo Actual, sActual
     
     Writer.WriteText Space$(Indent)
     If sExpected = sActual Then
@@ -533,12 +518,27 @@ Private Sub DisplayCollectionTypesAndSizes(ByRef Expected As Variant, ByRef Actu
     End If
 End Sub
 
-Private Sub DisplayCollectionFailurePoint(ByRef Expected As Variant, ByVal Writer As TextMessageWriter, ByVal Index As Long, ByVal Indent As Long)
-    Writer.WriteText Space$(Indent)
-    Writer.WriteLine MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Expected, Index))
+Private Sub AppendElementCountInfo(ByRef Value As Variant, ByRef s As String)
+    Dim Count As Long
+    
+    If TryGetCount(Value, Count) Then
+        If Count = 1 Then
+            s = s & " with " & Count & " element"
+        Else
+            s = s & " with " & Count & " elements"
+        End If
+    End If
 End Sub
 
-
+Private Sub DisplayCollectionFailurePoint(ByRef Expected As Variant, ByVal Writer As TextMessageWriter, ByVal Index As Long, ByVal Indent As Long)
+    Writer.WriteText Space$(Indent)
+    
+    If IsCollection(Expected) Then
+        Index = Index + 1
+    End If
+    
+    Writer.WriteLine MSG_VALUESDIFFER_1, MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Expected, Index))
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
