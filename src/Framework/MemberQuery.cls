@@ -34,8 +34,10 @@ Private mInfo   As InterfaceInfo
 
 
 Public Function Execute(ByVal TestClass As Object) As QueryResult
-    Call Init(TestClass)
-    Call FindMembers
+    If InitedSuccessfully(TestClass) Then
+        FindMembers
+    End If
+    
     Set Execute = Release
 End Function
 
@@ -43,22 +45,27 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Sub Init(ByVal TestClass As Object)
+Private Function InitedSuccessfully(ByVal TestClass As Object) As Boolean
     Set mResult = New QueryResult
+    
+    On Error GoTo errTrap
     Set mInfo = tli.InterfaceInfoFromObject(TestClass)
-End Sub
+    InitedSuccessfully = True
+    
+errTrap:
+End Function
 
 Private Sub FindMembers()
     Dim Member As MemberInfo
     
     For Each Member In mInfo.Members
-        Call ProcessMember(Member)
+        ProcessMember Member
     Next
 End Sub
 
 Private Sub ProcessMember(ByVal Member As MemberInfo)
     If IncludeMember(Member) Then
-        Call mResult.AddMember(Member)
+        mResult.AddMember Member
     End If
 End Sub
 
