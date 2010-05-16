@@ -288,13 +288,21 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
                        "  But was : 3" & vbCrLf
             Test.Use Array(1, NewLongs(1, 2, 5, 6), 3), Array(1, NewLongs(1, 2, 3, 4), 3), Expected
             
+            Expected = "  Expected and actual are both <Collection> with 3 elements" & vbCrLf & _
+                       "  Values differ at index [2]" & vbCrLf & _
+                       "    Expected and actual are both <Collection> with 4 elements" & vbCrLf & _
+                       "    Values differ at index [3]" & vbCrLf & _
+                       "  Expected: 5" & vbCrLf & _
+                       "  But was : 3" & vbCrLf
+            Test.Use NewCollection(1, NewCollection(1, 2, 5, 6), 3), NewCollection(1, NewCollection(1, 2, 3, 4), 3), Expected
+            
     End Select
     
 End Sub
 
-'  Expected and actual are both <System.Object[3]>
+'  Expected and actual are both <System.Collections.Generic.List`1[System.Object]> with 3 elements
 '  Values differ at index [1]
-'    Expected and actual are both <System.Object[4]>
+'    Expected and actual are both <System.Collections.Generic.List`1[System.Object]> with 4 elements
 '    Values differ at index [2]
 '  Expected: 5
 '  But was:  3
