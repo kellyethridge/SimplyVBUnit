@@ -189,10 +189,12 @@ Public Sub WriteErrorInfo(ByVal Info As ErrorInfo)
 End Sub
 
 Public Sub WriteCollectionElements(ByRef Values As Variant, ByVal StartIndex As Long, ByVal Count As Long)
-    Dim Index       As Long
-    Dim Element     As Variant
+    Dim Index   As Long
+    Dim Element As Variant
     
-    Index = GetLBound(Values)
+    If IsArray(Values) Then
+        Index = LBound(Values)
+    End If
     
     WriteText "< "
     
@@ -315,7 +317,7 @@ Private Sub WriteObject(ByRef Value As Variant)
     If Value Is Nothing Then
         WriteText FMT_NOTHING
     ElseIf TypeOf Value Is Collection Then
-        WriteCollectionElements Value, 1, 10
+        WriteCollectionElements Value, 0, 10
     ElseIf TypeOf Value Is ErrorInfo Then
         WriteError Value
     Else

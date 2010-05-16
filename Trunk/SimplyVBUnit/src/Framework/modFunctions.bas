@@ -38,17 +38,6 @@ Public Type ArrayProxy
 End Type
 
 
-Public Function GetLBound(ByRef Value As Variant) As Long
-    Dim Result As Long
-    
-    If IsArray(Value) Then
-        Result = LBound(Value)
-    Else
-        Result = LBOUND_OF_COLLECTION
-    End If
-    
-    GetLBound = Result
-End Function
 
 Public Property Get MissingVariant(Optional ByVal Value As Variant) As Variant
     MissingVariant = Value
