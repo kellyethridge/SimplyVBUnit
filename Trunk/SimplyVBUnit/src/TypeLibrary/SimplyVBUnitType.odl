@@ -129,7 +129,10 @@ library SimplyVBUnitType {
 		HRESULT Nothing([out, retval] IBasicExpression ** RetVal);
 		HRESULT Missing([out, retval] IBasicExpression ** RetVal);
 		HRESULT Not([out, retval] IConstraintExpression ** RetVal);
-
+		HRESULT LessThan([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
+		HRESULT GreaterThan([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
+		HRESULT LessThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
+		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -181,6 +184,10 @@ library SimplyVBUnitType {
 		HRESULT Nothing([out, retval] IBasicExpression ** RetVal);
 		HRESULT Missing([out, retval] IBasicExpression ** RetVal);
 		HRESULT Not([out, retval] IConstraintExpression ** RetVal);
+		HRESULT LessThan([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
+		HRESULT GreaterThan([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
+		HRESULT LessThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
+		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 	}
 }
 

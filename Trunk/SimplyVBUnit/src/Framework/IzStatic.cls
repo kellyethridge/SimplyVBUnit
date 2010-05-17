@@ -30,36 +30,54 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IzSyntaxHelper
 
+Private Function NewExp() As IConstraintExpression
+    Set NewExp = New ConstraintExpression
+End Function
+
 Private Function IzSyntaxHelper_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
-    Dim Expression As IConstraintExpression
-    Set Expression = New ConstraintExpression
-    Set IzSyntaxHelper_EqualTo = Expression.EqualTo(Expected)
+    Set IzSyntaxHelper_EqualTo = NewExp.EqualTo(Expected)
 End Function
 
 Private Function IzSyntaxHelper_False() As SimplyVBUnitType.IBasicExpression
-    Set IzSyntaxHelper_False = Sim.NewEqualConstraint(False)
+    Set IzSyntaxHelper_False = NewExp.False
+End Function
+
+Private Function IzSyntaxHelper_GreaterThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_GreaterThan = NewExp.GreaterThan(Expected)
+End Function
+
+Private Function IzSyntaxHelper_GreaterThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_GreaterThanOrEqualTo = NewExp.GreaterThanOrEqualTo(Expected)
+End Function
+
+Private Function IzSyntaxHelper_LessThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_LessThan = NewExp.LessThan(Expected)
+End Function
+
+Private Function IzSyntaxHelper_LessThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_LessThanOrEqualTo = NewExp.LessThanOrEqualTo(Expected)
 End Function
 
 Private Function IzSyntaxHelper_Missing() As SimplyVBUnitType.IBasicExpression
-    Set IzSyntaxHelper_Missing = Sim.NewEqualConstraint(MissingVariant)
+    Set IzSyntaxHelper_Missing = NewExp.Missing
 End Function
 
 Private Function IzSyntaxHelper_Not() As SimplyVBUnitType.IConstraintExpression
-    
+    Set IzSyntaxHelper_Not = NewExp.Not
 End Function
 
 Private Function IzSyntaxHelper_Nothing() As SimplyVBUnitType.IBasicExpression
-    Set IzSyntaxHelper_Nothing = Sim.NewEqualConstraint(Nothing)
+    Set IzSyntaxHelper_Nothing = NewExp.Nothing
 End Function
 
 Private Function IzSyntaxHelper_True() As SimplyVBUnitType.IBasicExpression
-    Set IzSyntaxHelper_True = Sim.NewEqualConstraint(True)
+    Set IzSyntaxHelper_True = NewExp.True
 End Function
 
 Private Function IzSyntaxHelper_VBEmpty() As SimplyVBUnitType.IBasicExpression
-    Set IzSyntaxHelper_VBEmpty = Sim.NewEqualConstraint(Empty)
+    Set IzSyntaxHelper_VBEmpty = NewExp.vbEmpty
 End Function
 
 Private Function IzSyntaxHelper_VBNull() As SimplyVBUnitType.IBasicExpression
-    Set IzSyntaxHelper_VBNull = Sim.NewEqualConstraint(Null)
+    Set IzSyntaxHelper_VBNull = NewExp.vbNull
 End Function

@@ -94,6 +94,22 @@ Private Function IConstraintExpression_False() As SimplyVBUnitType.IBasicExpress
     Set IConstraintExpression_False = EqualTo(False)
 End Function
 
+Private Function IConstraintExpression_GreaterThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+
+End Function
+
+Private Function IConstraintExpression_GreaterThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+
+End Function
+
+Private Function IConstraintExpression_LessThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+
+End Function
+
+Private Function IConstraintExpression_LessThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+
+End Function
+
 Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Missing = EqualTo(MissingVariant)
 End Function
