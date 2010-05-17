@@ -48,7 +48,7 @@ End Sub
 
 Friend Sub Init(ByVal List As TestList)
     Set mList = List
-    Call Reset
+    Reset
 End Sub
 
 

@@ -33,9 +33,9 @@ Private mResults As New Collection
 
 Public Sub Add(ByVal Result As TestResult)
     If Result Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Add", "Result")
+        Error.CannotBeNothing Me, "Add", "Result"
     
-    Call mResults.Add(Result)
+    mResults.Add Result
 End Sub
 
 Public Property Get Item(ByVal Index As Long) As TestResult

@@ -55,7 +55,7 @@ Public Sub Parse_With1CategoryDefined_ReturnsCategoryInList()
     Dim Parser As New CategoryParser
     Dim Result As CategoryParserResult
     
-    Set Result = Parser.Parse("Category__Name")
+    Set Result = Parser.Parse("Name__Category")
     
     Dim Actual As CategoryList
     Set Actual = Result.Categories
@@ -66,7 +66,7 @@ Public Sub Parse_With1CategoryDefined_RemovesCategoryFromName()
     Dim Parser As New CategoryParser
     Dim Result As CategoryParserResult
     
-    Set Result = Parser.Parse("Category__Name")
+    Set Result = Parser.Parse("Name__Category")
 
     Dim Actual As String
     Actual = Result.Name
@@ -77,7 +77,7 @@ Public Sub Parse_WithMultipleCategories_ReturnsCategoriesInList()
     Dim Parser As New CategoryParser
     Dim Result As CategoryParserResult
     
-    Set Result = Parser.Parse("Cat1_Cat2_Cat3__Name")
+    Set Result = Parser.Parse("Name__Cat1_Cat2_Cat3")
     
     Dim Actual As CategoryList
     Set Actual = Result.Categories

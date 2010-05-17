@@ -67,7 +67,7 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByVal Number As Long, ByVal Source As String, ByVal Description As String, ByVal LastDllError As Long)
+Friend Sub Init(ByVal Number As Long, ByRef Source As String, ByRef Description As String, ByVal LastDllError As Long)
     mNumber = Number
     mSource = Source
     mDescription = Description

@@ -35,7 +35,7 @@ Private mFilters    As New Collection
 
 
 Public Sub Add(ByVal Filter As ITestFilter)
-    Call mFilters.Add(Filter)
+    mFilters.Add Filter
 End Sub
 
 Public Function Match(ByVal Test As ITest) As Boolean

@@ -35,11 +35,11 @@ Private mFilter As ITestFilter
 Public Function Pass(ByVal Filter As ITestFilter, ByVal Test As ITest) As Boolean
     On Error GoTo errTrap
     
-    Call Init(Filter)
+    Init Filter
     Pass = DoesPass(Test)
     
 errTrap:
-    Call Release
+    Release
 End Function
 
 Private Sub Init(ByVal Filter As ITestFilter)

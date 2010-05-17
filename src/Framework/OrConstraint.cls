@@ -46,7 +46,7 @@ End Property
 Public Function Matches(ByRef Actual As Variant) As Boolean
     Dim Result As Boolean
     
-    Call VariantCopyInd(mActual, Actual)
+    VariantCopyInd mActual, Actual
     
     If mLeftSide.Matches(Actual) Then
         Result = True
@@ -58,17 +58,17 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
 End Function
 
 Public Sub WriteActualValueTo(ByVal Writer As TextMessageWriter)
-    Call Writer.WriteActualValue(mActual)
+    Writer.WriteActualValue mActual
 End Sub
 
 Public Sub WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Call mLeftSide.WriteDescriptionTo(Writer)
-    Call Writer.WriteConnector("or")
-    Call mRightSide.WriteDescriptionTo(Writer)
+    mLeftSide.WriteDescriptionTo Writer
+    Writer.WriteConnector "or"
+    mRightSide.WriteDescriptionTo Writer
 End Sub
 
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call Writer.DisplayConstraintDifferences(Me)
+    Writer.DisplayConstraintDifferences Me
 End Sub
 
 
@@ -77,9 +77,9 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal LeftSide As IConstraint, ByVal RightSide As IConstraint)
     If LeftSide Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "LeftSide")
+        Error.CannotBeNothing Me, "Init", "LeftSide"
     If RightSide Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "RightSide")
+        Error.CannotBeNothing Me, "Init", "RightSide"
         
     Set mLeftSide = LeftSide
     Set mRightSide = RightSide
@@ -93,18 +93,14 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
     IConstraint_Matches = Matches(Actual)
 End Function
 
-Private Function IConstraint_Resolve() As IConstraint
-
-End Function
-
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
-    Call WriteActualValueTo(Writer)
+    WriteActualValueTo Writer
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Call WriteDescriptionTo(Writer)
+    WriteDescriptionTo Writer
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call WriteMessageTo(Writer)
+    WriteMessageTo Writer
 End Sub

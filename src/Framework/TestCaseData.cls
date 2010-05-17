@@ -65,10 +65,14 @@ Public Property Get Arguments() As Variant()
 End Property
 
 Public Sub CopyArguments(ByRef Arguments() As Variant)
-    Call ResizeArray(UBound(Arguments))
-    Call MakeReverseCopy(Arguments)
+    ResizeArray UBound(Arguments)
+    MakeReverseCopy Arguments
 End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ResizeArray(ByVal UpperBound As Long)
     ReDim mArguments(LOWER_BOUND To UpperBound)
 End Sub
@@ -76,6 +80,6 @@ End Sub
 Private Sub MakeReverseCopy(ByRef Arguments() As Variant)
     Dim i As Long
     For i = LOWER_BOUND To UBound(Arguments)
-        Call VariantCopyInd(mArguments(i), Arguments(UBound(Arguments) - i))
+        VariantCopyInd mArguments(i), Arguments(UBound(Arguments) - i)
     Next
 End Sub

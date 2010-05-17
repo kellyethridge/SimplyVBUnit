@@ -169,6 +169,46 @@ Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Fi
     Set Run = Result
 End Function
 
+Public Property Get Name() As String
+    Name = mName
+End Property
+
+Public Property Get FullName() As String
+    FullName = TestUtils.BuildFullName(Me)
+End Property
+
+Public Property Get IsSuite() As Boolean
+    IsSuite = True
+End Property
+
+Public Property Get TestClass() As Object
+    Set TestClass = mTestClass
+End Property
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub InitTestSuite(ByVal Name As String)
+    With CategoryParser.Parse(Name)
+        mName = .Name
+        Set mCategories = .Categories
+    End With
+End Sub
+
+Friend Sub InitTestFixture(ByVal TestClass As Object)
+    If TestClass Is Nothing Then _
+        Error.CannotBeNothing New TestFixture, "Init", "TestClass"
+        
+    Set mTestClass = TestClass
+    InitTestSuite TypeName(TestClass)
+    BuildFixture
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub RunTests(ByVal Result As TestResult)
     Dim Test As ITest
     
@@ -194,38 +234,6 @@ End Sub
 Private Function StopTiming() As Currency
     StopTiming = Timing.GetTime(mTicks)
 End Function
-
-Public Property Get Name() As String
-    Name = mName
-End Property
-
-Public Property Get FullName() As String
-    FullName = TestUtils.BuildFullName(Me)
-End Property
-
-Public Property Get IsSuite() As Boolean
-    IsSuite = True
-End Property
-
-Public Property Get TestClass() As Object
-    Set TestClass = mTestClass
-End Property
-
-Friend Sub InitTestSuite(ByVal Name As String)
-    With CategoryParser.Parse(Name)
-        mName = .Name
-        Set mCategories = .Categories
-    End With
-End Sub
-
-Friend Sub InitTestFixture(ByVal TestClass As Object)
-    If TestClass Is Nothing Then _
-        Error.CannotBeNothing New TestFixture, "Init", "TestClass"
-        
-    Set mTestClass = TestClass
-    InitTestSuite TypeName(TestClass)
-    BuildFixture
-End Sub
 
 Private Sub BuildFixture()
     Dim Result As QueryResult
@@ -409,7 +417,7 @@ Private Property Get ITest_RunState() As RunState
 End Property
 
 Private Sub ITest_Sort(Optional ByVal Comparer As ITestComparer)
-    Call Sort(Comparer)
+    Sort Comparer
 End Sub
 
 Private Property Get ITest_TestClass() As Object
@@ -477,7 +485,7 @@ Private Property Get TestFixture_RunState() As RunState
 End Property
 
 Private Sub TestFixture_Sort(Optional ByVal Comparer As ITestComparer)
-    Call Sort(Comparer)
+    Sort Comparer
 End Sub
 
 Private Property Get TestFixture_TestClass() As Object

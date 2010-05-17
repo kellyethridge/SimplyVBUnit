@@ -108,33 +108,33 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     Set Result = Sim.NewTestResult(Me)
     
     With New TestContext
-        Call Listener.TestCaseStarted(Me)
+        Listener.TestCaseStarted Me
         
         If Me.RunState = RunnableRunState Then
-            Call RunTestCase(Result, Listener)
+            RunTestCase Result, Listener
         Else
-            Call Result.Invalid
+            Result.Invalid
         End If
     
-        Call Listener.TestCaseFinished(Result)
+        Listener.TestCaseFinished Result
     End With
     
     Set Run = Result
 End Function
 
 Private Sub RunTestCase(ByVal Result As TestResult, ByVal Listener As IEventListener)
-    Call InitMetrics
+    InitMetrics
     
     If RunSetup(Result) Then
-        Call RunTestMethod(Result, Listener)
+        RunTestMethod Result, Listener
     End If
     
-    Call RunTeardown(Result)
-    Call RecordMetrics(Result)
+    RunTeardown Result
+    RecordMetrics Result
 End Sub
 
 Private Sub InitMetrics()
-    Call StartTiming
+    StartTiming
 End Sub
 
 Private Sub RecordMetrics(ByVal Result As TestResult)
@@ -145,7 +145,7 @@ End Sub
 Private Function RunSetup(ByVal Result As TestResult) As Boolean
     On Error GoTo errTrap
     
-    Call mContext.RunSetup
+    mContext.RunSetup
     
     RunSetup = True
     Exit Function
@@ -154,19 +154,19 @@ errTrap:
     If Err.Number = AssertCode.IgnoreCode Then
         RunSetup = True
     Else
-        Call Result.Error("Error " & Err.Number & ", " & Err.Description, SetupSite)
+        Result.Error "Error " & Err.Number & ", " & Err.Description, SetupSite
     End If
 End Function
 
 Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventListener)
     On Error Resume Next
-    Call mTestMethod.Run
+    mTestMethod.Run
     
     Dim Info As ErrorInfo
     Set Info = ErrorInfo.FromErr(Err)
     
     On Error GoTo 0
-    Call Err.Clear
+    Err.Clear
     
     Dim ExpectedThrows As ThrowsConstraint
     Set ExpectedThrows = TestContext.Throws
@@ -176,27 +176,27 @@ Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventLi
     Select Case Info.Number
         Case AssertCode.SuccessCode, ErrorCode.NoError
             If ExpectedThrows Is Nothing Then
-                Call Result.Success(Info.Description)
+                Result.Success Info.Description
             Else
-                Call ExpectedThrows.WriteMessageTo(Writer)
-                Call Result.Failure(Writer.ToString)
+                ExpectedThrows.WriteMessageTo Writer
+                Result.Failure Writer.ToString
             End If
             
         Case AssertCode.FailureCode
-            Call Result.Failure(Info.Description, TestSite)
+            Result.Failure Info.Description, TestSite
             
         Case AssertCode.IgnoreCode
-            Call Result.Ignore(Info.Description)
+            Result.Ignore Info.Description
             
         Case Else
             If ExpectedThrows Is Nothing Then
-                Call Result.Error(Info.Description, TestSite)
-                Call Listener.UnhandledError(Info)
+                Result.Error Info.Description, TestSite
+                Listener.UnhandledError Info
             ElseIf ExpectedThrows.Matches(Info) Then
-                Call Result.Success
+                Result.Success
             Else
-                Call ExpectedThrows.WriteMessageTo(Writer)
-                Call Result.Failure(Writer.ToString)
+                ExpectedThrows.WriteMessageTo Writer
+                Result.Failure Writer.ToString
             End If
     End Select
 End Sub
@@ -204,11 +204,11 @@ End Sub
 Private Sub RunTeardown(ByVal Result As TestResult)
     On Error GoTo errTrap
     
-    Call mContext.RunTeardown
+    mContext.RunTeardown
     Exit Sub
     
 errTrap:
-    Call Result.Error("Error " & Err.Number & ", " & Err.Description, TeardownSite)
+    Result.Error "Error " & Err.Number & ", " & Err.Description, TeardownSite
 End Sub
 
 Private Sub StartTiming()
@@ -225,9 +225,9 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Name As String, ByVal TestMethod As ITestMethod)
     If Len(Name) = 0 Then _
-        Call Error.CannotBeEmpty(Me, "Init", "Name")
+        Error.CannotBeEmpty Me, "Init", "Name"
     If TestMethod Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "TestMethod")
+        Error.CannotBeNothing Me, "Init", "TestMethod"
     
     With CategoryParser.Parse(Name)
         mName = .Name
@@ -293,10 +293,6 @@ End Property
 Private Property Get ITest_Name() As String
     ITest_Name = Name
 End Property
-
-Private Sub ITest_Reset()
-
-End Sub
 
 Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult
     Set ITest_Run = Run(Listener)

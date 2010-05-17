@@ -63,6 +63,6 @@ Public Sub AddMember(ByVal Member As MemberInfo)
         Case "teardown":        Set mTeardownMember = Member
         Case "fixturesetup":    Set mFixtureSetupMember = Member
         Case "fixtureteardown": Set mFixtureTeardownMember = Member
-        Case Else:              Call mTestCaseMembers.Add(Member)
+        Case Else:              mTestCaseMembers.Add Member
     End Select
 End Sub

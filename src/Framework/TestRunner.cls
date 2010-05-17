@@ -56,9 +56,9 @@ Public Function Run() As TestResult
 End Function
 
 
-
-
-
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Test As ITest)
     Set mTest = Test
 End Sub

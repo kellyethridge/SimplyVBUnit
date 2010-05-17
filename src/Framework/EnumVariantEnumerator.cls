@@ -35,14 +35,17 @@ Private mEnum       As IVBEnumVARIANT
 Private mCurrent    As Variant
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Obj As Object)
     If Obj Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "Obj")
+        Error.CannotBeNothing Me, "Init", "Obj"
     If Not IsEnumerable(Obj) Then _
-        Call Error.EnumerationNotSupported(Me, "Init", "Obj")
+        Error.EnumerationNotSupported Me, "Init", "Obj"
         
     Set mObject = Obj
-    Set mEnum = TLI.InvokeHook(Obj, ENUM_MEMBERID, INVOKE_FUNC)
+    Set mEnum = tli.InvokeHook(Obj, ENUM_MEMBERID, INVOKE_FUNC)
 End Sub
 
 
@@ -50,16 +53,16 @@ End Sub
 '   IEnumerator Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Property Get IEnumerator_Current() As Variant
-    Call VariantCopyInd(IEnumerator_Current, mCurrent)
+    VariantCopyInd IEnumerator_Current, mCurrent
 End Property
 
 Private Function IEnumerator_MoveNext() As Boolean
     Dim Count As Long
-    Call mEnum.VBNext(1, mCurrent, Count)
+    mEnum.VBNext 1, mCurrent, Count
     
     IEnumerator_MoveNext = (Count = 1)
 End Function
 
 Private Sub IEnumerator_Reset()
-    Call mEnum.Reset
+    mEnum.Reset
 End Sub

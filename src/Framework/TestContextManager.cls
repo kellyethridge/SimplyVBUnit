@@ -39,12 +39,12 @@ Public Property Get CurrentContext() As TestContext
 End Property
 
 Public Sub BeginContext(ByVal Context As TestContext)
-    Call StoreCurrentContext
-    Call InitializeNewContext(Context)
+    StoreCurrentContext
+    InitializeNewContext Context
 End Sub
 
 Private Sub StoreCurrentContext()
-    Call mContexts.Push(CurrentContext)
+    mContexts.Push CurrentContext
 End Sub
 
 Private Sub InitializeNewContext(ByVal Context As TestContext)
