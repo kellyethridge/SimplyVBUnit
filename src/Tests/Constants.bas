@@ -3,6 +3,7 @@ Option Explicit
 
 #If False Then
     Dim Assert
+    Dim Iz
 #End If
 
 Public Const TEST1_METHOD           As String = "Test1"

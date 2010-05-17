@@ -17,10 +17,6 @@ Attribute VB_Name = "modMain"
 '
 Option Explicit
 
-#If False Then
-    Dim Iz
-#End If
-
 Private mBootstraps As Long
 Private mPassed     As Long
 Private mFailed     As Long
@@ -76,6 +72,7 @@ Private Sub RunTestClassTests()
     Suite.Add New MsgUtilsTests
     Suite.Add New ConstraintExpressionTests
     Suite.Add New ToleranceTests
+    Suite.Add New ComparisonConstraintTests
     
     
     Dim Result As TestResult
@@ -103,14 +100,14 @@ End Sub
 
 Private Sub RunBootstrapTests()
     mBootstraps = 0
-    Call RunBootstrapTestClass(New BootstrapUtilitiesTests)
-    Call RunBootstrapTestClass(New BootstrapCallTraceTests)
-    Call RunBootstrapTestClass(New BootstrapCallErrorTests)
-    Call RunBootstrapTestClass(New BootstrapMockOneSubTestClassTests)
-    Call RunBootstrapTestClass(New BootstrapStubOneSubTestClassTests)
-    Call RunBootstrapTestClass(New BootstrapMockTestsWithSetupTests)
-    Call RunBootstrapTestClass(New BootstrapTestFixtureTests)
-    Call RunBootstrapTestClass(New BootstrapTestSuiteTests)
+    RunBootstrapTestClass New BootstrapUtilitiesTests
+    RunBootstrapTestClass New BootstrapCallTraceTests
+    RunBootstrapTestClass New BootstrapCallErrorTests
+    RunBootstrapTestClass New BootstrapMockOneSubTestClassTests
+    RunBootstrapTestClass New BootstrapStubOneSubTestClassTests
+    RunBootstrapTestClass New BootstrapMockTestsWithSetupTests
+    RunBootstrapTestClass New BootstrapTestFixtureTests
+    RunBootstrapTestClass New BootstrapTestSuiteTests
 End Sub
 
 Private Sub RunBootstrapTestClass(ByVal TestClass As IBootstrapTestClass)
@@ -125,6 +122,7 @@ End Sub
 Private Sub PrintResults(ByVal Result As TestResult, Optional ByVal Indent As Long)
     If Result.IsFailure Or Result.IsError Then
         Debug.Print Space$(Indent); Result.Test.Name & ": " & Result.Message
+        
         If Not Result.Test.IsSuite Then
             mFailed = mFailed + 1
         End If
@@ -134,6 +132,6 @@ Private Sub PrintResults(ByVal Result As TestResult, Optional ByVal Indent As Lo
     
     Dim Child As TestResult
     For Each Child In Result.Results
-        Call PrintResults(Child, Indent + 4)
+        PrintResults Child, Indent + 4
     Next
 End Sub
