@@ -31,113 +31,113 @@ Option Explicit
 
 Public Function NewTestFixture(ByVal TestClass As Object) As TestFixture
     Dim Suite As New TestSuite
-    Call Suite.InitTestFixture(TestClass)
+    Suite.InitTestFixture TestClass
     Set NewTestFixture = Suite
 End Function
 
 Public Function NewTestResult(ByVal Test As ITest) As TestResult
     Set NewTestResult = New TestResult
-    Call NewTestResult.Init(Test)
+    NewTestResult.Init Test
 End Function
 
 Public Function NewTestCase(ByVal Name As String, ByVal TestMethod As ITestMethod) As TestCase
     Set NewTestCase = New TestCase
-    Call NewTestCase.Init(Name, TestMethod)
+    NewTestCase.Init Name, TestMethod
 End Function
 
 Public Function NewNoArgTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo) As NoArgTestMethod
     Set NewNoArgTestMethod = New NoArgTestMethod
-    Call NewNoArgTestMethod.Init(TestClass, Member)
+    NewNoArgTestMethod.Init TestClass, Member
 End Function
 
 Public Function NewTestSuite(ByVal Name As String) As TestSuite
     Set NewTestSuite = New TestSuite
-    Call NewTestSuite.InitTestSuite(Name)
+    NewTestSuite.InitTestSuite Name
 End Function
 
 Public Function NewErrorInfo(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String, Optional ByVal LastDllError As Long) As ErrorInfo
     Set NewErrorInfo = New ErrorInfo
-    Call NewErrorInfo.Init(Number, Source, Description, LastDllError)
+    NewErrorInfo.Init Number, Source, Description, LastDllError
 End Function
 
 Public Function NewArgOnlyTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData) As ArgOnlyTestMethod
     Set NewArgOnlyTestMethod = New ArgOnlyTestMethod
-    Call NewArgOnlyTestMethod.Init(TestClass, Member, TestCaseData)
+    NewArgOnlyTestMethod.Init TestClass, Member, TestCaseData
 End Function
 
 Public Function NewTestListEnumerator(ByVal List As TestList) As TestListEnumerator
     Set NewTestListEnumerator = New TestListEnumerator
-    Call NewTestListEnumerator.Init(List)
+    NewTestListEnumerator.Init List
 End Function
 
 Public Function NewTestCaseDataBuilder(ByVal MethodName As String, ByVal DataStore As Collection) As TestCaseDataBuilder
     Set NewTestCaseDataBuilder = New TestCaseDataBuilder
-    Call NewTestCaseDataBuilder.Init(MethodName, DataStore)
+    NewTestCaseDataBuilder.Init MethodName, DataStore
 End Function
 
 Public Function NewEqualConstraint(ByRef Expected As Variant, Optional ByVal Expression As ConstraintExpression) As EqualConstraint
     Set NewEqualConstraint = New EqualConstraint
-    Call NewEqualConstraint.Init(Expected, Expression)
+    NewEqualConstraint.Init Expected, Expression
 End Function
 
 Public Function NewArrayEnumerator(ByRef Arr As Variant) As ArrayEnumerator
     Set NewArrayEnumerator = New ArrayEnumerator
-    Call NewArrayEnumerator.Init(Arr)
+    NewArrayEnumerator.Init Arr
 End Function
 
 Public Function NewEnumVariantEnumerator(ByVal Obj As Object) As EnumVariantEnumerator
     Set NewEnumVariantEnumerator = New EnumVariantEnumerator
-    Call NewEnumVariantEnumerator.Init(Obj)
+    NewEnumVariantEnumerator.Init Obj
 End Function
 
 Public Function NewTestOutput(ByVal Text As String, ByVal OutputType As TestOutputType) As TestOutput
     Set NewTestOutput = New TestOutput
-    Call NewTestOutput.Init(Text, OutputType)
+    NewTestOutput.Init Text, OutputType
 End Function
 
 Public Function NewContextMethods(ByVal SetupMethod As ITestMethod, ByVal TeardownMethod As ITestMethod) As ContextMethods
     Set NewContextMethods = New ContextMethods
-    Call NewContextMethods.Init(SetupMethod, TeardownMethod)
+    NewContextMethods.Init SetupMethod, TeardownMethod
 End Function
 
 Public Function NewTestRunner(ByVal Test As ITest) As TestRunner
     Set NewTestRunner = New TestRunner
-    Call NewTestRunner.Init(Test)
+    NewTestRunner.Init Test
 End Function
 
 Public Function NewNotFilter(ByVal BaseFilter As ITestFilter) As NotFilter
     Set NewNotFilter = New NotFilter
-    Call NewNotFilter.Init(BaseFilter)
+    NewNotFilter.Init BaseFilter
 End Function
 
 Public Function NewAndConstraint(ByVal LeftSide As IConstraint, ByVal RightSide As IConstraint) As AndConstraint
     Set NewAndConstraint = New AndConstraint
-    Call NewAndConstraint.Init(LeftSide, RightSide)
+    NewAndConstraint.Init LeftSide, RightSide
 End Function
 
 Public Function NewOrConstraint(ByVal LeftSide As IConstraint, ByVal RightSide As IConstraint) As OrConstraint
     Set NewOrConstraint = New OrConstraint
-    Call NewOrConstraint.Init(LeftSide, RightSide)
+    NewOrConstraint.Init LeftSide, RightSide
 End Function
 
 Public Function NewNotConstraint(ByVal BaseConstraint As IConstraint) As NotConstraint
     Set NewNotConstraint = New NotConstraint
-    Call NewNotConstraint.Init(BaseConstraint)
+    NewNotConstraint.Init BaseConstraint
 End Function
 
 Public Function NewThrowsConstraint(ByVal Expected As ErrorInfo) As ThrowsConstraint
     Set NewThrowsConstraint = New ThrowsConstraint
-    Call NewThrowsConstraint.Init(Expected)
+    NewThrowsConstraint.Init Expected
 End Function
 
 Public Function NewTestCaseModifier(ByVal Data As TestCaseData) As TestCaseModifier
     Set NewTestCaseModifier = New TestCaseModifier
-    Call NewTestCaseModifier.Init(Data)
+    NewTestCaseModifier.Init Data
 End Function
 
 Public Function NewArgWithReturnTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData) As ArgWithReturnTestMethod
     Set NewArgWithReturnTestMethod = New ArgWithReturnTestMethod
-    Call NewArgWithReturnTestMethod.Init(TestClass, Member, TestCaseData)
+    NewArgWithReturnTestMethod.Init TestClass, Member, TestCaseData
 End Function
 
 Public Function NewTolerance(ByRef Amount As Variant) As Tolerance

@@ -34,7 +34,7 @@ Private Const BOOL_FALSE As Long = 0
 Private mFrequency As Currency
 
 Public Function GetTicks() As Currency
-    Call QueryPerformanceCounter(GetTicks)
+    QueryPerformanceCounter GetTicks
 End Function
 
 Public Function GetTime(ByVal Ticks As Currency) As Currency
@@ -45,7 +45,7 @@ Private Sub Init()
     Dim Frequency As Currency
     
     If QueryPerformanceFrequency(Frequency) = BOOL_FALSE Then
-        Call Err.Raise(ErrorCode.InvalidOperation, , Resource.GetString(HighPerformanceCounterNotSupported))
+        Err.Raise ErrorCode.InvalidOperation, , Resource.GetString(HighPerformanceCounterNotSupported)
     End If
     
     mFrequency = GetReciprical(Frequency)
@@ -56,5 +56,5 @@ Private Function GetReciprical(ByVal Value As Currency) As Currency
 End Function
 
 Private Sub Class_Initialize()
-    Call Init
+    Init
 End Sub

@@ -36,13 +36,13 @@ Private mTestCaseData   As TestCaseData
 
 
 Public Sub Run()
-    Call SetupExpectedError
-    Call TLI.InvokeHookArraySub(mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments)
+    SetupExpectedError
+    tli.InvokeHookArraySub mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments
 End Sub
 
 Private Sub SetupExpectedError()
     If HasExpectedError Then
-        Call AssertExpectedError
+        AssertExpectedError
     End If
 End Sub
 
@@ -54,7 +54,7 @@ Private Sub AssertExpectedError()
     Dim Info As ErrorInfo
     Set Info = mTestCaseData.ErrorInfo
     
-    Call Assert.Throws(Info.Number, Info.Source, Info.Description)
+    Assert.Throws Info.Number, Info.Source, Info.Description
 End Sub
 
 Public Property Get TestClass() As Object
@@ -67,11 +67,11 @@ End Property
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData)
     If TestClass Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "TestClass")
+        Error.CannotBeNothing Me, "Init", "TestClass"
     If Member Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "Member")
+        Error.CannotBeNothing Me, "Init", "Member"
     If TestCaseData Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "TestCaseData")
+        Error.CannotBeNothing Me, "Init", "TestCaseData"
         
     Set mTestClass = TestClass
     Set mMember = Member
@@ -83,7 +83,7 @@ End Sub
 '   ITestMethod Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ITestMethod_Run()
-    Call Run
+    Run
 End Sub
 
 Private Property Get ITestMethod_TestClass() As Object

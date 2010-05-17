@@ -36,22 +36,21 @@ Public Property Get Count() As Long
     Count = mItems.Count
 End Property
 
-Public Sub Add(ByVal Name As String)
+Public Sub Add(ByRef Name As String)
     On Error GoTo errTrap
-    Call mItems.Add(Name, Name)
+    mItems.Add Name, Name
 errTrap:
 End Sub
 
 Public Property Get Item(ByVal Index As Long) As String
 Attribute Item.VB_UserMemId = 0
     If Index < 0 Or Index >= Me.Count Then _
-        Call Error.IndexOutOfRange(Me, "Item")
-'        Call Err.Raise(ErrorCode.IndexOutOfRange, Resource.GetString(Src_CategoryList_Item), Resource.GetString(Arg_IndexOutOfRange))
+        Error.IndexOutOfRange Me, "Item"
         
     Item = mItems(Index + 1)
 End Property
 
-Public Function Contains(ByVal Name As String) As Boolean
+Public Function Contains(ByRef Name As String) As Boolean
     On Error GoTo errTrap
     Name = mItems(Name)
     Contains = True

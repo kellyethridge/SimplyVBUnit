@@ -95,7 +95,7 @@ Public Property Get IsSuccess() As Boolean
 End Property
 
 Public Sub Success(Optional ByVal Message As String)
-    Call SetResult(SuccessState, Message)
+    SetResult SuccessState, Message
 End Sub
 
 Public Property Get IsFailure() As Boolean
@@ -103,7 +103,7 @@ Public Property Get IsFailure() As Boolean
 End Property
 
 Public Sub Failure(Optional ByVal Message As String, Optional ByVal Site As FailureSite = TestSite)
-    Call SetResult(FailureState, Message, Site)
+    SetResult FailureState, Message, Site
 End Sub
 
 Public Property Get IsError() As Boolean
@@ -111,7 +111,7 @@ Public Property Get IsError() As Boolean
 End Property
 
 Public Sub Error(Optional ByVal Message As String, Optional ByVal Site As FailureSite = TestSite)
-    Call SetResult(ErrorState, Message, Site)
+    SetResult ErrorState, Message, Site
 End Sub
 
 Public Property Get IsIgnored() As Boolean
@@ -119,7 +119,7 @@ Public Property Get IsIgnored() As Boolean
 End Property
 
 Public Sub Ignore(Optional ByVal Reason As String)
-    Call SetResult(IgnoredState, Reason)
+    SetResult IgnoredState, Reason
 End Sub
 
 Public Property Get IsInvalid() As Boolean
@@ -127,7 +127,7 @@ Public Property Get IsInvalid() As Boolean
 End Property
 
 Public Sub Invalid(Optional ByVal Reason As String)
-    Call SetResult(NotRunnableState, Reason)
+    SetResult NotRunnableState, Reason
 End Sub
 
 Public Property Get Test() As ITest
@@ -140,10 +140,10 @@ End Property
 
 Public Sub AddResult(ByVal Result As TestResult)
     If Result Is Nothing Then _
-        Call modStatics.Error.CannotBeNothing(Me, "AddResult", "Result")
+        modStatics.Error.CannotBeNothing Me, "AddResult", "Result"
         
-    Call mResults.Add(Result)
-    Call SetResultState(Result.ResultState)
+    mResults.Add Result
+    SetResultState Result.ResultState
 End Sub
 
 Private Sub SetResultState(ByVal ChildState As ResultState)
@@ -156,7 +156,7 @@ End Sub
 
 Private Sub TrySetFailureState()
     If CanSetFailure Then
-        Call Me.Failure("Child test failed", ChildSite)
+        Me.Failure "Child test failed", ChildSite
     End If
 End Sub
 
@@ -166,7 +166,7 @@ End Function
 
 Private Sub TrySetSuccessState()
     If CanSetSuccess Then
-        Call Me.Success
+        Me.Success
     End If
 End Sub
 
@@ -175,7 +175,7 @@ Private Function CanSetSuccess() As Boolean
 End Function
 
 Private Sub SetCancelledState()
-    Call Me.SetResult(CancelledState)
+    Me.SetResult CancelledState
 End Sub
 
 

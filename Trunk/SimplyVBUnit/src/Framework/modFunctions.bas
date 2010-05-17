@@ -95,7 +95,7 @@ Public Function GetArrayPointer(ByRef Arr As Variant) As Long
         Case BYREF_ARRAY:   Ptr = MemLong(MemLong(VarPtr(Arr) + VARIANTDATA_OFFSET))
         Case vbArray:       Ptr = MemLong(VarPtr(Arr) + VARIANTDATA_OFFSET)
         Case Else
-            Call Err.Raise(ErrorCode.Argument, , "GetArrayPointer", "Array is required.")
+            Err.Raise ErrorCode.Argument, , "GetArrayPointer", "Array is required."
     End Select
     
     ' HACK HACK HACK
@@ -141,7 +141,7 @@ Public Function GetArrayElement(ByRef Arr As Variant, ByVal Index As Long) As Va
     
     On Error GoTo errTrap
     If pSA <> 0 Then
-        Call CopyMemory(SA, ByVal pSA, LenB(SA))
+        CopyMemory SA, ByVal pSA, LenB(SA)
         
         If SA.cDims > 0 Then
             Dim Count As Long
@@ -159,12 +159,12 @@ Public Function GetArrayElement(ByRef Arr As Variant, ByVal Index As Long) As Va
             SA.cElements = Count
             SA.cDims = 1
             
-            Call VariantCopyInd(GetArrayElement, Src(Index))
+            VariantCopyInd GetArrayElement, Src(Index)
         End If
     End If
 
 errTrap:
-    Call ZeroMemory(Src, 16)
+    ZeroMemory Src, SIZEOF_VARIANT
 End Function
 
 
@@ -176,8 +176,8 @@ End Function
 ' @param Count The number of elements to be in the array.
 '
 Public Sub InitArrayProxy(ByRef Proxy As ArrayProxy, ByRef FirstArgument As Variant, ByVal Count As Long)
-    Call FillDescriptor(Proxy.SA, FirstArgument, Count)
-    Call FillProxy(Proxy)
+    FillDescriptor Proxy.SA, FirstArgument, Count
+    FillProxy Proxy
 End Sub
 
 ''

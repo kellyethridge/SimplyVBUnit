@@ -52,7 +52,7 @@ Friend Function GetString(ByVal ID As StringResourceID, ParamArray Args() As Var
         LocalArgs = Args
         
         Dim sb As New StringBuilder
-        Call sb.AppendFormatArray(Result, LocalArgs)
+        sb.AppendFormatArray Result, LocalArgs
         
         Result = sb.ToString
     End If

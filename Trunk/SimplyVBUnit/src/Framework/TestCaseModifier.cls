@@ -76,7 +76,7 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Data As TestCaseData)
     If Data Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "Data")
+        Error.CannotBeNothing Me, "Init", "Data"
         
     Set mData = Data
 End Sub
@@ -86,11 +86,11 @@ End Sub
 '   AssertExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub AssertExpression_Expect(Expected As Variant)
-    Call Expect(Expected)
+    Expect Expected
 End Sub
 
 Private Sub AssertExpression_Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As String, Optional ByVal ErrorDescription As String)
-    Call Throws(ErrorNumber, ErrorSource, ErrorDescription)
+    Throws ErrorNumber, ErrorSource, ErrorDescription
 End Sub
 
 
@@ -98,5 +98,5 @@ End Sub
 '   TestNameExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub TestNameExpression_TestName(ByVal NewTestName As String)
-    Call TestName(NewTestName)
+    TestName NewTestName
 End Sub

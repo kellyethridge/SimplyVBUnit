@@ -335,7 +335,7 @@ End Sub
 
 Public Sub Categories_WhenDefinedInTestName_AddsToList()
     Dim Suite As TestSuite
-    Set Suite = Sim.NewTestSuite("DB__Suite")
+    Set Suite = Sim.NewTestSuite("Suite__DB")
     
     Dim Actual As Boolean
     Actual = Suite.Categories.Contains("DB")
@@ -345,7 +345,7 @@ End Sub
 
 Public Sub Name_WithCategoryDefined_RemovesCategoryFromName()
     Dim Suite As TestSuite
-    Set Suite = Sim.NewTestSuite("DB__Suite")
+    Set Suite = Sim.NewTestSuite("Suite__DB")
 
     Dim Actual As String
     Actual = Suite.Name
@@ -355,7 +355,7 @@ End Sub
 
 Public Sub Name_WithMultipleCategoriesDefined_AddsToList()
     Dim Suite As TestSuite
-    Set Suite = Sim.NewTestSuite("DB_General__Suite")
+    Set Suite = Sim.NewTestSuite("Suite__DB_General")
 
     Dim Actual1 As Boolean
     Dim Actual2 As Boolean

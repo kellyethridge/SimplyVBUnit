@@ -38,16 +38,16 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
 End Function
 
 Public Sub WriteActualValueTo(ByVal Writer As TextMessageWriter)
-    Call mBaseConstraint.WriteActualValueTo(Writer)
+    mBaseConstraint.WriteActualValueTo Writer
 End Sub
 
 Public Sub WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Call Writer.WritePredicate("not")
-    Call mBaseConstraint.WriteDescriptionTo(Writer)
+    Writer.WritePredicate "not"
+    mBaseConstraint.WriteDescriptionTo Writer
 End Sub
 
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call Writer.DisplayConstraintDifferences(Me)
+    Writer.DisplayConstraintDifferences Me
 End Sub
 
 
@@ -56,7 +56,7 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal BaseConstraint As IConstraint)
     If BaseConstraint Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "BaseConstraint")
+        Error.CannotBeNothing Me, "Init", "BaseConstraint"
         
     Set mBaseConstraint = BaseConstraint
 End Sub
@@ -70,13 +70,13 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
-    Call WriteActualValueTo(Writer)
+    WriteActualValueTo Writer
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Call WriteDescriptionTo(Writer)
+    WriteDescriptionTo Writer
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call WriteMessageTo(Writer)
+    WriteMessageTo Writer
 End Sub

@@ -37,13 +37,17 @@ Private mName   As String
 Private mResult As CategoryParserResult
 
 
-Public Function Parse(ByVal Name As String) As CategoryParserResult
-    Call Init(Name)
-    Call ParseCategoriesAndName
+Public Function Parse(ByRef Name As String) As CategoryParserResult
+    Init Name
+    ParseCategoriesAndName
     Set Parse = Release
 End Function
 
-Private Sub Init(ByVal Name As String)
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub Init(ByRef Name As String)
     mName = Name
     Set mResult = New CategoryParserResult
 End Sub
@@ -53,10 +57,10 @@ Private Sub ParseCategoriesAndName()
     i = GetCategoryDelimeterIndex
     
     If HasCategories(i) Then
-        Call AddCategories(i)
-        Call ParseNameFromCategoryGroup(i)
+        AddCategories i
+        ParseNameFromCategoryGroup i
     Else
-        Call InitName
+        InitName
     End If
 End Sub
 
@@ -78,12 +82,12 @@ Private Sub AddCategories(ByVal DelimeterIndex As Long)
     Dim Categories() As String
     Categories = ParseCategoriesFromName(DelimeterIndex)
     
-    Call CreateEmptyCategoryList
-    Call AddCategoriesToList(Categories)
+    CreateEmptyCategoryList
+    AddCategoriesToList Categories
 End Sub
 
 Private Function ParseCategoriesFromName(ByVal DelimeterIndex As Long) As String()
-    ParseCategoriesFromName = Split(Left$(mName, DelimeterIndex - 1), CATEGORY_DELIMETER)
+    ParseCategoriesFromName = Split(Mid$(mName, DelimeterIndex + 2), CATEGORY_DELIMETER)
 End Function
 
 Private Sub CreateEmptyCategoryList()
@@ -93,12 +97,12 @@ End Sub
 Private Sub AddCategoriesToList(ByRef Categories() As String)
     Dim i As Long
     For i = 0 To UBound(Categories)
-        Call mResult.Categories.Add(Categories(i))
+        mResult.Categories.Add Categories(i)
     Next
 End Sub
 
 Private Sub ParseNameFromCategoryGroup(ByVal DelimeterIndex As Long)
-    mResult.Name = Mid$(mName, DelimeterIndex + Len(CATEGORYGROUP_DELIMETER))
+    mResult.Name = Left(mName, DelimeterIndex - 1)
 End Sub
 
 Private Sub InitName()

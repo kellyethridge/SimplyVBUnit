@@ -40,20 +40,15 @@ End Property
 Public Function Use(ParamArray Args() As Variant) As TestCaseModifier
     Dim Data As New TestCaseData
     
-    If HasElements(UBound(Args)) Then
+    If UBound(Args) >= 0 Then
         Dim Locals() As Variant
         Locals = Args
-        Call Data.CopyArguments(Locals)
-        Call mDataStore.Add(Data)
+        Data.CopyArguments Locals
+        mDataStore.Add Data
     End If
     
     Set Use = Sim.NewTestCaseModifier(Data)
 End Function
-
-Private Function HasElements(ByVal UpperBound As Long) As Boolean
-    HasElements = (UpperBound >= 0)
-End Function
-
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -61,10 +56,10 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal MethodName As String, ByVal DataStore As Collection)
     If Len(MethodName) = 0 Then _
-        Call Error.CannotBeEmpty(Me, "Init", "MethodName")
+        Error.CannotBeEmpty Me, "Init", "MethodName"
     If DataStore Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "DataStore")
-        
+        Error.CannotBeNothing Me, "Init", "DataStore"
+    
     mMethodName = MethodName
     Set mDataStore = DataStore
 End Sub

@@ -65,13 +65,17 @@ Attribute Throws.VB_MemberFlags = "40"
     Set Throws = mThrows
 End Property
 
-Friend Property Set Throws(ByVal RHS As IConstraint)
-    Set mThrows = RHS
-End Property
-
 Public Property Get AssertCount() As Long
 Attribute AssertCount.VB_MemberFlags = "40"
     AssertCount = mAssertCount
+End Property
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Property Set Throws(ByVal RHS As IConstraint)
+    Set mThrows = RHS
 End Property
 
 Friend Sub IncrementAssertCount()
@@ -83,9 +87,9 @@ End Sub
 '   Class Events
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
-    Call TestContextManager.BeginContext(Me)
+    TestContextManager.BeginContext Me
 End Sub
 
 Private Sub Class_Terminate()
-    Call TestContextManager.EndContext
+    TestContextManager.EndContext
 End Sub

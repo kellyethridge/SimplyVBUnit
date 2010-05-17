@@ -125,7 +125,7 @@ Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
     ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
         DisplayStringDifferences Writer
     Else
-        Call Writer.DisplayConstraintDifferences(Me)
+        Writer.DisplayConstraintDifferences Me
     End If
 End Sub
 
@@ -135,7 +135,7 @@ End Sub
 '   Friend Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByRef Expected As Variant, ByVal Expression As ConstraintExpression)
-    Call VariantCopyInd(mExpected, Expected)
+    VariantCopyInd mExpected, Expected
     Set mExpression = Expression
 End Sub
 
@@ -417,12 +417,12 @@ Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
     MismatchIndex = MsgUtils.FindMismatchIndex(CStr(mExpected), CStr(mActual), mIgnoreCase)
     
     If Len(mExpected) = Len(mActual) Then
-        Call Writer.WriteLine(MSG_STRINGSDIFFERBYINDEX, Len(mExpected), MismatchIndex)
+        Writer.WriteLine MSG_STRINGSDIFFERBYINDEX, Len(mExpected), MismatchIndex
     Else
-        Call Writer.WriteLine(MSG_STRINGSDIFFERBYLENGTHANDINDEX, Len(mExpected), Len(mActual), MismatchIndex)
+        Writer.WriteLine MSG_STRINGSDIFFERBYLENGTHANDINDEX, Len(mExpected), Len(mActual), MismatchIndex
     End If
     
-    Call Writer.DisplayStringDifferences(CStr(mExpected), CStr(mActual), MismatchIndex, mIgnoreCase, mClipping)
+    Writer.DisplayStringDifferences CStr(mExpected), CStr(mActual), MismatchIndex, mIgnoreCase, mClipping
 End Sub
 
 Private Function GetValue(ByRef Source As Variant, ByVal Index As Long) As Variant

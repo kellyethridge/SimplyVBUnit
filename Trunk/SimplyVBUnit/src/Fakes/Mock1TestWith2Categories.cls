@@ -16,7 +16,7 @@ Option Explicit
 Public Calls As New CallTrace
 
 
-Public Sub DB_General__Test2()
-    Call Calls.Add("DB_General__Test2")
+Public Sub Test2__DB_General()
+    Call Calls.Add("Test2__DB_General")
 End Sub
 

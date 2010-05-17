@@ -36,8 +36,8 @@ Private mTestSequence   As Long
 
 
 Public Function BuildFrom(ByVal TestClass As Object, ByVal Member As MemberInfo) As Collection
-    Call Init(TestClass, Member)
-    Call BuildTestCases
+    Init TestClass, Member
+    BuildTestCases
     Set BuildFrom = Release
 End Function
 
@@ -50,9 +50,9 @@ End Sub
 
 Private Sub BuildTestCases()
     If CanBuildDirectly Then
-        Call BuildDirectly
+        BuildDirectly
     ElseIf CanBuildIndirectly Then
-        Call BuildIndirectly
+        BuildIndirectly
     End If
 End Sub
 
@@ -70,7 +70,7 @@ End Function
 Private Sub BuildDirectly()
     Dim Method As ITestMethod
     Set Method = Sim.NewNoArgTestMethod(mTestClass, mMember)
-    Call AddTestCase(Method)
+    AddTestCase Method
 End Sub
 
 Private Function CanBuildIndirectly() As Boolean
@@ -80,13 +80,13 @@ End Function
 Private Sub BuildIndirectly()
     Dim Suite As TestSuite
     Set Suite = Sim.NewTestSuite(mMember.Name)
-    Call mTestCases.Add(Suite)
+    mTestCases.Add Suite
     
     Dim Data As TestCaseData
     For Each Data In GetTestCases
         Dim TestCase As TestCase
         Set TestCase = MakeTestCaseFromData(Data)
-        Call Suite.Add(TestCase)
+        Suite.Add TestCase
     Next
 End Sub
 
@@ -136,7 +136,7 @@ Private Function GetTestCases() As Collection
     
     Dim Source As ITestCaseSource
     Set Source = mTestClass
-    Call Source.GetTestCases(Builder)
+    Source.GetTestCases Builder
     
     Set GetTestCases = Store
 End Function
@@ -144,7 +144,7 @@ End Function
 Private Sub AddTestCase(ByVal Method As ITestMethod)
     Dim TestCase As TestCase
     Set TestCase = Sim.NewTestCase(mMember.Name, Method)
-    Call mTestCases.Add(TestCase)
+    mTestCases.Add TestCase
 End Sub
 
 

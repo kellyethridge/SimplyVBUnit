@@ -38,7 +38,7 @@ Private mData       As TestCaseData
 Public Sub Run()
     Dim Result As Variant
     
-    Call VariantCopyInd(Result, tli.InvokeHookArray(mTestClass, mMember.MemberId, INVOKE_FUNC, mData.Arguments))
+    VariantCopyInd Result, tli.InvokeHookArray(mTestClass, mMember.MemberId, INVOKE_FUNC, mData.Arguments)
     
     Assert.That Result, mData.Expected
 End Sub
@@ -62,7 +62,7 @@ End Sub
 '   ITestMethod Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ITestMethod_Run()
-    Call Run
+    Run
 End Sub
 
 Private Property Get ITestMethod_TestClass() As Object

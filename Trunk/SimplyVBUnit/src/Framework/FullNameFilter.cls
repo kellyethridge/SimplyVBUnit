@@ -35,11 +35,9 @@ Private mNames  As New Collection
 
 
 
-Public Sub Add(ByVal Name As String)
+Public Sub Add(ByRef Name As String)
     On Error GoTo errTrap
-    
-    Call mNames.Add(Name, Name)
-
+    mNames.Add Name, Name
 errTrap:
 End Sub
 

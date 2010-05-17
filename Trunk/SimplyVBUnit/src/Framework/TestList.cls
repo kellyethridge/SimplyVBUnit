@@ -49,10 +49,10 @@ End Property
 
 Public Sub Add(ByVal Test As ITest)
     If Test Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Add", "Test")
+        Error.CannotBeNothing Me, "Add", "Test"
         
     mCount = mCount + 1
-    Call EnsureCapacity
+    EnsureCapacity
     Set mItems(mCount - BASE_ONE_OFFSET) = Test
 End Sub
 
@@ -78,7 +78,7 @@ Private Sub IncreaseCapacity()
     Dim NewCapacity As Long
     NewCapacity = CurrentCapacity * CAPACITY_GROWTH_RATE
     
-    Call SetCapacity(NewCapacity)
+    SetCapacity NewCapacity
 End Sub
 
 Private Sub SetCapacity(ByVal Capacity As Long)
@@ -88,8 +88,7 @@ End Sub
 Public Property Get Item(ByVal Index As Long) As ITest
 Attribute Item.VB_UserMemId = 0
     If (Index < MINIMUM_INDEX) Or (Index >= Me.Count) Then _
-        Call Error.IndexOutOfRange(Me, "Item")
-'        Call Err.Raise(ErrorCode.IndexOutOfRange, Resource.GetString(Src_TestList_Item), Resource.GetString(Arg_IndexOutOfRange))
+        Error.IndexOutOfRange Me, "Item"
         
     Set Item = mItems(Index)
 End Property
@@ -116,8 +115,8 @@ Private Function HasEqualContents(ByVal Other As TestList) As Boolean
 End Function
 
 Public Sub Sort(Optional ByVal Comparer As ITestComparer)
-    Call AssignComparer(Comparer)
-    Call QuickSort(0, mCount - BASE_ONE_OFFSET)
+    AssignComparer Comparer
+    QuickSort 0, mCount - BASE_ONE_OFFSET
 End Sub
 
 Private Sub AssignComparer(ByVal Comparer As ITestComparer)
@@ -159,10 +158,10 @@ Private Sub QuickSort(ByVal Left As Long, ByVal Right As Long)
         Loop While i <= j
         
         If j - Left <= Right - i Then
-            If Left < j Then Call QuickSort(Left, j)
+            If Left < j Then QuickSort Left, j
             Left = i
         Else
-            If i < Right Then Call QuickSort(i, Right)
+            If i < Right Then QuickSort i, Right
             Right = j
         End If
     Loop
@@ -177,7 +176,7 @@ Attribute NewEnum.VB_MemberFlags = "40"
 End Function
 
 Private Sub Class_Initialize()
-    Call SetCapacity(DEF_CAPACITY)
+    SetCapacity DEF_CAPACITY
 End Sub
 
 

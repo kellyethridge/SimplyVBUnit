@@ -47,7 +47,7 @@ Public Function IgnoreCase() As ThrowsConstraint
 End Function
 
 Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call Writer.DisplayConstraintDifferences(Me)
+    Writer.DisplayConstraintDifferences Me
 End Sub
 
 
@@ -56,7 +56,7 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Expected As ErrorInfo)
     If Expected Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "Expected")
+        Error.CannotBeNothing Me, "Init", "Expected"
         
     Set mExpected = Expected
 End Sub
@@ -75,20 +75,20 @@ End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
     If mActual Is Nothing Then
-        Call Writer.WriteText("no error raised")
+        Writer.WriteText "no error raised"
     Else
-        Call Writer.WriteErrorInfo(mActual)
+        Writer.WriteErrorInfo mActual
     End If
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
     If mActual Is Nothing Then
-        Call Writer.WriteText("an error")
+        Writer.WriteText "an error"
     Else
-        Call Writer.WriteErrorInfo(mExpected)
+        Writer.WriteErrorInfo mExpected
     End If
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call WriteMessageTo(Writer)
+    WriteMessageTo Writer
 End Sub

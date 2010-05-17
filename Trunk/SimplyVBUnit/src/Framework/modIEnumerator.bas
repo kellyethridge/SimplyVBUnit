@@ -42,16 +42,16 @@ Private IID_IEnumVariant    As VBGUID
 
 
 Public Function CreateEnumerator(ByVal Obj As IEnumerator) As stdole.IUnknown
-    Call Init
-    Call Obj.Reset
+    Init
+    Obj.Reset
     
     Dim This As Long
     This = AllocateObjectMemory
     
     Dim Wrapper As UserEnumWrapper
-    Call FillWrapper(Wrapper, Obj)
-    Call CopyWrapperToMemory(Wrapper, This)
-    Call EraseWrapper(Wrapper)
+    FillWrapper Wrapper, Obj
+    CopyWrapperToMemory Wrapper, This
+    EraseWrapper Wrapper
     
     ObjectPtr(CreateEnumerator) = This
 End Function
@@ -62,8 +62,8 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Init()
     If mpVTable = vbNullPtr Then
-        Call InitGUIDS
-        Call InitVTable
+        InitGUIDS
+        InitVTable
     End If
 End Sub
 
@@ -75,7 +75,7 @@ Private Function AllocateObjectMemory() As Long
     Result = CoTaskMemAlloc(LEN_OF_USERENUMWRAPPER)
     
     If Result = vbNullPtr Then
-        Call Err.Raise(OUT_OF_MEMORY)
+        Err.Raise OUT_OF_MEMORY
     End If
     
     AllocateObjectMemory = Result
@@ -90,11 +90,11 @@ Private Sub FillWrapper(ByRef Wrapper As UserEnumWrapper, ByVal Obj As IEnumerat
 End Sub
 
 Private Sub CopyWrapperToMemory(ByRef Wrapper As UserEnumWrapper, ByVal PtrDestination As Long)
-    Call CopyMemory(ByVal PtrDestination, ByVal VarPtr(Wrapper), LenB(Wrapper))
+    CopyMemory ByVal PtrDestination, ByVal VarPtr(Wrapper), LenB(Wrapper)
 End Sub
 
 Private Sub EraseWrapper(ByRef Wrapper As UserEnumWrapper)
-    Call ZeroMemory(ByVal VarPtr(Wrapper), LenB(Wrapper))
+    ZeroMemory ByVal VarPtr(Wrapper), LenB(Wrapper)
 End Sub
 
 Private Sub InitGUIDS()
@@ -143,7 +143,7 @@ Private Function QueryInterface(ByRef This As UserEnumWrapper, ByRef riid As VBG
     
     If ok Then
         pvObj = VarPtr(This)
-        Call AddRef(This)
+        AddRef This
     Else
         QueryInterface = E_NOINTERFACE
     End If
@@ -162,20 +162,20 @@ Private Function Release(ByRef This As UserEnumWrapper) As Long
         Release = .cRefs
         
         If .cRefs = 0 Then
-            Call Delete(This)
+            Delete This
         End If
     End With
 End Function
 
 Private Sub Delete(ByRef This As UserEnumWrapper)
    Set This.UserEnum = Nothing
-   Call CoTaskMemFree(VarPtr(This))
+   CoTaskMemFree VarPtr(This)
 End Sub
 
 
 Private Function IEnumVariant_Next(ByRef This As UserEnumWrapper, ByVal celt As Long, ByRef prgVar As Variant, ByVal pceltFetched As Long) As Long
     If This.UserEnum.MoveNext Then
-        Call VariantCopyInd(prgVar, This.UserEnum.Current)
+        VariantCopyInd prgVar, This.UserEnum.Current
          
         If pceltFetched <> vbNullPtr Then
             MemLong(pceltFetched) = 1
@@ -196,10 +196,10 @@ Private Function IEnumVariant_Skip(ByRef This As UserEnumWrapper, ByVal celt As 
 End Function
 
 Private Function IEnumVariant_Reset(ByRef This As UserEnumWrapper) As Long
-   Call This.UserEnum.Reset
+    This.UserEnum.Reset
 End Function
 
 Private Function IEnumVariant_Clone(ByRef This As UserEnumWrapper, ByRef ppenum As stdole.IUnknown) As Long
     ObjectPtr(ppenum) = VarPtr(This)
-    Call AddRef(This)
+    AddRef This
 End Function

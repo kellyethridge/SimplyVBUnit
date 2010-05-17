@@ -35,7 +35,7 @@ Private mMember     As MemberInfo
 
 
 Public Sub Run()
-    Call TLI.InvokeHookSub(mTestClass, mMember.MemberId, INVOKE_FUNC)
+    tli.InvokeHookSub mTestClass, mMember.MemberId, INVOKE_FUNC
 End Sub
 
 Public Property Get TestClass() As Object
@@ -44,10 +44,10 @@ End Property
 
 Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo)
     If TestClass Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "TestClass")
+        Error.CannotBeNothing Me, "Init", "TestClass"
     If Member Is Nothing Then _
-        Call Error.CannotBeNothing(Me, "Init", "Member")
-        
+        Error.CannotBeNothing Me, "Init", "Member"
+    
     Set mTestClass = TestClass
     Set mMember = Member
 End Sub
