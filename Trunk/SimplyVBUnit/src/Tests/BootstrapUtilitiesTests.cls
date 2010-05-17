@@ -66,9 +66,8 @@ End Function
 
 Private Function AssertError_WithNoError_RaisesError()
     On Error GoTo errTrap
-    Call Err.Clear
     
-    Call AssertError(Err, 1)
+    AssertError Err, 1
     Debug.Assert False ' should raise error
     
 errTrap:
@@ -82,7 +81,7 @@ Private Function AssertError_WithWrongErrorNumber_RaisesError()
     Err.Source = "a"
     Err.Description = "b"
     
-    Call AssertError(Err, 2, "a", "b")
+    AssertError Err, 2, "a", "b"
     Debug.Assert False ' should raise error
     
 errTrap:
@@ -96,7 +95,7 @@ Private Function AssertError_WithWrongErrorSource_RaisesError()
     Err.Source = "a"
     Err.Description = "b"
     
-    Call AssertError(Err, 1, "b", "b")
+    AssertError Err, 1, "b", "b"
     Debug.Assert False ' should raise error
     
 errTrap:
@@ -110,7 +109,7 @@ Private Function AssertError_WithWrongDescription_RaisesError()
     Err.Source = "a"
     Err.Description = "b"
     
-    Call AssertError(Err, 1, "a", "c")
+    AssertError Err, 1, "a", "c"
     Debug.Assert False ' should raise error
     
 errTrap:
@@ -124,7 +123,7 @@ Private Function AssertError_WithCorrectError_Passes()
     Err.Source = "a"
     Err.Description = "b"
     
-    Call AssertError(Err, 1, "a", "b")
+    AssertError Err, 1, "a", "b"
     Exit Function
     
 errTrap:
@@ -133,11 +132,11 @@ End Function
 
 Private Function AssertCalls_WithWrongCall_RaisesError()
     Dim Actual As New CallTrace
-    Call Actual.Add("Method1")
+    Actual.Add "Method1"
     
     On Error GoTo errTrap
     
-    Call AssertCalls(Actual, "Method2")
+    AssertCalls Actual, "Method2"
     On Error GoTo 0
     Debug.Assert False ' an error should be raised
     
@@ -147,11 +146,11 @@ End Function
 
 Private Function AssertCalls_WithWrongNumberOfCalls_RaisesError()
     Dim Actual As New CallTrace
-    Call Actual.Add("Method1")
+    Actual.Add "Method1"
     
     On Error GoTo errTrap
     
-    Call AssertCalls(Actual, "Method1", "Method2")
+    AssertCalls Actual, "Method1", "Method2"
     On Error GoTo 0
     Debug.Assert False ' an error should be raised
     
@@ -161,10 +160,10 @@ End Function
 
 Private Function AssertCalls_WithCorrectCalls_Passes()
     Dim Actual As New CallTrace
-    Call Actual.Add("Method1")
+    Actual.Add "Method1"
     
     On Error GoTo errTrap
-    Call AssertCalls(Actual, "Method1")
+    AssertCalls Actual, "Method1"
     Exit Function
     
 errTrap:
@@ -173,10 +172,10 @@ End Function
 
 Private Function AssertNoCalls_WithCalls_RaisesError()
     Dim Actual As New CallTrace
-    Call Actual.Add("Method1")
+    Actual.Add "Method1"
     
     On Error GoTo errTrap
-    Call AssertNoCalls(Actual)
+    AssertNoCalls Actual
     On Error GoTo 0
     Debug.Assert False ' an error should be raised
     
@@ -188,7 +187,7 @@ Private Function AssertNoCalls_WithNoCallsMade_Passes()
     Dim Actual As New CallTrace
     
     On Error GoTo errTrap
-    Call AssertNoCalls(Actual)
+    AssertNoCalls Actual
     Exit Function
     
 errTrap:
