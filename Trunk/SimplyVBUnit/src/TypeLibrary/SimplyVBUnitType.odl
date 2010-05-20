@@ -117,6 +117,12 @@ library SimplyVBUnitType {
 	{
 		HRESULT Equals([in] VARIANT * X, [in] VARIANT * Y, [out, retval] boolean * RetVal);
 	}
+	
+	[uuid(814B5074-D094-4031-B744-592F90F8BC5E), odl]
+        interface IComparer : IDispatch
+        {
+                HRESULT Compare([in] VARIANT * X, [in] VARIANT * Y, [out, retval] long * RetVal);
+        }
 
         [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
         interface IConstraintExpression : IDispatch

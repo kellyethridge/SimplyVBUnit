@@ -43,6 +43,13 @@ Public Property Get MissingVariant(Optional ByVal Value As Variant) As Variant
     MissingVariant = Value
 End Property
 
+Public Function IsComparable(ByRef Value As Variant) As Boolean
+    Select Case VarType(Value)
+        Case vbString, vbLong, vbInteger, vbByte, vbDouble, vbSingle, vbDate, vbCurrency, vbDecimal
+            IsComparable = True
+    End Select
+End Function
+
 Public Function GetEnumerator(ByRef Enumerable As Variant) As IEnumerator
     If IsArray(Enumerable) Then
         Set GetEnumerator = Sim.NewArrayEnumerator(Enumerable)
