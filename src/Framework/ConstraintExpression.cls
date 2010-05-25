@@ -55,6 +55,22 @@ Public Function EqualTo(ByRef Expected As Variant) As EqualConstraint
     Set EqualTo = AddConstraint(Sim.NewEqualConstraint(Expected, Me))
 End Function
 
+Public Function GreaterThan(ByRef Expected As Variant) As IBasicExpression
+    Set GreaterThan = AddConstraint(Sim.NewComparisonConstraint(Expected, False, True, False, "greater than", Me))
+End Function
+
+Public Function GreaterThanOrEqualTo(ByRef Expected As Variant) As IBasicExpression
+    Set GreaterThanOrEqualTo = AddConstraint(Sim.NewComparisonConstraint(Expected, False, True, True, "greater than or equal to", Me))
+End Function
+
+Public Function LessThan(ByRef Expected As Variant) As IBasicExpression
+    Set LessThan = AddConstraint(Sim.NewComparisonConstraint(Expected, True, False, False, "less than", Me))
+End Function
+
+Public Function LessThanOrEqualTo(ByRef Expected As Variant) As IBasicExpression
+    Set LessThanOrEqualTo = AddConstraint(Sim.NewComparisonConstraint(Expected, True, False, True, "less than or equal to", Me))
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -95,19 +111,19 @@ Private Function IConstraintExpression_False() As SimplyVBUnitType.IBasicExpress
 End Function
 
 Private Function IConstraintExpression_GreaterThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
-
+    Set IConstraintExpression_GreaterThan = GreaterThan(Expected)
 End Function
 
 Private Function IConstraintExpression_GreaterThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
-
+    Set IConstraintExpression_GreaterThanOrEqualTo = GreaterThanOrEqualTo(Expected)
 End Function
 
 Private Function IConstraintExpression_LessThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
-
+    Set IConstraintExpression_LessThan = LessThan(Expected)
 End Function
 
 Private Function IConstraintExpression_LessThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
-
+    Set IConstraintExpression_LessThanOrEqualTo = LessThanOrEqualTo(Expected)
 End Function
 
 Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpression

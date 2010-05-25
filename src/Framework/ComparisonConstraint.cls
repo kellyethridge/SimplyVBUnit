@@ -28,9 +28,11 @@ Attribute VB_Exposed = True
 ' Module: ComparisonConstraint
 '
 Option Explicit
+Implements IBasicExpression
 Implements IResolvable
 Implements IConstraint
 
+Private mExpression     As ConstraintExpression
 Private mExpected       As Variant
 Private mActual         As Variant
 Private mCanBeLess      As Boolean
@@ -51,32 +53,31 @@ Public Function Using(ByVal Comparer As IComparer) As ComparisonConstraint
     Set Using = Me
 End Function
 
-
 Public Function Matches(ByRef Actual As Variant) As Boolean
     VariantCopyInd mActual, Actual
     
-    Dim RetVal As Boolean
+    Dim Result As Boolean
     If mComparer Is Nothing Then
-        RetVal = NormalCompare
+        Result = NormalCompare
     Else
-        RetVal = ComparerCompare
+        Result = ComparerCompare
     End If
     
-    Matches = RetVal
+    Matches = Result
 End Function
-
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Expected As Variant, ByVal CanBeLess As Boolean, ByVal CanBeGreater As Boolean, ByVal CanBeEqual As Boolean, ByRef Predicate As String)
+Friend Sub Init(ByRef Expected As Variant, ByVal CanBeLess As Boolean, ByVal CanBeGreater As Boolean, ByVal CanBeEqual As Boolean, ByRef Predicate As String, ByVal Expression As ConstraintExpression)
     VariantCopyInd mExpected, Expected
     mCanBeLess = CanBeLess
     mCanBeGreater = CanBeGreater
     mCanBeEqual = CanBeEqual
     mPredicate = Predicate
     mCompareMethod = vbBinaryCompare
+    Set mExpression = Expression
 End Sub
 
 
@@ -84,23 +85,27 @@ End Sub
 '   Private Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function ComparerCompare() As Boolean
-    Dim RetVal As Boolean
+    Dim Result As Boolean
     
-    Select Case mComparer.Compare(mExpected, mActual)
-        Case Is < 0:    RetVal = mCanBeGreater
-        Case Is > 0:    RetVal = mCanBeLess
-        Case Else:      RetVal = mCanBeEqual
+    Select Case mComparer.Compare(mActual, mExpected)
+        Case Is > 0:    Result = mCanBeGreater
+        Case Is < 0:    Result = mCanBeLess
+        Case Else:      Result = mCanBeEqual
     End Select
     
-    ComparerCompare = RetVal
+    ComparerCompare = Result
 End Function
 
 Private Function NormalCompare() As Boolean
+    Dim Result As Boolean
+    
     Select Case VarType(mExpected)
-        Case vbString:  RetVal = CompareStrings
-        Case vbDate:    RetVal = CompareDates
-        Case Else:      RetVal = CompareNumbers
+        Case vbString:  Result = CompareStrings
+        Case vbDate:    Result = CompareDates
+        Case Else:      Result = CompareNumbers
     End Select
+    
+    NormalCompare = Result
 End Function
 
 Private Function CompareDates() As Boolean
@@ -121,9 +126,9 @@ Private Function CompareStrings() As Boolean
     Dim Result As Boolean
 
     If VarType(mActual) = vbString Then
-        Select Case StrComp(mExpected, mActual, mCompareMethod)
-            Case Is > 0:    Result = mCanBeLess
-            Case Is < 0:    Result = mCanBeGreater
+        Select Case StrComp(mActual, mExpected, mCompareMethod)
+            Case Is < 0:    Result = mCanBeLess
+            Case Is > 0:    Result = mCanBeGreater
             Case Else:      Result = mCanBeEqual
         End Select
     End If
@@ -135,9 +140,9 @@ Private Function CompareNumbers() As Boolean
     Dim Result As Boolean
 
     If IsNumber(mExpected) And IsNumber(mActual) Then
-        If mExpected < mActual Then
+        If mActual < mExpected Then
             Result = mCanBeLess
-        ElseIf mExpected > mActual Then
+        ElseIf mActual > mExpected Then
             Result = mCanBeGreater
         Else
             Result = mCanBeEqual
@@ -147,6 +152,17 @@ Private Function CompareNumbers() As Boolean
     CompareNumbers = Result
 End Function
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IBasicExpression Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IBasicExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
+    Set IBasicExpression_AndAlso = mExpression.AndAlso
+End Function
+
+Private Function IBasicExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
+    Set IBasicExpression_OrElse = mExpression.OrElse
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -174,5 +190,13 @@ End Sub
 '   IResolvable Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IResolvable_Resolve() As IConstraint
-
+    Dim Result As IConstraint
+    
+    If mExpression Is Nothing Then
+        Set Result = Me
+    Else
+        Set Result = mExpression.Resolve
+    End If
+    
+    Set IResolvable_Resolve = Result
 End Function
