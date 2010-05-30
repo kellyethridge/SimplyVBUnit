@@ -31,6 +31,7 @@ Option Explicit
 
 Private mConstraints As New Stack
 
+
 Public Sub Push(ByVal Constraint As IConstraint)
     mConstraints.Push Constraint
 End Sub

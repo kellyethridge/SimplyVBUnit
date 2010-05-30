@@ -34,7 +34,6 @@ Private mBase   As New TestFilterBase
 Private mNames  As New Collection
 
 
-
 Public Sub Add(ByRef Name As String)
     On Error GoTo errTrap
     mNames.Add Name, Name

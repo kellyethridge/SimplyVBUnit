@@ -179,6 +179,15 @@ library SimplyVBUnitType {
 		HRESULT NoClip([out, retval] IEqualConstraint ** RetVal);
 	}
 
+        [uuid(50CA1561-5124-4edc-B588-E89268BC9976), odl]
+        interface IComparisonConstraint: IDispatch
+        {
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+		HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
+		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
+        }
+
 	[uuid(0331F242-579F-4210-9822-39782E51E0BF), odl]
 	interface IzSyntaxHelper : IDispatch
 	{
@@ -190,10 +199,10 @@ library SimplyVBUnitType {
 		HRESULT Nothing([out, retval] IBasicExpression ** RetVal);
 		HRESULT Missing([out, retval] IBasicExpression ** RetVal);
 		HRESULT Not([out, retval] IConstraintExpression ** RetVal);
-		HRESULT LessThan([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
-		HRESULT GreaterThan([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
-		HRESULT LessThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
-		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
+		HRESULT LessThan([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
+		HRESULT GreaterThan([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
+		HRESULT LessThanOrEqualTo([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
+		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
 	}
 }
 

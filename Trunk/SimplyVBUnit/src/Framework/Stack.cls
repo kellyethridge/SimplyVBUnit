@@ -40,17 +40,13 @@ Public Property Get Count() As Long
 End Property
 
 Public Sub Push(ByRef Value As Variant)
-    If Me.IsEmpty Then
+    If mItems.Count = 0 Then
         mItems.Add Value
     Else
         mItems.Add Value, before:=TOP_ITEM_INDEX
     End If
 End Sub
 
-Public Property Get IsEmpty() As Boolean
-    IsEmpty = (Me.Count = 0)
-End Property
-    
 Public Function Peek() As Variant
     GetTopItem Peek
 End Function
@@ -59,14 +55,6 @@ Public Function Pop() As Variant
     GetTopItem Pop
     RemoveTopItem
 End Function
-
-Private Sub GetTopItem(ByRef Result As Variant)
-    VariantCopyInd Result, mItems(TOP_ITEM_INDEX)
-End Sub
-
-Private Sub RemoveTopItem()
-    mItems.Remove TOP_ITEM_INDEX
-End Sub
 
 Public Sub Clear()
     Initialize
@@ -78,6 +66,14 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Initialize()
     Set mItems = New Collection
+End Sub
+
+Private Sub GetTopItem(ByRef Result As Variant)
+    VariantCopyInd Result, mItems(TOP_ITEM_INDEX)
+End Sub
+
+Private Sub RemoveTopItem()
+    mItems.Remove TOP_ITEM_INDEX
 End Sub
 
 

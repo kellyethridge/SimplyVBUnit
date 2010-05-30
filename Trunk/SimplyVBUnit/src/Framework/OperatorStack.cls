@@ -31,6 +31,7 @@ Option Explicit
 
 Private mOperators As New Stack
 
+
 Public Sub Push(ByVal Operator As IOperator)
     mOperators.Push Operator
 End Sub

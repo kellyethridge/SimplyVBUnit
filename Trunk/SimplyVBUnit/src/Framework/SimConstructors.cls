@@ -145,7 +145,7 @@ Public Function NewTolerance(ByRef Amount As Variant) As Tolerance
     NewTolerance.Init Amount
 End Function
 
-Public Function NewComparisonConstraint(ByRef Expected As Variant, ByVal CanBeLess As Boolean, ByVal CanBeGreater As Boolean, ByVal CanBeEqual As Boolean, ByRef Predicate As String, Optional ByVal Expressions As ConstraintExpression) As ComparisonConstraint
+Public Function NewComparisonConstraint(ByRef Expected As Variant, ByVal CanBeLess As Boolean, ByVal CanBeGreater As Boolean, ByVal CanBeEqual As Boolean, ByRef Predicate As String, Optional ByVal Expression As ConstraintExpression) As ComparisonConstraint
     Set NewComparisonConstraint = New ComparisonConstraint
     NewComparisonConstraint.Init Expected, CanBeLess, CanBeGreater, CanBeEqual, Predicate, Expression
 End Function
