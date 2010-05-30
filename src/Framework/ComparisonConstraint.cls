@@ -29,6 +29,7 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 Implements IBasicExpression
+Implements IComparisonConstraint
 Implements IResolvable
 Implements IConstraint
 
@@ -162,6 +163,26 @@ End Function
 
 Private Function IBasicExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
     Set IBasicExpression_OrElse = mExpression.OrElse
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IComparisonConstraint Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IComparisonConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
+    Set IComparisonConstraint_AndAlso = mExpression.AndAlso
+End Function
+
+Private Function IComparisonConstraint_IgnoreCase() As SimplyVBUnitType.IComparisonConstraint
+    Set IComparisonConstraint_IgnoreCase = IgnoreCase
+End Function
+
+Private Function IComparisonConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
+    Set IComparisonConstraint_OrElse = mExpression.OrElse
+End Function
+
+Private Function IComparisonConstraint_Using(ByVal Comparer As SimplyVBUnitType.IComparer) As SimplyVBUnitType.IComparisonConstraint
+    Set IComparisonConstraint_Using = Using(Comparer)
 End Function
 
 
