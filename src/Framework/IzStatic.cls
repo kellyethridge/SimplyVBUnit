@@ -31,19 +31,19 @@ Private Function IzSyntaxHelper_False() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_False = NewExp.False
 End Function
 
-Private Function IzSyntaxHelper_GreaterThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+Private Function IzSyntaxHelper_GreaterThan(Expected As Variant) As SimplyVBUnitType.IComparisonConstraint
     Set IzSyntaxHelper_GreaterThan = NewExp.GreaterThan(Expected)
 End Function
 
-Private Function IzSyntaxHelper_GreaterThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+Private Function IzSyntaxHelper_GreaterThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IComparisonConstraint
     Set IzSyntaxHelper_GreaterThanOrEqualTo = NewExp.GreaterThanOrEqualTo(Expected)
 End Function
 
-Private Function IzSyntaxHelper_LessThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+Private Function IzSyntaxHelper_LessThan(Expected As Variant) As SimplyVBUnitType.IComparisonConstraint
     Set IzSyntaxHelper_LessThan = NewExp.LessThan(Expected)
 End Function
 
-Private Function IzSyntaxHelper_LessThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+Private Function IzSyntaxHelper_LessThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IComparisonConstraint
     Set IzSyntaxHelper_LessThanOrEqualTo = NewExp.LessThanOrEqualTo(Expected)
 End Function
 

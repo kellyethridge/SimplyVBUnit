@@ -173,7 +173,7 @@ Private Function IComparisonConstraint_AndAlso() As SimplyVBUnitType.IConstraint
     Set IComparisonConstraint_AndAlso = mExpression.AndAlso
 End Function
 
-Private Function IComparisonConstraint_IgnoreCase() As SimplyVBUnitType.IComparisonConstraint
+Private Function IComparisonConstraint_IgnoreCase() As SimplyVBUnitType.IBasicExpression
     Set IComparisonConstraint_IgnoreCase = IgnoreCase
 End Function
 
@@ -181,7 +181,7 @@ Private Function IComparisonConstraint_OrElse() As SimplyVBUnitType.IConstraintE
     Set IComparisonConstraint_OrElse = mExpression.OrElse
 End Function
 
-Private Function IComparisonConstraint_Using(ByVal Comparer As SimplyVBUnitType.IComparer) As SimplyVBUnitType.IComparisonConstraint
+Private Function IComparisonConstraint_Using(ByVal Comparer As SimplyVBUnitType.IComparer) As SimplyVBUnitType.IBasicExpression
     Set IComparisonConstraint_Using = Using(Comparer)
 End Function
 
