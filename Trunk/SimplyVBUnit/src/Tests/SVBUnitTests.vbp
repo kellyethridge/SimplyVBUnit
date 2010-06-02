@@ -64,6 +64,7 @@ Class=ConstraintExpressionTests; ConstraintExpressionTests.cls
 Class=ToleranceTests; ToleranceTests.cls
 Module=modWinApi; modWinApi.bas
 Class=ComparisonConstraintTests; ComparisonConstraintTests.cls
+Class=RangeConstraintTests; RangeConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

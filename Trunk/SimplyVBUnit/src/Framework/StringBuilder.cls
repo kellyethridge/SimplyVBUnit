@@ -73,7 +73,7 @@ Public Sub AppendFormatArray(ByRef Format As String, ByRef Args() As Variant)
     For j = 0 To UBound(Segments)
         Dim i As Long
         For i = 0 To UBound(Args)
-            Segments(j) = Replace$(Segments(j), "{" & i & "}", Args(i))
+            Segments(j) = Replace$(Segments(j), "{" & i & "}", GetStringValue(Args(i)))
         Next
     Next
 
@@ -83,6 +83,18 @@ Public Sub AppendFormatArray(ByRef Format As String, ByRef Args() As Variant)
     
     AppendText Result
 End Sub
+
+Private Function GetStringValue(ByRef Value As Variant) As String
+    Dim Result As String
+    
+    If IsArray(Value) Or IsObject(Value) Then
+        Result = MsgUtils.GetTypeRepresentation(Value)
+    Else
+        Result = CStr(Value)
+    End If
+    
+    GetStringValue = Result
+End Function
 
 ''
 ' Appends text to the end of the current string buffer.
