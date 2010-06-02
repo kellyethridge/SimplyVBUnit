@@ -39,6 +39,10 @@ Private Function IzSyntaxHelper_GreaterThanOrEqualTo(Expected As Variant) As Sim
     Set IzSyntaxHelper_GreaterThanOrEqualTo = NewExp.GreaterThanOrEqualTo(Expected)
 End Function
 
+Private Function IzSyntaxHelper_InRange(From As Variant, To As Variant) As SimplyVBUnitType.IUsingExpression
+    Set IzSyntaxHelper_InRange = NewExp.InRange(From, [To])
+End Function
+
 Private Function IzSyntaxHelper_LessThan(Expected As Variant) As SimplyVBUnitType.IComparisonConstraint
     Set IzSyntaxHelper_LessThan = NewExp.LessThan(Expected)
 End Function

@@ -102,6 +102,7 @@ library SimplyVBUnitType {
         // Forward definitions
         interface IEqualConstraint;
         interface IBasicExpression;
+        interface IUsingExpression;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -139,6 +140,7 @@ library SimplyVBUnitType {
 		HRESULT GreaterThan([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 		HRESULT LessThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
+                HRESULT InRange([in] VARIANT * From, [in] VARIANT * To, [out, retval] IUsingExpression ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -147,6 +149,14 @@ library SimplyVBUnitType {
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
 	}
+
+	[uuid(5284FE8C-6871-4e84-B1BE-409060EC234F), odl]
+        interface IUsingExpression : IDispatch
+        {
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
+        }
 
 	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
 	interface IToleranceUnits : IDispatch
@@ -203,6 +213,7 @@ library SimplyVBUnitType {
 		HRESULT GreaterThan([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
 		HRESULT LessThanOrEqualTo([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
 		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
+                HRESULT InRange([in] VARIANT * From, [in] VARIANT * To, [out, retval] IUsingExpression ** RetVal);
 	}
 }
 

@@ -150,4 +150,7 @@ Public Function NewComparisonConstraint(ByRef Expected As Variant, ByVal CanBeLe
     NewComparisonConstraint.Init Expected, CanBeLess, CanBeGreater, CanBeEqual, Predicate, Expression
 End Function
 
-
+Public Function NewRangeConstraint(ByRef FromValue As Variant, ByRef ToValue As Variant, Optional ByVal Expression As ConstraintExpression) As RangeConstraint
+    Set NewRangeConstraint = New RangeConstraint
+    Call NewRangeConstraint.Init(FromValue, ToValue, Expression)
+End Function
