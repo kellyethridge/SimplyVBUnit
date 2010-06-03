@@ -121,8 +121,8 @@ Private Function IConstraintExpression_GreaterThanOrEqualTo(Expected As Variant)
     Set IConstraintExpression_GreaterThanOrEqualTo = GreaterThanOrEqualTo(Expected)
 End Function
 
-Private Function IConstraintExpression_InRange(From As Variant, To As Variant) As SimplyVBUnitType.IUsingExpression
-    Set IConstraintExpression_InRange = InRange(From, [To])
+Private Function IConstraintExpression_InRange(FromValue As Variant, ToValue As Variant) As SimplyVBUnitType.IUsingExpression
+    Set IConstraintExpression_InRange = InRange(FromValue, ToValue)
 End Function
 
 Private Function IConstraintExpression_LessThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression

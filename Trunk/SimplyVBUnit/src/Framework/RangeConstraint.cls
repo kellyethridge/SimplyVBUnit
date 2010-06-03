@@ -48,15 +48,13 @@ Private mExpression As ConstraintExpression
 Public Function Matches(ByRef Actual As Variant) As Boolean
     Call VariantCopyInd(mActual, Actual)
     
-    Dim Result As Boolean
     If mComparer Is Nothing Then
-        If Actual >= mFrom Then
-            Result = (Actual <= mTo)
-        End If
-    Else
-        If mComparer.Compare(mActual, mFrom) >= 0 Then
-            Result = (mComparer(mActual, mTo) <= 0)
-        End If
+        Set mComparer = DefaultComparer.Instance
+    End If
+    
+    Dim Result As Boolean
+    If mComparer.Compare(mActual, mFrom) >= 0 Then
+        Result = (mComparer.Compare(mActual, mTo) <= 0)
     End If
     
     Matches = Result
