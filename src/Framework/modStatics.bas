@@ -29,9 +29,14 @@ Public Type NullListenerStatic
     Instance As New NullListener
 End Type
 
+Public Type DefaultComparerStatic
+    Instance As New DefaultComparer
+End Type
+
 Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
+Public DefaultComparer      As DefaultComparerStatic
 
 Public Sim                  As New SimConstructors
 Public Error                As New ErrorHelper
