@@ -45,6 +45,7 @@ Class=Stub1TestThrows; Stub1TestThrows.cls
 Class=Stub1TestCaseSourceTestName; Stub1TestCaseSourceTestName.cls
 Class=Stub1TestCaseSourceThrows; Stub1TestCaseSourceThrows.cls
 Class=Mock1TestCaseSourceExpect; Mock1TestCaseSourceExpect.cls
+Class=CollectionProxy; CollectionProxy.cls
 Startup="(None)"
 HelpFile=""
 Command32=""

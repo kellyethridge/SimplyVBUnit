@@ -152,5 +152,10 @@ End Function
 
 Public Function NewRangeConstraint(ByRef FromValue As Variant, ByRef ToValue As Variant, Optional ByVal Expression As ConstraintExpression) As RangeConstraint
     Set NewRangeConstraint = New RangeConstraint
-    Call NewRangeConstraint.Init(FromValue, ToValue, Expression)
+    NewRangeConstraint.Init FromValue, ToValue, Expression
+End Function
+
+Public Function NewResolvableConstraint(ByVal InnerConstraint As IConstraint, ByVal Expression As ConstraintExpression) As ResolvableConstraint
+    Set NewResolvableConstraint = New ResolvableConstraint
+    NewResolvableConstraint.Init InnerConstraint, Expression
 End Function
