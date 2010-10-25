@@ -50,7 +50,9 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(Iz.EqualTo(1).OrElse.EqualTo(2), 2, True)
             Call Test.Use(Iz.EqualTo(1).OrElse.EqualTo(2), 1, True)
             Call Test.Use(Iz.EqualTo(1).OrElse.EqualTo(2), 3, False)
-            
+            Call Test.Use(Iz.Empty, "", True)
+            Call Test.Use(Iz.Empty, "1", False)
+
         
     End Select
 End Sub

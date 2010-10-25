@@ -23,6 +23,10 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IzSyntaxHelper Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IzSyntaxHelper_Empty() As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_Empty = NewExp.Empty
+End Function
+
 Private Function IzSyntaxHelper_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
     Set IzSyntaxHelper_EqualTo = NewExp.EqualTo(Expected)
 End Function

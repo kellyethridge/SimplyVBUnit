@@ -75,6 +75,35 @@ Public Function InRange(ByRef FromValue As Variant, ByRef ToValue As Variant) As
     Set InRange = AddConstraint(Sim.NewRangeConstraint(FromValue, ToValue, Me))
 End Function
 
+Public Function Empty_() As IBasicExpression
+    Set Empty_ = AddConstraint(Sim.NewResolvableConstraint(New EmptyConstraint, Me))
+End Function
+
+Public Function vbEmpty() As IBasicExpression
+    Set vbEmpty = EqualTo(Empty)
+End Function
+
+Public Function vbNull() As IBasicExpression
+    Set vbNull = EqualTo(Null)
+End Function
+
+Public Function Nothing_() As IBasicExpression
+    Set Nothing_ = EqualTo(Nothing)
+End Function
+
+Public Function True_() As IBasicExpression
+    Set True_ = EqualTo(True)
+End Function
+
+Public Function False_() As IBasicExpression
+    Set False_ = EqualTo(False)
+End Function
+
+Public Function Missing() As IBasicExpression
+    Set Missing = EqualTo(MissingVariant)
+End Function
+
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -105,12 +134,16 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IConstraintExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IConstraintExpression_Empty() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Empty = Empty_
+End Function
+
 Private Function IConstraintExpression_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
     Set IConstraintExpression_EqualTo = EqualTo(Expected)
 End Function
 
 Private Function IConstraintExpression_False() As SimplyVBUnitType.IBasicExpression
-    Set IConstraintExpression_False = EqualTo(False)
+    Set IConstraintExpression_False = False_
 End Function
 
 Private Function IConstraintExpression_GreaterThan(Expected As Variant) As SimplyVBUnitType.IBasicExpression
@@ -134,7 +167,7 @@ Private Function IConstraintExpression_LessThanOrEqualTo(Expected As Variant) As
 End Function
 
 Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpression
-    Set IConstraintExpression_Missing = EqualTo(MissingVariant)
+    Set IConstraintExpression_Missing = Missing
 End Function
 
 Private Function IConstraintExpression_Not() As SimplyVBUnitType.IConstraintExpression
@@ -142,17 +175,17 @@ Private Function IConstraintExpression_Not() As SimplyVBUnitType.IConstraintExpr
 End Function
 
 Private Function IConstraintExpression_Nothing() As SimplyVBUnitType.IBasicExpression
-    Set IConstraintExpression_Nothing = EqualTo(Nothing)
+    Set IConstraintExpression_Nothing = Nothing_
 End Function
 
 Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpression
-    Set IConstraintExpression_True = EqualTo(True)
+    Set IConstraintExpression_True = True_
 End Function
 
 Private Function IConstraintExpression_VBEmpty() As SimplyVBUnitType.IBasicExpression
-    Set IConstraintExpression_VBEmpty = EqualTo(Empty)
+    Set IConstraintExpression_VBEmpty = vbEmpty
 End Function
 
 Private Function IConstraintExpression_VBNull() As SimplyVBUnitType.IBasicExpression
-    Set IConstraintExpression_VBNull = EqualTo(Null)
+    Set IConstraintExpression_VBNull = vbNull
 End Function
