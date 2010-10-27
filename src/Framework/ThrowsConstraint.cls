@@ -69,10 +69,6 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
     IConstraint_Matches = Matches(Actual)
 End Function
 
-Private Function IConstraint_Resolve() As IConstraint
-    Set IConstraint_Resolve = Me
-End Function
-
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
     If mActual Is Nothing Then
         Writer.WriteText "no error raised"

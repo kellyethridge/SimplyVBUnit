@@ -112,7 +112,7 @@ Private Function BuildTestMethod(ByVal Data As TestCaseData) As ITestMethod
     Set BuildTestMethod = Result
 End Function
 
-Private Function BuildTestName(ByVal UserDefinedName As String) As String
+Private Function BuildTestName(ByRef UserDefinedName As String) As String
     Dim Result As String
     
     If Len(UserDefinedName) > 0 Then
