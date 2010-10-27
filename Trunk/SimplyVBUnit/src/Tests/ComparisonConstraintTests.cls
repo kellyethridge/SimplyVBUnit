@@ -67,16 +67,6 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use("A", "a").Expect(True)
             Call Test.Use("b", "b").Expect(True)
             Call Test.Use(1, 1).Expect(True)
-        
-'        Case "TestRange"
-'            Call Test.Use(1, 5, 1).Expect(True)
-'            Call Test.Use(1, 5, 0).Expect(False)
-'            Call Test.Use(1, 5, 5).Expect(True)
-'            Call Test.Use(1, 5, 6).Expect(False)
-'            Call Test.Use(1.5, 2.5, 2).Expect(True)
-'            Call Test.Use(1.5, 2.5, 2.6).Expect(False)
-'            Call Test.Use(1.5, 2.5, 1.4).Expect(False)
-            
     End Select
 End Sub
 
@@ -103,8 +93,3 @@ Public Function TestGreaterThanOrEqualTo(ByRef Expected As Variant, ByRef Actual
     Set c = Iz.GreaterThanOrEqualTo(Expected)
     TestGreaterThanOrEqualTo = c.Matches(Actual)
 End Function
-
-'Public Function TestRange(ByRef FromValue As Variant, ByRef ToValue As Variant, ByRef Actual As Variant) As Boolean
-'    TestRange = Iz.InRange(FromValue, ToValue).Matches(Actual)
-'End Function
-
