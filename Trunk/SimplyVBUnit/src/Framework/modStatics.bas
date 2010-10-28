@@ -33,10 +33,15 @@ Public Type DefaultComparerStatic
     Instance As New DefaultComparer
 End Type
 
+Public Type TallyStatic
+    Zero As New ZeroTally
+End Type
+
 Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
 Public DefaultComparer      As DefaultComparerStatic
+Public Tally                As TallyStatic
 
 Public Sim                  As New SimConstructors
 Public Error                As New ErrorHelper

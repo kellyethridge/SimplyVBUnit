@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ItemTallier"
+Attribute VB_Name = "ValueTallier"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -33,19 +33,19 @@ Private mTallies As New Collection
 
 
 Public Function GetTally(ByRef Value As Variant) As Long
-    Tally = GetTally(Value).Count
+    GetTally = GetOrCreateTally(Value).Count
 End Function
 
 Public Sub ClearTally(ByRef Value As Variant)
-    GetTally(Value).Clear
+    GetOrCreateTally(Value).Clear
 End Sub
 
 Public Function IncrementTally(ByRef Value As Variant) As Long
-    IncrementTally = GetTally(Value).Increment
+    IncrementTally = GetOrCreateTally(Value).Increment
 End Function
 
 Public Function DecrementTally(ByRef Value As Variant) As Long
-    DecrementTally = GetTally(Value).Decrement
+    DecrementTally = GetOrCreateTally(Value).Decrement
 End Function
 
 Public Property Get TotalTallyCount() As Long
@@ -60,7 +60,7 @@ Public Property Get TotalTallyCount() As Long
 End Property
 
 Public Function Remove(ByRef Value As Variant) As Boolean
-    With GetTally(Value)
+    With GetOrCreateTally(Value)
         If .Count > 0 Then
             .Decrement
             Remove = True
@@ -88,22 +88,22 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function GetTally(ByRef Value As Variant) As Tally
+Private Function GetOrCreateTally(ByRef Value As Variant) As Tally
     Dim Key As String
     Key = CreateKey(Value)
     
     If Len(Key) > 0 Then
         On Error GoTo errTrap
-        Set GetTally = mTallies(Key)
+        Set GetOrCreateTally = mTallies(Key)
     Else
-        Set GetTally = NullTally.Instance
+        Set GetOrCreateTally = Tally.Zero
     End If
     
     Exit Function
     
 errTrap:
-    Set GetTally = New Tally
-    mTallies.Add GetTally, Key
+    Set GetOrCreateTally = New Tally
+    mTallies.Add GetOrCreateTally, Key
 End Function
 
 Private Function CreateKey(ByRef Value As Variant) As String
@@ -123,6 +123,7 @@ Private Function CreateKey(ByRef Value As Variant) As String
         Case vbObject:      Result = "Obj_ " & ObjPtr(Value)
         Case vbNull:        Result = "Null"
         Case vbEmpty:       Result = "Empty"
+        Case Else:          Result = ""
     End Select
     
     CreateKey = Result

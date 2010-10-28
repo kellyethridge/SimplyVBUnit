@@ -76,7 +76,7 @@ Private Sub RunTestClassTests()
     Suite.Add New RangeConstraintTests
     Suite.Add New EmptyContraintTests
     Suite.Add New TallyTests
-    Suite.Add New ItemTallierTests
+    Suite.Add New ValueTallierTests
     
     
     Dim Result As TestResult
