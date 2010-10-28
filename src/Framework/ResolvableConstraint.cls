@@ -125,6 +125,10 @@ Private Function IConstraintExpression_Nothing() As SimplyVBUnitType.IBasicExpre
     Set IConstraintExpression_Nothing = mExpression.Nothing_
 End Function
 
+Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_SameAs = mExpression.SameAs(Expected)
+End Function
+
 Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_True = mExpression.True_
 End Function
