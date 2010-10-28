@@ -68,17 +68,13 @@ Public Function Remove(ByRef Value As Variant) As Boolean
     End With
 End Function
 
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Friend Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Values As Variant)
+Public Sub IncrementTallies(ByRef Values As Variant)
     If Not IsEnumerable(Values) Then _
         Err.Raise ErrorCode.Argument, "ItemTallier", "An enumerable object is required."
-        
+    
     Dim Element As Variant
     For Each Element In Values
-        If (Not IsArray(Element)) And (VarType(Element) <> vbUserDefinedType) Then
+        If (Not IsEnumerable(Element)) And (VarType(Element) <> vbUserDefinedType) Then
             IncrementTally Element
         End If
     Next Element
