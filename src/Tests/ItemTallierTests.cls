@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ItemTallierTests"
+Attribute VB_Name = "ValueTallierTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -29,57 +29,61 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Private Obj As ItemTallier
+Private Obj As ValueTallier
 
 Public Sub Setup()
-    Set Obj = New ItemTallier
+    Set Obj = New ValueTallier
 End Sub
 
-Public Sub TestEmptyTally()
-    Assert.That Obj.TotalTallyCount, Is_.EqualTo(0)
-    Assert.That Obj.Tally("this"), Is_.EqualTo(0)
+Public Sub Constructor_WhenCalled_HasNoTallies()
+    Dim Tallier As New ValueTallier
+    
+    Dim Actual As Long
+    Actual = Tallier.TotalTallyCount
+    
+    Assert.That Actual, Iz.EqualTo(0)
 End Sub
 
-Public Sub TestIncrementing()
-    Assert.That Obj.IncrementTally("this"), Is_.EqualTo(1)
-    Assert.That Obj.IncrementTally("that"), Is_.EqualTo(1)
-    Assert.That Obj.IncrementTally("this"), Is_.EqualTo(2)
-    
-    Assert.That Obj.Tally("this"), Is_.EqualTo(2)
-    Assert.That Obj.Tally("that"), Is_.EqualTo(1)
-    Assert.That Obj.TotalTallyCount, Is_.EqualTo(3)
-End Sub
-
-Public Sub TestDecrementing()
-    Dim i As Long
-    For i = 1 To 10
-        Obj.IncrementTally "this"
-        Obj.IncrementTally "that"
-    Next i
-    
-    Assert.That Obj.TotalTallyCount, Is_.EqualTo(20)
-    
-    For i = 9 To 0 Step -1
-        Assert.That Obj.DecrementTally("this"), Is_.EqualTo(i)
-    Next i
-    
-    Assert.That Obj.Tally("that"), Is_.EqualTo(10)
-    Assert.That Obj.TotalTallyCount, Is_.EqualTo(10)
-End Sub
-
-Public Sub TestRemoval()
-    Dim i As Long
-    For i = 1 To 10
-        Obj.IncrementTally "this"
-        Obj.IncrementTally "that"
-    Next i
-    
-    For i = 1 To 10
-        Assert.That Obj.Remove("this"), Iz.True
-    Next i
-    Assert.That Obj.Remove("this"), Iz.False
-    Assert.That Obj.TotalTallyCount, Is_.EqualTo(10)
-    
-    Obj.ClearTally "that"
-    Assert.That Obj.TotalTallyCount, Is_.EqualTo(0)
-End Sub
+'Public Sub TestIncrementing()
+'    Assert.That Obj.IncrementTally("this"), Iz.EqualTo(1)
+'    Assert.That Obj.IncrementTally("that"), Iz.EqualTo(1)
+'    Assert.That Obj.IncrementTally("this"), Iz.EqualTo(2)
+'
+'    Assert.That Obj.GetTally("this"), Iz.EqualTo(2)
+'    Assert.That Obj.GetTally("that"), Iz.EqualTo(1)
+'    Assert.That Obj.TotalTallyCount, Iz.EqualTo(3)
+'End Sub
+'
+'Public Sub TestDecrementing()
+'    Dim i As Long
+'    For i = 1 To 10
+'        Obj.IncrementTally "this"
+'        Obj.IncrementTally "that"
+'    Next i
+'
+'    Assert.That Obj.TotalTallyCount, Iz.EqualTo(20)
+'
+'    For i = 9 To 0 Step -1
+'        Assert.That Obj.DecrementTally("this"), Iz.EqualTo(i)
+'    Next i
+'
+'    Assert.That Obj.GetTally("that"), Iz.EqualTo(10)
+'    Assert.That Obj.TotalTallyCount, Iz.EqualTo(10)
+'End Sub
+'
+'Public Sub TestRemoval()
+'    Dim i As Long
+'    For i = 1 To 10
+'        Obj.IncrementTally "this"
+'        Obj.IncrementTally "that"
+'    Next i
+'
+'    For i = 1 To 10
+'        Assert.That Obj.Remove("this"), Iz.True
+'    Next i
+'    Assert.That Obj.Remove("this"), Iz.False
+'    Assert.That Obj.TotalTallyCount, Iz.EqualTo(10)
+'
+'    Obj.ClearTally "that"
+'    Assert.That Obj.TotalTallyCount, Iz.EqualTo(0)
+'End Sub
