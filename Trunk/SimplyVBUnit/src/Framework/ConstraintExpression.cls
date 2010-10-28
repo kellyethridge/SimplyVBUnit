@@ -103,6 +103,12 @@ Public Function Missing() As IBasicExpression
     Set Missing = EqualTo(MissingVariant)
 End Function
 
+Public Function SameAs(ByVal Expected As Object) As IBasicExpression
+    Dim Constraint As SameAsConstraint
+    Set Constraint = Sim.NewSameAsConstraint(Expected)
+    Set SameAs = AddConstraint(Sim.NewResolvableConstraint(Constraint, Me))
+End Function
+
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -176,6 +182,10 @@ End Function
 
 Private Function IConstraintExpression_Nothing() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Nothing = Nothing_
+End Function
+
+Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_SameAs = SameAs(Expected)
 End Function
 
 Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpression

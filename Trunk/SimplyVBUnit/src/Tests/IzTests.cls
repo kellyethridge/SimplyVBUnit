@@ -52,8 +52,10 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Call Test.Use(Iz.EqualTo(1).OrElse.EqualTo(2), 3, False)
             Call Test.Use(Iz.Empty, "", True)
             Call Test.Use(Iz.Empty, "1", False)
-
-        
+            Dim Obj As New Collection
+            Call Test.Use(Iz.SameAs(Obj), Obj, True)
+            Call Test.Use(Iz.SameAs(Me), Obj, False)
+            
     End Select
 End Sub
 

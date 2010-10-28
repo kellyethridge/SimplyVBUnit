@@ -67,6 +67,10 @@ Private Function IzSyntaxHelper_Nothing() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Nothing = NewExp.Nothing
 End Function
 
+Private Function IzSyntaxHelper_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_SameAs = NewExp.SameAs(Expected)
+End Function
+
 Private Function IzSyntaxHelper_True() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_True = NewExp.True
 End Function
@@ -78,3 +82,4 @@ End Function
 Private Function IzSyntaxHelper_VBNull() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_VBNull = NewExp.vbNull
 End Function
+

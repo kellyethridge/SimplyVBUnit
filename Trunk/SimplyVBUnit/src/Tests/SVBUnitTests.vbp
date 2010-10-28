@@ -68,6 +68,7 @@ Class=RangeConstraintTests; RangeConstraintTests.cls
 Class=EmptyContraintTests; EmptyContraintTests.cls
 Class=TallyTests; TallyTests.cls
 Class=ValueTallierTests; ValueTallierTests.cls
+Class=SameAsConstraintTests; SameAsConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
@@ -179,8 +180,6 @@ Priority=1
 Description=Iz.Empty
 Status=2
 Priority=1
-AssignedTo=
-Comment=
 
 [TASK17]
 Description=Iz.Serializable
@@ -189,8 +188,10 @@ Priority=1
 
 [TASK18]
 Description=Iz.SameAs
-Status=0
+Status=2
 Priority=1
+AssignedTo=
+Comment=
 
 [TASK19]
 Description=Iz.TypeOf

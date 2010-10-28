@@ -159,3 +159,8 @@ Public Function NewResolvableConstraint(ByVal InnerConstraint As IConstraint, By
     Set NewResolvableConstraint = New ResolvableConstraint
     NewResolvableConstraint.Init InnerConstraint, Expression
 End Function
+
+Public Function NewSameAsConstraint(ByVal Expected As Object) As SameAsConstraint
+    Set NewSameAsConstraint = New SameAsConstraint
+    NewSameAsConstraint.Init Expected
+End Function
