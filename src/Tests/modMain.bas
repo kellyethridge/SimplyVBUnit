@@ -38,7 +38,6 @@ Private Sub RunTestClassTests()
     Suite.Add New MemberQueryTests
     Suite.Add New TestCaseDataBuilderTests
     Suite.Add New TestCaseDataTests
-    Suite.Add New ArgOnlyTestMethodTests
     Suite.Add New TestCaseBuilderTests
     Suite.Add New TestListEnumeratorTests
     Suite.Add New StringBuilderTests
@@ -65,7 +64,7 @@ Private Sub RunTestClassTests()
     Suite.Add New ErrorHelperTests
     Suite.Add New ThrowsConstraintTests
     Suite.Add New TestCaseModifierTests
-    Suite.Add New ArgWithReturnTestMethodTests
+    Suite.Add New DynamicTestMethodTests
     Suite.Add New ConstraintBuilderTests
     Suite.Add New AndOperatorTests
     Suite.Add New OrOperatorTests
@@ -78,6 +77,7 @@ Private Sub RunTestClassTests()
     Suite.Add New TallyTests
     Suite.Add New ValueTallierTests
     Suite.Add New SameAsConstraintTests
+    Suite.Add New UniqueItemsConstraintTests
     
     
     Dim Result As TestResult

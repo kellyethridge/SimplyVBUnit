@@ -30,17 +30,18 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements ITestMethod
 
-Private mTestClass  As Object
-Private mMember     As MemberInfo
-Private mData       As TestCaseData
+Private mTestClass      As Object
+Private mMember         As MemberInfo
+Private mTestCaseData   As TestCaseData
 
 
 Public Sub Run()
+    SetupExpectedError
+    
     Dim Result As Variant
+    VariantCopyInd Result, tli.InvokeHookArray(mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments)
     
-    VariantCopyInd Result, tli.InvokeHookArray(mTestClass, mMember.MemberId, INVOKE_FUNC, mData.Arguments)
-    
-    Assert.That Result, mData.Expected
+    Assert.That Result, mTestCaseData.Expected
 End Sub
 
 Public Property Get TestClass() As Object
@@ -54,7 +55,28 @@ End Property
 Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData)
     Set mTestClass = TestClass
     Set mMember = Member
-    Set mData = TestCaseData
+    Set mTestCaseData = TestCaseData
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub SetupExpectedError()
+    If HasExpectedError Then
+        AssertExpectedError
+    End If
+End Sub
+
+Private Function HasExpectedError() As Boolean
+    HasExpectedError = (Not mTestCaseData.ErrorInfo Is Nothing)
+End Function
+
+Private Sub AssertExpectedError()
+    Dim Info As ErrorInfo
+    Set Info = mTestCaseData.ErrorInfo
+    
+    Assert.Throws Info.Number, Info.Source, Info.Description
 End Sub
 
 

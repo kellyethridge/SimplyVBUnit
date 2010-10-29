@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ArgWithReturnTestMethodTests"
+Attribute VB_Name = "DynamicTestMethodTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,18 +25,18 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: ArgWithReturnTestMethodTests
+' Module: DynamicTestMethodTests
 '
 Option Explicit
 
 Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim Mock As New Mock1TestCaseSourceExpect
-    Dim Method As ArgWithReturnTestMethod
-    Set Method = MakeArgWithReturnTestMethod(Mock)
+    Dim Method As DynamicTestMethod
+    Set Method = MakeDynamicTestMethod(Mock)
     
-    Call Method.Run
+    Method.Run
     
-    Call AssertCalls(Mock.Calls, "Test1.5")
+    AssertCalls Mock.Calls, "Test1.5"
 End Sub
 
 Public Sub Run_WhenCalled_AppliesConstraintToResult()
@@ -49,13 +49,13 @@ Public Sub Run_WhenCalled_AppliesConstraintToResult()
     Set TestCaseData.Expected = Mock
     Dim Args() As Variant
     Args = Array(5)
-    Call TestCaseData.CopyArguments(Args)
-    Dim Method As ArgWithReturnTestMethod
-    Set Method = Sim.NewArgWithReturnTestMethod(Stub, Member, TestCaseData)
+    TestCaseData.CopyArguments Args
+    Dim Method As DynamicTestMethod
+    Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
     
-    Call Method.Run
+    Method.Run
     
-    Call AssertCalls(Mock.Calls, "Resolve", "Matches")
+    AssertCalls Mock.Calls, "Resolve", "Matches"
 End Sub
 
 Public Sub Run_WhenCalled_AppliesConstraintToResult2()
@@ -68,11 +68,11 @@ Public Sub Run_WhenCalled_AppliesConstraintToResult2()
     Set TestCaseData.Expected = Mock
     Dim Args() As Variant
     Args = Array(5)
-    Call TestCaseData.CopyArguments(Args)
-    Dim Method As ArgWithReturnTestMethod
-    Set Method = Sim.NewArgWithReturnTestMethod(Stub, Member, TestCaseData)
+    TestCaseData.CopyArguments Args
+    Dim Method As DynamicTestMethod
+    Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
     
-    Call Method.Run
+    Method.Run
     
     Dim Actual As Variant
     Actual = Mock.Actual
@@ -89,30 +89,29 @@ Public Sub Run_WhenCalled_AssertsResult()
     Set TestCaseData.Expected = Mock
     Dim Args() As Variant
     Args = Array(5)
-    Call TestCaseData.CopyArguments(Args)
-    Dim Method As ArgWithReturnTestMethod
-    Set Method = Sim.NewArgWithReturnTestMethod(Stub, Member, TestCaseData)
+    TestCaseData.CopyArguments Args
+    Dim Method As DynamicTestMethod
+    Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
     
     On Error GoTo errTrap
-    Call Method.Run
+    Method.Run
     On Error GoTo 0
     
 errTrap:
-    Call AssertError(Err, AssertCode.FailureCode)
+    AssertError Err, AssertCode.FailureCode
 End Sub
 
 
-
-Private Function MakeArgWithReturnTestMethod(ByVal TestClass As Object) As ArgWithReturnTestMethod
+Private Function MakeDynamicTestMethod(ByVal TestClass As Object) As DynamicTestMethod
     Dim Member As MemberInfo
     Set Member = tli.InterfaceInfoFromObject(TestClass).GetMember(Constants.TEST1_METHOD)
     Dim TestCaseData As New TestCaseData
     Set TestCaseData.Expected = PassingConstraint
     Dim Args() As Variant
     Args = Array(5)
-    Call TestCaseData.CopyArguments(Args)
+    TestCaseData.CopyArguments Args
     
-    Set MakeArgWithReturnTestMethod = Sim.NewArgWithReturnTestMethod(TestClass, Member, TestCaseData)
+    Set MakeDynamicTestMethod = Sim.NewDynamicTestMethod(TestClass, Member, TestCaseData)
 End Function
 
 Private Function PassingConstraint() As MockConstraint

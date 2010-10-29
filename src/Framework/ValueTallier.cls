@@ -36,10 +36,6 @@ Public Function GetTally(ByRef Value As Variant) As Long
     GetTally = GetOrCreateTally(Value).Count
 End Function
 
-Public Sub ClearTally(ByRef Value As Variant)
-    GetOrCreateTally(Value).Clear
-End Sub
-
 Public Function IncrementTally(ByRef Value As Variant) As Long
     IncrementTally = GetOrCreateTally(Value).Increment
 End Function

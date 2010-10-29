@@ -6,12 +6,12 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ArgOnlyTestMethod"
+Attribute VB_Name = "DynamicTestMethod"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-' Copyright 2009 Kelly Ethridge
+' Copyright 2010 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
 ' you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: ArgOnlyTestMethod
+' Module: ArgTestMethod
 '
 Option Explicit
 Implements ITestMethod
@@ -37,9 +37,35 @@ Private mTestCaseData   As TestCaseData
 
 Public Sub Run()
     SetupExpectedError
-    tli.InvokeHookArraySub mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments
+    
+    If mMember.ReturnType = VT_VOID Then
+        tli.InvokeHookArraySub mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments
+    Else
+        Dim Result As Variant
+        VariantCopyInd Result, tli.InvokeHookArray(mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments)
+        
+        Assert.That Result, mTestCaseData.Expected
+    End If
 End Sub
 
+Public Property Get TestClass() As Object
+    Set TestClass = mTestClass
+End Property
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Constructors
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData)
+    Set mTestClass = TestClass
+    Set mMember = Member
+    Set mTestCaseData = TestCaseData
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub SetupExpectedError()
     If HasExpectedError Then
         AssertExpectedError
@@ -55,20 +81,6 @@ Private Sub AssertExpectedError()
     Set Info = mTestCaseData.ErrorInfo
     
     Assert.Throws Info.Number, Info.Source, Info.Description
-End Sub
-
-Public Property Get TestClass() As Object
-    Set TestClass = mTestClass
-End Property
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Constructors
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData)
-    Set mTestClass = TestClass
-    Set mMember = Member
-    Set mTestCaseData = TestCaseData
 End Sub
 
 
