@@ -45,9 +45,9 @@ Public Function NewTestCase(ByVal Name As String, ByVal TestMethod As ITestMetho
     NewTestCase.Init Name, TestMethod
 End Function
 
-Public Function NewNoArgTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo) As NoArgTestMethod
-    Set NewNoArgTestMethod = New NoArgTestMethod
-    NewNoArgTestMethod.Init TestClass, Member
+Public Function NewStaticTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo) As StaticTestMethod
+    Set NewStaticTestMethod = New StaticTestMethod
+    NewStaticTestMethod.Init TestClass, Member
 End Function
 
 Public Function NewTestSuite(ByVal Name As String) As TestSuite
@@ -158,4 +158,9 @@ End Function
 Public Function NewSameAsConstraint(ByVal Expected As Object) As SameAsConstraint
     Set NewSameAsConstraint = New SameAsConstraint
     NewSameAsConstraint.Init Expected
+End Function
+
+Public Function NewUniqueItemsConstraint(ByVal Expression As ConstraintExpression) As UniqueItemsConstraint
+    Set NewUniqueItemsConstraint = New UniqueItemsConstraint
+    NewUniqueItemsConstraint.Init Expression
 End Function

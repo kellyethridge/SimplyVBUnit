@@ -69,7 +69,7 @@ End Function
 
 Private Sub BuildDirectly()
     Dim Method As ITestMethod
-    Set Method = Sim.NewNoArgTestMethod(mTestClass, mMember)
+    Set Method = Sim.NewStaticTestMethod(mTestClass, mMember)
     AddTestCase Method
 End Sub
 

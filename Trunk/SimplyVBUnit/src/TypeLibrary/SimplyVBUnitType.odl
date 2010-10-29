@@ -103,6 +103,7 @@ library SimplyVBUnitType {
         interface IEqualConstraint;
         interface IBasicExpression;
         interface IUsingExpression;
+        interface IUniqueItemsConstraint;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -143,6 +144,7 @@ library SimplyVBUnitType {
                 HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IUsingExpression ** RetVal);
                 HRESULT Empty([out, retval] IBasicExpression ** RetVal);
                 HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
+                HRESULT Unique([out, retval] IUniqueItemsConstraint ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -191,6 +193,14 @@ library SimplyVBUnitType {
 		HRESULT NoClip([out, retval] IEqualConstraint ** RetVal);
 	}
 
+        [uuid(E897D156-A369-4247-A040-209C702446D3), odl]
+        interface IUniqueItemsConstraint : IDispatch
+        {
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+                HRESULT Strict([out, retval] IBasicExpression ** RetVal);
+        }
+
         [uuid(50CA1561-5124-4edc-B588-E89268BC9976), odl]
         interface IComparisonConstraint: IDispatch
         {
@@ -218,6 +228,7 @@ library SimplyVBUnitType {
                 HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IUsingExpression ** RetVal);
                 HRESULT Empty([out, retval] IBasicExpression ** RetVal);
                 HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
+                HRESULT Unique([out, retval] IUniqueItemsConstraint ** RetVal);
 	}
 }
 

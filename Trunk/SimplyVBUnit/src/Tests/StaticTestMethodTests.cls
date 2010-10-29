@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "NoArgTestMethodTests"
+Attribute VB_Name = "StaticTestMethodTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,7 +25,7 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: NoArgTestMethodTests
+' Module: StaticTestMethodTests
 '
 Option Explicit
 
@@ -35,46 +35,46 @@ Public Sub Constructor_WithNothingTestClass_RaisesError()
     
     On Error GoTo errTrap
     
-    Call Sim.NewNoArgTestMethod(Nothing, Member)
+    Sim.NewStaticTestMethod Nothing, Member
     
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "NoArgTestMethod.Init", "TestClass cannot be Nothing.")
+    AssertError Err, ErrorCode.ArgumentNull, "StaticTestMethod.Init", "TestClass cannot be Nothing."
 End Sub
 
 Public Sub Constructor_WithNothingMember_RaisesError()
     On Error GoTo errTrap
     
-    Call Sim.NewNoArgTestMethod(New Fake1Test, Nothing)
+    Sim.NewStaticTestMethod New Fake1Test, Nothing
     
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "NoArgTestMethod.Init", "Member cannot be Nothing.")
+    AssertError Err, ErrorCode.ArgumentNull, "StaticTestMethod.Init", "Member cannot be Nothing."
 End Sub
 
 Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim TestClass As New Mock1Test
     Dim Member As MemberInfo
     Set Member = MakeTest1Member(TestClass)
-    Dim Method As NoArgTestMethod
-    Set Method = Sim.NewNoArgTestMethod(TestClass, Member)
+    Dim Method As StaticTestMethod
+    Set Method = Sim.NewStaticTestMethod(TestClass, Member)
     
-    Call Method.Run
+    Method.Run
     
-    Call AssertCalls(TestClass.Calls, Constants.TEST1_METHOD)
+    AssertCalls TestClass.Calls, Constants.TEST1_METHOD
 End Sub
 
 Public Sub Constructor_WhenCalled_StoresTestClass()
     Dim Fake As New Fake1Test
     Dim Member As MemberInfo
     Set Member = MakeTest1Member(Fake)
-    Dim Method As NoArgTestMethod
+    Dim Method As StaticTestMethod
     
-    Set Method = Sim.NewNoArgTestMethod(Fake, Member)
+    Set Method = Sim.NewStaticTestMethod(Fake, Member)
     
     Dim Actual As Object
     Set Actual = Method.TestClass

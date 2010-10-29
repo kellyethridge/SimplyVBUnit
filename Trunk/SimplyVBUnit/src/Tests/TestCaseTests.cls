@@ -800,5 +800,5 @@ Private Function MakeTestMethod() As ITestMethod
     Dim TestClass As New Fake1Test
     Dim Member As MemberInfo
     Set Member = tli.InterfaceInfoFromObject(TestClass).GetMember(Constants.TEST1_METHOD)
-    Set MakeTestMethod = Sim.NewNoArgTestMethod(TestClass, Member)
+    Set MakeTestMethod = Sim.NewStaticTestMethod(TestClass, Member)
 End Function

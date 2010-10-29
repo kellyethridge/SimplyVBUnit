@@ -33,7 +33,7 @@ Private Sub RunTestClassTests()
     Suite.Add New TestSuiteTests
     Suite.Add New TestCaseTests
     Suite.Add New AssertionsTests
-    Suite.Add New NoArgTestMethodTests
+    Suite.Add New StaticTestMethodTests
     Suite.Add New ErrorInfoTests
     Suite.Add New MemberQueryTests
     Suite.Add New TestCaseDataBuilderTests

@@ -32,29 +32,6 @@ Implements ITestCaseSource
 
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseDataBuilder)
     Select Case Test.MethodName
-'        Case "TestArray"
-'            Call Test.Use(Array()).Expect(True)
-'            Call Test.Use(Array(1, 2)).Expect(True)
-'            Call Test.Use(Array(1, 1)).Expect(False)
-'            Call Test.Use(Array(CInt(1), CLng(1))).Expect(True)
-'            Call Test.Use(Array(1, "1")).Expect(True)
-'
-'            Dim Obj1 As New Collection
-'            Dim Obj2 As New Collection
-'            Call Test.Use(Array(Obj1, Obj2)).Expect(True)
-'            Call Test.Use(Array(Obj1, Obj1)).Expect(False)
-'
-'        Case "TestCollection"
-'            Call Test.Use(Array()).Expect(True)
-'            Call Test.Use(Array(1, 2)).Expect(True)
-'            Call Test.Use(Array(1, 1)).Expect(False)
-'            Call Test.Use(Array(CInt(1), CLng(1))).Expect(True)
-'            Call Test.Use(Array(1, "1")).Expect(True)
-'
-'            Set Obj1 = New Collection
-'            Set Obj2 = New Collection
-'            Call Test.Use(Array(Obj1, Obj2)).Expect(True)
-'            Call Test.Use(Array(Obj1, Obj1)).Expect(False)
         Case "Matches_WithEnumerable_ReturnsExpected"
             Test.Use(Array(1, 2, 3)).Expect True
             Test.Use(Array(1, 2, 2)).Expect False
@@ -67,25 +44,9 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseDataBuilder)
 End Sub
 
 
-'Public Function TestArray(ByRef Args() As Variant) As Boolean
-'    Dim c As IConstraint
-'    Set c = New UniqueItemsConstraint
-'    TestArray = c.Matches(Args)
-'End Function
-'
-'Public Function TestCollection(ByRef Args() As Variant) As Boolean
-'    Dim Col As New Collection
-'    Dim Arg As Variant
-'    For Each Arg In Args
-'        Col.Add Arg
-'    Next
-'
-'    Dim c As IConstraint
-'    Set c = New UniqueItemsConstraint
-'    TestCollection = c.Matches(Col)
-'End Function
 Public Function Matches_WithEnumerable_ReturnsExpected(ByRef Actual As Variant) As Boolean
-    Dim Tallier As New UniqueItemsConstraint
+    Dim c As New UniqueItemsConstraint
+    c.Strict
     
-    Matches_WithEnumerable_ReturnsExpected = Tallier.Matches(Actual)
+    Matches_WithEnumerable_ReturnsExpected = c.Matches(Actual)
 End Function
