@@ -133,6 +133,10 @@ Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpressi
     Set IConstraintExpression_True = mExpression.True_
 End Function
 
+Private Function IConstraintExpression_Unique() As SimplyVBUnitType.IUniqueItemsConstraint
+    Set IConstraintExpression_Unique = mExpression.Unique
+End Function
+
 Private Function IConstraintExpression_VBEmpty() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_VBEmpty = mExpression.vbEmpty
 End Function

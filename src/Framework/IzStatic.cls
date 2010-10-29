@@ -75,6 +75,10 @@ Private Function IzSyntaxHelper_True() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_True = NewExp.True
 End Function
 
+Private Function IzSyntaxHelper_Unique() As SimplyVBUnitType.IUniqueItemsConstraint
+    
+End Function
+
 Private Function IzSyntaxHelper_VBEmpty() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_VBEmpty = NewExp.vbEmpty
 End Function

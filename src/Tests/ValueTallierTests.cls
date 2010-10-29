@@ -85,6 +85,7 @@ Public Sub IncrementTally_WithDifferentValues_DoesNotIncrementOtherValues()
     Const Value1 As Long = 1
     Const Value2 As Integer = 1
     Dim Tallier As New ValueTallier
+    Tallier.Strict = True
     Tallier.IncrementTally Value1
     
     Dim Actual As Long

@@ -29,8 +29,13 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 Implements IConstraint
+Implements IResolvable
+Implements IBasicExpression
+Implements IUniqueItemsConstraint
 
-Private mActual As Variant
+Private mExpression As ConstraintExpression
+Private mActual     As Variant
+Private mStrict     As Boolean
 
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
@@ -40,20 +45,47 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     Matches = IsUnique(Actual)
 End Function
 
+Public Function Strict() As IBasicExpression
+    mStrict = True
+    Set Strict = Me
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByVal Expression As ConstraintExpression)
+    Set mExpression = Expression
+End Sub
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IsUnique(ByRef Actual As Variant) As Boolean
-    Call VariantCopyInd(mActual, Actual)
+    VariantCopyInd mActual, Actual
     
     Dim Tallier As New ValueTallier
+    Tallier.Strict = mStrict
+    
     Dim Element As Variant
     For Each Element In Actual
         If Tallier.IncrementTally(Element) > 1 Then Exit Function
     Next Element
     
     IsUnique = True
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IBasicExpression Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IBasicExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
+    Set IBasicExpression_AndAlso = mExpression.AndAlso
+End Function
+
+Private Function IBasicExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
+    Set IBasicExpression_OrElse = mExpression.OrElse
 End Function
 
 
@@ -75,3 +107,31 @@ End Sub
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
 
 End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IResolvable Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IResolvable_Resolve() As IConstraint
+    If mExpression Is Nothing Then
+        Set IResolvable_Resolve = Me
+    Else
+        Set IResolvable_Resolve = mExpression.Resolve
+    End If
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IUniqeItemsConstraint Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IUniqueItemsConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
+    Set IUniqueItemsConstraint_AndAlso = mExpression.AndAlso
+End Function
+
+Private Function IUniqueItemsConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
+    Set IUniqueItemsConstraint_OrElse = mExpression.OrElse
+End Function
+
+Private Function IUniqueItemsConstraint_Strict() As SimplyVBUnitType.IBasicExpression
+    Set IUniqueItemsConstraint_Strict = Strict
+End Function

@@ -30,7 +30,15 @@ Attribute VB_Exposed = True
 Option Explicit
 
 Private mTallies As New Collection
+Private mStrict As Boolean
 
+Public Property Get Strict() As Boolean
+    Strict = mStrict
+End Property
+
+Public Property Let Strict(ByVal RHS As Boolean)
+    mStrict = RHS
+End Property
 
 Public Function GetTally(ByRef Value As Variant) As Long
     GetTally = GetOrCreateTally(Value).Count
@@ -101,22 +109,36 @@ End Function
 Private Function CreateKey(ByRef Value As Variant) As String
     Dim Result As String
     
-    Select Case VarType(Value)
-        Case vbByte:        Result = "I1_" & Value
-        Case vbInteger:     Result = "I2_" & Value
-        Case vbLong:        Result = "I4_" & Value
-        Case vbSingle:      Result = "R4_" & Value
-        Case vbDouble:      Result = "R8_" & Value
-        Case vbDecimal:     Result = "Dec_" & Value
-        Case vbCurrency:    Result = "Cy_" & Value
-        Case vbBoolean:     Result = "Bool_" & Value
-        Case vbDate:        Result = "Date_" & Value
-        Case vbString:      Result = "Str_" & Value
-        Case vbObject:      Result = "Obj_ " & ObjPtr(Value)
-        Case vbNull:        Result = "Null"
-        Case vbEmpty:       Result = "Empty"
-        Case Else:          Result = ""
-    End Select
+    If mStrict Then
+        Select Case VarType(Value)
+            Case vbByte:        Result = "I1_" & Value
+            Case vbInteger:     Result = "I2_" & Value
+            Case vbLong:        Result = "I4_" & Value
+            Case vbSingle:      Result = "R4_" & Value
+            Case vbDouble:      Result = "R8_" & Value
+            Case vbDecimal:     Result = "Dec_" & Value
+            Case vbCurrency:    Result = "Cy_" & Value
+            Case vbBoolean:     Result = "Bool_" & Value
+            Case vbDate:        Result = "Date_" & Value
+            Case vbString:      Result = "Str_" & Value
+            Case vbObject:      Result = "Obj_ " & ObjPtr(Value)
+            Case vbNull:        Result = "Null"
+            Case vbEmpty:       Result = "Empty"
+            Case Else:          Result = ""
+        End Select
+    Else
+        Select Case VarType(Value)
+            Case vbByte, vbInteger, vbLong, vbSingle, vbDouble, vbDecimal, vbCurrency
+                                Result = "Num_" & Value
+            Case vbBoolean:     Result = "Bool_" & Value
+            Case vbDate:        Result = "Date_" & Value
+            Case vbString:      Result = "Str_" & Value
+            Case vbObject:      Result = "Obj_ " & ObjPtr(Value)
+            Case vbNull:        Result = "Null"
+            Case vbEmpty:       Result = "Empty"
+            Case Else:          Result = ""
+        End Select
+    End If
     
     CreateKey = Result
 End Function

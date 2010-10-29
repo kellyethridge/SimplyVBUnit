@@ -109,6 +109,10 @@ Public Function SameAs(ByVal Expected As Object) As IBasicExpression
     Set SameAs = AddConstraint(Sim.NewResolvableConstraint(Constraint, Me))
 End Function
 
+Public Function Unique() As UniqueItemsConstraint
+    Set Unique = AddConstraint(Sim.NewUniqueItemsConstraint(Me))
+End Function
+
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -190,6 +194,10 @@ End Function
 
 Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_True = True_
+End Function
+
+Private Function IConstraintExpression_Unique() As SimplyVBUnitType.IUniqueItemsConstraint
+    Set IConstraintExpression_Unique = Unique
 End Function
 
 Private Function IConstraintExpression_VBEmpty() As SimplyVBUnitType.IBasicExpression
