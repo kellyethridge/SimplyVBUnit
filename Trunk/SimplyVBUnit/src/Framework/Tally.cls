@@ -48,6 +48,3 @@ Public Function Decrement() As Long
     Decrement = mCount
 End Function
 
-Public Sub Clear()
-    mCount = 0
-End Sub

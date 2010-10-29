@@ -60,9 +60,9 @@ Public Function NewErrorInfo(ByVal Number As Long, Optional ByVal Source As Stri
     NewErrorInfo.Init Number, Source, Description, LastDllError
 End Function
 
-Public Function NewArgOnlyTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData) As ArgOnlyTestMethod
-    Set NewArgOnlyTestMethod = New ArgOnlyTestMethod
-    NewArgOnlyTestMethod.Init TestClass, Member, TestCaseData
+Public Function NewDynamicTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData) As DynamicTestMethod
+    Set NewDynamicTestMethod = New DynamicTestMethod
+    NewDynamicTestMethod.Init TestClass, Member, TestCaseData
 End Function
 
 Public Function NewTestListEnumerator(ByVal List As TestList) As TestListEnumerator
@@ -133,11 +133,6 @@ End Function
 Public Function NewTestCaseModifier(ByVal Data As TestCaseData) As TestCaseModifier
     Set NewTestCaseModifier = New TestCaseModifier
     NewTestCaseModifier.Init Data
-End Function
-
-Public Function NewArgWithReturnTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData) As ArgWithReturnTestMethod
-    Set NewArgWithReturnTestMethod = New ArgWithReturnTestMethod
-    NewArgWithReturnTestMethod.Init TestClass, Member, TestCaseData
 End Function
 
 Public Function NewTolerance(ByRef Amount As Variant) As Tolerance

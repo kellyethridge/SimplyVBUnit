@@ -29,39 +29,6 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Public Sub Constructor_WithNothingTestClass_RaisesError()
-    Dim Data    As New TestCaseData
-    Dim Member  As MemberInfo
-    Set Member = MakeTest1Member(New Fake1Test)
-    On Error GoTo errTrap
-    
-    Call Sim.NewArgOnlyTestMethod(Nothing, Member, Data)
-    On Error GoTo 0
-    
-errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "ArgOnlyTestMethod.Init", "TestClass cannot be Nothing.")
-End Sub
-
-Public Sub Constructors_WithNothingMember_RaisesError()
-    On Error GoTo errTrap
-    
-    Call Sim.NewArgOnlyTestMethod(New Fake1Test, Nothing, New TestCaseData)
-    On Error GoTo 0
-    
-errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "ArgOnlyTestMethod.Init", "Member cannot be Nothing.")
-End Sub
-
-Public Sub Constructors_WithNothingTestCaseData_RaisesError()
-    On Error GoTo errTrap
-    
-    Call Sim.NewArgOnlyTestMethod(New Fake1Test, MakeTest1Member(New Fake1Test), Nothing)
-    On Error GoTo 0
-    
-errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "ArgOnlyTestMethod.Init", "TestCaseData cannot be Nothing.")
-End Sub
-
 Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim Mock As New Mock1TestCaseSource
     Dim Member As MemberInfo
