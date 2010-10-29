@@ -38,7 +38,6 @@ Public Type ArrayProxy
 End Type
 
 
-
 Public Property Get MissingVariant(Optional ByVal Value As Variant) As Variant
     MissingVariant = Value
 End Property

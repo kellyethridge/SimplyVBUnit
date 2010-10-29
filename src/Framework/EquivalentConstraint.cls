@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "UniqueItemsConstraint"
+Attribute VB_Name = "EquivalentConstraint"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,56 +25,55 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: UniqueConstraint
+' Module: EquivalentToConstraint
 '
 Option Explicit
 Implements IConstraint
-Implements IResolvable
 Implements IBasicExpression
 Implements IStrictExpression
+Implements IResolvable
+
 
 Private mExpression As ConstraintExpression
+Private mExpected   As Variant
 Private mActual     As Variant
 Private mStrict     As Boolean
 
-
-Public Function Matches(ByRef Actual As Variant) As Boolean
-    If Not IsEnumerable(Actual) Then _
-        Err.Raise ErrorCode.Argument, "UniqueItemsConstraint.Matches", "The actual value must be enumerable."
-    
-    Matches = IsUnique(Actual)
-End Function
 
 Public Function Strict() As IBasicExpression
     mStrict = True
     Set Strict = Me
 End Function
 
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Friend Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByVal Expression As ConstraintExpression)
-    Set mExpression = Expression
-End Sub
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IsUnique(ByRef Actual As Variant) As Boolean
+Public Function Matches(ByRef Actual As Variant) As Boolean
+    If Not IsEnumerable(Actual) Then _
+        Error.EnumerationNotSupported Me, "Matches", "Actual"
+    
     VariantCopyInd mActual, Actual
     
     Dim Tallier As New ValueTallier
     Tallier.Strict = mStrict
+    Tallier.IncrementTallies mExpected
     
-    Dim Element As Variant
-    For Each Element In Actual
-        If Tallier.IncrementTally(Element) > 1 Then Exit Function
-    Next Element
+    Dim Value As Variant
+    For Each Value In Actual
+        If Not Tallier.Remove(Value) Then Exit Function
+    Next
     
-    IsUnique = True
+    Matches = (Tallier.TotalTallyCount = 0)
 End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByRef Expected As Variant, ByVal Expression As ConstraintExpression)
+    If Not IsEnumerable(Expected) Then _
+        Error.EnumerationNotSupported Me, "Init", "Expected"
+    
+    VariantCopyInd mExpected, Expected
+    Set mExpression = Expression
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -101,7 +100,8 @@ Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Writer.WritePredicate "all items unique"
+    Writer.WritePredicate "equivalent to"
+    Writer.WriteValue mExpected
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)

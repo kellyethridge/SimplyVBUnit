@@ -164,3 +164,8 @@ Public Function NewUniqueItemsConstraint(ByVal Expression As ConstraintExpressio
     Set NewUniqueItemsConstraint = New UniqueItemsConstraint
     NewUniqueItemsConstraint.Init Expression
 End Function
+
+Public Function NewEquivalentConstraint(ByRef Expected As Variant, Optional ByVal Expression As ConstraintExpression) As EquivalentConstraint
+    Set NewEquivalentConstraint = New EquivalentConstraint
+    NewEquivalentConstraint.Init Expected, Expression
+End Function
