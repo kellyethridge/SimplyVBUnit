@@ -113,6 +113,9 @@ Public Function Unique() As UniqueItemsConstraint
     Set Unique = AddConstraint(Sim.NewUniqueItemsConstraint(Me))
 End Function
 
+Public Function EquivalentTo(ByRef Expected As Variant) As EquivalentConstraint
+    Set EquivalentTo = AddConstraint(Sim.NewEquivalentConstraint(Expected, Me))
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -150,6 +153,10 @@ End Function
 
 Private Function IConstraintExpression_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
     Set IConstraintExpression_EqualTo = EqualTo(Expected)
+End Function
+
+Private Function IConstraintExpression_EquivalentTo(Expected As Variant) As SimplyVBUnitType.IStrictExpression
+    Set IConstraintExpression_EquivalentTo = EquivalentTo(Expected)
 End Function
 
 Private Function IConstraintExpression_False() As SimplyVBUnitType.IBasicExpression
@@ -196,7 +203,7 @@ Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpressi
     Set IConstraintExpression_True = True_
 End Function
 
-Private Function IConstraintExpression_Unique() As SimplyVBUnitType.IUniqueItemsConstraint
+Private Function IConstraintExpression_Unique() As SimplyVBUnitType.IStrictExpression
     Set IConstraintExpression_Unique = Unique
 End Function
 

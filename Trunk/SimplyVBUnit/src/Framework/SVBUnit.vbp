@@ -96,6 +96,7 @@ Class=SameAsConstraint; SameAsConstraint.cls
 Class=UniqueItemsConstraint; UniqueItemsConstraint.cls
 Class=DynamicTestMethod; DynamicTestMethod.cls
 ResFile32="SVBUnit.RES"
+Class=EquivalentConstraint; EquivalentConstraint.cls
 Startup="(None)"
 HelpFile=""
 Title="SVBUnit"

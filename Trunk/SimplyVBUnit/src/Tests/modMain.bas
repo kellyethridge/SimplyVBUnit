@@ -78,6 +78,7 @@ Private Sub RunTestClassTests()
     Suite.Add New ValueTallierTests
     Suite.Add New SameAsConstraintTests
     Suite.Add New UniqueItemsConstraintTests
+    Suite.Add New EquivalentConstraintTests
     
     
     Dim Result As TestResult
