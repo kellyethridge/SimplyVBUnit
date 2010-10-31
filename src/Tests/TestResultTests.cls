@@ -472,7 +472,7 @@ Private Function MakeTestResult() As TestResult
     Set MakeTestResult = Sim.NewTestResult(New FakeTest)
 End Function
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
     Select Case Test.MethodName
         Case "AddResult_WithResultStateCombinations_SetsParentResultState"
             Call Test.Use(InconclusiveState, InconclusiveState, InconclusiveState)

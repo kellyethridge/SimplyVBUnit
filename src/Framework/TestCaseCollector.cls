@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "TestCaseDataBuilder"
+Attribute VB_Name = "TestCaseCollector"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -25,7 +25,7 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestCaseDataBuilder
+' Module: TestCaseCollector
 '
 Option Explicit
 

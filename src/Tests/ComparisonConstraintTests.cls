@@ -14,7 +14,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements ITestCaseSource
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
     Select Case Test.MethodName
         Case "TestLessThan"
             Call Test.Use(2, 1).Expect(True)

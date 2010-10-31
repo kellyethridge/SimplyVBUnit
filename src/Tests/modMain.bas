@@ -36,7 +36,7 @@ Private Sub RunTestClassTests()
     Suite.Add New StaticTestMethodTests
     Suite.Add New ErrorInfoTests
     Suite.Add New MemberQueryTests
-    Suite.Add New TestCaseDataBuilderTests
+    Suite.Add New TestCaseCollectorTests
     Suite.Add New TestCaseDataTests
     Suite.Add New TestCaseBuilderTests
     Suite.Add New TestListEnumeratorTests

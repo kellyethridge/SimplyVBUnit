@@ -19,7 +19,7 @@ Public Value1 As Variant
 Public Value2 As Variant
 
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
     Calls.Add "GetTestCases." & Test.MethodName
     
     Test.Use Value1

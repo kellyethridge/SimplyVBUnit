@@ -29,4 +29,4 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Public Sub GetTestCases(ByVal Test As TestCaseDataBuilder): End Sub
+Public Sub GetTestCases(ByVal Test As TestCaseCollector): End Sub
