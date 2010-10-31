@@ -79,6 +79,7 @@ Private Sub RunTestClassTests()
     Suite.Add New SameAsConstraintTests
     Suite.Add New UniqueItemsConstraintTests
     Suite.Add New EquivalentConstraintTests
+    Suite.Add New SubsetOfConstraintTests
     
     
     Dim Result As TestResult

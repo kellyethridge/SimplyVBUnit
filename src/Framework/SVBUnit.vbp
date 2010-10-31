@@ -98,6 +98,7 @@ Class=DynamicTestMethod; DynamicTestMethod.cls
 Class=EquivalentConstraint; EquivalentConstraint.cls
 Class=EqualityComparer; EqualityComparer.cls
 ResFile32="SVBUnit.RES"
+Class=SubsetOfConstraint; SubsetOfConstraint.cls
 Startup="(None)"
 HelpFile=""
 Title="SVBUnit"

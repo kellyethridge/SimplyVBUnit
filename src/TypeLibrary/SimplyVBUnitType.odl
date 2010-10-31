@@ -166,6 +166,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
                 HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
                 HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
+                HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -251,6 +252,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
                 HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
                 HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
+                HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
 	}
 }
 

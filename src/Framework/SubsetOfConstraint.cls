@@ -6,9 +6,9 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "UniqueItemsConstraint"
+Attribute VB_Name = "SubsetOfConstraint"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
+Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 ' Copyright 2010 Kelly Ethridge
@@ -25,7 +25,7 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: UniqueConstraint
+' Module: SubsetOfConstraint
 '
 Option Explicit
 Implements IConstraint
@@ -33,63 +33,58 @@ Implements IResolvable
 Implements IEqualityExpression
 
 Private mExpression As ConstraintExpression
+Private mComparer   As EqualityComparer
+Private mExpected   As Variant
 Private mActual     As Variant
-Private mComparer   As New EqualityComparer
 
 
-Public Function Matches(ByRef Actual As Variant) As Boolean
-    If Not IsEnumerable(Actual) Then _
-        Err.Raise ErrorCode.Argument, "UniqueItemsConstraint.Matches", "The actual value must be enumerable."
-    
-    Matches = IsUnique(Actual)
-End Function
 
-Public Function Strict() As UniqueItemsConstraint
+Public Function Strict() As SubsetOfConstraint
     mComparer.Strict = True
     Set Strict = Me
 End Function
 
-Public Function IgnoreCase() As UniqueItemsConstraint
+Public Function IgnoreCase() As SubsetOfConstraint
     mComparer.IgnoreCase = True
     Set IgnoreCase = Me
 End Function
 
-Public Function Using(ByVal Comparer As IEqualityComparer) As UniqueItemsConstraint
+Public Function Using(ByVal Comparer As IEqualityComparer) As SubsetOfConstraint
     Set mComparer.ExternalComparer = Comparer
     Set Using = Me
+End Function
+
+Public Function Matches(ByRef Actual As Variant) As Boolean
+    If Not IsEnumerable(Actual) Then _
+        Error.EnumerationNotSupported Me, "Matches", "Actual"
+        
+    VariantCopyInd mActual, Actual
+        
+    Dim Tallier As New ValueTallier
+    Tallier.Initialize mExpected, mComparer
+    
+    Dim Value As Variant
+    For Each Value In Actual
+        If Not Tallier.TryRemove(Value) Then
+            Exit Function
+        End If
+    Next
+    
+    Matches = True
 End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByVal Expression As ConstraintExpression)
-    Set mExpression = Expression
-End Sub
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IsUnique(ByRef Actual As Variant) As Boolean
-    VariantCopyInd mActual, Actual
-    mComparer.AsCollection = True
-    
-    Dim AccountedFor        As New Collection
-    Dim ActualValue         As Variant
-    Dim AccountedForValue   As Variant
-    For Each ActualValue In Actual
-        For Each AccountedForValue In AccountedFor
-            If mComparer.Equals(ActualValue, AccountedForValue) Then
-                Exit Function
-            End If
-        Next
+Friend Sub Init(ByRef Expected As Variant, ByVal Expression As ConstraintExpression)
+    If Not IsEnumerable(Expected) Then _
+        Error.EnumerationNotSupported Me, "Init", "Expected"
         
-        AccountedFor.Add ActualValue
-    Next
-    
-    IsUnique = True
-End Function
+    VariantCopyInd mExpected, Expected
+    Set mExpression = Expression
+    Set mComparer = New EqualityComparer
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -104,7 +99,8 @@ Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Writer.WritePredicate "all items unique"
+    Writer.WritePredicate "subset of"
+    Writer.WriteValue mExpected
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
@@ -120,7 +116,7 @@ Private Function IEqualityExpression_AndAlso() As SimplyVBUnitType.IConstraintEx
 End Function
 
 Private Function IEqualityExpression_AsCollection() As SimplyVBUnitType.IEqualityExpression
-    
+
 End Function
 
 Private Function IEqualityExpression_IgnoreCase() As SimplyVBUnitType.IEqualityExpression
@@ -132,7 +128,7 @@ Private Function IEqualityExpression_NoClip() As SimplyVBUnitType.IEqualityExpre
 End Function
 
 Private Function IEqualityExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
-    Set IEqualityExpression = mExpression.OrElse
+    Set IEqualityExpression_OrElse = mExpression.OrElse
 End Function
 
 Private Function IEqualityExpression_Strict() As SimplyVBUnitType.IEqualityExpression
@@ -144,7 +140,7 @@ Private Function IEqualityExpression_Using(ByVal Comparer As SimplyVBUnitType.IE
 End Function
 
 Private Function IEqualityExpression_Within(ByVal Tolerance As Variant) As SimplyVBUnitType.IToleranceUnits
-    
+
 End Function
 
 
@@ -154,4 +150,3 @@ End Function
 Private Function IResolvable_Resolve() As IConstraint
     Set IResolvable_Resolve = Resolve(Me, mExpression)
 End Function
-

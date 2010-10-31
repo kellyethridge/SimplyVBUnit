@@ -32,7 +32,7 @@ Private Function IzSyntaxHelper_EqualTo(Expected As Variant) As SimplyVBUnitType
 End Function
 
 Private Function IzSyntaxHelper_EquivalentTo(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
-
+    Set IzSyntaxHelper_EquivalentTo = NewExp.EquivalentTo(Expected)
 End Function
 
 Private Function IzSyntaxHelper_False() As SimplyVBUnitType.IBasicExpression
@@ -73,6 +73,10 @@ End Function
 
 Private Function IzSyntaxHelper_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_SameAs = NewExp.SameAs(Expected)
+End Function
+
+Private Function IzSyntaxHelper_SubsetOf(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
+    Set IzSyntaxHelper_SubsetOf = NewExp.SubsetOf(Expected)
 End Function
 
 Private Function IzSyntaxHelper_True() As SimplyVBUnitType.IBasicExpression

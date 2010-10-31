@@ -169,3 +169,8 @@ Public Function NewEquivalentConstraint(ByRef Expected As Variant, Optional ByVa
     Set NewEquivalentConstraint = New EquivalentConstraint
     NewEquivalentConstraint.Init Expected, Expression
 End Function
+
+Public Function NewSubsetOfConstraint(ByRef Expected As Variant, Optional ByVal Expression As ConstraintExpression) As SubsetOfConstraint
+    Set NewSubsetOfConstraint = New SubsetOfConstraint
+    NewSubsetOfConstraint.Init Expected, Expression
+End Function

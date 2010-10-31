@@ -55,6 +55,8 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Dim Obj As New Collection
             Call Test.Use(Iz.SameAs(Obj), Obj, True)
             Call Test.Use(Iz.SameAs(Me), Obj, False)
+            Call Test.Use(Iz.EquivalentTo(Array(1, 2)), Array(2, 1), True)
+            Call Test.Use(Iz.SubsetOf(Array(1, 2, 3)), Array(1, 3), True)
             
     End Select
 End Sub
