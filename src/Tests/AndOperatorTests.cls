@@ -34,8 +34,8 @@ Public Sub Resolve_WithTwoConstraints_ReturnsAndOperatorOfTwoConstraint()
     Dim LeftSide    As New StubConstraint
     Dim RightSide   As New StubConstraint
     Dim Constraints As New ConstraintStack
-    Call Constraints.Push(LeftSide)
-    Call Constraints.Push(RightSide)
+    Constraints.Push LeftSide
+    Constraints.Push RightSide
     
     Dim Op As New AndOperator
     Op.Reduce Constraints

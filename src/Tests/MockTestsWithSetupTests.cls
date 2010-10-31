@@ -35,9 +35,9 @@ Private mCount As Long
 Public Function Run() As Long
     mCount = 0
     
-    Call RunTest(Setup_WhenCalled_AddsToTrace)
-    Call RunTest(Test1_WhenCalled_AddsToTrace)
-    Call RunTest(Test2_WhenCalled_AddsToTrace)
+    RunTest Setup_WhenCalled_AddsToTrace
+    RunTest Test1_WhenCalled_AddsToTrace
+    RunTest Test2_WhenCalled_AddsToTrace
     
     Run = mCount
 End Function

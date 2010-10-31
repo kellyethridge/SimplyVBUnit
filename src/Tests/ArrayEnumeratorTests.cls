@@ -32,11 +32,11 @@ Option Explicit
 Public Sub Constructor_WithNonArray_RaisesError()
     On Error GoTo errTrap
     
-    Call Sim.NewArrayEnumerator(1)
+    Sim.NewArrayEnumerator 1
     On Error GoTo 0
     
 errTrap:
-    Call AssertError(Err, ErrorCode.Argument, "ArrayEnumerator.Init", "Arr must be an Array.")
+    AssertError Err, ErrorCode.Argument, "ArrayEnumerator.Init", "Arr must be an Array."
 End Sub
 
 Public Sub MoveNext_WithEmptyArray_ReturnsFalse()

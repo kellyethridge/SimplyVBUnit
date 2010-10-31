@@ -27,7 +27,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
 End Sub
 
 Public Sub Test1(ByVal Value As Variant)
-    Call Err.Clear
-    Call Calls.Add("Test1")
+    Err.Clear
+    Calls.Add "Test1"
 End Sub
 

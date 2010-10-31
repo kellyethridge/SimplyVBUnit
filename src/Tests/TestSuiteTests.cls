@@ -41,7 +41,7 @@ End Sub
 Public Sub Run_WithSuccessfulTest_ReturnsSuccessfulResult()
     Dim Result As TestResult
     Dim Suite As New TestSuite
-    Call Suite.Add(New Fake1Test)
+    Suite.Add New Fake1Test
     
     Set Result = Suite.Run
     
@@ -56,8 +56,8 @@ Public Sub Run_WithFailingTest_ReturnsFailingResult()
     Dim Result As TestResult
     Dim Suite As New TestSuite
     Dim TestClass As New Stub1Test
-    Call TestClass.Errors.Add("Test1", AssertCode.FailureCode)
-    Call Suite.Add(TestClass)
+    TestClass.Errors.Add "Test1", AssertCode.FailureCode
+    Suite.Add TestClass
     
     Set Result = Suite.Run
     
@@ -75,7 +75,7 @@ Public Sub Add_WithITest_SetsParent()
     Set Test = New FakeTest
     Dim Suite As New TestSuite
     
-    Call Suite.Add(Test)
+    Suite.Add Test
     
     Dim Actual As ITest
     Set Actual = Test.Parent
@@ -86,7 +86,7 @@ Public Sub Add_WithTestClass_SetsParent()
     Dim TestClass As New Fake1Test
     Dim Suite As New TestSuite
     
-    Call Suite.Add(TestClass)
+    Suite.Add TestClass
     
     Dim Actual As ITest
     Set Actual = Suite.Tests(0).Parent
@@ -96,7 +96,7 @@ End Sub
 Public Sub Termination_WhenCalled_SetsChildParentToNothing()
     Dim Parent As New TestSuite
     Dim Child As New TestSuite
-    Call Parent.Add(Child)
+    Parent.Add Child
     
     Set Parent = Nothing
     
@@ -136,7 +136,7 @@ End Sub
 Public Sub FullName_WhenCalledWithParent_IncludesParentName()
     Dim Parent As New TestSuite
     Dim Child As New TestSuite
-    Call Parent.Add(Child)
+    Parent.Add Child
     
     Dim Actual As String
     Actual = Child.FullName
@@ -148,12 +148,12 @@ Public Sub Add_WithNothing_RaisesError()
     On Error GoTo errTrap
     Dim Suite As New TestSuite
     
-    Call Suite.Add(Nothing)
+    Suite.Add Nothing
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "TestSuite.Add", "TestClass cannot be Nothing.")
+    AssertError Err, ErrorCode.ArgumentNull, "TestSuite.Add", "TestClass cannot be Nothing."
 End Sub
 
 Public Sub TestClass_WhenCalled_ReturnsNothing()
@@ -167,38 +167,38 @@ End Sub
 
 Public Sub Sort_WhenCalled_SortsTests()
     Dim Suite As New TestSuite
-    Call Suite.Add(NewStubTest("DTest"))
-    Call Suite.Add(NewStubTest("CTest"))
-    Call Suite.Add(NewStubTest("BTest"))
-    Call Suite.Add(NewStubTest("ATest"))
+    Suite.Add NewStubTest("DTest")
+    Suite.Add NewStubTest("CTest")
+    Suite.Add NewStubTest("BTest")
+    Suite.Add NewStubTest("ATest")
     
-    Call Suite.Sort
+    Suite.Sort
     
     Dim Actual As TestList
     Set Actual = Suite.Tests
     Dim Expected As New TestList
-    Call Expected.Add(NewStubTest("ATest"))
-    Call Expected.Add(NewStubTest("BTest"))
-    Call Expected.Add(NewStubTest("CTest"))
-    Call Expected.Add(NewStubTest("DTest"))
+    Expected.Add NewStubTest("ATest")
+    Expected.Add NewStubTest("BTest")
+    Expected.Add NewStubTest("CTest")
+    Expected.Add NewStubTest("DTest")
     Assert.IsTrue Actual.Equals(Expected), "Tests not sorted."
 End Sub
 
 Public Sub Sort_WhenCalled_ForwardsSortToChildTests()
     Dim Suite As New TestSuite
-    Call Suite.Add(New Fake4TestsInDescendingOrder)
+    Suite.Add New Fake4TestsInDescendingOrder
     
-    Call Suite.Sort
+    Suite.Sort
     
     Dim Fixture As ITest
     Set Fixture = Suite.Tests(0)
     Dim Actual As TestList
     Set Actual = Fixture.Tests
     Dim Expected As New TestList
-    Call Expected.Add(NewStubTest("ATest"))
-    Call Expected.Add(NewStubTest("BTest"))
-    Call Expected.Add(NewStubTest("CTest"))
-    Call Expected.Add(NewStubTest("DTest"))
+    Expected.Add NewStubTest("ATest")
+    Expected.Add NewStubTest("BTest")
+    Expected.Add NewStubTest("CTest")
+    Expected.Add NewStubTest("DTest")
     Assert.IsTrue Actual.Equals(Expected), "Tests not sorted."
 End Sub
 
@@ -206,26 +206,26 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     Dim Mock As New MockEventListener
     Dim Suite As New TestSuite
     
-    Call Suite.Run(Mock)
+    Suite.Run Mock
     
-    Call AssertCalls(Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
-                                 Constants.TESTSUITEFINISHED_LISTENERMETHOD)
+    AssertCalls Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
+                            Constants.TESTSUITEFINISHED_LISTENERMETHOD
 End Sub
 
 Public Sub Run_WithRunStateSetToNotRunnable_DoesNotRunTests()
     Dim Mock As New Mock1Test
     Dim Suite As New TestSuite
-    Call Suite.Add(Mock)
+    Suite.Add Mock
     Suite.RunState = NotRunnableRunState
     
-    Call Suite.Run
+    Suite.Run
     
-    Call AssertNoCalls(Mock.Calls)
+    AssertNoCalls Mock.Calls
 End Sub
 
 Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
     Dim Suite As New TestSuite
-    Call Suite.Add(New FakeTest)
+    Suite.Add New FakeTest
     Suite.RunState = NotRunnableRunState
     
     Dim Result As TestResult
@@ -242,11 +242,11 @@ Public Sub Run_WithNonPassingFilter_DoesNotRun()
     Stub.Passes = False
     Dim Mock As New Mock2TestsWithFullContext
     Dim Suite As New TestSuite
-    Call Suite.Add(Mock)
+    Suite.Add Mock
     
-    Call Suite.Run(Nothing, Stub)
+    Suite.Run Nothing, Stub
     
-    Call AssertNoCalls(Mock.Calls)
+    AssertNoCalls Mock.Calls
 End Sub
 
 Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()
@@ -255,7 +255,7 @@ Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()
     Stub.Passes = False
     Dim Mock As New Mock1Test
     Dim Suite As New TestSuite
-    Call Suite.Add(Mock)
+    Suite.Add Mock
 
     Dim Result As TestResult
     Set Result = Suite.Run(Nothing, Stub)
@@ -270,7 +270,7 @@ Public Sub Run_WithNonPassingFilterAndNonRunnableState_ReturnsNonRunnableResult(
     Stub.Matches = False
     Stub.Passes = False
     Dim Suite As New TestSuite
-    Call Suite.Add(New Fake1Test)
+    Suite.Add New Fake1Test
     Suite.RunState = NotRunnableRunState
 
     Dim Result As TestResult
@@ -284,19 +284,19 @@ End Sub
 Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
     Dim Mock As New MockEventListener
     Dim Suite As New TestSuite
-    Call Suite.Add(New Fake1Test)
+    Suite.Add New Fake1Test
     Suite.RunState = NotRunnableRunState
 
-    Call Suite.Run(Mock)
+    Suite.Run Mock
 
-    Call AssertCalls(Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
-                                 Constants.TESTSUITEFINISHED_LISTENERMETHOD)
+    AssertCalls Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
+                            Constants.TESTSUITEFINISHED_LISTENERMETHOD
 End Sub
 
 Public Sub CountTestCases_WithPassingFilter_ReturnsFour()
     Dim Suite As New TestSuite
-    Call Suite.Add(New Fake2Tests)
-    Call Suite.Add(New Fake2Tests)
+    Suite.Add New Fake2Tests
+    Suite.Add New Fake2Tests
     
     Dim Actual As Long
     Actual = Suite.CountTestCases(TestFilter.EmptyFilter)
@@ -309,8 +309,8 @@ Public Sub CountTestCases_WithNonpassingFilter_ReturnsZero()
     Dim Stub As New StubFilter
     Stub.Passes = False
     Dim Suite As New TestSuite
-    Call Suite.Add(New Fake2Tests)
-    Call Suite.Add(New Fake2Tests)
+    Suite.Add New Fake2Tests
+    Suite.Add New Fake2Tests
     
     Dim Actual As Long
     Actual = Suite.CountTestCases(Stub)
@@ -321,10 +321,10 @@ End Sub
 
 Public Sub CountTestCases_WithPartialPassingFilter_ReturnsTwo()
     Dim Suite As New TestSuite
-    Call Suite.Add(New Fake2Tests)
-    Call Suite.Add(New Fake2Tests)
+    Suite.Add New Fake2Tests
+    Suite.Add New Fake2Tests
     Dim Filter As New FullNameFilter
-    Call Filter.Add(Suite.Tests(0).Tests(0).FullName)
+    Filter.Add Suite.Tests(0).Tests(0).FullName
     
     Dim Actual As Long
     Actual = Suite.CountTestCases(Filter)

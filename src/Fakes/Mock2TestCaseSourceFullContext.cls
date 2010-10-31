@@ -20,39 +20,39 @@ Public Calls As New CallTrace
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
         Case "Test1"
-            Call Test.Use(1)
+            Test.Use 1
     
         Case "Test2"
-            Call Test.Use(1)
+            Test.Use 1
     End Select
 End Sub
 
 Public Sub Test1(ByVal Value As Variant)
-    Call Err.Clear
-    Call Calls.Add("Test1")
+    Err.Clear
+    Calls.Add "Test1"
 End Sub
 
 Public Sub Test2(ByVal Value As Variant)
-    Call Err.Clear
-    Call Calls.Add("Test2")
+    Err.Clear
+    Calls.Add "Test2"
 End Sub
 
 Public Sub Setup()
-    Call Err.Clear
-    Call Calls.Add("Setup")
+    Err.Clear
+    Calls.Add "Setup"
 End Sub
 
 Public Sub Teardown()
-    Call Err.Clear
-    Call Calls.Add("Teardown")
+    Err.Clear
+    Calls.Add "Teardown"
 End Sub
 
 Public Sub FixtureSetup()
-    Call Err.Clear
-    Call Calls.Add("FixtureSetup")
+    Err.Clear
+    Calls.Add "FixtureSetup"
 End Sub
 
 Public Sub FixtureTeardown()
-    Call Err.Clear
-    Call Calls.Add("FixtureTeardown")
+    Err.Clear
+    Calls.Add "FixtureTeardown"
 End Sub

@@ -34,7 +34,7 @@ Public Sub TestName_WithName_StoresInTestCaseData()
     Dim Modifier As TestCaseModifier
     Set Modifier = Sim.NewTestCaseModifier(Data)
     
-    Call Modifier.TestName("Test")
+    Modifier.TestName "Test"
     
     Dim Actual As String
     Actual = Data.TestName
@@ -46,7 +46,7 @@ Public Sub Throws_WithNumber_StoresErrorInfo()
     Dim Modifier As TestCaseModifier
     Set Modifier = Sim.NewTestCaseModifier(Data)
     
-    Call Modifier.Throws(10)
+    Modifier.Throws 10
     
     Dim Actual As ErrorInfo
     Set Actual = Data.ErrorInfo
@@ -61,7 +61,7 @@ Public Sub Expect_WithConstraint_StoresConstraint()
     Set Modifier = Sim.NewTestCaseModifier(Data)
     Dim Fake As New StubConstraint
     
-    Call Modifier.Expect(Fake)
+    Modifier.Expect Fake
     
     Dim Actual As IConstraint
     Set Actual = Data.Expected
@@ -73,7 +73,7 @@ Public Sub Expect_WithNonconstraint_CreatesEqualConstraint()
     Dim Modifier As TestCaseModifier
     Set Modifier = Sim.NewTestCaseModifier(Data)
     
-    Call Modifier.Expect(1)
+    Modifier.Expect 1
     
     Dim Actual As IConstraint
     Set Actual = Data.Expected
@@ -85,7 +85,7 @@ Public Sub Expect_WithNothing_CreatesEqualConstraint()
     Dim Modifier As TestCaseModifier
     Set Modifier = Sim.NewTestCaseModifier(Data)
     
-    Call Modifier.Expect(Nothing)
+    Modifier.Expect Nothing
     
     Dim Actual As IConstraint
     Set Actual = Data.Expected

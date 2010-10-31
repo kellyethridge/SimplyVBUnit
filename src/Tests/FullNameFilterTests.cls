@@ -36,7 +36,7 @@ Public Sub Match_WithEqualFullNames_ReturnsTrue()
     Set Test = Fixture.Tests(0)
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("Fake2Tests.Test1")
+    Filter.Add "Fake2Tests.Test1"
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)
@@ -51,7 +51,7 @@ Public Sub Match_WithUnequalFullNames_ReturnsFalse()
     Set Test = Fixture.Tests(0)
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("UnequalName")
+    Filter.Add "UnequalName"
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)
@@ -68,8 +68,8 @@ Public Sub Match_WithMultipleEqualNames_ReturnsTrue()
     Set Test2 = Fixture.Tests(1)
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("Fake2Tests.Test1")
-    Call Filter.Add("Fake2Tests.Test2")
+    Filter.Add "Fake2Tests.Test1"
+    Filter.Add "Fake2Tests.Test2"
     
     Dim Actual1 As Boolean
     Dim Actual2 As Boolean
@@ -87,7 +87,7 @@ Public Sub Match_WithEqualNamesDifferenceCasing_ReturnsTrue()
     Set Test = Fixture.Tests(0)
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("fake2tests.test1")
+    Filter.Add "fake2tests.test1"
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)
@@ -102,7 +102,7 @@ Public Sub Pass_WithExactMatch_ReturnsTrue()
     Set Test = Fixture.Tests(0)
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("Fake2Tests.Test1")
+    Filter.Add "Fake2Tests.Test1"
     
     Dim Actual As Boolean
     Actual = Filter.Pass(Test)
@@ -115,7 +115,7 @@ Public Sub Pass_WithMatchingDecendent_ReturnsTrue()
     Set Fixture = Sim.NewTestFixture(New Fake2Tests)
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("Fake2Tests.Test2")
+    Filter.Add "Fake2Tests.Test2"
     
     Dim Actual As Boolean
     Actual = Filter.Pass(Fixture)
@@ -128,7 +128,7 @@ Public Sub Pass_WithNoMatchingDescendants_ReturnsFalse()
     Set Fixture = Sim.NewTestFixture(New Fake2Tests)
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("Fake2Tests.None")
+    Filter.Add "Fake2Tests.None"
     
     Dim Actual As Boolean
     Actual = Filter.Pass(Fixture)
@@ -141,10 +141,10 @@ Public Sub Pass_WithMatchingParent_ReturnsTrue()
     Set Fixture = Sim.NewTestFixture(New Fake2Tests)
     Dim Suite As TestSuite
     Set Suite = Sim.NewTestSuite("ParentSuite")
-    Call Suite.Add(Fixture)
+    Suite.Add Fixture
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("ParentSuite")
+    Filter.Add "ParentSuite"
     
     Dim Actual As Boolean
     Actual = Filter.Pass(Fixture)
@@ -157,10 +157,10 @@ Public Sub Pass_WithNoMatchingParent_ReturnsFalse()
     Set Fixture = Sim.NewTestFixture(New Fake2Tests)
     Dim Suite As TestSuite
     Set Suite = Sim.NewTestSuite("ParentSuite")
-    Call Suite.Add(Fixture)
+    Suite.Add Fixture
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("NotParentSuite")
+    Filter.Add "NotParentSuite"
     
     Dim Actual As Boolean
     Actual = Filter.Pass(Fixture)
@@ -172,8 +172,8 @@ Public Sub Add_WithExistingNames_DoesNothing()
     On Error GoTo errTrap
     
     Dim Filter As New FullNameFilter
-    Call Filter.Add("Test")
-    Call Filter.Add("Test")
+    Filter.Add "Test"
+    Filter.Add "Test"
     Exit Sub
     
 errTrap:

@@ -88,7 +88,7 @@ Public Sub That_WithConstraint_ExecutesConstraint()
     
     Assert.That 1, Mock
     
-    Call AssertCalls(Mock.Calls, "Resolve", "Matches")
+    AssertCalls Mock.Calls, "Resolve", "Matches"
 End Sub
 
 Public Sub That_WithFailingConstraint_RaisesCorrectError()
@@ -114,7 +114,7 @@ Public Sub That_WithFailingConstraint_WritesConstraintMessage()
     Debug.Assert False
     
 errTrap:
-    Call AssertCalls(Mock.Calls, "Resolve", "Matches", "WriteMessageTo")
+    AssertCalls Mock.Calls, "Resolve", "Matches", "WriteMessageTo"
 End Sub
 
 Public Sub That_WithFailingConstraint_IncludesConstraintMessageWithError()
@@ -127,7 +127,7 @@ Public Sub That_WithFailingConstraint_IncludesConstraintMessageWithError()
     Debug.Assert False
     
 errTrap:
-    Call AssertError(Err, AssertCode.FailureCode, "SVBUnit", "failed")
+    AssertError Err, AssertCode.FailureCode, "SVBUnit", "failed"
 End Sub
 
 Public Sub That_WithMessage_PrependsConstraintMessage()
@@ -140,7 +140,7 @@ Public Sub That_WithMessage_PrependsConstraintMessage()
     Debug.Assert False
     
 errTrap:
-    Call AssertError(Err, AssertCode.FailureCode, "SVBUnit", "the message" & vbCrLf & "failed")
+    AssertError Err, AssertCode.FailureCode, "SVBUnit", "the message" & vbCrLf & "failed"
 End Sub
 
 Public Sub IsFalse_WithFalseCondtion_DoesNothing()
@@ -161,7 +161,7 @@ Public Sub IsFalse_WithFailingCondition_RaisesCorrectError()
     Assert.Fail "Should raise error."
     
 errTrap:
-    Call AssertError(Err, AssertCode.FailureCode)
+    AssertError Err, AssertCode.FailureCode
 End Sub
 
 Public Sub IsFalse_WithMessage_IncludesMessage()
@@ -195,7 +195,7 @@ Public Sub AreEqual_WithUnequalValues_RaisesCorrectError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, AssertCode.FailureCode)
+    AssertError Err, AssertCode.FailureCode
 End Sub
 
 Public Sub AreEqual_WithMessage_IncludesMessage()
@@ -219,7 +219,7 @@ Public Sub Pass_WhenCalled_RaisesCorrectError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, AssertCode.SuccessCode)
+    AssertError Err, AssertCode.SuccessCode
 End Sub
 
 Public Sub Pass_WithMessage_IncludesMessageInError()
@@ -261,7 +261,7 @@ Public Sub IsVBEmpty_WithNonemptyValue_RaisesCorrectError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, AssertCode.FailureCode)
+    AssertError Err, AssertCode.FailureCode
 End Sub
 
 Public Sub IsVBEmpty_WithEmpty_DoesNothing()
@@ -282,7 +282,7 @@ Public Sub IsVBNull_WithNonnullValue_RaisesCorrectError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, AssertCode.FailureCode)
+    AssertError Err, AssertCode.FailureCode
 End Sub
 
 

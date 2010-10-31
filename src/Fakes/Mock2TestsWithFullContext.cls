@@ -17,31 +17,31 @@ Public Calls    As New CallTrace
 Public Errors   As New CallError
 
 Public Sub Test1()
-    Call Err.Clear
-    Call Calls.Add("Test1")
+    Err.Clear
+    Calls.Add "Test1"
 End Sub
 
 Public Sub Test2()
-    Call Err.Clear
-    Call Calls.Add("Test2")
+    Err.Clear
+    Calls.Add "Test2"
 End Sub
 
 Public Sub Setup()
-    Call Err.Clear
-    Call Calls.Add("Setup")
+    Err.Clear
+    Calls.Add "Setup"
 End Sub
 
 Public Sub Teardown()
-    Call Err.Clear
-    Call Calls.Add("Teardown")
+    Err.Clear
+    Calls.Add "Teardown"
 End Sub
 
 Public Sub FixtureSetup()
-    Call Err.Clear
-    Call Calls.Add("FixtureSetup")
+    Err.Clear
+    Calls.Add "FixtureSetup"
 End Sub
 
 Public Sub FixtureTeardown()
-    Call Err.Clear
-    Call Calls.Add("FixtureTeardown")
+    Err.Clear
+    Calls.Add "FixtureTeardown"
 End Sub

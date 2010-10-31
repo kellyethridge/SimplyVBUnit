@@ -22,23 +22,23 @@ Public Actual   As Variant
 
 Private Function IConstraint_Matches(Actual As Variant) As Boolean
     Me.Actual = Actual
-    Call Calls.Add("Matches")
+    Calls.Add "Matches"
     IConstraint_Matches = Me.Matches
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Call Calls.Add("WriteActualValueTo")
+    Calls.Add "WriteActualValueTo"
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Call Calls.Add("WriteDescriptionTo")
+    Calls.Add "WriteDescriptionTo"
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Call Calls.Add("WriteMessageTo")
+    Calls.Add "WriteMessageTo"
 End Sub
 
 Private Function IResolvable_Resolve() As SVBUnit.IConstraint
-    Call Calls.Add("Resolve")
+    Calls.Add "Resolve"
     Set IResolvable_Resolve = Me
 End Function

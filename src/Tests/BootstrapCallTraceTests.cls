@@ -35,14 +35,14 @@ Private mCount As Long
 Public Function Run() As Long
     mCount = 0
     
-    Call RunTest(Constructor_WhenCalled_IsEmpty)
-    Call RunTest(Add_WhenCalled_StoresCallOnStack)
-    Call RunTest(Count_WhenCalled_ReturnsCallCount)
-    Call RunTest(Equals_WithSameCalls_ReturnsTrue)
-    Call RunTest(Equals_WithSameCallsInDifferentOrder_ReturnsFalse)
-    Call RunTest(Equals_WithDifferentSizeStacks_ReturnsFalse)
-    Call RunTest(Equals_WithDifferentCase_ReturnsTrue)
-    Call RunTest(Equals_WithPatternMatch_ReturnsTrue)
+    RunTest Constructor_WhenCalled_IsEmpty
+    RunTest Add_WhenCalled_StoresCallOnStack
+    RunTest Count_WhenCalled_ReturnsCallCount
+    RunTest Equals_WithSameCalls_ReturnsTrue
+    RunTest Equals_WithSameCallsInDifferentOrder_ReturnsFalse
+    RunTest Equals_WithDifferentSizeStacks_ReturnsFalse
+    RunTest Equals_WithDifferentCase_ReturnsTrue
+    RunTest Equals_WithPatternMatch_ReturnsTrue
     
     Run = mCount
 End Function
@@ -63,7 +63,7 @@ End Function
 Public Function Add_WhenCalled_StoresCallOnStack()
     Dim Calls As New CallTrace
     
-    Call Calls.Add("Method1")
+    Calls.Add "Method1"
     
     Dim Actual As String
     Actual = Calls(1)
@@ -72,7 +72,7 @@ End Function
 
 Public Function Count_WhenCalled_ReturnsCallCount()
     Dim Calls As New CallTrace
-    Call Calls.Add("Method")
+    Calls.Add "Method"
     
     Dim Actual As Long
     Actual = Calls.Count
@@ -82,55 +82,55 @@ End Function
 
 Public Function Equals_WithSameCalls_ReturnsTrue()
     Dim Actual As New CallTrace
-    Call Actual.Add("Test1")
-    Call Actual.Add("Test2")
+    Actual.Add "Test1"
+    Actual.Add "Test2"
     
     Dim Expected As New CallTrace
-    Call Expected.Add("Test1")
-    Call Expected.Add("Test2")
+    Expected.Add "Test1"
+    Expected.Add "Test2"
     
     Debug.Assert Actual.Equals(Expected)
 End Function
 
 Public Function Equals_WithSameCallsInDifferentOrder_ReturnsFalse()
     Dim Actual As New CallTrace
-    Call Actual.Add("Test1")
-    Call Actual.Add("Test2")
+    Actual.Add "Test1"
+    Actual.Add "Test2"
     
     Dim Expected As New CallTrace
-    Call Expected.Add("Test2")
-    Call Expected.Add("Test1")
+    Expected.Add "Test2"
+    Expected.Add "Test1"
     
     Debug.Assert Actual.Equals(Expected) = False
 End Function
 
 Public Function Equals_WithDifferentSizeStacks_ReturnsFalse()
     Dim Actual As New CallTrace
-    Call Actual.Add("Test1")
-    Call Actual.Add("Test2")
+    Actual.Add "Test1"
+    Actual.Add "Test2"
     
     Dim Expected As New CallTrace
-    Call Expected.Add("Test1")
+    Expected.Add "Test1"
     
     Debug.Assert Actual.Equals(Expected) = False
 End Function
 
 Public Function Equals_WithDifferentCase_ReturnsTrue()
     Dim Actual As New CallTrace
-    Call Actual.Add("test1")
+    Actual.Add "test1"
     
     Dim Expected As New CallTrace
-    Call Expected.Add("TEST1")
+    Expected.Add "TEST1"
     
     Debug.Assert Actual.Equals(Expected) = True
 End Function
 
 Public Function Equals_WithPatternMatch_ReturnsTrue()
     Dim Actual As New CallTrace
-    Call Actual.Add("Test1")
+    Actual.Add "Test1"
     
     Dim Expected As New CallTrace
-    Call Expected.Add("Test*")
+    Expected.Add "Test*"
     
     Debug.Assert Actual.Equals(Expected) = True
 End Function

@@ -116,7 +116,7 @@ Public Sub WriteMessageTo_WithMatchesNotCalled_WritesExpectedErrorMessage()
     Set c = Sim.NewThrowsConstraint(Sim.NewErrorInfo(1))
     Dim w As New TextMessageWriter
 
-    Call c.WriteMessageTo(w)
+    c.WriteMessageTo w
 
     Dim Actual As String
     Actual = w.ToString
@@ -130,10 +130,10 @@ Public Sub WriteMessageTo_WithWrongErrorRaised_WritesWrongErrorMessage()
     Set c = Sim.NewThrowsConstraint(Sim.NewErrorInfo(1))
     Dim Info As ErrorInfo
     Set Info = Sim.NewErrorInfo(100)
-    Call c.Matches(Info)
+    c.Matches Info
     
     Dim w As New TextMessageWriter
-    Call c.WriteMessageTo(w)
+    c.WriteMessageTo w
     
     Dim Actual As String
     Actual = w.ToString

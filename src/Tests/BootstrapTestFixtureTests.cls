@@ -35,10 +35,10 @@ Private mCount As Long
 Public Function Run() As Long
     mCount = 0
     
-    Call RunTest(Constructor_WithEmptyTestClass_Creates0TestCases)
-    Call RunTest(Constructor_WithClassWithOneTest_Creates1TestCase)
-    Call RunTest(Constructor_WithClassWithProperty_ExcludesPropertyAsTest)
-    Call RunTest(Run_UsingClassWithOneTest_ExecutesTest)
+    RunTest Constructor_WithEmptyTestClass_Creates0TestCases
+    RunTest Constructor_WithClassWithOneTest_Creates1TestCase
+    RunTest Constructor_WithClassWithProperty_ExcludesPropertyAsTest
+    RunTest Run_UsingClassWithOneTest_ExecutesTest
     
     Run = mCount
 End Function
@@ -85,7 +85,7 @@ Private Function Run_UsingClassWithOneTest_ExecutesTest()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
 
-    Call Fixture.Run
+    Fixture.Run
 
     Dim Actual As Long
     Actual = TestClass.Calls.Count

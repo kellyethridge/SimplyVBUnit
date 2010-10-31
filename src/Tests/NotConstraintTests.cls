@@ -56,7 +56,7 @@ End Sub
 Public Sub Constructor_WithNullBaseConstraint_RaisesError()
     Assert.Throws ErrorCode.ArgumentNull
     
-    Call Sim.NewNotConstraint(Nothing)
+    Sim.NewNotConstraint Nothing
 End Sub
 
 Public Sub WriteMessageTo_WhenCalled_WritesBaseConstraintMessage()
@@ -65,10 +65,10 @@ Public Sub WriteMessageTo_WhenCalled_WritesBaseConstraintMessage()
     Stub.ActualValue = 1
     Dim c As NotConstraint
     Set c = Sim.NewNotConstraint(Stub)
-    Call c.Matches(1)
+    c.Matches 1
     Dim w As New TextMessageWriter
     
-    Call c.WriteMessageTo(w)
+    c.WriteMessageTo w
     
     Dim Actual As String
     Actual = w.ToString

@@ -21,12 +21,12 @@ Public Calls            As New CallTrace
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
     Select Case Test.MethodName
         Case "Test1"
-            Call Test.Use(ParameterValue).Expect(Constraint)
+            Test.Use(ParameterValue).Expect Constraint
         
     End Select
 End Sub
 
 Public Function Test1(ByVal Value As Variant) As Variant
-    Call Calls.Add("Test1." & CStr(Value))
-    Call VariantCopyInd(Test1, Value)
+    Calls.Add "Test1." & CStr(Value)
+    VariantCopyInd Test1, Value
 End Function

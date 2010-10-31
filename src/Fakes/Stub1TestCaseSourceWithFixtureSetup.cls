@@ -21,9 +21,9 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
 End Sub
 
 Public Sub Test1(ByVal Arg As Variant)
-    Call Errors.Raise("Test1")
+    Errors.Raise "Test1"
 End Sub
 
 Public Sub FixtureSetup()
-    Call Errors.Raise("FixtureSetup")
+    Errors.Raise "FixtureSetup"
 End Sub

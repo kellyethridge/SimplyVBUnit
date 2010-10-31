@@ -69,7 +69,7 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
         If Not Tallier.TryRemove(Value) Then Exit Function
     Next
     
-    Matches = (Tallier.Count = 0)
+    Matches = Tallier.IsEmpty
 End Function
 
 

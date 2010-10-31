@@ -41,7 +41,7 @@ End Sub
 Public Sub Add_WithName_StoresNameInList()
     Dim List As New CategoryList
     
-    Call List.Add("Category")
+    List.Add "Category"
     
     Dim Actual As Long
     Actual = List.Count
@@ -51,7 +51,7 @@ End Sub
 Public Sub Add_WithName_StoresNameInList2()
     Dim List As New CategoryList
     
-    Call List.Add("Category")
+    List.Add "Category"
     
     Dim Actual As String
     Actual = List(0)
@@ -60,7 +60,7 @@ End Sub
 
 Public Sub Contains_WithNonexistingName_ReturnsFalse()
     Dim List As New CategoryList
-    Call List.Add("Nonexisting")
+    List.Add "Nonexisting"
     
     Dim Actual As Boolean
     Actual = List.Contains("Something")
@@ -70,7 +70,7 @@ End Sub
 
 Public Sub Contains_WithExistingName_ReturnsTrue()
     Dim List As New CategoryList
-    Call List.Add("Existing")
+    List.Add "Existing"
     
     Dim Actual As Boolean
     Actual = List.Contains("Existing")
@@ -82,8 +82,8 @@ Public Sub Add_WithExistingName_DoesNothing()
     Dim List As New CategoryList
     
     On Error GoTo errTrap
-    Call List.Add("Name")
-    Call List.Add("Name")
+    List.Add "Name"
+    List.Add "Name"
     Exit Sub
     
 errTrap:
@@ -101,12 +101,12 @@ Public Sub Item_WithNegativeIndex_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, ErrorCode.IndexOutOfRange, "CategoryList.Item", "Index was out of range. Must be non-negative and less than the size of the collection.")
+    AssertError Err, ErrorCode.IndexOutOfRange, "CategoryList.Item", "Index was out of range. Must be non-negative and less than the size of the collection."
 End Sub
 
 Public Sub Item_WithIndexPassedEndOfList_RaisesError()
     Dim List As New CategoryList
-    Call List.Add("Name")
+    List.Add "Name"
     
     On Error GoTo errTrap
     Dim Name As String
@@ -116,7 +116,7 @@ Public Sub Item_WithIndexPassedEndOfList_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, ErrorCode.IndexOutOfRange, "CategoryList.Item", "Index was out of range. Must be non-negative and less than the size of the collection.")
+    AssertError Err, ErrorCode.IndexOutOfRange, "CategoryList.Item", "Index was out of range. Must be non-negative and less than the size of the collection."
 End Sub
 
 

@@ -74,13 +74,13 @@ End Sub
 Public Sub Constructor_WithNullLeftSide_RaisesError()
     Assert.Throws ErrorCode.ArgumentNull
     
-    Call Sim.NewOrConstraint(Nothing, New StubConstraint)
+    Sim.NewOrConstraint Nothing, New StubConstraint
 End Sub
 
 Public Sub Constructor_WithNullRightSide_RaisesError()
     Assert.Throws ErrorCode.ArgumentNull
     
-    Call Sim.NewOrConstraint(New StubConstraint, Nothing)
+    Sim.NewOrConstraint New StubConstraint, Nothing
 End Sub
 
 Public Sub Matches_WithPassingLeftSide_DoesNotCallRightSide()
@@ -90,9 +90,9 @@ Public Sub Matches_WithPassingLeftSide_DoesNotCallRightSide()
     Dim c As OrConstraint
     Set c = Sim.NewOrConstraint(StubLeft, MockRight)
     
-    Call c.Matches(True)
+    c.Matches True
     
-    Call AssertNoCalls(MockRight.Calls)
+    AssertNoCalls MockRight.Calls
 End Sub
 
 Public Sub WriteMessageTo_WhenCalled_WritesBothConstraintMessages()
@@ -102,10 +102,10 @@ Public Sub WriteMessageTo_WhenCalled_WritesBothConstraintMessages()
     StubRight.Description = "equal right"
     Dim c As OrConstraint
     Set c = Sim.NewOrConstraint(StubLeft, StubRight)
-    Call c.Matches(1)
+    c.Matches 1
     Dim w As New TextMessageWriter
     
-    Call c.WriteMessageTo(w)
+    c.WriteMessageTo w
     
     Dim Actual As String
     Actual = w.ToString

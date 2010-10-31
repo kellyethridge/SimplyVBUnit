@@ -49,7 +49,7 @@ Public Sub Run_UsingFailingTest_ReturnsFailingTestResult()
     On Error GoTo errTrap
     
     Dim TestClass As New Stub1Test
-    Call TestClass.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode)
+    TestClass.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     
@@ -186,7 +186,7 @@ Public Sub FullName_WithParent_ReturnsParentNameAndSelfName()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(New Fake1Test)
     Dim Suite As New TestSuite
-    Call Suite.Add(Fixture)
+    Suite.Add Fixture
     
     Dim Actual As String
     Actual = Fixture.FullName
@@ -212,7 +212,7 @@ Public Sub Constructor_WithNothing_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "TestFixture.Init", "TestClass cannot be Nothing.")
+    AssertError Err, ErrorCode.ArgumentNull, "TestFixture.Init", "TestClass cannot be Nothing."
 End Sub
 
 Public Sub Constructor_UsingClassWithSetup_DoesNotIncludeSetupAsTest()
@@ -231,12 +231,12 @@ Public Sub Run_UsingClassWithSetup_RunsSetupOnceBeforeEachTest()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     
-    Call Fixture.Run
+    Fixture.Run
     
-    Call AssertCalls(TestClass.Calls, Constants.SETUP_METHOD, _
-                                      Constants.TEST1_METHOD, _
-                                      Constants.SETUP_METHOD, _
-                                      Constants.TEST2_METHOD)
+    AssertCalls TestClass.Calls, Constants.SETUP_METHOD, _
+                                 Constants.TEST1_METHOD, _
+                                 Constants.SETUP_METHOD, _
+                                 Constants.TEST2_METHOD
 End Sub
 
 Public Sub Run_UsingClassWithTeardown_RunsTeardownOnceAfterEachTest()
@@ -244,12 +244,12 @@ Public Sub Run_UsingClassWithTeardown_RunsTeardownOnceAfterEachTest()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Call Fixture.Run
+    Fixture.Run
     
-    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, _
-                                 Constants.TEARDOWN_METHOD, _
-                                 Constants.TEST2_METHOD, _
-                                 Constants.TEARDOWN_METHOD)
+    AssertCalls Mock.Calls, Constants.TEST1_METHOD, _
+                            Constants.TEARDOWN_METHOD, _
+                            Constants.TEST2_METHOD, _
+                            Constants.TEARDOWN_METHOD
 End Sub
 
 Public Sub Run_UsingClassWithFixtureSetup_RunsFixtureSetupOnce()
@@ -257,11 +257,11 @@ Public Sub Run_UsingClassWithFixtureSetup_RunsFixtureSetupOnce()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Call Fixture.Run
+    Fixture.Run
     
-    Call AssertCalls(Mock.Calls, Constants.FIXTURESETUP_METHOD, _
-                                 Constants.TEST_ANY, _
-                                 Constants.TEST_ANY)
+    AssertCalls Mock.Calls, Constants.FIXTURESETUP_METHOD, _
+                            Constants.TEST_ANY, _
+                            Constants.TEST_ANY
 End Sub
 
 Public Sub Run_UsingClassWithFixtureTeardown_RunsFixtureTeardownOnce()
@@ -269,11 +269,11 @@ Public Sub Run_UsingClassWithFixtureTeardown_RunsFixtureTeardownOnce()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Call Fixture.Run
+    Fixture.Run
     
-    Call AssertCalls(Mock.Calls, Constants.TEST_ANY, _
-                                 Constants.TEST_ANY, _
-                                 Constants.FIXTURETEARDOWN_METHOD)
+    AssertCalls Mock.Calls, Constants.TEST_ANY, _
+                            Constants.TEST_ANY, _
+                            Constants.FIXTURETEARDOWN_METHOD
 End Sub
 
 Public Sub Constructor_WhenCalled_StoresTestClass()
@@ -292,15 +292,15 @@ Public Sub Sort_WhenCalled_SortsTestsAscending()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Fake)
     
-    Call Fixture.Sort
+    Fixture.Sort
     
     Dim Actual As TestList
     Set Actual = Fixture.Tests
     Dim Expected As New TestList
-    Call Expected.Add(NewStubTest("ATest"))
-    Call Expected.Add(NewStubTest("BTest"))
-    Call Expected.Add(NewStubTest("CTest"))
-    Call Expected.Add(NewStubTest("DTest"))
+    Expected.Add NewStubTest("ATest")
+    Expected.Add NewStubTest("BTest")
+    Expected.Add NewStubTest("CTest")
+    Expected.Add NewStubTest("DTest")
     Assert.IsTrue Actual.Equals(Expected), "Tests not sorted."
 End Sub
 
@@ -348,18 +348,18 @@ End Sub
 
 Public Sub Run_WithFailingFixtureSetup_FailsTests()
     Dim Mock As New Mock2TestsWithFixtureSetup
-    Call Mock.Errors.Add(Constants.FIXTURESETUP_METHOD, 5)
+    Mock.Errors.Add Constants.FIXTURESETUP_METHOD, 5
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Call Fixture.Run
+    Fixture.Run
     
-    Call AssertCalls(Mock.Calls, Constants.FIXTURESETUP_METHOD)
+    AssertCalls Mock.Calls, Constants.FIXTURESETUP_METHOD
 End Sub
 
 Public Sub Run_WithFailingFixtureSetup_ChildTestResultsAreFailure()
     Dim Stub As New Stub1TestWithFullContext
-    Call Stub.Errors.Add(Constants.FIXTURESETUP_METHOD, 5)
+    Stub.Errors.Add Constants.FIXTURESETUP_METHOD, 5
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Result As TestResult
@@ -378,15 +378,15 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(New FakeEmpty)
     
-    Call Fixture.Run(Mock)
+    Fixture.Run Mock
     
-    Call AssertCalls(Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
-                                 Constants.TESTSUITEFINISHED_LISTENERMETHOD)
+    AssertCalls Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
+                            Constants.TESTSUITEFINISHED_LISTENERMETHOD
 End Sub
 
 Public Sub Run_WithFailingFixtureSetup_SetsTestCaseSourceTestsToFailingResult()
     Dim Stub As New Stub1TestCaseSrcAndFixtureSetup
-    Call Stub.Errors.Add("FixtureSetup", 5, , "FixtureSetup had an error.")
+    Stub.Errors.Add "FixtureSetup", 5, , "FixtureSetup had an error."
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     
@@ -404,9 +404,9 @@ Public Sub Run_WithRunStateSetToNotRunnable_DoesNotRunTests()
     Set Fixture = Sim.NewTestFixture(Mock)
     Fixture.RunState = NotRunnableRunState
     
-    Call Fixture.Run
+    Fixture.Run
     
-    Call AssertNoCalls(Mock.Calls)
+    AssertNoCalls Mock.Calls
 End Sub
 
 Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
@@ -428,9 +428,9 @@ Public Sub Run_WithNonPassingFilter_DoesNotRun()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Call Fixture.Run(Nothing, Stub)
+    Fixture.Run Nothing, Stub
     
-    Call AssertNoCalls(Mock.Calls)
+    AssertNoCalls Mock.Calls
 End Sub
 
 Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()
@@ -471,10 +471,10 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsEventListenerMethods()
     Set Fixture = Sim.NewTestFixture(New Fake1Test)
     Fixture.RunState = NotRunnableRunState
     
-    Call Fixture.Run(Mock)
+    Fixture.Run Mock
     
-    Call AssertCalls(Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
-                                 Constants.TESTSUITEFINISHED_LISTENERMETHOD)
+    AssertCalls Mock.Calls, Constants.TESTSUITESTARTED_LISTENERMETHOD, _
+                            Constants.TESTSUITEFINISHED_LISTENERMETHOD
 End Sub
 
 Public Sub Run_WhenCalledTwice_RunsTestTwice()
@@ -482,27 +482,27 @@ Public Sub Run_WhenCalledTwice_RunsTestTwice()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Call Fixture.Run
-    Call Fixture.Run
+    Fixture.Run
+    Fixture.Run
     
-    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, _
-                                 Constants.TEST1_METHOD)
+    AssertCalls Mock.Calls, Constants.TEST1_METHOD, _
+                            Constants.TEST1_METHOD
 End Sub
 
 Public Sub Run_WithAssertIgnoreInFixtureSetup_FailsTests()
     Dim Mock As New Mock2TestsWithFixtureSetup
-    Call Mock.Errors.Add(Constants.FIXTURESETUP_METHOD, AssertCode.IgnoreCode)
+    Mock.Errors.Add Constants.FIXTURESETUP_METHOD, AssertCode.IgnoreCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
 
-    Call Fixture.Run
+    Fixture.Run
 
-    Call AssertCalls(Mock.Calls, Constants.FIXTURESETUP_METHOD)
+    AssertCalls Mock.Calls, Constants.FIXTURESETUP_METHOD
 End Sub
 
 Public Sub Run_WithFailingFixtureTeardown_ConsumesError()
     Dim Mock As New Mock2TestsWithFixtureTeardown
-    Call Mock.Errors.Add(Constants.FIXTURETEARDOWN_METHOD, 5)
+    Mock.Errors.Add Constants.FIXTURETEARDOWN_METHOD, 5
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
