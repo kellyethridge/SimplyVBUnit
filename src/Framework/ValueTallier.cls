@@ -29,118 +29,177 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mTallies As New Collection
-Private mStrict As Boolean
+Private mComparer   As EqualityComparer
+Private mTallies    As New Collection
 
-Public Property Get Strict() As Boolean
-    Strict = mStrict
-End Property
 
-Public Property Let Strict(ByVal RHS As Boolean)
-    mStrict = RHS
-End Property
-
-Public Function GetTally(ByRef Value As Variant) As Long
-    GetTally = GetOrCreateTally(Value).Count
-End Function
-
-Public Function IncrementTally(ByRef Value As Variant) As Long
-    IncrementTally = GetOrCreateTally(Value).Increment
-End Function
-
-Public Function DecrementTally(ByRef Value As Variant) As Long
-    DecrementTally = GetOrCreateTally(Value).Decrement
-End Function
-
-Public Property Get TotalTallyCount() As Long
-    Dim Result  As Long
-    Dim t       As Tally
-    
-    For Each t In mTallies
-        Result = Result + t.Count
-    Next t
-    
-    TotalTallyCount = Result
-End Property
-
-Public Function Remove(ByRef Value As Variant) As Boolean
-    With GetOrCreateTally(Value)
-        If .Count > 0 Then
-            .Decrement
-            Remove = True
-        End If
-    End With
-End Function
-
-Public Sub IncrementTallies(ByRef Values As Variant)
+Public Sub Initialize(ByRef Values As Variant, ByVal Comparer As EqualityComparer)
     If Not IsEnumerable(Values) Then _
-        Err.Raise ErrorCode.Argument, "ItemTallier", "An enumerable object is required."
+        Error.EnumerationNotSupported Me, "Initialize", "Source"
+    If Comparer Is Nothing Then _
+        Error.CannotBeNothing Me, "Initialize", "Comparer"
     
-    Dim Element As Variant
-    For Each Element In Values
-        If (Not IsEnumerable(Element)) And (VarType(Element) <> vbUserDefinedType) Then
-            IncrementTally Element
-        End If
-    Next Element
+    Set mComparer = Comparer
+    
+    Dim Value As Variant
+    Dim Tally As Tally
+    
+    For Each Value In Values
+        Set Tally = GetTally(Value)
+        Tally.Increment
+    Next
 End Sub
 
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function GetOrCreateTally(ByRef Value As Variant) As Tally
-    Dim Key As String
-    Key = CreateKey(Value)
+Public Function TryRemove(ByRef Value As Variant) As Boolean
+    Dim Tally As Tally
+    Set Tally = GetTally(Value)
     
-    If Len(Key) > 0 Then
-        On Error GoTo errTrap
-        Set GetOrCreateTally = mTallies(Key)
-    Else
-        Set GetOrCreateTally = Tally.Zero
+    If Tally.Count = 0 Then
+        Exit Function
     End If
     
-    Exit Function
-    
-errTrap:
-    Set GetOrCreateTally = New Tally
-    mTallies.Add GetOrCreateTally, Key
+    Tally.Decrement
+    TryRemove = True
 End Function
 
-Private Function CreateKey(ByRef Value As Variant) As String
-    Dim Result As String
+Public Property Get Count() As Long
+    Dim Tally As Tally
+    Dim Result As Long
     
-    If mStrict Then
-        Select Case VarType(Value)
-            Case vbByte:        Result = "I1_" & Value
-            Case vbInteger:     Result = "I2_" & Value
-            Case vbLong:        Result = "I4_" & Value
-            Case vbSingle:      Result = "R4_" & Value
-            Case vbDouble:      Result = "R8_" & Value
-            Case vbDecimal:     Result = "Dec_" & Value
-            Case vbCurrency:    Result = "Cy_" & Value
-            Case vbBoolean:     Result = "Bool_" & Value
-            Case vbDate:        Result = "Date_" & Value
-            Case vbString:      Result = "Str_" & Value
-            Case vbObject:      Result = "Obj_ " & ObjPtr(Value)
-            Case vbNull:        Result = "Null"
-            Case vbEmpty:       Result = "Empty"
-            Case Else:          Result = ""
-        End Select
-    Else
-        Select Case VarType(Value)
-            Case vbByte, vbInteger, vbLong, vbSingle, vbDouble, vbDecimal, vbCurrency
-                                Result = "Num_" & Value
-            Case vbBoolean:     Result = "Bool_" & Value
-            Case vbDate:        Result = "Date_" & Value
-            Case vbString:      Result = "Str_" & Value
-            Case vbObject:      Result = "Obj_ " & ObjPtr(Value)
-            Case vbNull:        Result = "Null"
-            Case vbEmpty:       Result = "Empty"
-            Case Else:          Result = ""
-        End Select
-    End If
+    For Each Tally In mTallies
+        Result = Result + Tally.Count
+    Next
     
-    CreateKey = Result
+    Count = Result
+End Property
+
+
+Private Function GetTally(ByRef Value As Variant) As Tally
+    Dim Tally As Tally
+    For Each Tally In mTallies
+        If Tally.Equals(Value, mComparer) Then
+            Set GetTally = Tally
+            Exit Function
+        End If
+    Next
+    
+    Set GetTally = New Tally
+    GetTally.Init Value
+    mTallies.Add GetTally
 End Function
 
 
+'Private mStrict As Boolean
+'
+'Public Property Get Strict() As Boolean
+'    Strict = mStrict
+'End Property
+'
+'Public Property Let Strict(ByVal RHS As Boolean)
+'    mStrict = RHS
+'End Property
+'
+'Public Function GetTally(ByRef Value As Variant) As Long
+'    GetTally = GetOrCreateTally(Value).Count
+'End Function
+'
+'Public Function IncrementTally(ByRef Value As Variant) As Long
+'    IncrementTally = GetOrCreateTally(Value).Increment
+'End Function
+'
+'Public Function DecrementTally(ByRef Value As Variant) As Long
+'    DecrementTally = GetOrCreateTally(Value).Decrement
+'End Function
+'
+'Public Property Get TotalTallyCount() As Long
+'    Dim Result  As Long
+'    Dim t       As Tally
+'
+'    For Each t In mTallies
+'        Result = Result + t.Count
+'    Next t
+'
+'    TotalTallyCount = Result
+'End Property
+'
+'Public Function Remove(ByRef Value As Variant) As Boolean
+'    With GetOrCreateTally(Value)
+'        If .Count > 0 Then
+'            .Decrement
+'            Remove = True
+'        End If
+'    End With
+'End Function
+'
+'Public Sub IncrementTallies(ByRef Values As Variant)
+'    If Not IsEnumerable(Values) Then _
+'        Err.Raise ErrorCode.Argument, "ItemTallier", "An enumerable object is required."
+'
+'    Dim Element As Variant
+'    For Each Element In Values
+'        If (Not IsEnumerable(Element)) And (VarType(Element) <> vbUserDefinedType) Then
+'            IncrementTally Element
+'        End If
+'    Next Element
+'End Sub
+'
+'
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''   Private Methods
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Private Function GetOrCreateTally(ByRef Value As Variant) As Tally
+'    Dim Key As String
+'    Key = CreateKey(Value)
+'
+'    If Len(Key) > 0 Then
+'        On Error GoTo errTrap
+'        Set GetOrCreateTally = mTallies(Key)
+'    Else
+'        Set GetOrCreateTally = Tally.Zero
+'    End If
+'
+'    Exit Function
+'
+'errTrap:
+'    Set GetOrCreateTally = New Tally
+'    mTallies.Add GetOrCreateTally, Key
+'End Function
+'
+'Private Function CreateKey(ByRef Value As Variant) As String
+'    Dim Result As String
+'
+'    If mStrict Then
+'        Select Case VarType(Value)
+'            Case vbByte:        Result = "I1_" & Value
+'            Case vbInteger:     Result = "I2_" & Value
+'            Case vbLong:        Result = "I4_" & Value
+'            Case vbSingle:      Result = "R4_" & Value
+'            Case vbDouble:      Result = "R8_" & Value
+'            Case vbDecimal:     Result = "Dec_" & Value
+'            Case vbCurrency:    Result = "Cy_" & Value
+'            Case vbBoolean:     Result = "Bool_" & Value
+'            Case vbDate:        Result = "Date_" & Value
+'            Case vbString:      Result = "Str_" & Value
+'            Case vbObject:      Result = "Obj_ " & ObjPtr(Value)
+'            Case vbNull:        Result = "Null"
+'            Case vbEmpty:       Result = "Empty"
+'            Case Else:          Result = ""
+'        End Select
+'    Else
+'        Select Case VarType(Value)
+'            Case vbByte, vbInteger, vbLong, vbSingle, vbDouble, vbDecimal, vbCurrency
+'                                Result = "Num_" & Value
+'            Case vbBoolean:     Result = "Bool_" & Value
+'            Case vbDate:        Result = "Date_" & Value
+'            Case vbString:      Result = "Str_" & Value
+'            Case vbObject:      Result = "Obj_ " & ObjPtr(Value)
+'            Case vbNull:        Result = "Null"
+'            Case vbEmpty:       Result = "Empty"
+'            Case Else:          Result = ""
+'        End Select
+'    End If
+'
+'    CreateKey = Result
+'End Function
+'
+'

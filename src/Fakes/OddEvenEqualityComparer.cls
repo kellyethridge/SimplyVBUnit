@@ -14,7 +14,7 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements IEqualityComparer
 
-Private Function IEqualityComparer_Equals(X As Variant, Y As Variant) As Boolean
+Private Function IEqualityComparer_Equals(X As Variant, Y As Variant, ByVal Context As IEqualityContext) As Boolean
     On Error GoTo errTrap
     Dim XLong As Long
     Dim YLong As Long

@@ -85,11 +85,11 @@ Private Function IConstraintExpression_Empty() As SimplyVBUnitType.IBasicExpress
     Set IConstraintExpression_Empty = mExpression.Empty_
 End Function
 
-Private Function IConstraintExpression_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
+Private Function IConstraintExpression_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
     Set IConstraintExpression_EqualTo = mExpression.EqualTo(Expected)
 End Function
 
-Private Function IConstraintExpression_EquivalentTo(Expected As Variant) As SimplyVBUnitType.IStrictExpression
+Private Function IConstraintExpression_EquivalentTo(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
     Set IConstraintExpression_EquivalentTo = mExpression.EquivalentTo(Expected)
 End Function
 
@@ -137,7 +137,7 @@ Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpressi
     Set IConstraintExpression_True = mExpression.True_
 End Function
 
-Private Function IConstraintExpression_Unique() As SimplyVBUnitType.IStrictExpression
+Private Function IConstraintExpression_Unique() As SimplyVBUnitType.IEqualityExpression
     Set IConstraintExpression_Unique = mExpression.Unique
 End Function
 

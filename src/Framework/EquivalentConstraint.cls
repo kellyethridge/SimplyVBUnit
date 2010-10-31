@@ -30,19 +30,29 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements IConstraint
 Implements IBasicExpression
-Implements IStrictExpression
+Implements IEqualityExpression
 Implements IResolvable
 
 
 Private mExpression As ConstraintExpression
 Private mExpected   As Variant
 Private mActual     As Variant
-Private mStrict     As Boolean
+Private mComparer   As New EqualityComparer
 
 
-Public Function Strict() As IBasicExpression
-    mStrict = True
+Public Function Strict() As IEqualityExpression
+    mComparer.Strict = True
     Set Strict = Me
+End Function
+
+Public Function IgnoreCase() As IEqualityExpression
+    mComparer.IgnoreCase = True
+    Set IgnoreCase = Me
+End Function
+
+Public Function Using(ByVal Comparer As IEqualityComparer) As IEqualityExpression
+    Set mComparer.ExternalComparer = Comparer
+    Set Using = Me
 End Function
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
@@ -52,15 +62,14 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     VariantCopyInd mActual, Actual
     
     Dim Tallier As New ValueTallier
-    Tallier.Strict = mStrict
-    Tallier.IncrementTallies mExpected
+    Tallier.Initialize mExpected, mComparer
     
     Dim Value As Variant
     For Each Value In Actual
-        If Not Tallier.Remove(Value) Then Exit Function
+        If Not Tallier.TryRemove(Value) Then Exit Function
     Next
     
-    Matches = (Tallier.TotalTallyCount = 0)
+    Matches = (Tallier.Count = 0)
 End Function
 
 
@@ -122,16 +131,36 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IStrictExpression Interface
+'   IEqualityExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IStrictExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    IStrictExpression_AndAlso = mExpression.AndAlso
+Private Function IEqualityExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
+    Set IEqualityExpression_AndAlso = mExpression.AndAlso
 End Function
 
-Private Function IStrictExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
-    IStrictExpression_OrElse = mExpression.OrElse
+Private Function IEqualityExpression_AsCollection() As SimplyVBUnitType.IEqualityExpression
+    
 End Function
 
-Private Function IStrictExpression_Strict() As SimplyVBUnitType.IBasicExpression
-    Set IStrictExpression_Strict = Strict
+Private Function IEqualityExpression_IgnoreCase() As SimplyVBUnitType.IEqualityExpression
+    Set IEqualityExpression_IgnoreCase = IgnoreCase
+End Function
+
+Private Function IEqualityExpression_NoClip() As SimplyVBUnitType.IEqualityExpression
+
+End Function
+
+Private Function IEqualityExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
+    Set IEqualityExpression = mExpression.OrElse
+End Function
+
+Private Function IEqualityExpression_Strict() As SimplyVBUnitType.IEqualityExpression
+    Set IEqualityExpression_Strict = Strict
+End Function
+
+Private Function IEqualityExpression_Using(ByVal Comparer As SimplyVBUnitType.IEqualityComparer) As SimplyVBUnitType.IEqualityExpression
+    Set IEqualityExpression_Using = Using(Comparer)
+End Function
+
+Private Function IEqualityExpression_Within(ByVal Tolerance As Variant) As SimplyVBUnitType.IToleranceUnits
+    
 End Function
