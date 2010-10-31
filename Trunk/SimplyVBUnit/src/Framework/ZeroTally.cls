@@ -42,6 +42,14 @@ Private Function Tally_Decrement() As Long
 
 End Function
 
+Private Function Tally_Equals(Other As Variant, ByVal Comparer As EqualityComparer) As Boolean
+
+End Function
+
 Private Function Tally_Increment() As Long
 
 End Function
+
+Private Sub Tally_Init(Value As Variant)
+
+End Sub

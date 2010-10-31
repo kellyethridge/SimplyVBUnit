@@ -2,35 +2,37 @@
 // SimplyVBUnit Type Library
 //
 
-[
-    helpstring("SimplyVBUnit 4.0 Type Library"),
-    uuid(923925AC-1013-4d27-9FB1-4FF0B3B47BA2),
-    lcid(0x00000000),
-    version(4.0)
-]
+[ helpstring("SimplyVBUnit 4.0 Type Library"), uuid(923925AC-1013-4d27-9FB1-4FF0B3B47BA2), lcid(0x00000000), version(4.0)]
 library SimplyVBUnitType {
-    importlib("stdole2.tlb");
-    importlib("msvbvm60.dll");
+importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 
-    typedef unsigned char byte;
+        typedef unsigned char byte;
 
-    typedef struct VBGUID {
-        int   Data1;
-        short Data2;
-        short Data3;
-        byte  Data4[8];
-    } VBGUID;
+        typedef struct VBGUID 
+        {
+                int   Data1;
+                short Data2;
+                short Data3;
+                byte  Data4[8];
+        } VBGUID;
 
-    typedef struct SafeArray1d {
-        short   cDims;
-        short   fFeatures;
-        long    cbElements;
-        long    cLocks;
-        long    pvData;
-        long    cElements;
-        long    lLbound;
-    } SafeArray1d;
+        typedef struct SafeArray1d
+        {
+                short   cDims;
+                short   fFeatures;
+                long    cbElements;
+                long    cLocks;
+                long    pvData;
+                long    cElements;
+                long    lLbound;
+        } SafeArray1d;
 
+        typedef enum ToleranceMode
+        {
+                NoneMode = 0,
+                LinearMode = 1,
+                PercentMode=2
+        } ToleranceMode;
 
     [dllname("Constants")]
     module Constants {
@@ -98,38 +100,56 @@ library SimplyVBUnitType {
 	[propget, entry("GetMem4")] HRESULT SAPtrLong([in] SAFEARRAY(long) * Array, [out, retval] long * RetVal);
 	[propput, entry("PutMem4")] HRESULT SAPtrLong([in] SAFEARRAY(long) * Array, [in] long RHS);
     }
-    
+
         // Forward definitions
-        interface IEqualConstraint;
         interface IBasicExpression;
         interface IUsingExpression;
-        interface IStrictExpression;
+        interface IEqualityExpression;
+        interface ITolerance;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
 	{
-	    HRESULT VBNext([in] long celt, [in, out] VARIANT * rgvar, [in] int * pceltFetched);
-	    HRESULT Skip([in] int celt);
-	    HRESULT Reset();
-	    HRESULT Clone([in, out] IVBEnumVARIANT ** RetVal);
+                HRESULT VBNext([in] long celt, [in, out] VARIANT * rgvar, [in] int * pceltFetched);
+                HRESULT Skip([in] int celt);
+                HRESULT Reset();
+                HRESULT Clone([in, out] IVBEnumVARIANT ** RetVal);
 	}
 	
+	[uuid(1B356491-69DE-4a0f-BC52-39D832C10B96), odl]
+	interface IEqualityContext : IDispatch
+        {
+                [propget] HRESULT IgnoreCase([out, retval] boolean * RetVal);
+                [propget] HRESULT Strict([out, retval] boolean * RetVal);
+                [propget] HRESULT AsCollection([out, retval] boolean * RetVal);
+                [propget] HRESULT Tolerance([out, retval] ITolerance ** RetVal);
+        }
+
 	[uuid(BE21FDD8-15D9-423b-AAD9-3A094532C4D2), odl]
 	interface IEqualityComparer : IDispatch
 	{
-		HRESULT Equals([in] VARIANT * X, [in] VARIANT * Y, [out, retval] boolean * RetVal);
+		HRESULT Equals([in] VARIANT * X, [in] VARIANT * Y, [in] IEqualityContext * Context, [out, retval] boolean * RetVal);
 	}
-	
+
+	[uuid(D1752156-F3B8-4652-BE95-7672B1D96118), odl]
+        interface IComparerContext : IDispatch
+        {
+                [propget] HRESULT IgnoreCase([out, retval] boolean * RetVal);
+                [propget] HRESULT Strict([out, retval] boolean * RetVal);
+                [propget] HRESULT AsCollection([out, retval] boolean * RetVal);
+                [propget] HRESULT Tolerance([out, retval] ITolerance ** RetVal);
+        }
+
 	[uuid(814B5074-D094-4031-B744-592F90F8BC5E), odl]
         interface IComparer : IDispatch
         {
-                HRESULT Compare([in] VARIANT * X, [in] VARIANT * Y, [out, retval] long * RetVal);
+                HRESULT Compare([in] VARIANT * X, [in] VARIANT * Y, [in] IComparerContext * Context, [out, retval] long * RetVal);
         }
 
         [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
         interface IConstraintExpression : IDispatch
         {
-		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualConstraint ** RetVal);
+		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
 		HRESULT True([out, retval] IBasicExpression ** RetVal);
 		HRESULT False([out, retval] IBasicExpression ** RetVal);
 		HRESULT VBEmpty([out, retval] IBasicExpression ** RetVal);
@@ -144,8 +164,8 @@ library SimplyVBUnitType {
                 HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IUsingExpression ** RetVal);
                 HRESULT Empty([out, retval] IBasicExpression ** RetVal);
                 HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
-                HRESULT Unique([out, retval] IStrictExpression ** RetVal);
-                HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IStrictExpression ** RetVal);
+                HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
+                HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -163,44 +183,44 @@ library SimplyVBUnitType {
 		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
         }
 
-        [uuid(E897D156-A369-4247-A040-209C702446D3), odl]
-        interface IStrictExpression : IDispatch
-        {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-                HRESULT Strict([out, retval] IBasicExpression ** RetVal);
-        }
-
 	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
 	interface IToleranceUnits : IDispatch
 	{
-                HRESULT Years([out, retval] IEqualConstraint ** RetVal);
-                HRESULT Quarters([out, retval] IEqualConstraint ** RetVal);
-                HRESULT Months([out, retval] IEqualConstraint ** RetVal);
-                HRESULT Weeks([out, retval] IEqualConstraint ** RetVal);
-		HRESULT Days([out, retval] IEqualConstraint ** RetVal);
-		HRESULT Hours([out, retval] IEqualConstraint ** RetVal);
-		HRESULT Minutes([out, retval] IEqualConstraint ** RetVal);
-		HRESULT Seconds([out, retval] IEqualConstraint ** RetVal);
-		HRESULT TotalDays([out, retval] IEqualConstraint ** RetVal);
-		HRESULT TotalHours([out, retval] IEqualConstraint ** RetVal);
-                HRESULT TotalMinutes([out, retval] IEqualConstraint ** RetVal);
-                HRESULT TotalSeconds([out, retval] IEqualConstraint ** RetVal);
-                HRESULT Percent([out, retval] IEqualConstraint ** RetVal);
+                HRESULT Years([out, retval] IEqualityExpression ** RetVal);
+                HRESULT Quarters([out, retval] IEqualityExpression ** RetVal);
+                HRESULT Months([out, retval] IEqualityExpression ** RetVal);
+                HRESULT Weeks([out, retval] IEqualityExpression ** RetVal);
+		HRESULT Days([out, retval] IEqualityExpression ** RetVal);
+		HRESULT Hours([out, retval] IEqualityExpression ** RetVal);
+		HRESULT Minutes([out, retval] IEqualityExpression ** RetVal);
+		HRESULT Seconds([out, retval] IEqualityExpression ** RetVal);
+		HRESULT TotalDays([out, retval] IEqualityExpression ** RetVal);
+		HRESULT TotalHours([out, retval] IEqualityExpression ** RetVal);
+                HRESULT TotalMinutes([out, retval] IEqualityExpression ** RetVal);
+                HRESULT TotalSeconds([out, retval] IEqualityExpression ** RetVal);
+                HRESULT Percent([out, retval] IEqualityExpression ** RetVal);
 	}
+	
+	[uuid(C294ABED-E94B-46fd-83CA-CB146D9D4DB3), odl]
+        interface ITolerance : IDispatch
+        {
+                [propget] HRESULT Amount([out, retval] VARIANT * RetVal);
+                [propget] HRESULT Mode([out, retval] ToleranceMode * RetVal);
+                [propget] HRESULT Interval([out, retval] BSTR * RetVal);
+        }
 
-	[uuid(3249766A-0390-4dda-8F3C-B481688485F9), odl]
-	interface IEqualConstraint : IDispatch
-	{
+        [uuid(7A36580F-B566-4f95-BE6D-35B52E61BA07), odl]
+        interface IEqualityExpression : IDispatch
+        {
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-		HRESULT IgnoreCase([out, retval] IEqualConstraint ** RetVal);
+		HRESULT IgnoreCase([out, retval] IEqualityExpression ** RetVal);
 		HRESULT Within([in] VARIANT Tolerance, [out, retval] IToleranceUnits ** RetVal);
-		HRESULT AsCollection([out, retval] IEqualConstraint ** RetVal);
-		HRESULT Using([in] IEqualityComparer * Comparer, [out, retval] IEqualConstraint ** RetVal);
-		HRESULT Strict([out, retval] IEqualConstraint ** RetVal);
-		HRESULT NoClip([out, retval] IEqualConstraint ** RetVal);
-	}
+		HRESULT AsCollection([out, retval] IEqualityExpression ** RetVal);
+		HRESULT Using([in] IEqualityComparer * Comparer, [out, retval] IEqualityExpression ** RetVal);
+		HRESULT Strict([out, retval] IEqualityExpression ** RetVal);
+		HRESULT NoClip([out, retval] IEqualityExpression ** RetVal);
+        }
 
         [uuid(50CA1561-5124-4edc-B588-E89268BC9976), odl]
         interface IComparisonConstraint: IDispatch
@@ -214,7 +234,7 @@ library SimplyVBUnitType {
 	[uuid(0331F242-579F-4210-9822-39782E51E0BF), odl]
 	interface IzSyntaxHelper : IDispatch
 	{
-		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualConstraint ** RetVal);
+		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
 		HRESULT True([out, retval] IBasicExpression ** RetVal);
 		HRESULT False([out, retval] IBasicExpression ** RetVal);
 		HRESULT VBEmpty([out, retval] IBasicExpression ** RetVal);
@@ -229,8 +249,8 @@ library SimplyVBUnitType {
                 HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IUsingExpression ** RetVal);
                 HRESULT Empty([out, retval] IBasicExpression ** RetVal);
                 HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
-                HRESULT Unique([out, retval] IStrictExpression ** RetVal);
-                HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IStrictExpression ** RetVal);
+                HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
+                HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
 	}
 }
 

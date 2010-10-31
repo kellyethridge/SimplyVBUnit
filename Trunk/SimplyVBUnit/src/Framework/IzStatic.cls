@@ -27,11 +27,11 @@ Private Function IzSyntaxHelper_Empty() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Empty = NewExp.Empty
 End Function
 
-Private Function IzSyntaxHelper_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualConstraint
+Private Function IzSyntaxHelper_EqualTo(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
     Set IzSyntaxHelper_EqualTo = NewExp.EqualTo(Expected)
 End Function
 
-Private Function IzSyntaxHelper_EquivalentTo(Expected As Variant) As SimplyVBUnitType.IStrictExpression
+Private Function IzSyntaxHelper_EquivalentTo(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
 
 End Function
 
@@ -79,7 +79,7 @@ Private Function IzSyntaxHelper_True() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_True = NewExp.True
 End Function
 
-Private Function IzSyntaxHelper_Unique() As SimplyVBUnitType.IStrictExpression
+Private Function IzSyntaxHelper_Unique() As SimplyVBUnitType.IEqualityExpression
     Set IzSyntaxHelper_Unique = NewExp.Unique
 End Function
 

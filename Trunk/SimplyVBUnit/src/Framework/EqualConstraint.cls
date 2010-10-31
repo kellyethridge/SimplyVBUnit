@@ -31,13 +31,8 @@ Option Explicit
 Implements IConstraint
 Implements IResolvable
 Implements IBasicExpression
-Implements IEqualConstraint
+Implements IEqualityExpression
 Implements IToleranceUnits
-
-Private Const SECONDS_PER_SECOND                As Long = 1
-Private Const SECONDS_PER_MINUTE                As Long = SECONDS_PER_SECOND * 60
-Private Const SECONDS_PER_HOUR                  As Long = SECONDS_PER_MINUTE * 60
-Private Const SECONDS_PER_DAY                   As Long = SECONDS_PER_HOUR * 24
 
 Private Const MSG_STRINGSDIFFERBYINDEX          As String = "  String lengths are both {0}. Strings differ at index {1}."
 Private Const MSG_STRINGSDIFFERBYLENGTHANDINDEX As String = "  Expected string length {0} but was {1}. Strings differ at index {2}."
@@ -48,23 +43,11 @@ Private Const MSG_VALUESDIFFER_2                As String = "  Values differ at 
 
 Private Const DEF_CLIPPING                      As Boolean = True
 
-Private Const ASC_LOWERT                        As Long = 116
-Private Const ASC_LOWERD                        As Long = 100
-Private Const ASC_LOWERH                        As Long = 104
-Private Const ASC_LOWERN                        As Long = 110
-
-
 Private mExpression     As ConstraintExpression
 Private mExpected       As Variant
 Private mActual         As Variant
-Private mIgnoreCase     As Boolean
 Private mClipping       As Boolean
-Private mTolerance      As Tolerance
-Private mAsCollection   As Boolean
-Private mComparer       As IEqualityComparer
-Private mStrict         As Boolean
-Private mFailurePoints  As Stack
-
+Private mComparer       As EqualityComparer
 
 
 Public Function NoClip() As EqualConstraint
@@ -78,7 +61,7 @@ End Function
 ' @return Returns a reference to itself to make it easier to chain commands together.
 '
 Public Function IgnoreCase() As EqualConstraint
-    mIgnoreCase = True
+    mComparer.IgnoreCase = True
     Set IgnoreCase = Me
 End Function
 
@@ -87,17 +70,17 @@ Public Function Within(ByRef Amount As Variant) As IToleranceUnits
 End Function
 
 Public Function AsCollection() As EqualConstraint
-    mAsCollection = True
+    mComparer.AsCollection = True
     Set AsCollection = Me
 End Function
 
 Public Function Using(ByVal Comparer As IEqualityComparer) As EqualConstraint
-    Set mComparer = Comparer
+    Set mComparer.ExternalComparer = Comparer
     Set Using = Me
 End Function
 
 Public Function Strict() As EqualConstraint
-    mStrict = True
+    mComparer.Strict = True
     Set Strict = Me
 End Function
 
@@ -109,9 +92,7 @@ End Function
 '
 Public Function Matches(ByRef Actual As Variant) As Boolean
     VariantCopyInd mActual, Actual
-    Set mFailurePoints = New Stack
-    
-    Matches = EqualVariants(mExpected, Actual)
+    Matches = mComparer.Equals(mExpected, Actual)
 End Function
 
 ''
@@ -137,6 +118,7 @@ End Sub
 Friend Sub Init(ByRef Expected As Variant, ByVal Expression As ConstraintExpression)
     VariantCopyInd mExpected, Expected
     Set mExpression = Expression
+    Set mComparer = New EqualityComparer
 End Sub
 
 
@@ -144,277 +126,65 @@ End Sub
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function Years() As EqualConstraint
-    Set Years = SetTolerance(mTolerance.Years)
+    Set Years = SetTolerance(mComparer.Tolerance.Years)
 End Function
 
 Private Function Quarters() As EqualConstraint
-    Set Quarters = SetTolerance(mTolerance.Quarters)
+    Set Quarters = SetTolerance(mComparer.Tolerance.Quarters)
 End Function
 
 Private Function Months() As EqualConstraint
-    Set Months = SetTolerance(mTolerance.Months)
+    Set Months = SetTolerance(mComparer.Tolerance.Months)
 End Function
 
 Private Function Weeks() As EqualConstraint
-    Set Weeks = SetTolerance(mTolerance.Weeks)
+    Set Weeks = SetTolerance(mComparer.Tolerance.Weeks)
 End Function
 
 Private Function Days() As EqualConstraint
-    Set Days = SetTolerance(mTolerance.Days)
+    Set Days = SetTolerance(mComparer.Tolerance.Days)
 End Function
 
 Private Function Hours() As EqualConstraint
-    Set Hours = SetTolerance(mTolerance.Hours)
+    Set Hours = SetTolerance(mComparer.Tolerance.Hours)
 End Function
 
 Private Function Minutes() As EqualConstraint
-    Set Minutes = SetTolerance(mTolerance.Minutes)
+    Set Minutes = SetTolerance(mComparer.Tolerance.Minutes)
 End Function
 
 Private Function Seconds() As EqualConstraint
-    Set Seconds = SetTolerance(mTolerance.Seconds)
+    Set Seconds = SetTolerance(mComparer.Tolerance.Seconds)
 End Function
 
 Private Function TotalDays() As EqualConstraint
-    Set TotalDays = SetTolerance(mTolerance.TotalDays)
+    Set TotalDays = SetTolerance(mComparer.Tolerance.TotalDays)
 End Function
 
 Private Function TotalHours() As EqualConstraint
-    Set TotalHours = SetTolerance(mTolerance.TotalHours)
+    Set TotalHours = SetTolerance(mComparer.Tolerance.TotalHours)
 End Function
 
 Private Function TotalMinutes() As EqualConstraint
-    Set TotalMinutes = SetTolerance(mTolerance.TotalMinutes)
+    Set TotalMinutes = SetTolerance(mComparer.Tolerance.TotalMinutes)
 End Function
 
 Private Function TotalSeconds() As EqualConstraint
-    Set TotalSeconds = SetTolerance(mTolerance.TotalSeconds)
+    Set TotalSeconds = SetTolerance(mComparer.Tolerance.TotalSeconds)
 End Function
 
 Private Function Percent() As EqualConstraint
-    Set Percent = SetTolerance(mTolerance.Percent)
+    Set Percent = SetTolerance(mComparer.Tolerance.Percent)
 End Function
 
 Private Function SetTolerance(ByVal Tolerance As Tolerance) As EqualConstraint
-    Set mTolerance = Tolerance
+    Set mComparer.Tolerance = Tolerance
     Set SetTolerance = Me
-End Function
-
-Private Function EqualVariants(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    Dim Result As Boolean
-    
-    If IsArray(Expected) And IsArray(Actual) Then
-        Result = EqualArrays(Expected, Actual)
-    ElseIf IsEnumerable(Expected) And IsEnumerable(Actual) Then
-        Result = EqualEnumerables(Expected, Actual)
-    Else
-        Result = EqualValues(Expected, Actual)
-    End If
-    
-    EqualVariants = Result
-End Function
-
-Private Function EqualArrays(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If Not mAsCollection Then
-        If Not EqualArraySizes(Expected, Actual) Then
-            Exit Function
-        End If
-    End If
-    
-    EqualArrays = EqualEnumerables(Expected, Actual)
-End Function
-
-Private Function EqualArraySizes(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If EqualArrayRanks(Expected, Actual) Then
-        EqualArraySizes = EqualArrayBounds(Expected, Actual)
-    End If
-End Function
-
-Private Function EqualArrayRanks(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    Dim ExpectedRank    As Long
-    Dim ActualRank      As Long
-    
-    ExpectedRank = GetArrayRank(Expected)
-    ActualRank = GetArrayRank(Actual)
-    
-    EqualArrayRanks = (ExpectedRank = ActualRank)
-End Function
-
-Private Function EqualArrayBounds(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    Dim i As Long
-    For i = 1 To GetArrayRank(Expected)
-        If LBound(Actual, i) <> LBound(Expected, i) Then
-            Exit Function
-        End If
-        If UBound(Actual, i) <> UBound(Expected, i) Then
-            Exit Function
-        End If
-    Next
-    
-    EqualArrayBounds = True
-End Function
-
-Private Function EqualEnumerables(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    Dim ExpectedEnumerator  As IEnumerator
-    Dim ActualEnumerator    As IEnumerator
-    
-    Set ExpectedEnumerator = GetEnumerator(Expected)
-    Set ActualEnumerator = GetEnumerator(Actual)
-    
-    Dim ExpectedHasMore As Boolean
-    Dim ActualHasMore   As Boolean
-    
-    Dim RetVal  As Boolean
-    Dim Count   As Long
-    Do
-        ExpectedHasMore = ExpectedEnumerator.MoveNext
-        ActualHasMore = ActualEnumerator.MoveNext
-        
-        If ExpectedHasMore = False And ActualHasMore = False Then
-            RetVal = True
-            Exit Do
-        End If
-        
-        If ExpectedHasMore <> ActualHasMore Then
-            mFailurePoints.Push Count
-            RetVal = False
-            Exit Do
-        End If
-        
-        If Not EqualVariants(ExpectedEnumerator.Current, ActualEnumerator.Current) Then
-            mFailurePoints.Push Count
-            RetVal = False
-            Exit Do
-        End If
-        
-        Count = Count + 1
-    Loop
-    
-    EqualEnumerables = RetVal
-End Function
-
-Private Function EqualValues(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    Dim Result As Boolean
-    
-    If mComparer Is Nothing Then
-        Result = InternalEqualValues(Expected, Actual)
-    Else
-        Result = mComparer.Equals(Expected, Actual)
-    End If
-    
-    EqualValues = Result
-End Function
-
-Private Function InternalEqualValues(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    Dim Result As Boolean
-    
-    If CanCompareValues(Expected, Actual) Then
-        Select Case VarType(Expected)
-            Case vbString
-                Result = EqualStrings(Expected, Actual)
-                
-            Case vbLong, vbInteger, vbByte, vbDouble, vbSingle, vbCurrency, vbDecimal
-                Result = EqualNumbers(Expected, Actual)
-                
-            Case vbObject, vbDataObject
-                Result = EqualObjects(Expected, Actual)
-                
-            Case vbBoolean
-                Result = EqualBooleans(Expected, Actual)
-                
-            Case vbDate
-                Result = EqualDates(Expected, Actual)
-            
-            Case vbEmpty
-                Result = IsEmpty(Actual)
-                
-            Case vbNull
-                Result = IsNull(Actual)
-                
-            Case vbError
-                Result = (IsMissing(Expected) And IsMissing(Actual))
-                
-        End Select
-    End If
-    
-    InternalEqualValues = Result
-End Function
-
-Private Function CanCompareValues(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If mStrict Then
-        If VarType(Expected) <> VarType(Actual) Then
-            Exit Function
-        End If
-    End If
-    
-    CanCompareValues = True
-End Function
-
-Private Function EqualStrings(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If VarType(Actual) = vbString Then
-        EqualStrings = modFunctions.EqualStrings(Expected, Actual, mIgnoreCase)
-    End If
-End Function
-
-Private Function EqualNumbers(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If IsNumber(Actual) Then
-        EqualNumbers = modNumerics.EqualNumbers(Expected, Actual, mTolerance)
-    End If
-End Function
-
-Private Function EqualObjects(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If IsObject(Actual) Then
-        EqualObjects = (Actual Is Expected)
-    End If
-End Function
-
-Private Function GetEnumerator(ByRef Enumerable As Variant) As IEnumerator
-    If IsArray(Enumerable) Then
-        Set GetEnumerator = Sim.NewArrayEnumerator(Enumerable)
-    Else
-        Set GetEnumerator = Sim.NewEnumVariantEnumerator(Enumerable)
-    End If
-End Function
-
-Private Function EqualBooleans(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If VarType(Actual) = vbBoolean Then
-        EqualBooleans = (Actual = Expected)
-    End If
-End Function
-
-Private Function EqualDates(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
-    If VarType(Actual) = vbDate Then
-        Dim Interval    As String
-        Dim Tolerance   As Double
-        
-        Tolerance = mTolerance.Amount
-        
-        If mTolerance.Mode = NoneMode Or Len(mTolerance.Interval) = 0 Then
-            Interval = GlobalSettings.DefaultDateToleranceInterval
-        Else
-            Interval = mTolerance.Interval
-            
-            If AscW(Interval) = ASC_LOWERT Then
-                Select Case AscW(Right$(Interval, 1))
-                    Case ASC_LOWERD: Tolerance = Tolerance * SECONDS_PER_DAY
-                    Case ASC_LOWERH: Tolerance = Tolerance * SECONDS_PER_HOUR
-                    Case ASC_LOWERN: Tolerance = Tolerance * SECONDS_PER_MINUTE
-                End Select
-                
-                Interval = "s"
-            End If
-        End If
-        
-        Dim Difference As Double
-        Difference = Abs(DateDiff(Interval, Expected, Actual))
-        
-        EqualDates = (Difference <= Tolerance)
-    End If
 End Function
 
 Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
     Dim MismatchIndex As Long
-    MismatchIndex = MsgUtils.FindMismatchIndex(CStr(mExpected), CStr(mActual), mIgnoreCase)
+    MismatchIndex = MsgUtils.FindMismatchIndex(CStr(mExpected), CStr(mActual), mComparer.IgnoreCase)
     
     If Len(mExpected) = Len(mActual) Then
         Writer.WriteLine MSG_STRINGSDIFFERBYINDEX, Len(mExpected), MismatchIndex
@@ -422,7 +192,7 @@ Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
         Writer.WriteLine MSG_STRINGSDIFFERBYLENGTHANDINDEX, Len(mExpected), Len(mActual), MismatchIndex
     End If
     
-    Writer.DisplayStringDifferences CStr(mExpected), CStr(mActual), MismatchIndex, mIgnoreCase, mClipping
+    Writer.DisplayStringDifferences CStr(mExpected), CStr(mActual), MismatchIndex, mComparer.IgnoreCase, mClipping
 End Sub
 
 Private Function GetValue(ByRef Source As Variant, ByVal Index As Long) As Variant
@@ -436,13 +206,13 @@ End Function
 Private Sub DisplayCollectionDifferences(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Writer As TextMessageWriter, Optional ByVal Indent As Long)
     DisplayCollectionTypesAndSizes Expected, Actual, Writer, Indent
 
-    If mFailurePoints.Count > 0 Then
+    If mComparer.FailurePoints.Count > 0 Then
         Dim Index As Long
-        Index = mFailurePoints.Pop
+        Index = mComparer.FailurePoints.Pop
 
         DisplayCollectionFailurePoint Expected, Actual, Writer, Index, Indent
 
-        If mFailurePoints.Count > 0 Then
+        If mComparer.FailurePoints.Count > 0 Then
             DisplayCollectionDifferences GetValue(Expected, Index), GetValue(Actual, Index), Writer, Indent + 2
             Exit Sub
         End If
@@ -527,7 +297,6 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
     mClipping = DEF_CLIPPING
-    Set mTolerance = Tolerance.EmptyTolerance
 End Sub
 
 
@@ -564,38 +333,38 @@ End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IEqualConstraint
+'   IEqualityExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IEqualConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    Set IEqualConstraint_AndAlso = mExpression.AndAlso
+Private Function IEqualityExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
+    Set IEqualityExpression_AndAlso = mExpression.AndAlso
 End Function
 
-Private Function IEqualConstraint_AsCollection() As SimplyVBUnitType.IEqualConstraint
-    Set IEqualConstraint_AsCollection = AsCollection
+Private Function IEqualityExpression_AsCollection() As SimplyVBUnitType.IEqualityExpression
+    Set IEqualityExpression_AsCollection = AsCollection
 End Function
 
-Private Function IEqualConstraint_IgnoreCase() As SimplyVBUnitType.IEqualConstraint
-    Set IEqualConstraint_IgnoreCase = Me.IgnoreCase
+Private Function IEqualityExpression_IgnoreCase() As SimplyVBUnitType.IEqualityExpression
+    Set IEqualityExpression_IgnoreCase = IgnoreCase
 End Function
 
-Private Function IEqualConstraint_NoClip() As SimplyVBUnitType.IEqualConstraint
-    Set IEqualConstraint_NoClip = Me.NoClip
+Private Function IEqualityExpression_NoClip() As SimplyVBUnitType.IEqualityExpression
+    Set IEqualityExpression_NoClip = NoClip
 End Function
 
-Private Function IEqualConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
-    Set IEqualConstraint_OrElse = mExpression.OrElse
+Private Function IEqualityExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
+    Set IEqualityExpression_OrElse = mExpression.OrElse
 End Function
 
-Private Function IEqualConstraint_Strict() As SimplyVBUnitType.IEqualConstraint
-    Set IEqualConstraint_Strict = Strict
+Private Function IEqualityExpression_Strict() As SimplyVBUnitType.IEqualityExpression
+    Set IEqualityExpression_Strict = Strict
 End Function
 
-Private Function IEqualConstraint_Using(ByVal Comparer As SimplyVBUnitType.IEqualityComparer) As SimplyVBUnitType.IEqualConstraint
-    Set IEqualConstraint_Using = Using(Comparer)
+Private Function IEqualityExpression_Using(ByVal Comparer As SimplyVBUnitType.IEqualityComparer) As SimplyVBUnitType.IEqualityExpression
+    Set IEqualityExpression_Using = Using(Comparer)
 End Function
 
-Private Function IEqualConstraint_Within(ByVal Tolerance As Variant) As SimplyVBUnitType.IToleranceUnits
-    Set IEqualConstraint_Within = Within(Tolerance)
+Private Function IEqualityExpression_Within(ByVal Tolerance As Variant) As SimplyVBUnitType.IToleranceUnits
+    Set IEqualityExpression_Within = Within(Tolerance)
 End Function
 
 
@@ -618,54 +387,54 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IToleranceUnits Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IToleranceUnits_Days() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Days() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Days = Days
 End Function
 
-Private Function IToleranceUnits_Hours() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Hours() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Hours = Hours
 End Function
 
-Private Function IToleranceUnits_Minutes() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Minutes() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Minutes = Minutes
 End Function
 
-Private Function IToleranceUnits_Months() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Months() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Months = Months
 End Function
 
-Private Function IToleranceUnits_Percent() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Percent() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Percent = Percent
 End Function
 
-Private Function IToleranceUnits_Quarters() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Quarters() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Quarters = Quarters
 End Function
 
-Private Function IToleranceUnits_Seconds() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Seconds() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Seconds = Seconds
 End Function
 
-Private Function IToleranceUnits_TotalDays() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_TotalDays() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_TotalDays = TotalDays
 End Function
 
-Private Function IToleranceUnits_TotalHours() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_TotalHours() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_TotalHours = TotalHours
 End Function
 
-Private Function IToleranceUnits_TotalMinutes() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_TotalMinutes() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_TotalMinutes = TotalMinutes
 End Function
 
-Private Function IToleranceUnits_TotalSeconds() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_TotalSeconds() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_TotalSeconds = TotalSeconds
 End Function
 
-Private Function IToleranceUnits_Weeks() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Weeks() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Weeks = Weeks
 End Function
 
-Private Function IToleranceUnits_Years() As SimplyVBUnitType.IEqualConstraint
+Private Function IToleranceUnits_Years() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Years = Years
 End Function

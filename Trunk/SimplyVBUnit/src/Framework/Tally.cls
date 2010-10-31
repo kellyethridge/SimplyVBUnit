@@ -30,6 +30,17 @@ Attribute VB_Exposed = True
 Option Explicit
 
 Private mCount As Long
+Private mValue As Variant
+
+
+Public Sub Init(ByRef Value As Variant)
+    VariantCopyInd mValue, Value
+End Sub
+
+Public Function Equals(ByRef Other As Variant, ByVal Comparer As EqualityComparer) As Boolean
+    Equals = Comparer.Equals(mValue, Other)
+End Function
+
 
 Public Property Get Count() As Long
     Count = mCount
