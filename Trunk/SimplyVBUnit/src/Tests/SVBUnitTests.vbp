@@ -70,6 +70,7 @@ Class=ValueTallierTests; ValueTallierTests.cls
 Class=SameAsConstraintTests; SameAsConstraintTests.cls
 Class=UniqueItemsConstraintTests; UniqueItemsConstraintTests.cls
 Class=EquivalentConstraintTests; EquivalentConstraintTests.cls
+Class=SubsetOfConstraintTests; SubsetOfConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
@@ -174,8 +175,10 @@ Priority=1
 
 [TASK15]
 Description=Iz.Unique
-Status=0
+Status=2
 Priority=1
+AssignedTo=
+Comment=
 
 [TASK16]
 Description=Iz.Empty
@@ -191,8 +194,6 @@ Priority=1
 Description=Iz.SameAs
 Status=2
 Priority=1
-AssignedTo=
-Comment=
 
 [TASK19]
 Description=Iz.TypeOf
@@ -206,8 +207,10 @@ Priority=1
 
 [TASK21]
 Description=Iz.EquivalentTo
-Status=0
+Status=2
 Priority=1
+AssignedTo=
+Comment=
 
 [TASK22]
 Description=Iz.SubsetOf

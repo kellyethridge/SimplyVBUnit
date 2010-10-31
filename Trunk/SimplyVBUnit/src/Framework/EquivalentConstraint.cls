@@ -122,11 +122,7 @@ End Sub
 '   IResolvable Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IResolvable_Resolve() As IConstraint
-    If mExpression Is Nothing Then
-        Set IResolvable_Resolve = Me
-    Else
-        Set IResolvable_Resolve = mExpression.Resolve
-    End If
+    Set IResolvable_Resolve = Resolve(Me, mExpression)
 End Function
 
 

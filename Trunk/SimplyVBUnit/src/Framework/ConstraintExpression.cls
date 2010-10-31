@@ -117,6 +117,10 @@ Public Function EquivalentTo(ByRef Expected As Variant) As EquivalentConstraint
     Set EquivalentTo = AddConstraint(Sim.NewEquivalentConstraint(Expected, Me))
 End Function
 
+Public Function SubsetOf(ByRef Expected As Variant) As SubsetOfConstraint
+    Set SubsetOf = AddConstraint(Sim.NewSubsetOfConstraint(Expected, Me))
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -197,6 +201,10 @@ End Function
 
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_SameAs = SameAs(Expected)
+End Function
+
+Private Function IConstraintExpression_SubsetOf(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
+    Set IConstraintExpression_SubsetOf = SubsetOf(Expected)
 End Function
 
 Private Function IConstraintExpression_True() As SimplyVBUnitType.IBasicExpression

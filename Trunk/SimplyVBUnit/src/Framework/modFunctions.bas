@@ -38,6 +38,14 @@ Public Type ArrayProxy
 End Type
 
 
+Public Function Resolve(ByVal Constraint As IConstraint, ByVal Expression As ConstraintExpression) As IConstraint
+    If Expression Is Nothing Then
+        Set Resolve = Constraint
+    Else
+        Set Resolve = Expression.Resolve
+    End If
+End Function
+
 Public Property Get MissingVariant(Optional ByVal Value As Variant) As Variant
     MissingVariant = Value
 End Property
