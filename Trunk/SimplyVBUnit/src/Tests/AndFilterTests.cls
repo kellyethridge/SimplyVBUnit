@@ -33,9 +33,9 @@ Public Sub Match_WithMatchingFilter_ReturnsTrue()
     Dim Test As New StubTest
     Test.FullName = "Test1"
     Dim Subfilter As New FullNameFilter
-    Call Subfilter.Add("Test1")
+    Subfilter.Add "Test1"
     Dim Filter As New AndFilter
-    Call Filter.Add(Subfilter)
+    Filter.Add Subfilter
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)
@@ -47,12 +47,12 @@ Public Sub Match_WithOneMatchingAndOneNonmatchingFilter_ReturnsFalse()
     Dim Test As New StubTest
     Test.FullName = "Test1"
     Dim Subfilter1 As New FullNameFilter
-    Call Subfilter1.Add("Test1")
+    Subfilter1.Add "Test1"
     Dim Subfilter2 As New FullNameFilter
-    Call Subfilter2.Add("Test2")
+    Subfilter2.Add "Test2"
     Dim Filter As New AndFilter
-    Call Filter.Add(Subfilter1)
-    Call Filter.Add(Subfilter2)
+    Filter.Add Subfilter1
+    Filter.Add Subfilter2
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)

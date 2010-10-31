@@ -17,19 +17,19 @@ Public Calls    As New CallTrace
 Public Errors   As New CallError
 
 Public Sub FixtureTeardown()
-    Call Called("FixtureTeardown")
+    Called "FixtureTeardown"
 End Sub
 
 Public Sub Test1()
-    Call Called("Test1")
+    Called "Test1"
 End Sub
 
 Public Sub Test2()
-    Call Called("Test2")
+    Called "Test2"
 End Sub
 
 Private Sub Called(ByVal MethodName As String)
-    Call Err.Clear
-    Call Calls.Add(MethodName)
-    Call Errors.Raise(MethodName)
+    Err.Clear
+    Calls.Add MethodName
+    Errors.Raise MethodName
 End Sub

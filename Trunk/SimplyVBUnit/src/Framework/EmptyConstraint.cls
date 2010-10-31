@@ -46,7 +46,7 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     ElseIf VarType(Actual) = vbString Then
         Result = IsEmptyString(Actual)
     Else
-        Call Err.Raise(ErrorCode.Argument, "EmptyConstraint.Matches", "Actual must be a String or support enumeration.")
+        Err.Raise ErrorCode.Argument, "EmptyConstraint.Matches", "Actual must be a String or support enumeration."
     End If
     
     Matches = Result

@@ -174,7 +174,7 @@ Public Sub ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected(By
     
     Dim Actual As String
     Actual = UnclippedExpected
-    Call Utils.ClipExpectedAndActual(Actual, UnclippedExpected, 10, MismatchIndex)
+    Utils.ClipExpectedAndActual Actual, UnclippedExpected, 10, MismatchIndex
     
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
@@ -184,7 +184,7 @@ Public Sub ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected(ByVa
     
     Dim Actual As String
     Actual = UnclippedActual
-    Call Utils.ClipExpectedAndActual(UnclippedActual, Actual, 10, MismatchIndex)
+    Utils.ClipExpectedAndActual UnclippedActual, Actual, 10, MismatchIndex
     
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub

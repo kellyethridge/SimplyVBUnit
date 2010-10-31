@@ -35,9 +35,9 @@ Private mCount As Long
 Public Function Run() As Long
     mCount = 0
     
-    Call RunTest(Test1_WhenCalled_DoesNothing)
-    Call RunTest(Test1_WhenSetToFail_RaisesCorrectErrorCode)
-    Call RunTest(Test1_WithMessageSet_IncludesMessageWithError)
+    RunTest Test1_WhenCalled_DoesNothing
+    RunTest Test1_WhenSetToFail_RaisesCorrectErrorCode
+    RunTest Test1_WithMessageSet_IncludesMessageWithError
     
     Run = mCount
 End Function
@@ -50,7 +50,7 @@ Private Function Test1_WhenCalled_DoesNothing()
     On Error GoTo errTrap
     Dim TestClass As New Stub1Test
     
-    Call TestClass.Test1
+    TestClass.Test1
     Exit Function
     
 errTrap:
@@ -60,9 +60,9 @@ End Function
 Private Function Test1_WhenSetToFail_RaisesCorrectErrorCode()
     On Error GoTo errTrap
     Dim TestClass As New Stub1Test
-    Call TestClass.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode)
+    TestClass.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
     
-    Call TestClass.Test1
+    TestClass.Test1
     Debug.Assert False ' should have raised an error
     
 errTrap:
@@ -75,7 +75,7 @@ Private Function Test1_WithMessageSet_IncludesMessageWithError()
     Const Expected As String = "message"
     On Error GoTo errTrap
     Dim TestClass As New Stub1Test
-    Call TestClass.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode, , Expected)
+    TestClass.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode, , Expected
     
     TestClass.Test1
     

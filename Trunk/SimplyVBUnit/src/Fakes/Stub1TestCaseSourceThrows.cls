@@ -29,5 +29,5 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
 End Sub
 
 Public Sub Test1(ByVal Value As Variant)
-    Call Errors.Raise("Test1")
+    Errors.Raise "Test1"
 End Sub

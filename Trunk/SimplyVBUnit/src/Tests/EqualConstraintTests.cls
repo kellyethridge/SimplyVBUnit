@@ -341,7 +341,7 @@ End Sub
 Public Sub Matches_CaseInsensitive(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.IgnoreCase
+    c.IgnoreCase
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -352,7 +352,7 @@ End Sub
 Public Sub Matches_WithTolerances(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Tolerance As Double, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance)
+    c.Within Tolerance
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -363,7 +363,7 @@ End Sub
 Public Sub Matches_WithTolerancesOfTotalDays(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance).TotalDays
+    c.Within(Tolerance).TotalDays
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -374,7 +374,7 @@ End Sub
 Public Sub Matches_WithTolerancesOfTotalHours(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance).TotalHours
+    c.Within(Tolerance).TotalHours
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -385,7 +385,7 @@ End Sub
 Public Sub Matches_WithTolerancesOfTotalMinutes(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Long, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance).TotalMinutes
+    c.Within(Tolerance).TotalMinutes
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -396,7 +396,7 @@ End Sub
 Public Sub Matches_WithTolerancesOfTotalSeconds(ByVal ConstraintExpected As Date, ByVal ConstraintActual As Date, ByVal Tolerance As Double, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Within(Tolerance).TotalSeconds
+    c.Within(Tolerance).TotalSeconds
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -407,7 +407,7 @@ End Sub
 Public Sub Matches_WithArraysAsCollections(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.AsCollection
+    c.AsCollection
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -418,7 +418,7 @@ End Sub
 Public Sub Matches_WithExternalComparer(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Using(New OddEvenEqualityComparer)
+    c.Using New OddEvenEqualityComparer
     
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)
@@ -429,7 +429,7 @@ End Sub
 Public Sub Matches_WithStrict(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As Boolean)
     Dim c As EqualConstraint
     Set c = Sim.NewEqualConstraint(ConstraintExpected)
-    Call c.Strict
+    c.Strict
 
     Dim Actual As Boolean
     Actual = c.Matches(ConstraintActual)

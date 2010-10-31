@@ -35,8 +35,8 @@ Private mCount As Long
 Public Function Run() As Long
     mCount = 0
     
-    Call RunTest(Constructor_WhenCalled_HasNoTrace)
-    Call RunTest(Test1_WhenCalled_AddsToTrace)
+    RunTest Constructor_WhenCalled_HasNoTrace
+    RunTest Test1_WhenCalled_AddsToTrace
     
     Run = mCount
 End Function
@@ -57,10 +57,10 @@ End Function
 Private Function Test1_WhenCalled_AddsToTrace()
     Dim Mock As New Mock1Test
     
-    Call Mock.Test1
+    Mock.Test1
     
     Dim Expected As New CallTrace
-    Call Expected.Add("Test1")
+    Expected.Add "Test1"
     Debug.Assert Mock.Calls.Equals(Expected)
 End Function
 

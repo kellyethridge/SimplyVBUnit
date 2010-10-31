@@ -48,7 +48,7 @@ Public Sub Constructor_WithEmptyName_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, ErrorCode.Argument, "TestCase.Init", "Name cannot be empty.")
+    AssertError Err, ErrorCode.Argument, "TestCase.Init", "Name cannot be empty."
 End Sub
 
 Public Sub Constructor_WithNothingTestMethod_RaisesError()
@@ -59,7 +59,7 @@ Public Sub Constructor_WithNothingTestMethod_RaisesError()
     Assert.Fail "An error should be raised."
     
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "TestCase.Init", "TestMethod cannot be Nothing.")
+    AssertError Err, ErrorCode.ArgumentNull, "TestCase.Init", "TestMethod cannot be Nothing."
 End Sub
 
 Public Sub FullName_WhenCalled_ReturnsNameWithParentName()
@@ -124,7 +124,7 @@ End Sub
 
 Public Sub Run_WithUnknownErrorInTest_ReturnsErrorTestResult()
     Dim TestClass As New Stub1Test
-    Call TestClass.Errors.Add(Constants.TEST1_METHOD, 1, , "unknown error")
+    TestClass.Errors.Add Constants.TEST1_METHOD, 1, , "unknown error"
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     Dim TestCase As TestCase
@@ -140,7 +140,7 @@ End Sub
 
 Public Sub Run_WithUnknownErrorTest_ReturnsErrorTestResult2()
     Dim TestClass As New Stub1Test
-    Call TestClass.Errors.Add(Constants.TEST1_METHOD, 1, , "unknown error")
+    TestClass.Errors.Add Constants.TEST1_METHOD, 1, , "unknown error"
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     Dim TestCase As TestCase
@@ -162,9 +162,9 @@ Public Sub Run_WithSetupDefined_RunsSetup()
     Dim TestCase As ITest
     Set TestCase = Fixture.Tests(0)
     
-    Call TestCase.Run
+    TestCase.Run
     
-    Call AssertCalls(TestClass.Calls, Constants.SETUP_METHOD, Constants.TEST1_METHOD)
+    AssertCalls TestClass.Calls, Constants.SETUP_METHOD, Constants.TEST1_METHOD
 End Sub
 
 Public Sub Run_WithTeardownDefined_RunsTeardown()
@@ -174,40 +174,40 @@ Public Sub Run_WithTeardownDefined_RunsTeardown()
     Dim TestCase As ITest
     Set TestCase = Fixture.Tests(0)
     
-    Call TestCase.Run
+    TestCase.Run
     
-    Call AssertCalls(TestClass.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD)
+    AssertCalls TestClass.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD
 End Sub
 
 Public Sub Run_WithErrorInSetup_SkipsTestRunsTeardown()
     Dim TestClass As New Mock1TestWithSetupTeardown
-    Call TestClass.Errors.Add("Setup", AssertCode.FailureCode)
+    TestClass.Errors.Add "Setup", AssertCode.FailureCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(TestClass)
     Dim TestCase As ITest
     Set TestCase = Fixture.Tests(0)
     
-    Call TestCase.Run
-    
-    Call AssertCalls(TestClass.Calls, Constants.SETUP_METHOD, Constants.TEARDOWN_METHOD)
+    TestCase.Run
+        
+    AssertCalls TestClass.Calls, Constants.SETUP_METHOD, Constants.TEARDOWN_METHOD
 End Sub
 
 Public Sub Run_WithAssertFailInTest_RunsTeardown()
     Dim Mock As New Mock1TestWithTeardown
-    Call Mock.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode)
+    Mock.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     Dim TestCase As ITest
     Set TestCase = Fixture.Tests(0)
 
-    Call TestCase.Run
+    TestCase.Run
     
-    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD)
+    AssertCalls Mock.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD
 End Sub
 
 Public Sub Run_WithAssertFailInTest_ReturnsFailingResult()
     Dim Mock As New Mock1TestWithTeardown
-    Call Mock.Errors.Add(Constants.TEST1_METHOD, AssertCode.FailureCode)
+    Mock.Errors.Add Constants.TEST1_METHOD, AssertCode.FailureCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     Dim TestCase As ITest
@@ -244,14 +244,14 @@ Public Sub Run_ParameterizedTest_RunsTest()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Call Test.Run
+    Test.Run
     
-    Call AssertCalls(Mock.Calls, "GetTestCases.Test1", "Test1.arg1.arg2.arg3")
+    AssertCalls Mock.Calls, "GetTestCases.Test1", "Test1.arg1.arg2.arg3"
 End Sub
 
 Public Sub Run_WithErrorInSetup_SetsResultToError()
     Dim Stub As New Stub1TestWithFullContext
-    Call Stub.Errors.Add(Constants.SETUP_METHOD, ErrorCode.Argument)
+    Stub.Errors.Add Constants.SETUP_METHOD, ErrorCode.Argument
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -279,7 +279,7 @@ End Sub
 
 Public Sub Run_WithErrorInTeardown_SetsResultToError()
     Dim Stub As New Stub1TestWithFullContext
-    Call Stub.Errors.Add(Constants.TEARDOWN_METHOD, 5, , "In Teardown")
+    Stub.Errors.Add Constants.TEARDOWN_METHOD, 5, , "In Teardown"
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -295,7 +295,7 @@ End Sub
 
 Public Sub Run_WithErrorInTeardown_SetsResultToError2()
     Dim Stub As New Stub1TestWithFullContext
-    Call Stub.Errors.Add(Constants.TEARDOWN_METHOD, 5, , "In Teardown")
+    Stub.Errors.Add Constants.TEARDOWN_METHOD, 5, , "In Teardown"
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -311,7 +311,7 @@ End Sub
 
 Public Sub Run_WithErrorInTest_RunsTeardown()
     Dim Mock As New Mock1TestWithTeardown
-    Call Mock.Errors.Add(Constants.TEST1_METHOD, 1)
+    Mock.Errors.Add Constants.TEST1_METHOD, 1
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     Dim Test As ITest
@@ -320,7 +320,7 @@ Public Sub Run_WithErrorInTest_RunsTeardown()
     Dim Result As TestResult
     Set Result = Test.Run
     
-    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD)
+    AssertCalls Mock.Calls, Constants.TEST1_METHOD, Constants.TEARDOWN_METHOD
 End Sub
 
 Public Sub Run_WhenCalled_StoresAssertCountInResult()
@@ -411,9 +411,9 @@ Public Sub Run_WithTestCaseSource_RunsSetup()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Call Test.Run
+    Test.Run
     
-    Call AssertCalls(Mock.Calls, Constants.SETUP_METHOD, Constants.TEST_ANY, Constants.TEARDOWN_METHOD)
+    AssertCalls Mock.Calls, Constants.SETUP_METHOD, Constants.TEST_ANY, Constants.TEARDOWN_METHOD
 End Sub
 
 Public Sub Run_WithEventListener_CallsListenerMethods()
@@ -423,14 +423,14 @@ Public Sub Run_WithEventListener_CallsListenerMethods()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Call Test.Run(Mock)
+    Test.Run Mock
     
-    Call AssertCalls(Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, Constants.TESTCASEFINISHED_LISTENERMETHOD)
+    AssertCalls Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, Constants.TESTCASEFINISHED_LISTENERMETHOD
 End Sub
 
 Public Sub Run_WithAssertPass_ReturnsSuccess()
     Dim Stub As New Stub1Test
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, AssertCode.SuccessCode)
+    Stub.Errors.Add Constants.TEST1_METHOD, AssertCode.SuccessCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -450,7 +450,7 @@ Public Sub Run_WithAssertPassMessage_IncludesMessageInResult()
     Const SUCCESS_MESSAGE   As String = "success message"
     
     Dim Stub As New Stub1Test
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, AssertCode.SuccessCode, , SUCCESS_MESSAGE)
+    Stub.Errors.Add Constants.TEST1_METHOD, AssertCode.SuccessCode, , SUCCESS_MESSAGE
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -469,17 +469,17 @@ Public Sub Run_WithUnknownError_CallsListenerMethod()
     
     Dim Mock As New MockEventListener
     Dim Stub As New Stub1Test
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, ERR_CODE)
+    Stub.Errors.Add Constants.TEST1_METHOD, ERR_CODE
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Call Test.Run(Mock)
+    Test.Run Mock
     
-    Call AssertCalls(Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, _
-                                 Constants.UNHANDLEDERROR_LISTENERMETHOD, _
-                                 Constants.TESTCASEFINISHED_LISTENERMETHOD)
+    AssertCalls Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, _
+                            Constants.UNHANDLEDERROR_LISTENERMETHOD, _
+                            Constants.TESTCASEFINISHED_LISTENERMETHOD
 End Sub
 
 Public Sub Run_WithUnknownError_CallsListenerMethod2()
@@ -489,13 +489,13 @@ Public Sub Run_WithUnknownError_CallsListenerMethod2()
     
     Dim Mock As New MockEventListener
     Dim Stub As New Stub1Test
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, ERR_CODE, ERR_SOURCE, ERR_DESC)
+    Stub.Errors.Add Constants.TEST1_METHOD, ERR_CODE, ERR_SOURCE, ERR_DESC
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Call Test.Run(Mock)
+    Test.Run Mock
     
     Dim Actual As ErrorInfo
     Set Actual = Mock.ErrorInfo
@@ -513,7 +513,7 @@ Public Sub Run_WithRunStateSetToNotRunnable_DoesNotExecuteTest()
     Set Test = Fixture.Tests(0)
     Test.RunState = NotRunnableRunState
     
-    Call Test.Run
+    Test.Run
     
     Dim Actual As CallTrace
     Set Actual = Mock.Calls
@@ -546,7 +546,7 @@ Public Sub Run_WhenCalled_BeginsNewContextForEachTestCase()
 
     With New TestContext
         Set .Out = FakeOut
-        Call Runner.Run
+        Runner.Run
     End With
     
     Assert.IsFalse Mock.Test1Writer Is FakeOut
@@ -560,15 +560,15 @@ Public Sub Run_WithRunStateSetToNotRunnable_CallsListenerMethods()
     Set Test = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
     Test.RunState = NotRunnableRunState
     
-    Call Test.Run(Mock)
+    Test.Run Mock
     
-    Call AssertCalls(Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, _
-                                 Constants.TESTCASEFINISHED_LISTENERMETHOD)
+    AssertCalls Mock.Calls, Constants.TESTCASESTARTED_LISTENERMETHOD, _
+                            Constants.TESTCASEFINISHED_LISTENERMETHOD
 End Sub
 
 Public Sub Run_WithIgnoredTest_ReturnsIgnoredResult()
     Dim Stub As New Stub1Test
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, AssertCode.IgnoreCode)
+    Stub.Errors.Add Constants.TEST1_METHOD, AssertCode.IgnoreCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As TestCase
@@ -584,7 +584,7 @@ End Sub
 
 Public Sub Run_WithIgnoredTest_ReturnsIgnoreReason()
     Dim Stub As New Stub1Test
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, AssertCode.IgnoreCode, , "Ignore message")
+    Stub.Errors.Add Constants.TEST1_METHOD, AssertCode.IgnoreCode, , "Ignore message"
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As TestCase
@@ -600,30 +600,30 @@ End Sub
 
 Public Sub Run_WithIgnoredInSetup_RunsTest()
     Dim Mock As New Mock2TestsWithSetup
-    Call Mock.Errors.Add(Constants.SETUP_METHOD, AssertCode.IgnoreCode)
+    Mock.Errors.Add Constants.SETUP_METHOD, AssertCode.IgnoreCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Call Fixture.Run
+    Fixture.Run
     
-    Call AssertCalls(Mock.Calls, Constants.SETUP_METHOD, _
-                                 Constants.TEST1_METHOD, _
-                                 Constants.SETUP_METHOD, _
-                                 Constants.TEST2_METHOD)
+    AssertCalls Mock.Calls, Constants.SETUP_METHOD, _
+                            Constants.TEST1_METHOD, _
+                            Constants.SETUP_METHOD, _
+                            Constants.TEST2_METHOD
 End Sub
 
 Public Sub Run_WithIgnoredInTeardown_DoesNothing()
     Dim Mock As New Mock2TestsWithTeardown
-    Call Mock.Errors.Add(Constants.TEARDOWN_METHOD, AssertCode.IgnoreCode)
+    Mock.Errors.Add Constants.TEARDOWN_METHOD, AssertCode.IgnoreCode
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Mock)
     
-    Call Fixture.Run
+    Fixture.Run
     
-    Call AssertCalls(Mock.Calls, Constants.TEST1_METHOD, _
-                                 Constants.TEARDOWN_METHOD, _
-                                 Constants.TEST2_METHOD, _
-                                 Constants.TEARDOWN_METHOD)
+    AssertCalls Mock.Calls, Constants.TEST1_METHOD, _
+                            Constants.TEARDOWN_METHOD, _
+                            Constants.TEST2_METHOD, _
+                            Constants.TEARDOWN_METHOD
 End Sub
 
 Public Sub CountTestCases_WithPassingFilter_ReturnsOne()
@@ -696,7 +696,7 @@ End Sub
 Public Sub Run_UsingTestWithExpectedError_ReturnsSuccess()
     Dim Stub As New Stub1TestThrows
     Stub.Number = 5
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, 5)
+    Stub.Errors.Add Constants.TEST1_METHOD, 5
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -711,7 +711,7 @@ End Sub
 Public Sub Run_WithExpectedErrorWithWrongErrorRaised_ReturnsFailure()
     Dim Stub As New Stub1TestThrows
     Stub.Number = 5
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, 6)
+    Stub.Errors.Add Constants.TEST1_METHOD, 6
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -726,7 +726,7 @@ End Sub
 Public Sub Run_UsingTestCaseSourceWithExpectedErrorRaised_ReturnsSuccess()
     Dim Stub As New Stub1TestCaseSourceThrows
     Stub.Number = 5
-    Call Stub.Errors.Add(Constants.TEST1_METHOD, 5)
+    Stub.Errors.Add Constants.TEST1_METHOD, 5
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(Stub)
     Dim Test As ITest
@@ -763,9 +763,9 @@ Public Sub Run_UsingTestCaseSourceWithExpect_UsesConstraint()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Call Test.Run
+    Test.Run
     
-    Call AssertCalls(Mock.Constraint.Calls, "Resolve", "Matches")
+    AssertCalls Mock.Constraint.Calls, "Resolve", "Matches"
 End Sub
 
 Public Sub Run_UsingTestCaseSourceWithExpect_UsesConstraint2()
@@ -777,7 +777,7 @@ Public Sub Run_UsingTestCaseSourceWithExpect_UsesConstraint2()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     
-    Call Test.Run
+    Test.Run
     
     Dim Actual As Variant
     Actual = Mock.Constraint.Actual

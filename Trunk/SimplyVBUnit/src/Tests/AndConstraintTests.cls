@@ -65,9 +65,9 @@ Public Sub Matches_WithFailingLHSConstraint_DoesNotCallRHSConstraint()
     Dim c As AndConstraint
     Set c = Sim.NewAndConstraint(StubLHS, MockRHS)
     
-    Call c.Matches(True)
+    c.Matches True
 
-    Call AssertNoCalls(MockRHS.Calls)
+    AssertNoCalls MockRHS.Calls
 End Sub
 
 Public Sub Constructor_WithLeftSideAsNothing_RaisesError()
@@ -78,7 +78,7 @@ Public Sub Constructor_WithLeftSideAsNothing_RaisesError()
     On Error GoTo 0
     
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "AndConstraint.Init", "LeftSide cannot be Nothing.")
+    AssertError Err, ErrorCode.ArgumentNull, "AndConstraint.Init", "LeftSide cannot be Nothing."
 End Sub
 
 Public Sub Constructor_WithRightSideAsNothing_RaisesError()
@@ -89,7 +89,7 @@ Public Sub Constructor_WithRightSideAsNothing_RaisesError()
     On Error GoTo 0
     
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "AndConstraint.Init", "RightSide cannot be Nothing.")
+    AssertError Err, ErrorCode.ArgumentNull, "AndConstraint.Init", "RightSide cannot be Nothing."
 End Sub
 
 Public Sub WriteMessageTo_WhenCalled_WritesLeftAndRightMessages()
@@ -100,9 +100,9 @@ Public Sub WriteMessageTo_WhenCalled_WritesLeftAndRightMessages()
     Dim w As New TextMessageWriter
     Dim c As AndConstraint
     Set c = Sim.NewAndConstraint(LeftConstraint, RightConstraint)
-    Call c.Matches(1)
+    c.Matches 1
     
-    Call c.WriteMessageTo(w)
+    c.WriteMessageTo w
     
     Dim Actual As String
     Actual = w.ToString

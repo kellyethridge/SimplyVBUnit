@@ -21,14 +21,14 @@ Public Sub Add(ByVal MethodName As String, ByVal Number As Long, Optional ByVal 
     Dim ErrorInfo As String
     ErrorInfo = CStr(Number) & vbNullChar & Source & vbNullChar & Description
     
-    Call mErrors.Add(ErrorInfo, MethodName)
+    mErrors.Add ErrorInfo, MethodName
 End Sub
 
 Public Sub Raise(ByVal MethodName As String)
     Dim Info() As String
     
     If TryGetErrorInfo(MethodName, Info) Then
-        Call Err.Raise(CLng(Info(0)), Info(1), Info(2))
+        Err.Raise CLng(Info(0)), Info(1), Info(2)
     End If
 End Sub
 

@@ -38,6 +38,8 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuild
             Test.Use(Array(1), Array(1)).Expect True
             Test.Use(Array(2, 1), Array(1, 2)).Expect True
             Test.Use(Array(CDbl(1), CLng(1)), Array(CInt(1), CByte(1))).Expect True
+            Test.Use(Array(1, 1, 1), Array(1, 1)).Expect False
+            Test.Use(Array(1, 1), Array(1, 1, 1)).Expect False
             
         Case "Matches_WithStrictValues_ReturnsExpected"
             Test.Use(Array(), Array()).Expect True

@@ -35,17 +35,17 @@ Private mCount As Long
 Public Function Run() As Long
     mCount = 0
     
-    Call RunTest(Quote_WithText_ReturnsTextInQuotes)
-    Call RunTest(AssertError_WithNoError_RaisesError)
-    Call RunTest(AssertError_WithWrongErrorNumber_RaisesError)
-    Call RunTest(AssertError_WithWrongErrorSource_RaisesError)
-    Call RunTest(AssertError_WithWrongDescription_RaisesError)
-    Call RunTest(AssertError_WithCorrectError_Passes)
-    Call RunTest(AssertCalls_WithWrongCall_RaisesError)
-    Call RunTest(AssertCalls_WithWrongNumberOfCalls_RaisesError)
-    Call RunTest(AssertCalls_WithCorrectCalls_Passes)
-    Call RunTest(AssertNoCalls_WithCalls_RaisesError)
-    Call RunTest(AssertNoCalls_WithNoCallsMade_Passes)
+    RunTest Quote_WithText_ReturnsTextInQuotes
+    RunTest AssertError_WithNoError_RaisesError
+    RunTest AssertError_WithWrongErrorNumber_RaisesError
+    RunTest AssertError_WithWrongErrorSource_RaisesError
+    RunTest AssertError_WithWrongDescription_RaisesError
+    RunTest AssertError_WithCorrectError_Passes
+    RunTest AssertCalls_WithWrongCall_RaisesError
+    RunTest AssertCalls_WithWrongNumberOfCalls_RaisesError
+    RunTest AssertCalls_WithCorrectCalls_Passes
+    RunTest AssertNoCalls_WithCalls_RaisesError
+    RunTest AssertNoCalls_WithNoCallsMade_Passes
     
     Run = mCount
 End Function

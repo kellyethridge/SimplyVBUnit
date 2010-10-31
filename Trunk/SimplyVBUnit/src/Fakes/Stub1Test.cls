@@ -16,8 +16,8 @@ Option Explicit
 Public Errors As New CallError
 
 Public Sub Test1()
-    Call Err.Clear
-    Call Errors.Raise("Test1")
+    Err.Clear
+    Errors.Raise "Test1"
 End Sub
 
 

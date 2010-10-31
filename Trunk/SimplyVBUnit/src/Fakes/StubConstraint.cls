@@ -29,13 +29,13 @@ Private Function IConstraint_Resolve() As SVBUnit.IConstraint
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Call Writer.WriteActualValue(Me.ActualValue)
+    Writer.WriteActualValue Me.ActualValue
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Call Writer.WriteText(Me.Description)
+    Writer.WriteText Me.Description
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As SVBUnit.TextMessageWriter)
-    Call Writer.WriteText(Me.Message)
+    Writer.WriteText Me.Message
 End Sub

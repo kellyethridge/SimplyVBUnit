@@ -18,43 +18,43 @@ Public Calls        As New CallTrace
 Public ErrorInfo    As ErrorInfo
 
 Private Sub CallMade(ByVal MethodName As String)
-    Call Calls.Add(MethodName)
-    Call Err.Clear
+    Calls.Add MethodName
+    Err.Clear
 End Sub
 
 Private Sub IEventListener_RunException(ByVal Info As SVBUnit.ErrorInfo)
-    Call CallMade("RunException")
+    CallMade "RunException"
 End Sub
 
 Private Sub IEventListener_RunFinished(ByVal Result As SVBUnit.TestResult)
-    Call CallMade("RunFinished")
+    CallMade "RunFinished"
 End Sub
 
 Private Sub IEventListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
-    Call CallMade("RunStarted")
+    CallMade "RunStarted"
 End Sub
 
 Private Sub IEventListener_TestCaseFinished(ByVal Result As SVBUnit.TestResult)
-    Call CallMade("TestCaseFinished")
+    CallMade "TestCaseFinished"
 End Sub
 
 Private Sub IEventListener_TestCaseStarted(ByVal Test As SVBUnit.TestCase)
-    Call CallMade("TestCaseStarted")
+    CallMade "TestCaseStarted"
 End Sub
 
 Private Sub IEventListener_TestOutput(ByVal Output As SVBUnit.TestOutput)
-    Call CallMade("TestOutput")
+    CallMade "TestOutput"
 End Sub
 
 Private Sub IEventListener_TestSuiteFinished(ByVal Result As SVBUnit.TestResult)
-    Call CallMade("TestSuiteFinished")
+    CallMade "TestSuiteFinished"
 End Sub
 
 Private Sub IEventListener_TestSuiteStarted(ByVal Suite As SVBUnit.TestSuite)
-    Call CallMade("TestSuiteStarted")
+    CallMade "TestSuiteStarted"
 End Sub
 
 Private Sub IEventListener_UnhandledError(ByVal Info As SVBUnit.ErrorInfo)
     Set ErrorInfo = Info
-    Call CallMade("UnhandledError")
+    CallMade "UnhandledError"
 End Sub

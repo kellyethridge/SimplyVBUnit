@@ -21,7 +21,7 @@ Public Property Get Count() As Long
 End Property
 
 Public Sub Add(ByVal MethodName As String)
-    Call mMethodNames.Add(MethodName)
+    mMethodNames.Add MethodName
 End Sub
 
 Public Property Get Item(ByVal Index As Long) As String
@@ -51,10 +51,10 @@ Public Function ToString() As String
     Dim AddComma As Boolean
     For Each v In mMethodNames
         If AddComma Then
-            Call sb.Append(",")
+            sb.Append ","
         End If
         
-        Call sb.Append(v)
+        sb.Append v
         AddComma = True
     Next
     

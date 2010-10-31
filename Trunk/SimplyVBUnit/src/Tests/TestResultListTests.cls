@@ -144,7 +144,7 @@ End Sub
 
 Private Function MakeListWithOneResult() As TestResultList
     Set MakeListWithOneResult = New TestResultList
-    Call MakeListWithOneResult.Add(MakeResult)
+    MakeListWithOneResult.Add MakeResult
 End Function
 
 Private Function MakeResult() As TestResult

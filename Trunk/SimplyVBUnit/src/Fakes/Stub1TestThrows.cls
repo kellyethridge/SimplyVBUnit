@@ -20,5 +20,5 @@ Public Errors       As New CallError
 
 Public Sub Test1()
     Assert.Throws Number, Source, Description
-    Call Errors.Raise("Test1")
+    Errors.Raise "Test1"
 End Sub

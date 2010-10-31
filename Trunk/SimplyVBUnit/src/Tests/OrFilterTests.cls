@@ -33,9 +33,9 @@ Public Sub Match_WithMatchingFilter_ReturnsTrue()
     Dim Test As New StubTest
     Test.FullName = "Test1"
     Dim Subfilter As New FullNameFilter
-    Call Subfilter.Add("Test1")
+    Subfilter.Add "Test1"
     Dim Filter As New OrFilter
-    Call Filter.Add(Subfilter)
+    Filter.Add Subfilter
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)
@@ -47,12 +47,12 @@ Public Sub Match_WithOneOfTwoMatchingFilters_ReturnsTrue()
     Dim Test As New StubTest
     Test.FullName = "Test1"
     Dim Subfilter1 As New FullNameFilter
-    Call Subfilter1.Add("WrongName")
+    Subfilter1.Add "WrongName"
     Dim Subfilter2 As New FullNameFilter
-    Call Subfilter2.Add("Test1")
+    Subfilter2.Add "Test1"
     Dim Filter As New OrFilter
-    Call Filter.Add(Subfilter1)
-    Call Filter.Add(Subfilter2)
+    Filter.Add Subfilter1
+    Filter.Add Subfilter2
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)
@@ -65,7 +65,7 @@ Public Sub Match_WithNoMatchingFilter_ReturnsFalse()
     Dim Stub As New StubFilter
     Stub.Matches = False
     Dim Filter As New OrFilter
-    Call Filter.Add(Stub)
+    Filter.Add Stub
     
     Dim Actual As Boolean
     Actual = Filter.Match(Test)
@@ -78,7 +78,7 @@ Public Sub Pass_WithPassingFilter_ReturnsTrue()
     Dim Stub As New StubFilter
     Stub.Matches = True
     Dim Filter As New OrFilter
-    Call Filter.Add(Stub)
+    Filter.Add Stub
     
     Dim Actual As Boolean
     Actual = Filter.Pass(Test)
@@ -90,9 +90,9 @@ Public Sub Pass_WithParentOfMatchingTest_ReturnsTrue()
     Dim Fixture As TestFixture
     Set Fixture = Sim.NewTestFixture(New Fake1Test)
     Dim Subfilter As New FullNameFilter
-    Call Subfilter.Add("Fake1Test.Test1")
+    Subfilter.Add "Fake1Test.Test1"
     Dim Filter As New OrFilter
-    Call Filter.Add(Subfilter)
+    Filter.Add Subfilter
     
     Dim Actual As Boolean
     Actual = Filter.Pass(Fixture)
@@ -106,9 +106,9 @@ Public Sub Pass_WithChildOfMatchingFixture_ReturnsTrue()
     Dim Test As ITest
     Set Test = Fixture.Tests(0)
     Dim Subfilter As New FullNameFilter
-    Call Subfilter.Add("Fake1Test")
+    Subfilter.Add "Fake1Test"
     Dim Filter As New OrFilter
-    Call Filter.Add(Subfilter)
+    Filter.Add Subfilter
     
     Dim Actual As Boolean
     Actual = Filter.Pass(Test)

@@ -35,10 +35,10 @@ Private mCount As Long
 Public Function Run() As Long
     mCount = 0
     
-    Call RunTest(Raise_WithNonexistingMethod_DoesNothing)
-    Call RunTest(Raise_WithExistingError_RaisesError)
-    Call RunTest(Raise_WithExistingError_RaisesError2)
-    Call RunTest(Raise_WithExistingError_RaisesError3)
+    RunTest Raise_WithNonexistingMethod_DoesNothing
+    RunTest Raise_WithExistingError_RaisesError
+    RunTest Raise_WithExistingError_RaisesError2
+    RunTest Raise_WithExistingError_RaisesError3
     
     Run = mCount
 End Function
@@ -51,7 +51,7 @@ Private Function Raise_WithNonexistingMethod_DoesNothing()
     On Error GoTo errTrap
     Dim Errors As New CallError
     
-    Call Errors.Raise("missing")
+    Errors.Raise "missing"
     Exit Function
     
 errTrap:
@@ -61,22 +61,22 @@ End Function
 Private Function Raise_WithExistingError_RaisesError()
     On Error GoTo errTrap
     Dim Errors As New CallError
-    Call Errors.Add("Test", 1)
+    Errors.Add "Test", 1
     
-    Call Errors.Raise("Test")
+    Errors.Raise "Test"
     Debug.Assert False ' should raise an error
     
 errTrap:
     Debug.Assert Err.Number = 1
-    Call Err.Clear
+    Err.Clear
 End Function
 
 Private Function Raise_WithExistingError_RaisesError2()
     On Error GoTo errTrap
     Dim Errors As New CallError
-    Call Errors.Add("Test", 1, "source")
+    Errors.Add "Test", 1, "source"
     
-    Call Errors.Raise("Test")
+    Errors.Raise "Test"
     Debug.Assert False ' should raise an error
     
 errTrap:
@@ -87,14 +87,14 @@ End Function
 Private Function Raise_WithExistingError_RaisesError3()
     On Error GoTo errTrap
     Dim Errors As New CallError
-    Call Errors.Add("Test", 1, "source", "desc")
+    Errors.Add "Test", 1, "source", "desc"
     
     Errors.Raise "Test"
     Debug.Assert False ' should raise an error
     
 errTrap:
     Debug.Assert Err.Description = "desc"
-    Call Err.Clear
+    Err.Clear
 End Function
 
 

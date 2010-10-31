@@ -35,7 +35,7 @@ Public Sub MoveFrom_With1Arg_StoresArgsInReverseOrder()
     Dim Args() As Variant
     Args = Array(1, 2, 3)
     
-    Call TestCaseData.CopyArguments(Args)
+    TestCaseData.CopyArguments Args
     
     Dim Actual() As Variant
     Actual = TestCaseData.Arguments

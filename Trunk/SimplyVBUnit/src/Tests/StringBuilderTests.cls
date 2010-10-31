@@ -149,7 +149,7 @@ Public Sub Length_SetLessThanZero_RaisesError()
     Assert.Fail "An error should be raised."
 
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentOutOfRange, "StringBuilder.Length", "Length cannot be negative.")
+    AssertError Err, ErrorCode.ArgumentOutOfRange, "StringBuilder.Length", "Length cannot be negative."
 End Sub
 
 Public Sub AppendFormatArray_With1Argument_ReplacesIndexWithArgument()

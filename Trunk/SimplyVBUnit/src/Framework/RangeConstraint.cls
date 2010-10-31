@@ -46,7 +46,7 @@ Private mExpression As ConstraintExpression
 ' @return Returns True if the value passes the constraint, False otherwise.
 '
 Public Function Matches(ByRef Actual As Variant) As Boolean
-    Call VariantCopyInd(mActual, Actual)
+    VariantCopyInd mActual, Actual
     
     If mComparer Is Nothing Then
         Set mComparer = DefaultComparer.Instance
@@ -70,8 +70,8 @@ End Function
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal FromValue As Variant, ByVal ToValue As Variant, ByVal Expression As ConstraintExpression)
-    Call VariantCopyInd(mFrom, FromValue)
-    Call VariantCopyInd(mTo, ToValue)
+    VariantCopyInd mFrom, FromValue
+    VariantCopyInd mTo, ToValue
     Set mExpression = Expression
 End Sub
 
@@ -84,15 +84,15 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
-    Call Writer.WriteValue(mActual)
+    Writer.WriteValue mActual
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Call Writer.WriteText("in range ({0},{1})", mFrom, mTo)
+    Writer.WriteText "in range ({0},{1})", mFrom, mTo
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Call Writer.DisplayConstraintDifferences(Me)
+    Writer.DisplayConstraintDifferences Me
 End Sub
 
 

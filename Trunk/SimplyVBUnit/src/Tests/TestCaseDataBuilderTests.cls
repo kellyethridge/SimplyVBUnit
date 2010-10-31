@@ -45,7 +45,7 @@ Public Sub Use_With1Arg_Adds1TestCaseDataToStore()
     Dim Builder As TestCaseDataBuilder
     Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Call Builder.Use(1)
+    Builder.Use 1
     
     Dim Actual As Long
     Actual = Store.Count
@@ -57,7 +57,7 @@ Public Sub Use_With1Arg_Adds1TestCaseDataToStore2()
     Dim Builder As TestCaseDataBuilder
     Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Call Builder.Use(1)
+    Builder.Use 1
     
     Dim TestCaseData As TestCaseData
     Set TestCaseData = Store(1)
@@ -72,7 +72,7 @@ Public Sub Use_With3Args_StoresArgsInReverse()
     Dim Builder As TestCaseDataBuilder
     Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Call Builder.Use("one", "two", 3)
+    Builder.Use "one", "two", 3
     
     Dim TestCaseData As TestCaseData
     Set TestCaseData = Store(1)
@@ -88,8 +88,8 @@ Public Sub Use_With2TestCaseDatas_StoresTestCaseDatas()
     Dim Builder As TestCaseDataBuilder
     Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Call Builder.Use(1, 2)
-    Call Builder.Use("one", "two")
+    Builder.Use 1, 2
+    Builder.Use "one", "two"
     
     Dim Actual As Long
     Actual = Store.Count
@@ -101,7 +101,7 @@ Public Sub Use_WithNoArgs_DoesNotCreateTestCaseData()
     Dim Builder As TestCaseDataBuilder
     Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
     
-    Call Builder.Use
+    Builder.Use
     
     Dim Actual As Long
     Actual = Store.Count

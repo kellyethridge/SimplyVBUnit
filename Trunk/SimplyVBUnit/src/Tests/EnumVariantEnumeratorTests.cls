@@ -41,7 +41,7 @@ End Sub
 
 Public Sub MoveNext_WithCollectionOfOneItem_ReturnsTrue()
     Dim c As New Collection
-    Call c.Add(1)
+    c.Add 1
     
     Dim e As IEnumerator
     Set e = Sim.NewEnumVariantEnumerator(c)
@@ -54,7 +54,7 @@ End Sub
 
 Public Sub Current_WithCollectionOfOneItem_ReturnsItem()
     Dim c As New Collection
-    Call c.Add("one")
+    c.Add "one"
     
     Dim e As IEnumerator
     Set e = Sim.NewEnumVariantEnumerator(c)
@@ -69,27 +69,27 @@ End Sub
 Public Sub Constructor_WithNonsupportedType_RaisesError()
     On Error GoTo errTrap
     
-    Call Sim.NewEnumVariantEnumerator(Me)
+    Sim.NewEnumVariantEnumerator Me
     On Error GoTo 0
     
 errTrap:
-    Call AssertError(Err, ErrorCode.Argument, "EnumVariantEnumerator.Init", "Object does not support enumeration.")
+    AssertError Err, ErrorCode.Argument, "EnumVariantEnumerator.Init", "Object does not support enumeration."
 End Sub
 
 Public Sub Constructor_WithNothing_RaisesError()
     On Error GoTo errTrap
     
-    Call Sim.NewEnumVariantEnumerator(Nothing)
+    Sim.NewEnumVariantEnumerator Nothing
     On Error GoTo 0
     
 errTrap:
-    Call AssertError(Err, ErrorCode.ArgumentNull, "EnumVariantEnumerator.Init", "Obj cannot be Nothing.")
+    AssertError Err, ErrorCode.ArgumentNull, "EnumVariantEnumerator.Init", "Obj cannot be Nothing."
 End Sub
 
 Public Sub MoveNext_WithTestListOfTwoTests_ReturnsTrueTwice()
     Dim List As New TestList
-    Call List.Add(New FakeTest)
-    Call List.Add(New FakeTest)
+    List.Add New FakeTest
+    List.Add New FakeTest
     
     Dim e As IEnumerator
     Set e = Sim.NewEnumVariantEnumerator(List)

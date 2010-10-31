@@ -35,13 +35,13 @@ Private mCount As Long
 Public Function Run() As Long
     mCount = 0
     
-    Call RunTest(Add_WithTestClass_CreatesTestFixture)
-    Call RunTest(Add_WithTestFixture_StoresTestFixture)
-    Call RunTest(Add_WithTwoTestClasses_Creates2TestFixtures)
-    Call RunTest(TestCount_With2TestsPerTestClass_Returns4)
-    Call RunTest(Run_WithTestClass_ExecutesTest)
-    Call RunTest(Add_WithTestSuite_StoresTestSuite)
-    Call RunTest(Run_WithChildTestSuite_RunsChildTestSuite)
+    RunTest Add_WithTestClass_CreatesTestFixture
+    RunTest Add_WithTestFixture_StoresTestFixture
+    RunTest Add_WithTwoTestClasses_Creates2TestFixtures
+    RunTest TestCount_With2TestsPerTestClass_Returns4
+    RunTest Run_WithTestClass_ExecutesTest
+    RunTest Add_WithTestSuite_StoresTestSuite
+    RunTest Run_WithChildTestSuite_RunsChildTestSuite
     
     Run = mCount
 End Function
@@ -54,7 +54,7 @@ Private Function Add_WithTestClass_CreatesTestFixture()
     Dim TestClass As New FakeEmpty
     Dim Suite As New TestSuite
     
-    Call Suite.Add(TestClass)
+    Suite.Add TestClass
     
     Dim Actual As Object
     Set Actual = Suite.Tests(0)
@@ -67,7 +67,7 @@ Private Function Add_WithTestFixture_StoresTestFixture()
     Set Fixture = Sim.NewTestFixture(TestClass)
     Dim Suite As New TestSuite
     
-    Call Suite.Add(Fixture)
+    Suite.Add Fixture
     
     Dim Actual As Object
     Set Actual = Suite.Tests(0)
@@ -77,8 +77,8 @@ End Function
 Private Function Add_WithTwoTestClasses_Creates2TestFixtures()
     Dim Suite As New TestSuite
     
-    Call Suite.Add(New Fake1Test)
-    Call Suite.Add(New Fake1Test)
+    Suite.Add New Fake1Test
+    Suite.Add New Fake1Test
     
     Dim Actual As Long
     Actual = Suite.Tests.Count
@@ -88,8 +88,8 @@ End Function
 Private Function TestCount_With2TestsPerTestClass_Returns4()
     Dim Suite As New TestSuite
     
-    Call Suite.Add(New Fake2Tests)
-    Call Suite.Add(New Fake2Tests)
+    Suite.Add New Fake2Tests
+    Suite.Add New Fake2Tests
     
     Dim Actual As Long
     Actual = Suite.TestCount
@@ -99,9 +99,9 @@ End Function
 Private Function Run_WithTestClass_ExecutesTest()
     Dim TestClass As New Mock1Test
     Dim Suite As New TestSuite
-    Call Suite.Add(TestClass)
+    Suite.Add TestClass
     
-    Call Suite.Run
+    Suite.Run
     
     Dim Actual As Long
     Actual = TestClass.Calls.Count
@@ -112,7 +112,7 @@ Private Function Add_WithTestSuite_StoresTestSuite()
     Dim Suite1 As New TestSuite
     Dim Suite2 As New TestSuite
     
-    Call Suite1.Add(Suite2)
+    Suite1.Add Suite2
     
     Dim Actual As Object
     Set Actual = Suite1.Tests(0)
@@ -124,9 +124,9 @@ Private Function Run_WithChildTestSuite_RunsChildTestSuite()
     Dim ChildSuite As New TestSuite
     ChildSuite.Add TestClass
     Dim ParentSuite As New TestSuite
-    Call ParentSuite.Add(ChildSuite)
+    ParentSuite.Add ChildSuite
     
-    Call ParentSuite.Run
+    ParentSuite.Run
     
     Dim Actual As Long
     Actual = TestClass.Calls.Count

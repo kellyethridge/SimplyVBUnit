@@ -49,9 +49,9 @@ Public Sub BuildFrom_With1TestCaseSource_CallsSourceForTestCase()
     Set Member = tli.InterfaceInfoFromObject(Mock).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
     
-    Call Builder.BuildFrom(Mock, Member)
+    Builder.BuildFrom Mock, Member
     
-    Call AssertCalls(Mock.Calls, "GetTestCases.Test1")
+    AssertCalls Mock.Calls, "GetTestCases.Test1"
 End Sub
 
 Public Sub BuildFrom_With2TestCaseSource_Returns1TestSuite()
