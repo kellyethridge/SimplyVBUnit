@@ -30,7 +30,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements ITestCaseSource
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseDataBuilder)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Select Case Test.MethodName
         Case "Matches_WithEnumerable_ReturnsExpected"
             Test.Use(Array(1, 2, 3)).Expect True

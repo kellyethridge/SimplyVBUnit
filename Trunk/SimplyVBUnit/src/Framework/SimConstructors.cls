@@ -70,9 +70,9 @@ Public Function NewTestListEnumerator(ByVal List As TestList) As TestListEnumera
     NewTestListEnumerator.Init List
 End Function
 
-Public Function NewTestCaseDataBuilder(ByVal MethodName As String, ByVal DataStore As Collection) As TestCaseDataBuilder
-    Set NewTestCaseDataBuilder = New TestCaseDataBuilder
-    NewTestCaseDataBuilder.Init MethodName, DataStore
+Public Function NewTestCaseCollector(ByVal MethodName As String, ByVal DataStore As Collection) As TestCaseCollector
+    Set NewTestCaseCollector = New TestCaseCollector
+    NewTestCaseCollector.Init MethodName, DataStore
 End Function
 
 Public Function NewEqualConstraint(ByRef Expected As Variant, Optional ByVal Expression As ConstraintExpression) As EqualConstraint

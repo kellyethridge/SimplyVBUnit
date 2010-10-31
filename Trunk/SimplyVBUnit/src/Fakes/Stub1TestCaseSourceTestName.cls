@@ -16,7 +16,7 @@ Implements ITestCaseSource
 
 Public TestName As String
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
     Select Case Test.MethodName
         Case "Test1"
             Call Test.Use(1).TestName(TestName)

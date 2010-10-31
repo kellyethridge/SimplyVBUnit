@@ -30,7 +30,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements ITestCaseSource
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseDataBuilder)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
     Select Case Test.MethodName
         Case "Resolve_WithExpression_ReturnsConstraint"
             Call Test.Use(Exp.EqualTo(1), 1, True)
@@ -54,7 +54,7 @@ Public Sub Resolve_WithExpression_ReturnsConstraint(ByVal Expression As IResolva
     
     Dim Actual As Boolean
     Actual = Constraint.Matches(ConstraintActual)
-    assert.IsTrue Actual = Expected
+    Assert.IsTrue Actual = Expected
 End Sub
 
 Private Function Exp() As IConstraintExpression

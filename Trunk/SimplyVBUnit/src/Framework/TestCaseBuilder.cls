@@ -119,8 +119,8 @@ End Function
 
 Private Function GetTestCases() As Collection
     Dim Store   As New Collection
-    Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder(mMember.Name, Store)
+    Dim Builder As TestCaseCollector
+    Set Builder = Sim.NewTestCaseCollector(mMember.Name, Store)
     
     Dim Source As ITestCaseSource
     Set Source = mTestClass

@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "TestCaseDataBuilderTests"
+Attribute VB_Name = "TestCaseCollectorTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,14 +25,14 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestCaseDataBuilderTests
+' Module: TestCaseCollectorTests
 '
 Option Explicit
 
 Public Sub Constructor_WithMethodName_StoresMethodName()
     Const METHOD_NAME As String = "Method1"
-    Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder(METHOD_NAME, New Collection)
+    Dim Builder As TestCaseCollector
+    Set Builder = Sim.NewTestCaseCollector(METHOD_NAME, New Collection)
     
     Dim Actual As String
     Actual = Builder.MethodName
@@ -42,8 +42,8 @@ End Sub
 
 Public Sub Use_With1Arg_Adds1TestCaseDataToStore()
     Dim Store As New Collection
-    Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
+    Dim Builder As TestCaseCollector
+    Set Builder = Sim.NewTestCaseCollector(Constants.TEST1_METHOD, Store)
     
     Builder.Use 1
     
@@ -54,8 +54,8 @@ End Sub
 
 Public Sub Use_With1Arg_Adds1TestCaseDataToStore2()
     Dim Store As New Collection
-    Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
+    Dim Builder As TestCaseCollector
+    Set Builder = Sim.NewTestCaseCollector(Constants.TEST1_METHOD, Store)
     
     Builder.Use 1
     
@@ -69,8 +69,8 @@ End Sub
 ' Arguments need to be in reverse order to be properly used by the TLIApplication.Invoke methods.
 Public Sub Use_With3Args_StoresArgsInReverse()
     Dim Store As New Collection
-    Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
+    Dim Builder As TestCaseCollector
+    Set Builder = Sim.NewTestCaseCollector(Constants.TEST1_METHOD, Store)
     
     Builder.Use "one", "two", 3
     
@@ -85,8 +85,8 @@ End Sub
 
 Public Sub Use_With2TestCaseDatas_StoresTestCaseDatas()
     Dim Store As New Collection
-    Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
+    Dim Builder As TestCaseCollector
+    Set Builder = Sim.NewTestCaseCollector(Constants.TEST1_METHOD, Store)
     
     Builder.Use 1, 2
     Builder.Use "one", "two"
@@ -98,8 +98,8 @@ End Sub
 
 Public Sub Use_WithNoArgs_DoesNotCreateTestCaseData()
     Dim Store As New Collection
-    Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, Store)
+    Dim Builder As TestCaseCollector
+    Set Builder = Sim.NewTestCaseCollector(Constants.TEST1_METHOD, Store)
     
     Builder.Use
     
@@ -109,8 +109,8 @@ Public Sub Use_WithNoArgs_DoesNotCreateTestCaseData()
 End Sub
 
 Public Sub Use_WhenCalled_ReturnsTestCaseModifier()
-    Dim Builder As TestCaseDataBuilder
-    Set Builder = Sim.NewTestCaseDataBuilder(Constants.TEST1_METHOD, New Collection)
+    Dim Builder As TestCaseCollector
+    Set Builder = Sim.NewTestCaseCollector(Constants.TEST1_METHOD, New Collection)
     
     Dim Actual As TestCaseModifier
     Set Actual = Builder.Use()
