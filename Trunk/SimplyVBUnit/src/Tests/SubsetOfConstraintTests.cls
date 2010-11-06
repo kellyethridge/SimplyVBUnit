@@ -39,7 +39,6 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Call Test.Use(Array(1, 2, 3), Array(1, 2)).Expect(True)
             Call Test.Use(Array(1, 2, 3), Array(1, 2, 3, 4)).Expect(False)
             Call Test.Use(Array(1, 1, 1), Array(1, 1, 1, 1)).Expect(False)
-            
     End Select
 End Sub
 

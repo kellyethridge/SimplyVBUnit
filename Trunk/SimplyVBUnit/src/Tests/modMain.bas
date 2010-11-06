@@ -115,6 +115,7 @@ Private Sub RunBootstrapTests()
     RunBootstrapTestClass New BootstrapMockTestsWithSetupTests
     RunBootstrapTestClass New BootstrapTestFixtureTests
     RunBootstrapTestClass New BootstrapTestSuiteTests
+    RunBootstrapTestClass New BootstrapEqualityComparerTests
 End Sub
 
 Private Sub RunBootstrapTestClass(ByVal TestClass As IBootstrapTestClass)
