@@ -54,12 +54,13 @@ Public Function TryRemove(ByRef Value As Variant) As Boolean
     Dim Tally As Tally
     Set Tally = GetTally(Value)
     
-    If Tally.Count = 0 Then
-        Exit Function
+    Dim Result As Boolean
+    If Tally.Count > 0 Then
+        Tally.Decrement
+        Result = True
     End If
     
-    Tally.Decrement
-    TryRemove = True
+    TryRemove = Result
 End Function
 
 'Public Property Get Count() As Long
