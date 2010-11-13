@@ -30,13 +30,16 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IComparer
 
-Private Function IComparer_Compare(X As Variant, Y As Variant, ByVal Context As IComparerContext) As Long
+Private Const LESS_THAN     As Long = -1
+Private Const GREATER_THAN  As Long = 1
+
+Private Function IComparer_Compare(X As Variant, Y As Variant) As Long
     Dim Result As Long
     
     If X < Y Then
-        Result = -1
+        Result = LESS_THAN
     ElseIf X > Y Then
-        Result = 1
+        Result = GREATER_THAN
     End If
     
     IComparer_Compare = Result

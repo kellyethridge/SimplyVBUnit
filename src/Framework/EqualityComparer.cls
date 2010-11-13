@@ -28,7 +28,6 @@ Attribute VB_Exposed = True
 ' Module: EqualityComparer
 '
 Option Explicit
-Implements IEqualityContext
 
 Private Const ASC_LOWERT                        As Long = 116
 Private Const ASC_LOWERD                        As Long = 100
@@ -102,7 +101,7 @@ Public Function Equals(ByRef X As Variant, ByRef Y As Variant) As Boolean
     ElseIf mExternalComparer Is Nothing Then
         Result = EqualValues(X, Y)
     Else
-        Result = mExternalComparer.Equals(X, Y, Me)
+        Result = mExternalComparer.Equals(X, Y)
     End If
     
     Equals = Result
@@ -305,23 +304,3 @@ End Function
 Private Sub Class_Initialize()
     Set mTolerance = modStatics.Tolerance.EmptyTolerance
 End Sub
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IEqualityContext Interface
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Property Get IEqualityContext_AsCollection() As Boolean
-    IEqualityContext_AsCollection = AsCollection
-End Property
-
-Private Property Get IEqualityContext_IgnoreCase() As Boolean
-    IEqualityContext_IgnoreCase = IgnoreCase
-End Property
-
-Private Property Get IEqualityContext_Strict() As Boolean
-    IEqualityContext_Strict = Strict
-End Property
-
-Private Property Get IEqualityContext_Tolerance() As SimplyVBUnitType.ITolerance
-    Set IEqualityContext_Tolerance = Tolerance
-End Property

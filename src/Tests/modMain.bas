@@ -80,6 +80,8 @@ Private Sub RunTestClassTests()
     Suite.Add New UniqueItemsConstraintTests
     Suite.Add New EquivalentConstraintTests
     Suite.Add New SubsetOfConstraintTests
+    Suite.Add New StringComparerTests
+    Suite.Add New OrderedConstraintTests
     
     
     Dim Result As TestResult

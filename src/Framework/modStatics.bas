@@ -29,10 +29,6 @@ Public Type NullListenerStatic
     Instance As New NullListener
 End Type
 
-Public Type DefaultComparerStatic
-    Instance As New DefaultComparer
-End Type
-
 Public Type TallyStatic
     Zero As New ZeroTally
 End Type
@@ -40,7 +36,6 @@ End Type
 Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
-Public DefaultComparer      As DefaultComparerStatic
 Public Tally                As TallyStatic
 
 Public Sim                  As New SimConstructors
@@ -59,11 +54,9 @@ Public MsgUtils             As New MsgUtils
 Public GlobalSettings       As New GlobalSettings
 Public Tolerance            As New ToleranceStatic
 
-Private mIz                 As New IzStatic
+Public mIz                 As New IzStatic
 
 
 Public Property Get Iz() As IzSyntaxHelper
     Set Iz = mIz
 End Property
-
-

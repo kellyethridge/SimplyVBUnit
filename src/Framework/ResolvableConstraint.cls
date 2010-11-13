@@ -129,6 +129,10 @@ Private Function IConstraintExpression_Nothing() As SimplyVBUnitType.IBasicExpre
     Set IConstraintExpression_Nothing = mExpression.Nothing_
 End Function
 
+Private Function IConstraintExpression_Ordered() As SimplyVBUnitType.IOrderedConstraint
+    Set IConstraintExpression_Ordered = mExpression.Ordered
+End Function
+
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_SameAs = mExpression.SameAs(Expected)
 End Function

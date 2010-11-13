@@ -121,6 +121,10 @@ Public Function SubsetOf(ByRef Expected As Variant) As SubsetOfConstraint
     Set SubsetOf = AddConstraint(Sim.NewSubsetOfConstraint(Expected, Me))
 End Function
 
+Public Function Ordered() As IOrderedConstraint
+    Set Ordered = AddConstraint(New OrderedConstraint)
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -197,6 +201,10 @@ End Function
 
 Private Function IConstraintExpression_Nothing() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Nothing = Nothing_
+End Function
+
+Private Function IConstraintExpression_Ordered() As SimplyVBUnitType.IOrderedConstraint
+    Set IConstraintExpression_Ordered = Ordered
 End Function
 
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression

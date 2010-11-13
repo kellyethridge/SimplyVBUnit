@@ -71,6 +71,10 @@ Private Function IzSyntaxHelper_Nothing() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Nothing = NewExp.Nothing
 End Function
 
+Private Function IzSyntaxHelper_Ordered() As SimplyVBUnitType.IOrderedConstraint
+    Set IzSyntaxHelper_Ordered = NewExp.Ordered
+End Function
+
 Private Function IzSyntaxHelper_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_SameAs = NewExp.SameAs(Expected)
 End Function
