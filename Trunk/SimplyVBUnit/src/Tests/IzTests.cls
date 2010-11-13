@@ -57,6 +57,8 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Call Test.Use(Iz.SameAs(Me), Obj, False)
             Call Test.Use(Iz.EquivalentTo(Array(1, 2)), Array(2, 1), True)
             Call Test.Use(Iz.SubsetOf(Array(1, 2, 3)), Array(1, 3), True)
+            Call Test.Use(Iz.Ordered, Array(1, 2, 3), True)
+            Call Test.Use(Iz.Ordered.Descending, Array(3, 2, 1), True)
             
     End Select
 End Sub

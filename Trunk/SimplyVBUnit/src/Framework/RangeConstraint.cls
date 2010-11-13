@@ -49,12 +49,12 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     VariantCopyInd mActual, Actual
     
     If mComparer Is Nothing Then
-        Set mComparer = DefaultComparer.Instance
+        Set mComparer = New DefaultComparer
     End If
     
     Dim Result As Boolean
-    If mComparer.Compare(mActual, mFrom, Nothing) >= 0 Then
-        Result = (mComparer.Compare(mActual, mTo, Nothing) <= 0)
+    If mComparer.Compare(mActual, mFrom) >= 0 Then
+        Result = (mComparer.Compare(mActual, mTo) <= 0)
     End If
     
     Matches = Result

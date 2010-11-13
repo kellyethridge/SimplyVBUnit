@@ -88,7 +88,7 @@ End Sub
 Private Function ComparerCompare() As Boolean
     Dim Result As Boolean
     
-    Select Case mComparer.Compare(mActual, mExpected, Nothing)
+    Select Case mComparer.Compare(mActual, mExpected)
         Case Is > 0:    Result = mCanBeGreater
         Case Is < 0:    Result = mCanBeLess
         Case Else:      Result = mCanBeEqual

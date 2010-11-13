@@ -106,6 +106,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
         interface IUsingExpression;
         interface IEqualityExpression;
         interface ITolerance;
+        interface IOrderedConstraint;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -115,35 +116,17 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT Reset();
                 HRESULT Clone([in, out] IVBEnumVARIANT ** RetVal);
 	}
-	
-	[uuid(1B356491-69DE-4a0f-BC52-39D832C10B96), odl]
-	interface IEqualityContext : IDispatch
-        {
-                [propget] HRESULT IgnoreCase([out, retval] boolean * RetVal);
-                [propget] HRESULT Strict([out, retval] boolean * RetVal);
-                [propget] HRESULT AsCollection([out, retval] boolean * RetVal);
-                [propget] HRESULT Tolerance([out, retval] ITolerance ** RetVal);
-        }
 
 	[uuid(BE21FDD8-15D9-423b-AAD9-3A094532C4D2), odl]
 	interface IEqualityComparer : IDispatch
 	{
-		HRESULT Equals([in] VARIANT * X, [in] VARIANT * Y, [in] IEqualityContext * Context, [out, retval] boolean * RetVal);
+		HRESULT Equals([in] VARIANT * X, [in] VARIANT * Y, [out, retval] boolean * RetVal);
 	}
-
-	[uuid(D1752156-F3B8-4652-BE95-7672B1D96118), odl]
-        interface IComparerContext : IDispatch
-        {
-                [propget] HRESULT IgnoreCase([out, retval] boolean * RetVal);
-                [propget] HRESULT Strict([out, retval] boolean * RetVal);
-                [propget] HRESULT AsCollection([out, retval] boolean * RetVal);
-                [propget] HRESULT Tolerance([out, retval] ITolerance ** RetVal);
-        }
 
 	[uuid(814B5074-D094-4031-B744-592F90F8BC5E), odl]
         interface IComparer : IDispatch
         {
-                HRESULT Compare([in] VARIANT * X, [in] VARIANT * Y, [in] IComparerContext * Context, [out, retval] long * RetVal);
+                HRESULT Compare([in] VARIANT * X, [in] VARIANT * Y, [out, retval] long * RetVal);
         }
 
         [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
@@ -167,6 +150,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
                 HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
                 HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
+                HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -182,6 +166,16 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
 		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
+        }
+
+        [uuid(1C30E2C7-03F1-4ea6-BF7F-09A3284754BB), odl]
+        interface IOrderedConstraint : IDispatch
+        {
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+		HRESULT Using([in] IComparer * Comparer, [out, retval] IOrderedConstraint ** RetVal);
+                HRESULT IgnoreCase([out, retval] IOrderedConstraint ** RetVal);
+                HRESULT Descending([out, retval] IOrderedConstraint ** RetVal);
         }
 
 	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
@@ -253,6 +247,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
                 HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
                 HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
+                HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
 	}
 }
 
