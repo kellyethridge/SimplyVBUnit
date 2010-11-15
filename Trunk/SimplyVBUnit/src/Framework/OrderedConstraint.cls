@@ -37,21 +37,24 @@ Implements IOrderedConstraint
 Private Const ORDER_ASC     As Long = 1
 Private Const ORDER_DESC    As Long = -1
 
-
+Private mExpression As ConstraintExpression
 Private mSign       As Long
 Private mActual     As Variant
-Private mIgnoreCase As Boolean
-Private mComparer   As IComparer
-Private mExpression As ConstraintExpression
+Private mFactory    As New ComparerFactory
 
+
+Public Function DateInterval(ByVal Interval As DateInterval) As OrderedConstraint
+    mFactory.Interval = Interval
+    Set DateInterval = Me
+End Function
 
 Public Function IgnoreCase() As OrderedConstraint
-    mIgnoreCase = True
+    mFactory.IgnoreCase = True
     Set IgnoreCase = Me
 End Function
 
 Public Function Using(ByVal Comparer As IComparer) As OrderedConstraint
-    Set mComparer = Comparer
+    Set mFactory.ExternalComparer = Comparer
     Set Using = Me
 End Function
 
@@ -64,22 +67,20 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     Dim Enumerator As IEnumerator
     Set Enumerator = GetEnumerator(Actual)
     
-    VariantCopyInd mActual, Actual
-    
-    Dim First   As Variant
-    Dim Second  As Variant
+    Dim First       As Variant
+    Dim Second      As Variant
+    Dim Comparer    As IComparer
     
     If Enumerator.MoveNext Then
         VariantCopyInd First, Enumerator.Current
         
-        If mComparer Is Nothing Then
-            Set mComparer = GetComparer(First)
-        End If
+        Set Comparer = mFactory.Create(First)
         
         Do While Enumerator.MoveNext
             VariantCopyInd Second, Enumerator.Current
             
-            If (mComparer.Compare(First, Second) * mSign) > 0 Then
+            If (Comparer.Compare(First, Second) * mSign) > 0 Then
+                VariantCopyInd mActual, Actual
                 Exit Function
             End If
             
@@ -90,31 +91,6 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     End If
     
     Matches = True
-End Function
-
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Helpers
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function GetComparer(ByRef Value As Variant) As IComparer
-    Dim Result As IComparer
-    
-    If VarType(Value) = vbString Then
-        Set Result = GetStringComparer
-    Else
-        Set Result = New DefaultComparer
-    End If
-    
-    Set GetComparer = Result
-End Function
-
-
-Private Function GetStringComparer() As IComparer
-    Dim c As New StringComparer
-    c.IgnoreCase = mIgnoreCase
-    
-    Set GetStringComparer = c
 End Function
 
 
@@ -170,6 +146,10 @@ Private Function IOrderedConstraint_AndAlso() As SimplyVBUnitType.IConstraintExp
     Set IOrderedConstraint_AndAlso = mExpression.AndAlso
 End Function
 
+Private Function IOrderedConstraint_DateInterval(ByVal Interval As SimplyVBUnitType.DateInterval) As SimplyVBUnitType.IBasicExpression
+    Set IOrderedConstraint_DateInterval = DateInterval(Interval)
+End Function
+
 Private Function IOrderedConstraint_Descending() As SimplyVBUnitType.IOrderedConstraint
     Set IOrderedConstraint_Descending = Descending
 End Function
@@ -193,3 +173,4 @@ End Function
 Private Function IResolvable_Resolve() As IConstraint
     Set IResolvable_Resolve = Resolve(Me, mExpression)
 End Function
+

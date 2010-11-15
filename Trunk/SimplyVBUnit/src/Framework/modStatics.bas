@@ -60,3 +60,4 @@ Public mIz                 As New IzStatic
 Public Property Get Iz() As IzSyntaxHelper
     Set Iz = mIz
 End Property
+

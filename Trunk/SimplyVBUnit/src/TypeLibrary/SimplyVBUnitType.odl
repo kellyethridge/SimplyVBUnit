@@ -16,6 +16,18 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 byte  Data4[8];
         } VBGUID;
 
+        typedef enum DateInterval {
+                OfSeconds = 0,
+                OfMinutes = 1,
+                OfHours = 2,
+                OfDays = 3,
+                OfMonths = 4,
+                OfYears = 5,
+                OfWeeks = 6,
+                OfQuarters = 7,
+                OfDayOfYears = 8
+        } DateInterval;
+
         typedef struct SafeArray1d
         {
                 short   cDims;
@@ -176,6 +188,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT Using([in] IComparer * Comparer, [out, retval] IOrderedConstraint ** RetVal);
                 HRESULT IgnoreCase([out, retval] IOrderedConstraint ** RetVal);
                 HRESULT Descending([out, retval] IOrderedConstraint ** RetVal);
+		HRESULT DateInterval([in] DateInterval Interval, [out, retval] IBasicExpression ** RetVal);
         }
 
 	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
@@ -224,6 +237,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
 		HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
 		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
+		HRESULT DateInterval([in] DateInterval Interval, [out, retval] IBasicExpression ** RetVal);
         }
 
 	[uuid(0331F242-579F-4210-9822-39782E51E0BF), odl]

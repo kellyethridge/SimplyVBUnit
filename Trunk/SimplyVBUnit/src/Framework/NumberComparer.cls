@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "DefaultComparer"
+Attribute VB_Name = "NumberComparer"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 ' Copyright 2010 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,20 +25,20 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: DefaultComparer
+' Module: NumberComparer
 '
 Option Explicit
 Implements IComparer
 
 
+Public Function Compare(ByRef X As Variant, ByRef Y As Variant) As Long
+    Compare = CompareNumbers(X, Y)
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IComparer Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IComparer_Compare(X As Variant, Y As Variant) As Long
-    Dim Result As Long
-    
-    If X < Y Then
-        Result = LESS_THAN
-    ElseIf X > Y Then
-        Result = GREATER_THAN
-    End If
-    
-    IComparer_Compare = Result
+    IComparer_Compare = Compare(X, Y)
 End Function

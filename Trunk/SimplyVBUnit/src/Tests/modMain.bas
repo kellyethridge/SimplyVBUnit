@@ -81,6 +81,7 @@ Private Sub RunTestClassTests()
     Suite.Add New EquivalentConstraintTests
     Suite.Add New SubsetOfConstraintTests
     Suite.Add New StringComparerTests
+    Suite.Add New NumberComparerTests
     Suite.Add New OrderedConstraintTests
     
     

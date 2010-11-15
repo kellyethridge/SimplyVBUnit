@@ -40,29 +40,36 @@ Private mCanBeLess      As Boolean
 Private mCanBeGreater   As Boolean
 Private mCanBeEqual     As Boolean
 Private mPredicate      As String
-Private mComparer       As IComparer
-Private mCompareMethod  As VbCompareMethod
+Private mFactory        As New ComparerFactory
 
+
+Public Function DateInterval(ByVal Interval As DateInterval) As ComparisonConstraint
+    mFactory.Interval = Interval
+    Set DateInterval = Me
+End Function
 
 Public Function IgnoreCase() As ComparisonConstraint
-    mCompareMethod = vbTextCompare
+    mFactory.IgnoreCase = True
     Set IgnoreCase = Me
 End Function
 
 Public Function Using(ByVal Comparer As IComparer) As ComparisonConstraint
-    Set mComparer = Comparer
+    Set mFactory.ExternalComparer = Comparer
     Set Using = Me
 End Function
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
     VariantCopyInd mActual, Actual
     
+    Dim Comparer As IComparer
+    Set Comparer = mFactory.Create(mExpected)
+    
     Dim Result As Boolean
-    If mComparer Is Nothing Then
-        Result = NormalCompare
-    Else
-        Result = ComparerCompare
-    End If
+    Select Case Comparer.Compare(mActual, mExpected)
+        Case Is > 0:    Result = mCanBeGreater
+        Case Is < 0:    Result = mCanBeLess
+        Case Else:      Result = mCanBeEqual
+    End Select
     
     Matches = Result
 End Function
@@ -77,81 +84,8 @@ Friend Sub Init(ByRef Expected As Variant, ByVal CanBeLess As Boolean, ByVal Can
     mCanBeGreater = CanBeGreater
     mCanBeEqual = CanBeEqual
     mPredicate = Predicate
-    mCompareMethod = vbBinaryCompare
     Set mExpression = Expression
 End Sub
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function ComparerCompare() As Boolean
-    Dim Result As Boolean
-    
-    Select Case mComparer.Compare(mActual, mExpected)
-        Case Is > 0:    Result = mCanBeGreater
-        Case Is < 0:    Result = mCanBeLess
-        Case Else:      Result = mCanBeEqual
-    End Select
-    
-    ComparerCompare = Result
-End Function
-
-Private Function NormalCompare() As Boolean
-    Dim Result As Boolean
-    
-    Select Case VarType(mExpected)
-        Case vbString:  Result = CompareStrings
-        Case vbDate:    Result = CompareDates
-        Case Else:      Result = CompareNumbers
-    End Select
-    
-    NormalCompare = Result
-End Function
-
-Private Function CompareDates() As Boolean
-    Dim Result As Boolean
-
-    If VarType(mActual) = vbDate Then
-        Select Case DateDiff("s", mExpected, mActual)
-            Case Is > 0:    Result = mCanBeGreater
-            Case Is < 0:    Result = mCanBeLess
-            Case Else:      Result = mCanBeEqual
-        End Select
-    End If
-    
-    CompareDates = Result
-End Function
-
-Private Function CompareStrings() As Boolean
-    Dim Result As Boolean
-
-    If VarType(mActual) = vbString Then
-        Select Case StrComp(mActual, mExpected, mCompareMethod)
-            Case Is < 0:    Result = mCanBeLess
-            Case Is > 0:    Result = mCanBeGreater
-            Case Else:      Result = mCanBeEqual
-        End Select
-    End If
-    
-    CompareStrings = Result
-End Function
-
-Private Function CompareNumbers() As Boolean
-    Dim Result As Boolean
-
-    If IsNumber(mExpected) And IsNumber(mActual) Then
-        If mActual < mExpected Then
-            Result = mCanBeLess
-        ElseIf mActual > mExpected Then
-            Result = mCanBeGreater
-        Else
-            Result = mCanBeEqual
-        End If
-    End If
-    
-    CompareNumbers = Result
-End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -171,6 +105,10 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IComparisonConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
     Set IComparisonConstraint_AndAlso = mExpression.AndAlso
+End Function
+
+Private Function IComparisonConstraint_DateInterval(ByVal Interval As SimplyVBUnitType.DateInterval) As SimplyVBUnitType.IBasicExpression
+    Set IComparisonConstraint_DateInterval = DateInterval(Interval)
 End Function
 
 Private Function IComparisonConstraint_IgnoreCase() As SimplyVBUnitType.IBasicExpression
