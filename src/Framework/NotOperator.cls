@@ -32,9 +32,7 @@ Implements IOperator
 
 
 Public Sub Reduce(ByVal Constraints As ConstraintStack)
-    If Constraints.Count > 0 Then
-        Constraints.Push Sim.NewNotConstraint(Constraints.Pop)
-    End If
+    Constraints.Push Sim.NewNotConstraint(Constraints.Pop)
 End Sub
 
 

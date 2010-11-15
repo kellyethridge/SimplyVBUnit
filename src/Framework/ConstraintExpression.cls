@@ -179,7 +179,7 @@ Private Function IConstraintExpression_GreaterThanOrEqualTo(Expected As Variant)
     Set IConstraintExpression_GreaterThanOrEqualTo = GreaterThanOrEqualTo(Expected)
 End Function
 
-Private Function IConstraintExpression_InRange(FromValue As Variant, ToValue As Variant) As SimplyVBUnitType.IUsingExpression
+Private Function IConstraintExpression_InRange(FromValue As Variant, ToValue As Variant) As IComparisonConstraint
     Set IConstraintExpression_InRange = InRange(FromValue, ToValue)
 End Function
 

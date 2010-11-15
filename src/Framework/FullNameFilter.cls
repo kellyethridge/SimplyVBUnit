@@ -25,7 +25,7 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: SimpleNameFilter
+' Module: FullNameFilter
 '
 Option Explicit
 Implements ITestFilter

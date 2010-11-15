@@ -63,7 +63,7 @@ Public Sub WriteMessageTo_WhenCalled_WritesBaseConstraintMessage()
     Dim Stub As New StubConstraint
     Stub.Description = "equals"
     Stub.ActualValue = 1
-    Dim c As NotConstraint
+    Dim c As IConstraint
     Set c = Sim.NewNotConstraint(Stub)
     c.Matches 1
     Dim w As New TextMessageWriter

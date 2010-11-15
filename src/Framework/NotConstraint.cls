@@ -37,19 +37,6 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     Matches = Not mBaseConstraint.Matches(Actual)
 End Function
 
-Public Sub WriteActualValueTo(ByVal Writer As TextMessageWriter)
-    mBaseConstraint.WriteActualValueTo Writer
-End Sub
-
-Public Sub WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Writer.WritePredicate "not"
-    mBaseConstraint.WriteDescriptionTo Writer
-End Sub
-
-Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    Writer.DisplayConstraintDifferences Me
-End Sub
-
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Constructors
@@ -70,13 +57,14 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
 End Function
 
 Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
-    WriteActualValueTo Writer
+    mBaseConstraint.WriteActualValueTo Writer
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    WriteDescriptionTo Writer
+    Writer.WritePredicate "not"
+    mBaseConstraint.WriteDescriptionTo Writer
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
-    WriteMessageTo Writer
+    Writer.DisplayConstraintDifferences Me
 End Sub
