@@ -32,12 +32,28 @@ Implements IResolvable
 Implements IConstraint
 Implements IUsingExpression
 
+Private mExpression As ConstraintExpression
 Private mActual     As Variant
 Private mFrom       As Variant
 Private mTo         As Variant
-Private mComparer   As IComparer
-Private mExpression As ConstraintExpression
+Private mFactory    As New ComparerFactory
 
+
+
+Public Function IgnoreCase() As RangeConstraint
+    mFactory.IgnoreCase = True
+    Set IgnoreCase = Me
+End Function
+
+Public Function DateInterval(ByVal Interval As DateInterval) As RangeConstraint
+    mFactory.Interval = Interval
+    Set DateInterval = Me
+End Function
+
+Public Function Using(ByVal Comparer As IComparer) As RangeConstraint
+    Set mFactory.ExternalComparer = Comparer
+    Set Using = Me
+End Function
 
 ''
 ' Checks that the value "Actual" is within the specified range of values.
@@ -48,21 +64,15 @@ Private mExpression As ConstraintExpression
 Public Function Matches(ByRef Actual As Variant) As Boolean
     VariantCopyInd mActual, Actual
     
-    If mComparer Is Nothing Then
-        Set mComparer = New DefaultComparer
-    End If
+    Dim Comparer As IComparer
+    Set Comparer = mFactory.Create(Actual)
     
     Dim Result As Boolean
-    If mComparer.Compare(mActual, mFrom) >= 0 Then
-        Result = (mComparer.Compare(mActual, mTo) <= 0)
+    If Comparer.Compare(mActual, mFrom) >= 0 Then
+        Result = (Comparer.Compare(mActual, mTo) <= 0)
     End If
     
     Matches = Result
-End Function
-
-Public Function Using(ByVal Comparer As IComparer) As RangeConstraint
-    Set mComparer = Comparer
-    Set Using = Me
 End Function
 
 

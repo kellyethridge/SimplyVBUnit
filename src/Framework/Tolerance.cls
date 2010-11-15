@@ -29,12 +29,6 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-'Public Enum ToleranceMode
-'    NoneMode
-'    LinearMode
-'    PercentMode
-'End Enum
-
 Private mAmount     As Variant
 Private mMode       As ToleranceMode
 Private mInterval   As String

@@ -25,6 +25,9 @@ Public Const SIZEOF_VARIANT         As Long = 16
 Public Const ARRAY_DIMENSIONS       As Long = 1
 Public Const ENUM_MEMBERID          As Long = -4
 Public Const LBOUND_OF_COLLECTION   As Long = 1
+Public Const LESS_THAN              As Long = -1
+Public Const GREATER_THAN           As Long = 1
+Public Const EQUAL_TO               As Long = 0
 
 ''
 ' Structure represents a proxy array to an already existing Variant array.
@@ -36,6 +39,7 @@ Public Type ArrayProxy
     Data()      As Variant
     SA          As SafeArray1d
 End Type
+
 
 
 Public Function Resolve(ByVal Constraint As IConstraint, ByVal Expression As ConstraintExpression) As IConstraint
