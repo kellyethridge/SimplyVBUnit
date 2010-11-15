@@ -115,10 +115,10 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 
         // Forward definitions
         interface IBasicExpression;
-        interface IUsingExpression;
         interface IEqualityExpression;
         interface ITolerance;
         interface IOrderedConstraint;
+        interface IComparisonConstraint;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -156,7 +156,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT GreaterThan([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 		HRESULT LessThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
-                HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IUsingExpression ** RetVal);
+                HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IComparisonConstraint ** RetVal);
                 HRESULT Empty([out, retval] IBasicExpression ** RetVal);
                 HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
                 HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
@@ -171,14 +171,6 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
 	}
-
-	[uuid(5284FE8C-6871-4e84-B1BE-409060EC234F), odl]
-        interface IUsingExpression : IDispatch
-        {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
-        }
 
         [uuid(1C30E2C7-03F1-4ea6-BF7F-09A3284754BB), odl]
         interface IOrderedConstraint : IDispatch
@@ -255,7 +247,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT GreaterThan([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
 		HRESULT LessThanOrEqualTo([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
 		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
-                HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IUsingExpression ** RetVal);
+                HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IComparisonConstraint ** RetVal);
                 HRESULT Empty([out, retval] IBasicExpression ** RetVal);
                 HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
                 HRESULT Unique([out, retval] IEqualityExpression ** RetVal);

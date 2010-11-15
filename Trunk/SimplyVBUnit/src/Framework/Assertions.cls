@@ -81,6 +81,56 @@ Public Sub AreEqual(ByRef Expected As Variant, ByRef Actual As Variant, Optional
     That Actual, Iz.EqualTo(Expected), Message
 End Sub
 
+Public Sub AreEqualFloats(ByRef Expected As Variant, ByRef Actual As Variant, Optional ByRef Tolerance As Variant, Optional ByRef Message As String)
+    If VBA.IsMissing(Tolerance) Then
+        That Actual, Iz.EqualTo(Actual), Message
+    Else
+        That Actual, Iz.EqualTo(Expected).Within(Tolerance), Message
+    End If
+End Sub
+
+Public Sub AreEqualStrings(ByRef Expected As String, ByRef Actual As String, Optional ByVal IgnoreCase As Boolean, Optional ByRef Message As String)
+    If IgnoreCase Then
+        That Actual, Iz.EqualTo(Expected).IgnoreCase, Message
+    Else
+        That Actual, Iz.EqualTo(Expected), Message
+    End If
+End Sub
+
+Public Sub Greater(ByRef Value1 As Variant, ByRef Value2 As Variant, Optional ByRef Message As String)
+    That Value1, Iz.GreaterThan(Value2), Message
+End Sub
+
+Public Sub GreaterOrEqual(ByRef Value1 As Variant, ByRef Value2 As Variant, Optional ByRef Message As String)
+    That Value1, Iz.GreaterThanOrEqualTo(Value2), Message
+End Sub
+
+Public Sub Less(ByRef Value1 As Variant, ByRef Value2 As Variant, Optional ByRef Message As String)
+    That Value1, Iz.LessThan(Value2), Message
+End Sub
+
+Public Sub LessOrEqual(ByRef Value1 As Variant, ByRef Value2 As Variant, Optional ByRef Message As String)
+    That Value1, Iz.LessThanOrEqualTo(Value2), Message
+End Sub
+
+Public Sub IsEmpty(ByRef Value As Variant, Optional ByRef Message As String)
+    That Value, Iz.Empty, Message
+End Sub
+
+Public Sub Ordered(ByRef Value As Variant, Optional ByRef Message As String)
+    That Value, Iz.Ordered, Message
+End Sub
+
+Public Sub InRange(ByRef Value As Variant, ByRef FromValue As Variant, ByRef ToValue As Variant, Optional ByRef Message As String)
+    That Value, Iz.InRange(FromValue, ToValue), Message
+End Sub
+
+Public Sub Unique(ByRef Value As Variant, Optional ByRef Message As String)
+    That Value, Iz.Unique, Message
+End Sub
+
+
+
 Public Sub That(ByRef Actual As Variant, ByVal Constraint As Object, Optional ByRef Message As String)
     Dim ResolvedConstraint As IConstraint
     

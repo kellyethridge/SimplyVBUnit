@@ -30,7 +30,7 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements IResolvable
 Implements IConstraint
-Implements IUsingExpression
+Implements IComparisonConstraint
 
 Private mExpression As ConstraintExpression
 Private mActual     As Variant
@@ -87,6 +87,30 @@ End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IComparisonConstraint Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IComparisonConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
+    Set IComparisonConstraint_AndAlso = mExpression.AndAlso
+End Function
+
+Private Function IComparisonConstraint_DateInterval(ByVal Interval As SimplyVBUnitType.DateInterval) As SimplyVBUnitType.IBasicExpression
+    Set IComparisonConstraint_DateInterval = DateInterval(Interval)
+End Function
+
+Private Function IComparisonConstraint_IgnoreCase() As SimplyVBUnitType.IBasicExpression
+    Set IComparisonConstraint_IgnoreCase = IgnoreCase
+End Function
+
+Private Function IComparisonConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
+    Set IComparisonConstraint_OrElse = mExpression.OrElse
+End Function
+
+Private Function IComparisonConstraint_Using(ByVal Comparer As SimplyVBUnitType.IComparer) As SimplyVBUnitType.IBasicExpression
+    Set IComparisonConstraint_Using = Using(Comparer)
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IConstraint Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IConstraint_Matches(Actual As Variant) As Boolean
@@ -113,18 +137,3 @@ Private Function IResolvable_Resolve() As IConstraint
     Set IResolvable_Resolve = Resolve(Me, mExpression)
 End Function
 
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IUsingExpression Interface
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IUsingExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    Set IUsingExpression_AndAlso = mExpression.AndAlso
-End Function
-
-Private Function IUsingExpression_OrElse() As SimplyVBUnitType.IConstraintExpression
-    Set IUsingExpression_OrElse = mExpression.OrElse
-End Function
-
-Private Function IUsingExpression_Using(ByVal Comparer As SimplyVBUnitType.IComparer) As SimplyVBUnitType.IBasicExpression
-    Set IUsingExpression_Using = Using(Comparer)
-End Function
