@@ -91,25 +91,16 @@ End Function
 ' @return The result of the comparison.
 '
 Public Function Matches(ByRef Actual As Variant) As Boolean
-    VariantCopyInd mActual, Actual
-    Matches = mComparer.Equals(mExpected, Actual)
-End Function
-
-''
-' Writes a message to a text writer describing how the constraint failed.
-'
-' @param Writer The text write that the message will be written to.
-'
-Public Sub WriteMessageTo(ByVal Writer As TextMessageWriter)
-    If IsEnumerable(mExpected) And IsEnumerable(mActual) Then
-        DisplayCollectionDifferences mExpected, mActual, Writer, 0
-    ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
-        DisplayStringDifferences Writer
+    Dim Result As Boolean
+    
+    If mComparer.Equals(mExpected, Actual) Then
+        Result = True
     Else
-        Writer.DisplayConstraintDifferences Me
+        VariantCopyInd mActual, Actual
     End If
-End Sub
-
+    
+    Matches = Result
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -328,7 +319,13 @@ Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
-    WriteMessageTo Writer
+    If IsEnumerable(mExpected) And IsEnumerable(mActual) Then
+        DisplayCollectionDifferences mExpected, mActual, Writer, 0
+    ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
+        DisplayStringDifferences Writer
+    Else
+        Writer.DisplayConstraintDifferences Me
+    End If
 End Sub
 
 

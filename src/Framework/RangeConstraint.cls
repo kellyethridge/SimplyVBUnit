@@ -62,17 +62,19 @@ End Function
 ' @return Returns True if the value passes the constraint, False otherwise.
 '
 Public Function Matches(ByRef Actual As Variant) As Boolean
-    VariantCopyInd mActual, Actual
-    
     Dim Comparer As IComparer
     Set Comparer = mFactory.Create(Actual)
     
     Dim Result As Boolean
-    If Comparer.Compare(mActual, mFrom) >= 0 Then
-        Result = (Comparer.Compare(mActual, mTo) <= 0)
+    If Comparer.Compare(Actual, mFrom) >= 0 Then
+        Result = (Comparer.Compare(Actual, mTo) <= 0)
     End If
     
-    Matches = Result
+    If Result Then
+        Matches = True
+    Else
+        VariantCopyInd mActual, Actual
+    End If
 End Function
 
 

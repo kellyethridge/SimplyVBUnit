@@ -58,14 +58,13 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     If Not IsEnumerable(Actual) Then _
         Error.EnumerationNotSupported Me, "Matches", "Actual"
         
-    VariantCopyInd mActual, Actual
-        
     Dim Tallier As New ValueTallier
     Tallier.Initialize mExpected, mComparer
     
     Dim Value As Variant
     For Each Value In Actual
         If Not Tallier.TryRemove(Value) Then
+            VariantCopyInd mActual, Actual
             Exit Function
         End If
     Next

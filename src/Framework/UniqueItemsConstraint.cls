@@ -72,7 +72,6 @@ End Sub
 '   Private Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IsUnique(ByRef Actual As Variant) As Boolean
-    VariantCopyInd mActual, Actual
     mComparer.AsCollection = True
     
     Dim AccountedFor        As New Collection
@@ -81,6 +80,7 @@ Private Function IsUnique(ByRef Actual As Variant) As Boolean
     For Each ActualValue In Actual
         For Each AccountedForValue In AccountedFor
             If mComparer.Equals(ActualValue, AccountedForValue) Then
+                VariantCopyInd mActual, Actual
                 Exit Function
             End If
         Next

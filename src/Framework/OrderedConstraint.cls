@@ -84,9 +84,7 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
                 Exit Function
             End If
             
-            First = Empty
-            CopyMemory First, Second, SIZEOF_VARIANT
-            ZeroMemory Second, SIZEOF_VARIANT
+            VariantCopyInd First, Second
         Loop
     End If
     

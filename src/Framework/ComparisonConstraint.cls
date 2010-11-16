@@ -59,17 +59,19 @@ Public Function Using(ByVal Comparer As IComparer) As ComparisonConstraint
 End Function
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
-    VariantCopyInd mActual, Actual
-    
     Dim Comparer As IComparer
     Set Comparer = mFactory.Create(mExpected)
     
     Dim Result As Boolean
-    Select Case Comparer.Compare(mActual, mExpected)
+    Select Case Comparer.Compare(Actual, mExpected)
         Case Is > 0:    Result = mCanBeGreater
         Case Is < 0:    Result = mCanBeLess
         Case Else:      Result = mCanBeEqual
     End Select
+        
+    If Not Result Then
+        VariantCopyInd mActual, Actual
+    End If
     
     Matches = Result
 End Function
