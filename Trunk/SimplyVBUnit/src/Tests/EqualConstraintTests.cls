@@ -68,7 +68,11 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             
             ReDim Long1(0 To 1)
             ReDim int1(0 To 1) As Integer
-            Expected = "  Expected is <Long(0 To 1)>, actual is <Integer(0 To 1)>" & vbCrLf
+            Expected = "  Expected is <Long(0 To 1)>, actual is <Integer(0 To 1)>" & vbCrLf & _
+                       "  Values differ at index [0]" & vbCrLf & _
+                       "  Expected: 0" & vbCrLf & _
+                       "  But was : 0" & vbCrLf
+            
             Test.Use Long1, int1, Expected
             
             Expected = "  Expected and actual are both <Variant(0 To 2)>" & vbCrLf & _
@@ -120,7 +124,7 @@ End Sub
 
 Public Sub WriteMessageTo_WithValues_WritesExpected(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As String)
     Dim c As IConstraint
-    Set c = Sim.NewEqualConstraint(ConstraintExpected)
+    Set c = Sim.NewEqualConstraint(ConstraintExpected).Strict
     c.Matches ConstraintActual
     
     Dim w As New TextMessageWriter
@@ -136,7 +140,7 @@ Public Sub WriteMessageTo_WithMultiDimensionalArraysAsCollection_WritesExpected(
     ReDim Array2(1 To 2, 1 To 3) As Variant
     Array1(1, 2) = Array(1, 2, 3)
     Array2(2, 3) = Array(1, 3, 3)
-    Dim c As EqualConstraint
+    Dim c As IConstraint
     Set c = Sim.NewEqualConstraint(Array1).AsCollection
     c.Matches Array2
     Dim w As New TextMessageWriter

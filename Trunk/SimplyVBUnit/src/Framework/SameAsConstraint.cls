@@ -35,14 +35,16 @@ Private mActual     As Variant
 
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
-    VariantCopyInd mActual, Actual
-    
     Dim Result As Boolean
     If IsObject(Actual) Then
         Result = (Actual Is mExpected)
     End If
     
-    Matches = Result
+    If Result Then
+        Matches = True
+    Else
+        VariantCopyInd mActual, Actual
+    End If
 End Function
 
 
