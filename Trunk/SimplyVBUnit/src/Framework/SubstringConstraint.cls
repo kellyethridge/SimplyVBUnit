@@ -48,10 +48,11 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     Dim Result As Boolean
     
     If VarType(Actual) = vbString Then
-        Dim CompareMethod As VbCompareMethod
-        CompareMethod = IIf(mIgnoreCase, vbTextCompare, vbBinaryCompare)
-        
-        Result = (InStr(1, Actual, mExpected, CompareMethod) > 0)
+        If mIgnoreCase Then
+            Result = (InStr(1, Actual, mExpected, vbTextCompare) > 0)
+        Else
+            Result = (InStr(1, Actual, mExpected, vbBinaryCompare) > 0)
+        End If
     End If
     
     If Not Result Then
