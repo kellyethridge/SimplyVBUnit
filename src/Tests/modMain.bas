@@ -83,7 +83,8 @@ Private Sub RunTestClassTests()
     Suite.Add New StringComparerTests
     Suite.Add New NumberComparerTests
     Suite.Add New OrderedConstraintTests
-
+    Suite.Add New SubstringConstraintTests
+    
     
     Dim Result As TestResult
     Set Result = Suite.Run

@@ -75,6 +75,7 @@ Class=BootstrapEqualityComparerTests; BootstrapEqualityComparerTests.cls
 Class=OrderedConstraintTests; OrderedConstraintTests.cls
 Class=StringComparerTests; StringComparerTests.cls
 Class=NumberComparerTests; NumberComparerTests.cls
+Class=SubstringConstraintTests; SubstringConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
