@@ -160,7 +160,7 @@ Public Function NewSameAsConstraint(ByVal Expected As Object) As SameAsConstrain
     NewSameAsConstraint.Init Expected
 End Function
 
-Public Function NewUniqueItemsConstraint(ByVal Expression As ConstraintExpression) As UniqueItemsConstraint
+Public Function NewUniqueItemsConstraint(Optional ByVal Expression As ConstraintExpression) As UniqueItemsConstraint
     Set NewUniqueItemsConstraint = New UniqueItemsConstraint
     NewUniqueItemsConstraint.Init Expression
 End Function
@@ -173,4 +173,9 @@ End Function
 Public Function NewSubsetOfConstraint(ByRef Expected As Variant, Optional ByVal Expression As ConstraintExpression) As SubsetOfConstraint
     Set NewSubsetOfConstraint = New SubsetOfConstraint
     NewSubsetOfConstraint.Init Expected, Expression
+End Function
+
+Public Function NewSubstringConstraint(ByRef Expected As String, Optional ByVal Expression As ConstraintExpression) As SubstringConstraint
+    Set NewSubstringConstraint = New SubstringConstraint
+    NewSubstringConstraint.Init Expected, Expression
 End Function

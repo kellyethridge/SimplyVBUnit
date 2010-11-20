@@ -119,6 +119,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
         interface ITolerance;
         interface IOrderedConstraint;
         interface IComparisonConstraint;
+        interface ITextConstraint;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -163,6 +164,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
                 HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
                 HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
+                HRESULT StringContaining([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -171,6 +173,14 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
 	}
+
+	[uuid(E2FC6882-7866-4a26-BBC5-6796640585D1), odl]
+        interface ITextConstraint : IDispatch
+        {
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+                HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
+        }
 
         [uuid(1C30E2C7-03F1-4ea6-BF7F-09A3284754BB), odl]
         interface IOrderedConstraint : IDispatch
@@ -254,6 +264,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
                 HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
                 HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
+                HRESULT StringContaining([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
 	}
 }
 

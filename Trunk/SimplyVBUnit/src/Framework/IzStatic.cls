@@ -79,6 +79,10 @@ Private Function IzSyntaxHelper_SameAs(ByVal Expected As Object) As SimplyVBUnit
     Set IzSyntaxHelper_SameAs = NewExp.SameAs(Expected)
 End Function
 
+Private Function IzSyntaxHelper_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint
+    Set IzSyntaxHelper_StringContaining = NewExp.StringContaining(Expected)
+End Function
+
 Private Function IzSyntaxHelper_SubsetOf(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
     Set IzSyntaxHelper_SubsetOf = NewExp.SubsetOf(Expected)
 End Function

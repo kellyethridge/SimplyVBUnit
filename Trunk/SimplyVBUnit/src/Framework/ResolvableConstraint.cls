@@ -137,6 +137,10 @@ Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As Simpl
     Set IConstraintExpression_SameAs = mExpression.SameAs(Expected)
 End Function
 
+Private Function IConstraintExpression_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint
+    Set IConstraintExpression_StringContaining = mExpression.StringContaining(Expected)
+End Function
+
 Private Function IConstraintExpression_SubsetOf(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
     Set IConstraintExpression_SubsetOf = mExpression.SubsetOf(Expected)
 End Function
