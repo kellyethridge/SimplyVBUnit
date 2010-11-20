@@ -125,6 +125,10 @@ Public Function Ordered() As IOrderedConstraint
     Set Ordered = AddConstraint(New OrderedConstraint)
 End Function
 
+Public Function StringContaining(ByRef Expected As String) As SubstringConstraint
+    Set StringContaining = AddConstraint(Sim.NewSubstringConstraint(Expected, Me))
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -209,6 +213,10 @@ End Function
 
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_SameAs = SameAs(Expected)
+End Function
+
+Private Function IConstraintExpression_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint
+    Set IConstraintExpression_StringContaining = StringContaining(Expected)
 End Function
 
 Private Function IConstraintExpression_SubsetOf(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
