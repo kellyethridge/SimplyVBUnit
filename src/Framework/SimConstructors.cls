@@ -179,3 +179,13 @@ Public Function NewSubstringConstraint(ByRef Expected As String, Optional ByVal 
     Set NewSubstringConstraint = New SubstringConstraint
     NewSubstringConstraint.Init Expected, Expression
 End Function
+
+Public Function NewStartsWithConstraint(ByRef Expected As String, Optional ByVal Expression As ConstraintExpression) As StartsWithConstraint
+    Set NewStartsWithConstraint = New StartsWithConstraint
+    NewStartsWithConstraint.Init Expected, Expression
+End Function
+
+Public Function NewEndsWithConstraint(ByRef Expected As String, Optional ByVal Expression As ConstraintExpression) As EndsWithConstraint
+    Set NewEndsWithConstraint = New EndsWithConstraint
+    NewEndsWithConstraint.Init Expected, Expression
+End Function

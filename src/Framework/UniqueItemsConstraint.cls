@@ -105,6 +105,10 @@ End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
     Writer.WritePredicate "all items unique"
+    
+    If mComparer.IgnoreCase Then
+        Writer.WriteModifier "ignoring case"
+    End If
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)

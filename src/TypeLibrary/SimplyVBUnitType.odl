@@ -165,6 +165,8 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
                 HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
                 HRESULT StringContaining([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+                HRESULT StringStarting([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+                HRESULT StringEnding([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -265,6 +267,8 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
                 HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
                 HRESULT StringContaining([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+                HRESULT StringStarting([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+                HRESULT StringEnding([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
 	}
 }
 
