@@ -120,6 +120,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
         interface IOrderedConstraint;
         interface IComparisonConstraint;
         interface ITextConstraint;
+        interface IPathConstraint;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -168,6 +169,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT StringStarting([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
                 HRESULT StringEnding([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
                 HRESULT StringMatching([in] BSTR * Pattern, [out, retval] ITextConstraint ** RetVal);
+                HRESULT SamePath([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -194,6 +196,14 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT IgnoreCase([out, retval] IOrderedConstraint ** RetVal);
                 HRESULT Descending([out, retval] IOrderedConstraint ** RetVal);
 		HRESULT DateInterval([in] DateInterval Interval, [out, retval] IBasicExpression ** RetVal);
+        }
+
+        [uuid(4724265D-5842-43c2-954F-5CC7F532F442), odl]
+        interface IPathConstraint : IDispatch
+        {
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+                HRESULT RespectCase([out, retval] IBasicExpression ** RetVal);
         }
 
 	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
@@ -271,6 +281,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT StringStarting([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
                 HRESULT StringEnding([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
                 HRESULT StringMatching([in] BSTR * Pattern, [out, retval] ITextConstraint ** RetVal);
+                HRESULT SamePath([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
 	}
 }
 

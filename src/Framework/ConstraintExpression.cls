@@ -141,6 +141,10 @@ Public Function StringMatching(ByRef Pattern As String) As ITextConstraint
     Set StringMatching = AddConstraint(Sim.NewRegexConstraint(Pattern, Me))
 End Function
 
+Public Function SamePath(ByRef Expected As String) As IPathConstraint
+    Set SamePath = AddConstraint(Sim.NewSamePathConstraint(Expected, Me))
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -225,6 +229,10 @@ End Function
 
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_SameAs = SameAs(Expected)
+End Function
+
+Private Function IConstraintExpression_SamePath(Expected As String) As SimplyVBUnitType.IPathConstraint
+    Set IConstraintExpression_SamePath = SamePath(Expected)
 End Function
 
 Private Function IConstraintExpression_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint

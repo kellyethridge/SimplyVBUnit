@@ -79,6 +79,7 @@ Class=SubstringConstraintTests; SubstringConstraintTests.cls
 Class=StartsWithConstraintTests; StartsWithConstraintTests.cls
 Class=EndsWithConstraintTests; EndsWithConstraintTests.cls
 Class=RegexConstraintTests; RegexConstraintTests.cls
+Class=SamePathConstraintTests; SamePathConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
@@ -230,20 +231,18 @@ Priority=1
 Description=Iz.StringContaining
 Status=2
 Priority=1
-AssignedTo=
-Comment=
 
 [TASK25]
 Description=Iz.StringStarting
 Status=2
 Priority=1
-AssignedTo=
-Comment=
 
 [TASK26]
 Description=Iz.StringMatching
-Status=0
+Status=2
 Priority=1
+AssignedTo=
+Comment=
 
 [TASK27]
 Description=Iz.SamePath

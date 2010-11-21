@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "EndsWithConstraint"
+Attribute VB_Name = "SamePathConstraint"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -25,27 +25,25 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: EndsWithConstraint
+' Module: SamePathConstraint
 '
 Option Explicit
 Implements IConstraint
-Implements ITextConstraint
-Implements IBasicExpression
 Implements IResolvable
+Implements IBasicExpression
+Implements IPathConstraint
 
-Private mExpression As ConstraintExpression
+
 Private mExpected   As String
 Private mActual     As Variant
+Private mExpression As ConstraintExpression
 Private mIgnoreCase As Boolean
 
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
     Dim Result As Boolean
     If VarType(Actual) = vbString Then
-        Dim EndOfActual As String
-        EndOfActual = Right$(Actual, Len(mExpected))
-        
-        Result = EqualStrings(EndOfActual, mExpected, mIgnoreCase)
+        Result = EqualStrings(Canonicalize(CStr(Actual)), Canonicalize(mExpected), mIgnoreCase)
     End If
     
     If Not Result Then
@@ -55,20 +53,55 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     Matches = Result
 End Function
 
-
-Public Function IgnoreCase() As EndsWithConstraint
-    mIgnoreCase = True
-    Set IgnoreCase = Me
+Public Function RespectCase() As SamePathConstraint
+    mIgnoreCase = False
+    Set RespectCase = Me
 End Function
 
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Friend Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByRef Expected As String, ByVal Expression As ConstraintExpression)
     mExpected = Expected
     Set mExpression = Expression
+    mIgnoreCase = True
 End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function Canonicalize(ByRef Path As String) As String
+    Dim Source() As String
+    Source = Split(Path, "\")
+    Dim Target() As String
+    ReDim Target(0 To UBound(Source))
+    
+    Dim Index   As Long
+    Dim i       As Long
+    For i = 0 To UBound(Source)
+        Select Case Source(i)
+            Case ".."
+                If Index > 0 Then
+                    Index = Index - 1
+                End If
+                
+            Case "."
+                ' skip
+                
+            Case Else
+                Target(Index) = Source(i)
+                Index = Index + 1
+        End Select
+    Next
+    
+    Index = Index - 1
+    If Len(Target(Index)) = 0 Then
+        Index = Index - 1
+    End If
+    
+    ReDim Preserve Target(0 To Index)
+    
+    Canonicalize = Join(Target, "\")
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -95,12 +128,8 @@ Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Writer.WritePredicate "ends with"
+    Writer.WritePredicate "Path matching"
     Writer.WriteExpectedValue mExpected
-    
-    If mIgnoreCase Then
-        Writer.WriteModifier "ignoring case"
-    End If
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
@@ -109,25 +138,25 @@ End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IPathConstraint Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IPathConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
+    Set IPathConstraint_AndAlso = mExpression.AndAlso
+End Function
+
+Private Function IPathConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
+    Set IPathConstraint_OrElse = mExpression.OrElse
+End Function
+
+Private Function IPathConstraint_RespectCase() As SimplyVBUnitType.IBasicExpression
+    Set IPathConstraint_RespectCase = RespectCase
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IResolvable Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IResolvable_Resolve() As IConstraint
     Set IResolvable_Resolve = Resolve(Me, mExpression)
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   ITextConstraint Interface
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function ITextConstraint_AndAlso() As SimplyVBUnitType.IConstraintExpression
-    Set ITextConstraint_AndAlso = mExpression.AndAlso
-End Function
-
-Private Function ITextConstraint_IgnoreCase() As SimplyVBUnitType.IBasicExpression
-    Set ITextConstraint_IgnoreCase = IgnoreCase
-End Function
-
-Private Function ITextConstraint_OrElse() As SimplyVBUnitType.IConstraintExpression
-    Set ITextConstraint_OrElse = mExpression.OrElse
 End Function
 
