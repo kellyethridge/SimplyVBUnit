@@ -87,6 +87,10 @@ Private Function IzSyntaxHelper_StringEnding(Expected As String) As SimplyVBUnit
     Set IzSyntaxHelper_StringEnding = NewExp.StringEnding(Expected)
 End Function
 
+Private Function IzSyntaxHelper_StringMatching(Pattern As String) As SimplyVBUnitType.ITextConstraint
+    Set IzSyntaxHelper_StringMatching = NewExp.StringMatching(Pattern)
+End Function
+
 Private Function IzSyntaxHelper_StringStarting(Expected As String) As SimplyVBUnitType.ITextConstraint
     Set IzSyntaxHelper_StringStarting = NewExp.StringStarting(Expected)
 End Function

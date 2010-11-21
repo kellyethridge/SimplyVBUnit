@@ -125,16 +125,20 @@ Public Function Ordered() As IOrderedConstraint
     Set Ordered = AddConstraint(New OrderedConstraint)
 End Function
 
-Public Function StringContaining(ByRef Expected As String) As SubstringConstraint
+Public Function StringContaining(ByRef Expected As String) As ITextConstraint
     Set StringContaining = AddConstraint(Sim.NewSubstringConstraint(Expected, Me))
 End Function
 
-Public Function StringStarting(ByRef Expected As String) As StartsWithConstraint
+Public Function StringStarting(ByRef Expected As String) As ITextConstraint
     Set StringStarting = AddConstraint(Sim.NewStartsWithConstraint(Expected, Me))
 End Function
 
-Public Function StringEnding(ByRef Expected As String) As EndsWithConstraint
+Public Function StringEnding(ByRef Expected As String) As ITextConstraint
     Set StringEnding = AddConstraint(Sim.NewEndsWithConstraint(Expected, Me))
+End Function
+
+Public Function StringMatching(ByRef Pattern As String) As ITextConstraint
+    Set StringMatching = AddConstraint(Sim.NewRegexConstraint(Pattern, Me))
 End Function
 
 
@@ -229,6 +233,10 @@ End Function
 
 Private Function IConstraintExpression_StringEnding(Expected As String) As SimplyVBUnitType.ITextConstraint
     Set IConstraintExpression_StringEnding = StringEnding(Expected)
+End Function
+
+Private Function IConstraintExpression_StringMatching(Pattern As String) As SimplyVBUnitType.ITextConstraint
+    Set IConstraintExpression_StringMatching = StringMatching(Pattern)
 End Function
 
 Private Function IConstraintExpression_StringStarting(Expected As String) As SimplyVBUnitType.ITextConstraint
