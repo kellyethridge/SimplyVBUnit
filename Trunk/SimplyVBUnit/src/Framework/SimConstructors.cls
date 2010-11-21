@@ -189,3 +189,8 @@ Public Function NewEndsWithConstraint(ByRef Expected As String, Optional ByVal E
     Set NewEndsWithConstraint = New EndsWithConstraint
     NewEndsWithConstraint.Init Expected, Expression
 End Function
+
+Public Function NewRegexConstraint(ByRef Pattern As String, Optional ByVal Expression As ConstraintExpression) As RegexConstraint
+    Set NewRegexConstraint = New RegexConstraint
+    NewRegexConstraint.Init Pattern, Expression
+End Function

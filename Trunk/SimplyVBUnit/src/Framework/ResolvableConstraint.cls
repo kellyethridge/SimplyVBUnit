@@ -145,6 +145,10 @@ Private Function IConstraintExpression_StringEnding(Expected As String) As Simpl
     Set IConstraintExpression_StringEnding = mExpression.StringEnding(Expected)
 End Function
 
+Private Function IConstraintExpression_StringMatching(Pattern As String) As SimplyVBUnitType.ITextConstraint
+    Set IConstraintExpression_StringMatching = mExpression.StringMatching(Pattern)
+End Function
+
 Private Function IConstraintExpression_StringStarting(Expected As String) As SimplyVBUnitType.ITextConstraint
     Set IConstraintExpression_StringStarting = mExpression.StringStarting(Expected)
 End Function
