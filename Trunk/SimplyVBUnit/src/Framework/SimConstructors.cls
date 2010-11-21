@@ -194,3 +194,8 @@ Public Function NewRegexConstraint(ByRef Pattern As String, Optional ByVal Expre
     Set NewRegexConstraint = New RegexConstraint
     NewRegexConstraint.Init Pattern, Expression
 End Function
+
+Public Function NewSamePathConstraint(ByRef Expected As String, Optional ByVal Expression As ConstraintExpression) As SamePathConstraint
+    Set NewSamePathConstraint = New SamePathConstraint
+    NewSamePathConstraint.Init Expected, Expression
+End Function

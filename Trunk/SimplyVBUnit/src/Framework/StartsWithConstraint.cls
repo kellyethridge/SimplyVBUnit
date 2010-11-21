@@ -31,6 +31,7 @@ Option Explicit
 Implements IConstraint
 Implements ITextConstraint
 Implements IBasicExpression
+Implements IResolvable
 
 Private mExpression As ConstraintExpression
 Private mExpected   As String
@@ -105,6 +106,14 @@ End Sub
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
     Writer.DisplayConstraintDifferences Me
 End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IResolvable Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IResolvable_Resolve() As IConstraint
+    Set IResolvable_Resolve = Resolve(Me, mExpression)
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
