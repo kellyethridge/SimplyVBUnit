@@ -129,6 +129,10 @@ Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
     If mSign = ORDER_DESC Then
         Writer.WriteModifier "descending"
     End If
+    
+    If mFactory.IgnoreCase Then
+        Writer.WriteModifier "ignoring case"
+    End If
 End Sub
 
 Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)

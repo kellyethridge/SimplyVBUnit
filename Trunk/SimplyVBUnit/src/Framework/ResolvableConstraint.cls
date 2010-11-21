@@ -141,6 +141,14 @@ Private Function IConstraintExpression_StringContaining(Expected As String) As S
     Set IConstraintExpression_StringContaining = mExpression.StringContaining(Expected)
 End Function
 
+Private Function IConstraintExpression_StringEnding(Expected As String) As SimplyVBUnitType.ITextConstraint
+    Set IConstraintExpression_StringEnding = mExpression.StringEnding(Expected)
+End Function
+
+Private Function IConstraintExpression_StringStarting(Expected As String) As SimplyVBUnitType.ITextConstraint
+    Set IConstraintExpression_StringStarting = mExpression.StringStarting(Expected)
+End Function
+
 Private Function IConstraintExpression_SubsetOf(Expected As Variant) As SimplyVBUnitType.IEqualityExpression
     Set IConstraintExpression_SubsetOf = mExpression.SubsetOf(Expected)
 End Function

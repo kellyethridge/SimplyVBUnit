@@ -129,6 +129,14 @@ Public Function StringContaining(ByRef Expected As String) As SubstringConstrain
     Set StringContaining = AddConstraint(Sim.NewSubstringConstraint(Expected, Me))
 End Function
 
+Public Function StringStarting(ByRef Expected As String) As StartsWithConstraint
+    Set StringStarting = AddConstraint(Sim.NewStartsWithConstraint(Expected, Me))
+End Function
+
+Public Function StringEnding(ByRef Expected As String) As EndsWithConstraint
+    Set StringEnding = AddConstraint(Sim.NewEndsWithConstraint(Expected, Me))
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -217,6 +225,14 @@ End Function
 
 Private Function IConstraintExpression_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint
     Set IConstraintExpression_StringContaining = StringContaining(Expected)
+End Function
+
+Private Function IConstraintExpression_StringEnding(Expected As String) As SimplyVBUnitType.ITextConstraint
+    Set IConstraintExpression_StringEnding = StringEnding(Expected)
+End Function
+
+Private Function IConstraintExpression_StringStarting(Expected As String) As SimplyVBUnitType.ITextConstraint
+    Set IConstraintExpression_StringStarting = StringStarting(Expected)
 End Function
 
 Private Function IConstraintExpression_SubsetOf(Expected As Variant) As SimplyVBUnitType.IEqualityExpression

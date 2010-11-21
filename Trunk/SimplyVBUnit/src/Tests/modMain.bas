@@ -84,7 +84,8 @@ Private Sub RunTestClassTests()
     Suite.Add New NumberComparerTests
     Suite.Add New OrderedConstraintTests
     Suite.Add New SubstringConstraintTests
-    
+    Suite.Add New StartsWithConstraintTests
+    Suite.Add New EndsWithConstraintTests
     
     Dim Result As TestResult
     Set Result = Suite.Run
