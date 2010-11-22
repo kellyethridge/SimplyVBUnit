@@ -145,6 +145,10 @@ Public Function SamePath(ByRef Expected As String) As IPathConstraint
     Set SamePath = AddConstraint(Sim.NewSamePathConstraint(Expected, Me))
 End Function
 
+Public Function SamePathOrUnder(ByRef Expected As String) As IPathConstraint
+    Set SamePathOrUnder = AddConstraint(Sim.NewSamePathOrUnderConstraint(Expected, Me))
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -233,6 +237,10 @@ End Function
 
 Private Function IConstraintExpression_SamePath(Expected As String) As SimplyVBUnitType.IPathConstraint
     Set IConstraintExpression_SamePath = SamePath(Expected)
+End Function
+
+Private Function IConstraintExpression_SamePathOrUnder(Expected As String) As SimplyVBUnitType.IPathConstraint
+    Set IConstraintExpression_SamePathOrUnder = SamePathOrUnder(Expected)
 End Function
 
 Private Function IConstraintExpression_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint

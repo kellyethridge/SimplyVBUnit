@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "SamePathConstraint"
+Attribute VB_Name = "SamePathOrUnderConstraint"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -25,20 +25,26 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: SamePathConstraint
+' Module: SamePathOrUnderConstraint
 '
 Option Explicit
-Implements IConstraint
 Implements IResolvable
-Implements IBasicExpression
+Implements IConstraint
 Implements IPathConstraint
+Implements IBasicExpression
 
 
+Private mExpression As ConstraintExpression
 Private mExpected   As String
 Private mActual     As Variant
-Private mExpression As ConstraintExpression
 Private mIgnoreCase As Boolean
 
+
+
+Public Function RespectCase() As SamePathOrUnderConstraint
+    mIgnoreCase = False
+    Set RespectCase = Me
+End Function
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
     Dim Result As Boolean
@@ -48,7 +54,15 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
         ActualPath = CanonicalizePath(CStr(Actual))
         ExpectedPath = CanonicalizePath(mExpected)
         
-        Result = EqualStrings(ActualPath, ExpectedPath, mIgnoreCase)
+        Select Case Len(ActualPath)
+            Case Is = Len(ExpectedPath)
+                Result = EqualStrings(ActualPath, ExpectedPath, mIgnoreCase)
+                
+            Case Is > Len(ExpectedPath)
+                If EqualStrings(Left$(ActualPath, Len(ExpectedPath)), ExpectedPath, mIgnoreCase) Then
+                    Result = (Mid$(ActualPath, Len(ExpectedPath) + 1, 1) = "\")
+                End If
+        End Select
     End If
     
     If Not Result Then
@@ -58,10 +72,6 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     Matches = Result
 End Function
 
-Public Function RespectCase() As SamePathConstraint
-    mIgnoreCase = False
-    Set RespectCase = Me
-End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -98,7 +108,7 @@ Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
 End Sub
 
 Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
-    Writer.WritePredicate "Path matching"
+    Writer.WritePredicate "Path or under matching"
     Writer.WriteExpectedValue mExpected
 End Sub
 
@@ -129,4 +139,3 @@ End Function
 Private Function IResolvable_Resolve() As IConstraint
     Set IResolvable_Resolve = Resolve(Me, mExpression)
 End Function
-

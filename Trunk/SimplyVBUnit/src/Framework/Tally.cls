@@ -8,7 +8,7 @@ BEGIN
 END
 Attribute VB_Name = "Tally"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
+Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 ' Copyright 2010 Kelly Ethridge
@@ -33,14 +33,9 @@ Private mCount As Long
 Private mValue As Variant
 
 
-Public Sub Init(ByRef Value As Variant)
-    VariantCopyInd mValue, Value
-End Sub
-
 Public Function Equals(ByRef Other As Variant, ByVal Comparer As EqualityComparer) As Boolean
     Equals = Comparer.Equals(mValue, Other)
 End Function
-
 
 Public Property Get Count() As Long
     Count = mCount
@@ -58,4 +53,13 @@ Public Function Decrement() As Long
     
     Decrement = mCount
 End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByRef Value As Variant)
+    VariantCopyInd mValue, Value
+End Sub
+
 

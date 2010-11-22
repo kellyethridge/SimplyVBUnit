@@ -41,6 +41,39 @@ Public Type ArrayProxy
 End Type
 
 
+Public Function CanonicalizePath(ByRef Path As String) As String
+    Dim Source() As String
+    Source = Split(Path, "\")
+    Dim Target() As String
+    ReDim Target(0 To UBound(Source))
+    
+    Dim Index   As Long
+    Dim i       As Long
+    For i = 0 To UBound(Source)
+        Select Case Source(i)
+            Case ".."
+                If Index > 0 Then
+                    Index = Index - 1
+                End If
+                
+            Case "."
+                ' skip
+                
+            Case Else
+                Target(Index) = Source(i)
+                Index = Index + 1
+        End Select
+    Next
+    
+    Index = Index - 1
+    If Len(Target(Index)) = 0 Then
+        Index = Index - 1
+    End If
+    
+    ReDim Preserve Target(0 To Index)
+    
+    CanonicalizePath = Join(Target, "\")
+End Function
 
 Public Function Resolve(ByVal Constraint As IConstraint, ByVal Expression As ConstraintExpression) As IConstraint
     If Expression Is Nothing Then
