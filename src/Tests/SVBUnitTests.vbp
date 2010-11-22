@@ -247,13 +247,13 @@ Priority=1
 Description=Iz.SamePath
 Status=2
 Priority=1
-AssignedTo=
-Comment=
 
 [TASK28]
 Description=Iz.SamePathOrUnder
-Status=0
+Status=2
 Priority=1
+AssignedTo=
+Comment=
 
 [TASK29]
 Description=Has.No
