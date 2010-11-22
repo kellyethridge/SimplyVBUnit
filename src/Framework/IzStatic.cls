@@ -83,6 +83,10 @@ Private Function IzSyntaxHelper_SamePath(Expected As String) As SimplyVBUnitType
     Set IzSyntaxHelper_SamePath = NewExp.SamePath(Expected)
 End Function
 
+Private Function IzSyntaxHelper_SamePathOrUnder(Expected As String) As SimplyVBUnitType.IPathConstraint
+    Set IzSyntaxHelper_SamePathOrUnder = NewExp.SamePathOrUnder(Expected)
+End Function
+
 Private Function IzSyntaxHelper_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint
     Set IzSyntaxHelper_StringContaining = NewExp.StringContaining(Expected)
 End Function

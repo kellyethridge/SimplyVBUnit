@@ -140,6 +140,11 @@ Public Function NewTolerance(ByRef Amount As Variant) As Tolerance
     NewTolerance.Init Amount
 End Function
 
+Public Function NewTally(ByRef Value As Variant) As Tally
+    Set NewTally = New Tally
+    NewTally.Init Value
+End Function
+
 Public Function NewComparisonConstraint(ByRef Expected As Variant, ByVal CanBeLess As Boolean, ByVal CanBeGreater As Boolean, ByVal CanBeEqual As Boolean, ByRef Predicate As String, Optional ByVal Expression As ConstraintExpression) As ComparisonConstraint
     Set NewComparisonConstraint = New ComparisonConstraint
     NewComparisonConstraint.Init Expected, CanBeLess, CanBeGreater, CanBeEqual, Predicate, Expression
@@ -198,4 +203,9 @@ End Function
 Public Function NewSamePathConstraint(ByRef Expected As String, Optional ByVal Expression As ConstraintExpression) As SamePathConstraint
     Set NewSamePathConstraint = New SamePathConstraint
     NewSamePathConstraint.Init Expected, Expression
+End Function
+
+Public Function NewSamePathOrUnderConstraint(ByRef Expected As String, Optional ByVal Expression As ConstraintExpression) As SamePathOrUnderConstraint
+    Set NewSamePathOrUnderConstraint = New SamePathOrUnderConstraint
+    NewSamePathOrUnderConstraint.Init Expected, Expression
 End Function

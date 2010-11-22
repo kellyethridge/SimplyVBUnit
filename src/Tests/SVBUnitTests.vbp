@@ -80,6 +80,7 @@ Class=StartsWithConstraintTests; StartsWithConstraintTests.cls
 Class=EndsWithConstraintTests; EndsWithConstraintTests.cls
 Class=RegexConstraintTests; RegexConstraintTests.cls
 Class=SamePathConstraintTests; SamePathConstraintTests.cls
+Class=SamePathOrUnderConstraintTests; SamePathOrUnderConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
@@ -241,13 +242,13 @@ Priority=1
 Description=Iz.StringMatching
 Status=2
 Priority=1
-AssignedTo=
-Comment=
 
 [TASK27]
 Description=Iz.SamePath
-Status=0
+Status=2
 Priority=1
+AssignedTo=
+Comment=
 
 [TASK28]
 Description=Iz.SamePathOrUnder

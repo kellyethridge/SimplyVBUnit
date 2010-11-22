@@ -25,7 +25,7 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: ItemTallier
+' Module: ValueTallier
 '
 Option Explicit
 
@@ -63,17 +63,6 @@ Public Function TryRemove(ByRef Value As Variant) As Boolean
     TryRemove = Result
 End Function
 
-'Public Property Get Count() As Long
-'    Dim Tally As Tally
-'    Dim Result As Long
-'
-'    For Each Tally In mTallies
-'        Result = Result + Tally.Count
-'    Next
-'
-'    Count = Result
-'End Property
-
 Public Property Get IsEmpty() As Boolean
     Dim Tally As Tally
     For Each Tally In mTallies
@@ -86,6 +75,9 @@ Public Property Get IsEmpty() As Boolean
 End Property
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function GetTally(ByRef Value As Variant) As Tally
     Dim Tally As Tally
     For Each Tally In mTallies
@@ -95,7 +87,6 @@ Private Function GetTally(ByRef Value As Variant) As Tally
         End If
     Next
     
-    Set GetTally = New Tally
-    GetTally.Init Value
+    Set GetTally = Sim.NewTally(Value)
     mTallies.Add GetTally
 End Function

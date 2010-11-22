@@ -88,6 +88,7 @@ Private Sub RunTestClassTests()
     Suite.Add New EndsWithConstraintTests
     Suite.Add New RegexConstraintTests
     Suite.Add New SamePathConstraintTests
+    Suite.Add New SamePathOrUnderConstraintTests
     
     Dim Result As TestResult
     Set Result = Suite.Run

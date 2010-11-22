@@ -29,8 +29,9 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Public Sub Constructor_WhenCalled_InitializesTally()
-    Dim t As New Tally
+Public Sub Constructor_WhenCalled_InitializesTallyToZero()
+    Dim t As Tally
+    Set t = Sim.NewTally(1)
     
     Dim Actual As Long
     Actual = t.Count
@@ -39,7 +40,8 @@ Public Sub Constructor_WhenCalled_InitializesTally()
 End Sub
 
 Public Sub Increment_WhenCalled_IncreasesTally()
-    Dim t As New Tally
+    Dim t As Tally
+    Set t = Sim.NewTally(1)
     
     t.Increment
     
@@ -49,7 +51,8 @@ Public Sub Increment_WhenCalled_IncreasesTally()
 End Sub
 
 Public Sub Increment_WhenCalled_ReturnsIncrementedTally()
-    Dim t As New Tally
+    Dim t As Tally
+    Set t = Sim.NewTally(1)
     
     Dim Actual As Long
     Actual = t.Increment
@@ -58,18 +61,8 @@ Public Sub Increment_WhenCalled_ReturnsIncrementedTally()
 End Sub
 
 Public Sub Decrement_WhenCalled_DecreasesTally()
-    Dim t As New Tally
-    t.Increment
-    
-    t.Decrement
-    
-    Dim Actual As Long
-    Actual = t.Count
-    Assert.AreEqual 0, Actual
-End Sub
-
-Public Sub Decrement_WhenZero_DoesNotDecreaseTally()
-    Dim t As New Tally
+    Dim t As Tally
+    Set t = Sim.NewTally(1)
     
     t.Decrement
     
@@ -79,12 +72,12 @@ Public Sub Decrement_WhenZero_DoesNotDecreaseTally()
 End Sub
 
 Public Sub Decrement_WhenCalled_ReturnsDecrementedTally()
-    Dim t As New Tally
-    t.Increment
+    Dim t As Tally
+    Set t = Sim.NewTally(1)
     t.Increment
     
     Dim Actual As Long
     Actual = t.Decrement
     
-    Assert.AreEqual 1, Actual
+    Assert.AreEqual 0, Actual
 End Sub

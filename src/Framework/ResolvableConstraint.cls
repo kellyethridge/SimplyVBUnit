@@ -141,6 +141,10 @@ Private Function IConstraintExpression_SamePath(Expected As String) As SimplyVBU
     Set IConstraintExpression_SamePath = mExpression.SamePath(Expected)
 End Function
 
+Private Function IConstraintExpression_SamePathOrUnder(Expected As String) As SimplyVBUnitType.IPathConstraint
+    Set IConstraintExpression_SamePathOrUnder = mExpression.SamePathOrUnder(Expected)
+End Function
+
 Private Function IConstraintExpression_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint
     Set IConstraintExpression_StringContaining = mExpression.StringContaining(Expected)
 End Function
