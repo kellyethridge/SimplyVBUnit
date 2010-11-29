@@ -133,6 +133,10 @@ Private Function IConstraintExpression_Ordered() As SimplyVBUnitType.IOrderedCon
     Set IConstraintExpression_Ordered = mExpression.Ordered
 End Function
 
+Private Function IConstraintExpression_Persistable() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Persistable = mExpression.Persistable
+End Function
+
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_SameAs = mExpression.SameAs(Expected)
 End Function

@@ -75,6 +75,10 @@ Private Function IzSyntaxHelper_Ordered() As SimplyVBUnitType.IOrderedConstraint
     Set IzSyntaxHelper_Ordered = NewExp.Ordered
 End Function
 
+Private Function IzSyntaxHelper_Persistable() As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_Persistable = NewExp.Persistable
+End Function
+
 Private Function IzSyntaxHelper_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_SameAs = NewExp.SameAs(Expected)
 End Function

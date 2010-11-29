@@ -149,6 +149,10 @@ Public Function SamePathOrUnder(ByRef Expected As String) As IPathConstraint
     Set SamePathOrUnder = AddConstraint(Sim.NewSamePathOrUnderConstraint(Expected, Me))
 End Function
 
+Public Function Persistable() As IBasicExpression
+    Set Persistable = AddConstraint(Sim.NewResolvableConstraint(New PersistableConstraint, Me))
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -229,6 +233,10 @@ End Function
 
 Private Function IConstraintExpression_Ordered() As SimplyVBUnitType.IOrderedConstraint
     Set IConstraintExpression_Ordered = Ordered
+End Function
+
+Private Function IConstraintExpression_Persistable() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Persistable = Persistable
 End Function
 
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
