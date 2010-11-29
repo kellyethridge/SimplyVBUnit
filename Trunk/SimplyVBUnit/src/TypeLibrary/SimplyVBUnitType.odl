@@ -172,6 +172,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT SamePath([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
                 HRESULT SamePathOrUnder([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
                 HRESULT Persistable([out, retval] IBasicExpression ** RetVal);
+                HRESULT All([out, retval] IConstraintExpression ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -286,6 +287,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT SamePath([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
                 HRESULT SamePathOrUnder([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
                 HRESULT Persistable([out, retval] IBasicExpression ** RetVal);
+                HRESULT All([out, retval] IConstraintExpression ** RetVal);
 	}
 }
 

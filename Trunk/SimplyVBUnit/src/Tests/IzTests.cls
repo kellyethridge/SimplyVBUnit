@@ -64,6 +64,10 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Call Test.Use(Iz.StringContaining("b"), "abc", True)
             Call Test.Use(Iz.StringStarting("a"), "abc", True)
             Call Test.Use(Iz.StringEnding("c"), "abc", True)
+            Call Test.Use(Iz.All.EqualTo(1).OrElse.All.EqualTo(2), Array(1, 1, 1), True)
+            Call Test.Use(Iz.All.EqualTo(1).OrElse.All.EqualTo(2), Array(2, 2, 2), True)
+            Call Test.Use(Iz.Not.All.EqualTo(1), Array(1, 1, 1), False)
+            Call Test.Use(Iz.Not.All.EqualTo(1), Array(1, 1, 2), True)
             
     End Select
 End Sub

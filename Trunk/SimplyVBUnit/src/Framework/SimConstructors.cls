@@ -209,3 +209,8 @@ Public Function NewSamePathOrUnderConstraint(ByRef Expected As String, Optional 
     Set NewSamePathOrUnderConstraint = New SamePathOrUnderConstraint
     NewSamePathOrUnderConstraint.Init Expected, Expression
 End Function
+
+Public Function NewAllItemsConstraint(ByVal Constraint As IConstraint) As AllItemsConstraint
+    Set NewAllItemsConstraint = New AllItemsConstraint
+    NewAllItemsConstraint.Init Constraint
+End Function
