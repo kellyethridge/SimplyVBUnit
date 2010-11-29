@@ -81,6 +81,7 @@ Class=EndsWithConstraintTests; EndsWithConstraintTests.cls
 Class=RegexConstraintTests; RegexConstraintTests.cls
 Class=SamePathConstraintTests; SamePathConstraintTests.cls
 Class=SamePathOrUnderConstraintTests; SamePathOrUnderConstraintTests.cls
+Class=PersistableConstraintTests; PersistableConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
@@ -111,7 +112,7 @@ ThreadPerObject=0
 MaxNumberOfThreads=1
 
 [TaskList]
-Num=36
+Num=34
 
 [TASK1]
 Description=Iz.EqualTo
@@ -195,8 +196,10 @@ Priority=1
 
 [TASK17]
 Description=Iz.Serializable
-Status=0
+Status=2
 Priority=1
+AssignedTo=
+Comment=
 
 [TASK18]
 Description=Iz.SameAs
@@ -204,93 +207,95 @@ Status=2
 Priority=1
 
 [TASK19]
-Description=Iz.TypeOf
-Status=0
-Priority=1
-
-[TASK20]
-Description=Iz.AssignableTo
-Status=0
-Priority=1
-
-[TASK21]
 Description=Iz.EquivalentTo
 Status=2
 Priority=1
 
-[TASK22]
+[TASK20]
 Description=Iz.SubsetOf
 Status=2
 Priority=1
 
-[TASK23]
+[TASK21]
 Description=Iz.Ordered
 Status=2
 Priority=1
 
-[TASK24]
+[TASK22]
 Description=Iz.StringContaining
 Status=2
 Priority=1
 
-[TASK25]
+[TASK23]
 Description=Iz.StringStarting
 Status=2
 Priority=1
 
-[TASK26]
+[TASK24]
 Description=Iz.StringMatching
 Status=2
 Priority=1
 
-[TASK27]
+[TASK25]
 Description=Iz.SamePath
 Status=2
 Priority=1
 
-[TASK28]
+[TASK26]
 Description=Iz.SamePathOrUnder
 Status=2
 Priority=1
-AssignedTo=
-Comment=
 
-[TASK29]
+[TASK27]
 Description=Has.No
 Status=0
 Priority=1
 
-[TASK30]
+[TASK28]
 Description=Has.All
 Status=0
 Priority=1
 
-[TASK31]
+[TASK29]
 Description=Has.Some
 Status=0
 Priority=1
 
-[TASK32]
+[TASK30]
 Description=Has.None
 Status=0
 Priority=1
 
-[TASK33]
+[TASK31]
 Description=Has.Property
 Status=0
 Priority=1
 
-[TASK34]
+[TASK32]
 Description=Has.Length
 Status=0
 Priority=1
 
-[TASK35]
+[TASK33]
 Description=Has.Count
 Status=0
 Priority=1
 
-[TASK36]
+[TASK34]
 Description=Has.Member
 Status=0
 Priority=1
+
+[TASK35]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK36]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
