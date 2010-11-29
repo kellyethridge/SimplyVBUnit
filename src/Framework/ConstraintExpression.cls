@@ -153,6 +153,10 @@ Public Function Persistable() As IBasicExpression
     Set Persistable = AddConstraint(Sim.NewResolvableConstraint(New PersistableConstraint, Me))
 End Function
 
+Public Function All() As IConstraintExpression
+    Set All = AddOperator(New AllItemsOperator)
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -183,6 +187,10 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IConstraintExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IConstraintExpression_All() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_All = All
+End Function
+
 Private Function IConstraintExpression_Empty() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Empty = Empty_
 End Function

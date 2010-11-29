@@ -82,6 +82,7 @@ Class=RegexConstraintTests; RegexConstraintTests.cls
 Class=SamePathConstraintTests; SamePathConstraintTests.cls
 Class=SamePathOrUnderConstraintTests; SamePathOrUnderConstraintTests.cls
 Class=PersistableConstraintTests; PersistableConstraintTests.cls
+Class=AllItemsConstraintTests; AllItemsConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
@@ -181,8 +182,10 @@ Priority=1
 
 [TASK14]
 Description=Iz.All
-Status=0
+Status=2
 Priority=1
+AssignedTo=
+Comment=
 
 [TASK15]
 Description=Iz.Unique
@@ -198,8 +201,6 @@ Priority=1
 Description=Iz.Serializable
 Status=2
 Priority=1
-AssignedTo=
-Comment=
 
 [TASK18]
 Description=Iz.SameAs

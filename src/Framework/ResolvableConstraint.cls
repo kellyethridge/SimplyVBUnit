@@ -81,6 +81,10 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IConstraintExpression Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IConstraintExpression_All() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_All = mExpression.All
+End Function
+
 Private Function IConstraintExpression_Empty() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Empty = mExpression.Empty_
 End Function

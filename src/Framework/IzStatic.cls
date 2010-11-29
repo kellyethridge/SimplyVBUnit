@@ -23,6 +23,10 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   IzSyntaxHelper Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function IzSyntaxHelper_All() As SimplyVBUnitType.IConstraintExpression
+    Set IzSyntaxHelper_All = NewExp.All
+End Function
+
 Private Function IzSyntaxHelper_Empty() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Empty = NewExp.Empty
 End Function
