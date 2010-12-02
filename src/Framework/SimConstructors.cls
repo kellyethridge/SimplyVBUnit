@@ -214,3 +214,13 @@ Public Function NewAllItemsConstraint(ByVal Constraint As IConstraint) As AllIte
     Set NewAllItemsConstraint = New AllItemsConstraint
     NewAllItemsConstraint.Init Constraint
 End Function
+
+Public Function NewSomeItemsConstraint(ByVal Constraint As IConstraint) As SomeItemsConstraint
+    Set NewSomeItemsConstraint = New SomeItemsConstraint
+    NewSomeItemsConstraint.Init Constraint
+End Function
+
+Public Function NewNoItemsConstraint(ByVal Constraint As IConstraint) As NoItemsConstraint
+    Set NewNoItemsConstraint = New NoItemsConstraint
+    NewNoItemsConstraint.Init Constraint
+End Function
