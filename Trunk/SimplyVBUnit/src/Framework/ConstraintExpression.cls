@@ -157,6 +157,18 @@ Public Function All() As IConstraintExpression
     Set All = AddOperator(New AllItemsOperator)
 End Function
 
+Public Function Some() As IConstraintExpression
+    Set Some = AddOperator(New SomeItemsOperator)
+End Function
+
+Public Function No() As IConstraintExpression
+    Set No = Not_
+End Function
+
+Public Function None() As IConstraintExpression
+    Set None = AddOperator(New NoItemsOperator)
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -231,6 +243,14 @@ Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpre
     Set IConstraintExpression_Missing = Missing
 End Function
 
+Private Function IConstraintExpression_No() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_No = No
+End Function
+
+Private Function IConstraintExpression_None() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_None = None
+End Function
+
 Private Function IConstraintExpression_Not() As SimplyVBUnitType.IConstraintExpression
     Set IConstraintExpression_Not = Not_
 End Function
@@ -257,6 +277,10 @@ End Function
 
 Private Function IConstraintExpression_SamePathOrUnder(Expected As String) As SimplyVBUnitType.IPathConstraint
     Set IConstraintExpression_SamePathOrUnder = SamePathOrUnder(Expected)
+End Function
+
+Private Function IConstraintExpression_Some() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_Some = Some
 End Function
 
 Private Function IConstraintExpression_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint

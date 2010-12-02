@@ -125,6 +125,14 @@ Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpre
     Set IConstraintExpression_Missing = mExpression.Missing
 End Function
 
+Private Function IConstraintExpression_No() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_No = mExpression.No
+End Function
+
+Private Function IConstraintExpression_None() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_None = mExpression.None
+End Function
+
 Private Function IConstraintExpression_Not() As SimplyVBUnitType.IConstraintExpression
     Set IConstraintExpression_Not = mExpression.Not_
 End Function
@@ -151,6 +159,10 @@ End Function
 
 Private Function IConstraintExpression_SamePathOrUnder(Expected As String) As SimplyVBUnitType.IPathConstraint
     Set IConstraintExpression_SamePathOrUnder = mExpression.SamePathOrUnder(Expected)
+End Function
+
+Private Function IConstraintExpression_Some() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_Some = mExpression.Some
 End Function
 
 Private Function IConstraintExpression_StringContaining(Expected As String) As SimplyVBUnitType.ITextConstraint

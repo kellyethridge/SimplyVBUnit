@@ -53,9 +53,9 @@ Public CategoryParser       As New CategoryParser
 Public MsgUtils             As New MsgUtils
 Public GlobalSettings       As New GlobalSettings
 Public Tolerance            As New ToleranceStatic
+Public mHas                 As New HasStatic
 
-Public mIz                 As New IzStatic
-
+Public mIz                  As New IzStatic
 
 Public Property Get Iz() As IzSyntaxHelper
     Set Iz = mIz
