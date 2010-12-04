@@ -169,6 +169,10 @@ Public Function None() As IConstraintExpression
     Set None = AddOperator(New NoItemsOperator)
 End Function
 
+Public Function Member(ByRef Expected As Variant) As CollectionContainsConstraint
+    Set Member = AddConstraint(Sim.NewCollectionContainsConstraint(Expected, Me))
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -237,6 +241,10 @@ End Function
 
 Private Function IConstraintExpression_LessThanOrEqualTo(Expected As Variant) As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_LessThanOrEqualTo = LessThanOrEqualTo(Expected)
+End Function
+
+Private Function IConstraintExpression_Member(Expected As Variant) As SimplyVBUnitType.ICollectionContainsConstraint
+    Set IConstraintExpression_Member = Member(Expected)
 End Function
 
 Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpression

@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "HasStatic"
+Attribute VB_Name = "SomeItemsConstraintTests"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = True
+Attribute VB_Exposed = False
 ' Copyright 2010 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,34 +25,24 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: HasStatic
+' Module: SomeItemsConstraintTests
 '
 Option Explicit
+Implements ITestCaseSource
 
-Public Function All() As IConstraintExpression
-    Set All = NewExp.All
-End Function
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
+    Select Case Test.MethodName
+        Case "Matches_WithValues_ReturnsExpected"
+            Call Test.Use(Iz.EqualTo(1), Array(0, 0, 1)).Expect(True)
+            Call Test.Use(Iz.EqualTo(1), Array(0, 0, 0)).Expect(False)
+            Call Test.Use(Iz.EqualTo(1), 1).Expect(False)
+        
+    End Select
+End Sub
 
-Public Function No() As IConstraintExpression
-    Set No = NewExp.Not
-End Function
-
-Public Function Some() As IConstraintExpression
-    Set Some = NewExp.Some
-End Function
-
-Public Function None() As IConstraintExpression
-    Set None = NewExp.None
-End Function
-
-Public Function Member(ByRef Expected As Variant) As ICollectionContainsConstraint
-    Set Member = NewExp.Member(Expected)
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Helpers
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function NewExp() As IConstraintExpression
-    Set NewExp = New ConstraintExpression
+Public Function Matches_WithValues_ReturnsExpected(ByVal Constraint As IConstraint, ByRef Actual As Variant) As Boolean
+    Dim c As SomeItemsConstraint
+    Set c = Sim.NewSomeItemsConstraint(Constraint)
+    
+    Matches_WithValues_ReturnsExpected = c.Matches(Actual)
 End Function

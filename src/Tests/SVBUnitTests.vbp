@@ -83,6 +83,7 @@ Class=SamePathConstraintTests; SamePathConstraintTests.cls
 Class=SamePathOrUnderConstraintTests; SamePathOrUnderConstraintTests.cls
 Class=PersistableConstraintTests; PersistableConstraintTests.cls
 Class=AllItemsConstraintTests; AllItemsConstraintTests.cls
+Class=SomeItemsConstraintTests; SomeItemsConstraintTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

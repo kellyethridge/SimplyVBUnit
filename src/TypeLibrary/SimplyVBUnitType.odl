@@ -121,6 +121,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
         interface IComparisonConstraint;
         interface ITextConstraint;
         interface IPathConstraint;
+        interface ICollectionContainsConstraint;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -176,6 +177,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT Some([out, retval] IConstraintExpression ** RetVal);
                 HRESULT No([out, retval] IConstraintExpression ** RetVal);
                 HRESULT None([out, retval] IConstraintExpression ** RetVal);
+                HRESULT Member([in] VARIANT * Expected, [out, retval] ICollectionContainsConstraint ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -252,13 +254,22 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
         }
 
         [uuid(50CA1561-5124-4edc-B588-E89268BC9976), odl]
-        interface IComparisonConstraint: IDispatch
+        interface IComparisonConstraint : IDispatch
         {
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
 		HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
 		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
 		HRESULT DateInterval([in] DateInterval Interval, [out, retval] IBasicExpression ** RetVal);
+        }
+
+        [uuid(8F6CB23F-4805-48f3-834B-67E11CA0E68F), odl]
+        interface ICollectionContainsConstraint : IDispatch
+        {
+		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+		HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
+		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
         }
 
 	[uuid(0331F242-579F-4210-9822-39782E51E0BF), odl]

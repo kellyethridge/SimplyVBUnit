@@ -121,6 +121,10 @@ Private Function IConstraintExpression_LessThanOrEqualTo(Expected As Variant) As
     Set IConstraintExpression_LessThanOrEqualTo = mExpression.LessThanOrEqualTo(Expected)
 End Function
 
+Private Function IConstraintExpression_Member(Expected As Variant) As SimplyVBUnitType.ICollectionContainsConstraint
+    Set IConstraintExpression_Member = mExpression.Member(Expected)
+End Function
+
 Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Missing = mExpression.Missing
 End Function
