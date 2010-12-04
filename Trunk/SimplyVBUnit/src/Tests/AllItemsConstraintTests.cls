@@ -37,7 +37,8 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Call Test.Use(Iz.EqualTo(1), Array(1, 1, 0)).Expect(False)
             Call Test.Use(Iz.EqualTo(1), New Collection).Expect(True)
             Call Test.Use(Iz.EqualTo(1), New FakeTest).Expect(False)
-        
+            Call Test.Use(Iz.EqualTo(1), 1).Expect(False)
+            
     End Select
 End Sub
 

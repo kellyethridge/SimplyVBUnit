@@ -91,6 +91,7 @@ Private Sub RunTestClassTests()
     Suite.Add New SamePathOrUnderConstraintTests
     Suite.Add New PersistableConstraintTests
     Suite.Add New AllItemsConstraintTests
+    Suite.Add New SomeItemsConstraintTests
     
     Dim Result As TestResult
     Set Result = Suite.Run
