@@ -6,12 +6,12 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "TestOutput"
+Attribute VB_Name = "NullTestRunner"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-' Copyright 2009 Kelly Ethridge
+' Copyright 2010 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
 ' you may not use this file except in compliance with the License.
@@ -25,34 +25,19 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestOutput
+' Module: NullTestRunner
 '
 Option Explicit
+Implements ITestRunner
 
-Public Enum TestOutputType
-    StandardOutput
-    ErrorOutput
-    TraceOutput
-    LogOutput
-End Enum
-
-Private mText       As String
-Private mOutputType As TestOutputType
-
-
-Public Property Get Text() As String
-    Text = mText
-End Property
-
-Public Property Get OutputType() As TestOutputType
-    OutputType = mOutputType
-End Property
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Friend Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Text As String, ByVal OutputType As TestOutputType)
-    mText = Text
-    mOutputType = OutputType
+Private Sub ITestRunner_Cancel()
+    ' do nothing
 End Sub
+
+Private Property Get ITestRunner_IsCancelled() As Boolean
+    ITestRunner_IsCancelled = False
+End Property
+
+Private Function ITestRunner_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult
+    Set ITestRunner_Run = New TestResult
+End Function

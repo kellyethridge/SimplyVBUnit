@@ -6,12 +6,12 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "TestOutput"
+Attribute VB_Name = "ITestRunner"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-' Copyright 2009 Kelly Ethridge
+' Copyright 2010 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
 ' you may not use this file except in compliance with the License.
@@ -25,34 +25,11 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestOutput
+' Module: ITestRunner
 '
 Option Explicit
 
-Public Enum TestOutputType
-    StandardOutput
-    ErrorOutput
-    TraceOutput
-    LogOutput
-End Enum
+Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult: End Function
+Public Sub Cancel(): End Sub
+Public Property Get IsCancelled() As Boolean: End Property
 
-Private mText       As String
-Private mOutputType As TestOutputType
-
-
-Public Property Get Text() As String
-    Text = mText
-End Property
-
-Public Property Get OutputType() As TestOutputType
-    OutputType = mOutputType
-End Property
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Friend Methods
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Text As String, ByVal OutputType As TestOutputType)
-    mText = Text
-    mOutputType = OutputType
-End Sub

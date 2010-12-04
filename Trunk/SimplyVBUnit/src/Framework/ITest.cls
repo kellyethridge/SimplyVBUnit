@@ -61,3 +61,5 @@ Public Property Get Categories() As CategoryList: End Property
 
 Public Property Get HasCategories() As Boolean: End Property
 
+Public Sub SetRunner(ByVal Runner As ITestRunner): End Sub
+
