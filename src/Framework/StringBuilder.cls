@@ -101,7 +101,7 @@ End Function
 '
 ' @param Text The string to be appended to the buffer.
 '
-Public Sub Append(ByVal Value As String)
+Public Sub Append(ByRef Value As String)
     AppendText Value
 End Sub
 
@@ -139,7 +139,7 @@ End Property
 ' @return The current string buffer.
 '
 Public Function ToString() As String
-    ToString = Left$(mBuffer, Length)
+    ToString = Left$(mBuffer, mLength)
 End Function
 
 

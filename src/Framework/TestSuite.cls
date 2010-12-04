@@ -44,6 +44,7 @@ Private mRunState           As RunState
 Private mTestCaseContext    As ContextMethods
 Private mName               As String
 Private mCategories         As CategoryList
+Private mRunner             As ITestRunner
 
 
 Public Property Get This() As TestSuite
@@ -189,7 +190,7 @@ End Property
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub InitTestSuite(ByVal Name As String)
+Friend Sub InitTestSuite(ByRef Name As String)
     With CategoryParser.Parse(Name)
         mName = .Name
         Set mCategories = .Categories
@@ -358,6 +359,7 @@ Private Sub Class_Initialize()
     InitTestSuite DEF_NAME
     Set mFixtureSetup = NullMethod.Instance
     Set mFixtureTeardown = NullMethod.Instance
+    Set mRunner = NullTestRunner.Instance
 End Sub
 
 Private Sub Class_Terminate()
@@ -415,6 +417,13 @@ End Property
 Private Property Get ITest_RunState() As RunState
     ITest_RunState = RunState
 End Property
+
+Private Sub ITest_SetRunner(ByVal Runner As ITestRunner)
+    Dim Test As ITest
+    For Each Test In mTests
+        Test.SetRunner Runner
+    Next
+End Sub
 
 Private Sub ITest_Sort(Optional ByVal Comparer As ITestComparer)
     Sort Comparer

@@ -80,6 +80,10 @@ Private Property Get ITest_RunState() As SVBUnit.RunState
 
 End Property
 
+Private Sub ITest_SetRunner(ByVal Runner As SVBUnit.ITestRunner)
+
+End Sub
+
 Private Sub ITest_Sort(Optional ByVal Comparer As SVBUnit.ITestComparer)
 
 End Sub

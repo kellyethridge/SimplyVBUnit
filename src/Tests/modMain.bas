@@ -93,8 +93,11 @@ Private Sub RunTestClassTests()
     Suite.Add New AllItemsConstraintTests
     Suite.Add New SomeItemsConstraintTests
     
+    Dim Runner As TestRunner
+    Set Runner = Sim.NewTestRunner(Suite)
+    
     Dim Result As TestResult
-    Set Result = Suite.Run
+    Set Result = Runner.Run
     PrintResults Result
     PrintSummary Result
 End Sub

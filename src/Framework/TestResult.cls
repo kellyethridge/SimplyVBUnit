@@ -55,11 +55,15 @@ Public Property Let Time(ByVal RHS As Currency)
 End Property
 
 Public Property Get Name() As String
-    Name = mTest.Name
+    If Not mTest Is Nothing Then
+        Name = mTest.Name
+    End If
 End Property
 
 Public Property Get FullName() As String
-    FullName = mTest.FullName
+    If Not mTest Is Nothing Then
+        FullName = mTest.FullName
+    End If
 End Property
 
 Public Property Get HasResults() As Boolean
@@ -175,10 +179,13 @@ Private Function CanSetSuccess() As Boolean
 End Function
 
 Private Sub SetCancelledState()
-    Me.SetResult CancelledState
+    SetResult CancelledState
 End Sub
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Test As ITest)
     Set mTest = Test
 End Sub

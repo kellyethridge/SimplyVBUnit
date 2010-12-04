@@ -40,7 +40,7 @@ Public Function NewTestResult(ByVal Test As ITest) As TestResult
     NewTestResult.Init Test
 End Function
 
-Public Function NewTestCase(ByVal Name As String, ByVal TestMethod As ITestMethod) As TestCase
+Public Function NewTestCase(ByRef Name As String, ByVal TestMethod As ITestMethod) As TestCase
     Set NewTestCase = New TestCase
     NewTestCase.Init Name, TestMethod
 End Function
@@ -50,12 +50,12 @@ Public Function NewStaticTestMethod(ByVal TestClass As Object, ByVal Member As M
     NewStaticTestMethod.Init TestClass, Member
 End Function
 
-Public Function NewTestSuite(ByVal Name As String) As TestSuite
+Public Function NewTestSuite(ByRef Name As String) As TestSuite
     Set NewTestSuite = New TestSuite
     NewTestSuite.InitTestSuite Name
 End Function
 
-Public Function NewErrorInfo(ByVal Number As Long, Optional ByVal Source As String, Optional ByVal Description As String, Optional ByVal LastDllError As Long) As ErrorInfo
+Public Function NewErrorInfo(ByVal Number As Long, Optional ByRef Source As String, Optional ByRef Description As String, Optional ByVal LastDllError As Long) As ErrorInfo
     Set NewErrorInfo = New ErrorInfo
     NewErrorInfo.Init Number, Source, Description, LastDllError
 End Function
@@ -90,7 +90,7 @@ Public Function NewEnumVariantEnumerator(ByVal Obj As Object) As EnumVariantEnum
     NewEnumVariantEnumerator.Init Obj
 End Function
 
-Public Function NewTestOutput(ByVal Text As String, ByVal OutputType As TestOutputType) As TestOutput
+Public Function NewTestOutput(ByRef Text As String, ByVal OutputType As TestOutputType) As TestOutput
     Set NewTestOutput = New TestOutput
     NewTestOutput.Init Text, OutputType
 End Function

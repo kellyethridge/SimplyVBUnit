@@ -33,10 +33,15 @@ Public Type TallyStatic
     Zero As New ZeroTally
 End Type
 
+Public Type NullTestRunnerStatic
+    Instance As New NullTestRunner
+End Type
+
 Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
 Public Tally                As TallyStatic
+Public NullTestRunner       As NullTestRunnerStatic
 
 Public Sim                  As New SimConstructors
 Public Error                As New ErrorHelper

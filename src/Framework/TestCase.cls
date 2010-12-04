@@ -37,6 +37,7 @@ Private mTicks              As Currency
 Private mRunState           As RunState
 Private mContext            As ContextMethods
 Private mCategories         As CategoryList
+Private mRunner             As ITestRunner
 
 
 Public Property Get HasCategories() As Boolean
@@ -223,7 +224,7 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByVal Name As String, ByVal TestMethod As ITestMethod)
+Friend Sub Init(ByRef Name As String, ByVal TestMethod As ITestMethod)
     If Len(Name) = 0 Then _
         Error.CannotBeEmpty Me, "Init", "Name"
     If TestMethod Is Nothing Then _
@@ -252,6 +253,7 @@ End Property
 Private Sub Class_Initialize()
     Me.RunState = RunnableRunState
     Set mContext = NullContext.Instance
+    Set mRunner = NullTestRunner.Instance
 End Sub
 
 
@@ -305,6 +307,10 @@ End Property
 Private Property Get ITest_RunState() As RunState
     ITest_RunState = Me.RunState
 End Property
+
+Private Sub ITest_SetRunner(ByVal Runner As ITestRunner)
+    Set mRunner = Runner
+End Sub
 
 Private Sub ITest_Sort(Optional ByVal Comparer As ITestComparer)
     ' do nothing
