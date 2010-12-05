@@ -37,11 +37,16 @@ Public Type NullTestRunnerStatic
     Instance As New NullTestRunner
 End Type
 
+Public Type NullTextWriterStatic
+    Instance As New NullTextWriter
+End Type
+
 Public NullContext          As NullContextStatic
 Public NullListener         As NullListenerStatic
 Public NullMethod           As NullMethodStatic
 Public Tally                As TallyStatic
 Public NullTestRunner       As NullTestRunnerStatic
+Public NullTextWriter       As NullTextWriterStatic
 
 Public Sim                  As New SimConstructors
 Public Error                As New ErrorHelper
