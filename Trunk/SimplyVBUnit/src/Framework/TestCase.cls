@@ -108,17 +108,21 @@ Public Function Run(Optional ByVal Listener As IEventListener) As TestResult
     Dim Result As TestResult
     Set Result = Sim.NewTestResult(Me)
     
-    With New TestContext
-        Listener.TestCaseStarted Me
+    If Not mRunner.IsCancelled Then
+        With New TestContext
+            Listener.TestCaseStarted Me
+            
+            If Me.RunState = RunnableRunState Then
+                RunTestCase Result, Listener
+            Else
+                Result.Invalid
+            End If
         
-        If Me.RunState = RunnableRunState Then
-            RunTestCase Result, Listener
-        Else
-            Result.Invalid
-        End If
-    
-        Listener.TestCaseFinished Result
-    End With
+            Listener.TestCaseFinished Result
+        End With
+    Else
+        Result.SetResult CancelledState, "test cancelled by user"
+    End If
     
     Set Run = Result
 End Function

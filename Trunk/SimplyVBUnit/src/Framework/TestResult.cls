@@ -179,7 +179,7 @@ Private Function CanSetSuccess() As Boolean
 End Function
 
 Private Sub SetCancelledState()
-    SetResult CancelledState
+    SetResult CancelledState, "test cancelled by user"
 End Sub
 
 
