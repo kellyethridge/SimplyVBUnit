@@ -101,9 +101,10 @@ End Function
 '
 ' @param Text The string to be appended to the buffer.
 '
-Public Sub Append(ByRef Value As String)
+Public Sub Append(ByVal Value As String)
     AppendText Value
 End Sub
+
 
 ''
 ' Returns the current length of the string buffer.

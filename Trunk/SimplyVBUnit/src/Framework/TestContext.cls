@@ -87,6 +87,9 @@ End Sub
 '   Class Events
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
+    Set mLog = NullTextWriter.Instance
+    Set mError = NullTextWriter.Instance
+    Set mOut = NullTextWriter.Instance
     TestContextManager.BeginContext Me
 End Sub
 
