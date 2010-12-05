@@ -229,3 +229,4 @@ Public Function NewCollectionContainsConstraint(ByRef Expected As Variant, Optio
     Set NewCollectionContainsConstraint = New CollectionContainsConstraint
     NewCollectionContainsConstraint.Init Expected, Expression
 End Function
+

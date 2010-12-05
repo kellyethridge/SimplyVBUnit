@@ -52,6 +52,18 @@ Public Sub WriteLine(ByRef Text As String, ParamArray Args() As Variant)
 End Sub
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByVal Listener As IEventListener, ByVal OutputType As TestOutputType)
+    Set mListener = Listener
+    mOutputType = OutputType
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   ITextWriter Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ITextWriter_WriteLine(ParamArray TextAndArgs() As Variant)
 
 End Sub

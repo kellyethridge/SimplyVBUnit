@@ -84,18 +84,6 @@ Public Sub AppendFormatArray(ByRef Format As String, ByRef Args() As Variant)
     AppendText Result
 End Sub
 
-Private Function GetStringValue(ByRef Value As Variant) As String
-    Dim Result As String
-    
-    If IsArray(Value) Or IsObject(Value) Then
-        Result = MsgUtils.GetTypeRepresentation(Value)
-    Else
-        Result = CStr(Value)
-    End If
-    
-    GetStringValue = Result
-End Function
-
 ''
 ' Appends text to the end of the current string buffer.
 '
@@ -104,7 +92,6 @@ End Function
 Public Sub Append(ByVal Value As String)
     AppendText Value
 End Sub
-
 
 ''
 ' Returns the current length of the string buffer.
@@ -147,6 +134,18 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function GetStringValue(ByRef Value As Variant) As String
+    Dim Result As String
+    
+    If IsArray(Value) Or IsObject(Value) Then
+        Result = MsgUtils.GetTypeRepresentation(Value)
+    Else
+        Result = CStr(Value)
+    End If
+    
+    GetStringValue = Result
+End Function
+
 Private Sub AppendText(ByRef Text As String)
     EnsureCapacity Length + Len(Text)
     AppendToBuffer Text
