@@ -36,8 +36,10 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private Const DEF_CAPACITY  As Long = 128
-Private Const MIN_LENGTH    As Long = 0
+Private Const DEF_CAPACITY      As Long = 128
+Private Const MIN_LENGTH        As Long = 0
+Private Const FIRST_ARGUMENT    As Long = 0
+Private Const SECOND_ARGUMENT   As Long = FIRST_ARGUMENT + 1
 
 
 Private mBuffer             As String
@@ -82,6 +84,37 @@ Public Sub AppendFormatArray(ByRef Format As String, ByRef Args() As Variant)
     Result = Replace$(Result, "}}", "}")
     
     AppendText Result
+End Sub
+
+Public Sub AppendFormatArrayEx(ByRef TextAndArgs() As Variant)
+    Dim UpperBound As Long
+    UpperBound = UBound(TextAndArgs)
+    
+    If HasOneArgument(UpperBound) Then
+        AppendText CStr(TextAndArgs(FIRST_ARGUMENT))
+    ElseIf HasMultipleArguments(UpperBound) Then
+        Dim LocalArgs() As Variant
+        LocalArgs = TextAndArgs
+        WriteFormattedText CStr(LocalArgs(FIRST_ARGUMENT)), LocalArgs(SECOND_ARGUMENT), UpperBound
+    End If
+End Sub
+
+Private Function HasOneArgument(ByVal UpperBound As Long) As Boolean
+    HasOneArgument = (UpperBound = 0)
+End Function
+
+Private Function HasMultipleArguments(ByVal UpperBound As Long) As Boolean
+    HasMultipleArguments = (UpperBound > 0)
+End Function
+
+Private Function HasNoArguments(ByVal UpperBound As Long) As Boolean
+    HasNoArguments = (UpperBound < 0)
+End Function
+
+Private Sub WriteFormattedText(ByRef Text As String, ByRef FirstArgument As Variant, ByVal ArgumentCount As Long)
+    Dim Proxy As ArrayProxy
+    InitArrayProxy Proxy, FirstArgument, ArgumentCount
+    AppendFormatArray Text, Proxy.Data
 End Sub
 
 ''
