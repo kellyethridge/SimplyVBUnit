@@ -121,6 +121,10 @@ Private Function IConstraintExpression_LessThanOrEqualTo(Expected As Variant) As
     Set IConstraintExpression_LessThanOrEqualTo = mExpression.LessThanOrEqualTo(Expected)
 End Function
 
+Private Function IConstraintExpression_LP() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_LP = mExpression.LP
+End Function
+
 Private Function IConstraintExpression_Member(Expected As Variant) As SimplyVBUnitType.ICollectionContainsConstraint
     Set IConstraintExpression_Member = mExpression.Member(Expected)
 End Function
@@ -151,6 +155,10 @@ End Function
 
 Private Function IConstraintExpression_Persistable() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Persistable = mExpression.Persistable
+End Function
+
+Private Function IConstraintExpression_RP() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_RP = mExpression.RP
 End Function
 
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression

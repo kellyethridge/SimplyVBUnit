@@ -31,6 +31,7 @@ Option Explicit
 
 Private mConstraints    As New ConstraintStack
 Private mOperators      As New OperatorStack
+Private mFoundLP        As Boolean
 
 
 Public Function Resolve() As IConstraint
@@ -44,7 +45,11 @@ Public Sub AddConstraint(ByVal Constraint As IConstraint)
 End Sub
 
 Public Sub AddOperator(ByVal Operator As IOperator)
-    mOperators.Push Operator
+    If TypeOf Operator Is RightParenOperator Then
+        ReduceOperators
+    Else
+        mOperators.Push Operator
+    End If
 End Sub
 
 
@@ -52,13 +57,15 @@ End Sub
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ReduceOperators()
+    mFoundLP = False
+    
     Do While HasOperators
         ReduceNextOperator
     Loop
 End Sub
 
 Private Function HasOperators() As Boolean
-    HasOperators = (mOperators.Count > 0)
+    HasOperators = (mOperators.Count > 0) And Not mFoundLP
 End Function
 
 Private Function HasConstraints() As Boolean
@@ -69,7 +76,11 @@ Private Sub ReduceNextOperator()
     Dim Operator As IOperator
     Set Operator = mOperators.Pop
     
-    Operator.Reduce mConstraints
+    If TypeOf Operator Is LeftParenOperator Then
+        mFoundLP = True
+    Else
+        Operator.Reduce mConstraints
+    End If
 End Sub
 
 Private Function Release() As IConstraint

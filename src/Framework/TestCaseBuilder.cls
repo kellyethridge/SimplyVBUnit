@@ -118,15 +118,14 @@ Private Function NextSequentialTestName() As String
 End Function
 
 Private Function GetTestCases() As Collection
-    Dim Store   As New Collection
     Dim Builder As TestCaseCollector
-    Set Builder = Sim.NewTestCaseCollector(mMember.Name, Store)
+    Set Builder = Sim.NewTestCaseCollector(mMember.Name)
     
     Dim Source As ITestCaseSource
     Set Source = mTestClass
     Source.GetTestCases Builder
     
-    Set GetTestCases = Store
+    Set GetTestCases = Builder.DataStore
 End Function
 
 Private Sub AddTestCase(ByVal Method As ITestMethod)

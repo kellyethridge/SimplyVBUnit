@@ -79,6 +79,10 @@ Private Function IzSyntaxHelper_LessThanOrEqualTo(Expected As Variant) As Simply
     Set IzSyntaxHelper_LessThanOrEqualTo = NewExp.LessThanOrEqualTo(Expected)
 End Function
 
+Private Function IzSyntaxHelper_LP() As SimplyVBUnitType.IConstraintExpression
+    Set IzSyntaxHelper_LP = NewExp.LP
+End Function
+
 Private Function IzSyntaxHelper_Missing() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Missing = NewExp.Missing
 End Function
