@@ -127,6 +127,7 @@ Class=LeftParenOperator; LeftParenOperator.cls
 Class=RightParenOperator; RightParenOperator.cls
 ResFile32="SVBUnit.RES"
 Class=TestFixtureBuilder; TestFixtureBuilder.cls
+Class=ITestFixture; ITestFixture.cls
 Startup="(None)"
 HelpFile=""
 Title="SVBUnit"
