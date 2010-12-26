@@ -70,7 +70,7 @@ Public Function NewTestListEnumerator(ByVal List As TestList) As TestListEnumera
     NewTestListEnumerator.Init List
 End Function
 
-Public Function NewTestCaseCollector(ByVal MethodName As String, ByVal DataStore As Collection) As TestCaseCollector
+Public Function NewTestCaseCollector(ByVal MethodName As String, Optional ByVal DataStore As Collection) As TestCaseCollector
     Set NewTestCaseCollector = New TestCaseCollector
     NewTestCaseCollector.Init MethodName, DataStore
 End Function

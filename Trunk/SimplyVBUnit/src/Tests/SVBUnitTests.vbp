@@ -114,179 +114,245 @@ ThreadPerObject=0
 MaxNumberOfThreads=1
 
 [TaskList]
-Num=34
+Num=0
 
 [TASK1]
-Description=Iz.EqualTo
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK2]
-Description=Iz.False
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK3]
-Description=Iz.True
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK4]
-Description=Iz.GreaterThan
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK5]
-Description=Iz.GreaterThanOrEqualTo
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK6]
-Description=Iz.InRange
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK7]
-Description=Iz.LessThan
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK8]
-Description=Iz.LessThanOrEqualTo
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK9]
-Description=Iz.Missing
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK10]
-Description=Iz.Not
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK11]
-Description=Iz.Nothing
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK12]
-Description=Iz.VBEmpty
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK13]
-Description=Iz.VBNull
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK14]
-Description=Iz.All
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
 AssignedTo=
 Comment=
 
 [TASK15]
-Description=Iz.Unique
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK16]
-Description=Iz.Empty
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK17]
-Description=Iz.Serializable
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK18]
-Description=Iz.SameAs
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK19]
-Description=Iz.EquivalentTo
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK20]
-Description=Iz.SubsetOf
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK21]
-Description=Iz.Ordered
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK22]
-Description=Iz.StringContaining
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK23]
-Description=Iz.StringStarting
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK24]
-Description=Iz.StringMatching
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK25]
-Description=Iz.SamePath
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK26]
-Description=Iz.SamePathOrUnder
-Status=2
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK27]
-Description=Has.No
-Status=0
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK28]
-Description=Has.All
-Status=0
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK29]
-Description=Has.Some
-Status=0
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK30]
-Description=Has.None
-Status=0
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK31]
-Description=Has.Property
-Status=0
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK32]
-Description=Has.Length
-Status=0
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK33]
-Description=Has.Count
-Status=0
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK34]
-Description=Has.Member
-Status=0
-Priority=1
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
 
 [TASK35]
 Description=

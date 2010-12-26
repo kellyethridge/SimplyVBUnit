@@ -133,6 +133,14 @@ Public Sub AreNotEqualStrings(ByRef Expected As String, ByRef Actual As String, 
     End If
 End Sub
 
+Public Sub AreSame(ByVal Expected As Object, ByVal Actual As Object, Optional ByRef Message As String)
+    That Actual, Iz.SameAs(Expected), Message
+End Sub
+
+Public Sub AreNotSame(ByVal Expected As Object, ByVal Actual As Object, Optional ByRef Message As String)
+    That Actual, Iz.Not.SameAs(Expected), Message
+End Sub
+
 Public Sub Greater(ByRef Value1 As Variant, ByRef Value2 As Variant, Optional ByRef Message As String)
     That Value1, Iz.GreaterThan(Value2), Message
 End Sub

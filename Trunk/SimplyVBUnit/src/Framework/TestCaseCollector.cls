@@ -57,10 +57,15 @@ End Function
 Friend Sub Init(ByVal MethodName As String, ByVal DataStore As Collection)
     If Len(MethodName) = 0 Then _
         Error.CannotBeEmpty Me, "Init", "MethodName"
-    If DataStore Is Nothing Then _
-        Error.CannotBeNothing Me, "Init", "DataStore"
+    
+    If DataStore Is Nothing Then
+        Set DataStore = New Collection
+    End If
     
     mMethodName = MethodName
     Set mDataStore = DataStore
 End Sub
 
+Friend Property Get DataStore() As Collection
+    Set DataStore = mDataStore
+End Property

@@ -35,7 +35,7 @@ Public Sub Resolve_WhenEmpty_StoresNothing()
     Dim Actual As IConstraint
     Set Actual = Builder.Resolve
     
-    assert.IsTrue Actual Is Nothing
+    Assert.IsTrue Actual Is Nothing
 End Sub
 
 Public Sub Resolve_WithOneConstraint_StoresAsFinalConstraint()
@@ -46,7 +46,7 @@ Public Sub Resolve_WithOneConstraint_StoresAsFinalConstraint()
     Dim Actual As IConstraint
     Set Actual = Builder.Resolve
     
-    assert.IsTrue Actual Is Fake
+    Assert.IsTrue Actual Is Fake
 End Sub
 
 Public Sub Resolve_WithOperator_ResolvesConstraints()
@@ -61,7 +61,46 @@ Public Sub Resolve_WithOperator_ResolvesConstraints()
     Dim Actual As AndConstraint
     Set Actual = Builder.Resolve
     
-    assert.IsTrue Actual.LeftSide Is FakeLeft
-    assert.IsTrue Actual.RightSide Is FakeRight
+    Assert.IsTrue Actual.LeftSide Is FakeLeft
+    Assert.IsTrue Actual.RightSide Is FakeRight
 End Sub
 
+Public Sub Resolve_WithParenOperators_ResolvesWithinParens()
+    Dim FakeOutside As New StubConstraint
+    Dim FakeLeft    As New StubConstraint
+    Dim FakeRight   As New StubConstraint
+    Dim Builder     As New ConstraintBuilder
+    Builder.AddConstraint FakeOutside
+    Builder.AddOperator New AndOperator
+    Builder.AddOperator New LeftParenOperator
+    Builder.AddConstraint FakeLeft
+    Builder.AddOperator New AndOperator
+    Builder.AddConstraint FakeRight
+    Builder.AddOperator New RightParenOperator
+    
+    Dim Op As AndConstraint
+    Set Op = Builder.Resolve
+    
+    Assert.AreSame FakeOutside, Op.LeftSide
+    Assert.IsTrue TypeOf Op.RightSide Is AndConstraint
+End Sub
+
+Public Sub Resolve_WithParenOperators_ResolvesWithinParens2()
+    Dim FakeOutside As New StubConstraint
+    Dim FakeLeft    As New StubConstraint
+    Dim FakeRight   As New StubConstraint
+    Dim Builder     As New ConstraintBuilder
+    Builder.AddOperator New LeftParenOperator
+    Builder.AddConstraint FakeOutside
+    Builder.AddOperator New AndOperator
+    Builder.AddConstraint FakeLeft
+    Builder.AddOperator New RightParenOperator
+    Builder.AddOperator New AndOperator
+    Builder.AddConstraint FakeRight
+    
+    Dim Op As AndConstraint
+    Set Op = Builder.Resolve
+    
+    Assert.IsTrue TypeOf Op.LeftSide Is AndConstraint
+    Assert.AreSame FakeRight, Op.RightSide
+End Sub

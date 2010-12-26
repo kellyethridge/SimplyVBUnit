@@ -173,6 +173,14 @@ Public Function Member(ByRef Expected As Variant) As CollectionContainsConstrain
     Set Member = AddConstraint(Sim.NewCollectionContainsConstraint(Expected, Me))
 End Function
 
+Public Function LP() As IConstraintExpression
+    Set LP = AddOperator(New LeftParenOperator)
+End Function
+
+Public Function RP() As IConstraintExpression
+    Set RP = AddOperator(New RightParenOperator)
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -243,6 +251,10 @@ Private Function IConstraintExpression_LessThanOrEqualTo(Expected As Variant) As
     Set IConstraintExpression_LessThanOrEqualTo = LessThanOrEqualTo(Expected)
 End Function
 
+Private Function IConstraintExpression_LP() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_LP = LP
+End Function
+
 Private Function IConstraintExpression_Member(Expected As Variant) As SimplyVBUnitType.ICollectionContainsConstraint
     Set IConstraintExpression_Member = Member(Expected)
 End Function
@@ -273,6 +285,10 @@ End Function
 
 Private Function IConstraintExpression_Persistable() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Persistable = Persistable
+End Function
+
+Private Function IConstraintExpression_RP() As SimplyVBUnitType.IConstraintExpression
+    Set IConstraintExpression_RP = RP
 End Function
 
 Private Function IConstraintExpression_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression
