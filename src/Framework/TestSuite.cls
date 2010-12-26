@@ -246,8 +246,20 @@ Private Sub BuildFixture()
 End Sub
 
 Private Function QueryTestClass() As QueryResult
-    Dim Query As New MemberQuery
-    Set QueryTestClass = Query.Execute(mTestClass)
+    Dim Result As QueryResult
+    
+    If TypeOf mTestClass Is ITestFixture Then
+        Dim Fixture As ITestFixture
+        Set Fixture = mTestClass
+        Dim Builder As New TestFixtureBuilder
+        Fixture.GetTestCases Builder
+        Set Result = New QueryResult
+    Else
+        Dim Query As New MemberQuery
+        Set Result = Query.Execute(mTestClass)
+    End If
+    
+    Set QueryTestClass = Result
 End Function
 
 Private Sub AssignContextMethods(ByVal Result As QueryResult)
