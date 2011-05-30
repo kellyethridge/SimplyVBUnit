@@ -203,7 +203,12 @@ Friend Sub InitTestFixture(ByVal TestClass As Object)
         
     Set mTestClass = TestClass
     InitTestSuite TypeName(TestClass)
-    BuildFixture
+    
+    If TypeOf TestClass Is ITestFixture Then
+        ManuallyBuildFixture
+    Else
+        AutomaticallyBuildFixture
+    End If
 End Sub
 
 
@@ -236,7 +241,17 @@ Private Function StopTiming() As Currency
     StopTiming = Timing.GetTime(mTicks)
 End Function
 
-Private Sub BuildFixture()
+Private Sub ManuallyBuildFixture()
+    Debug.Assert False
+    
+    Dim Fixture As ITestFixture
+    Set Fixture = mTestClass
+    Dim Builder As New TestFixtureBuilder
+    Fixture.GetTestCases Builder
+    
+End Sub
+
+Private Sub AutomaticallyBuildFixture()
     Dim Result As QueryResult
     Set Result = QueryTestClass
     
@@ -246,21 +261,8 @@ Private Sub BuildFixture()
 End Sub
 
 Private Function QueryTestClass() As QueryResult
-    Dim Result As QueryResult
-    
-    If TypeOf mTestClass Is ITestFixture Then
-        Dim Fixture As ITestFixture
-        Set Fixture = mTestClass
-        Dim Builder As New TestFixtureBuilder
-        Fixture.GetTestCases Builder
-        Set Result = New QueryResult
-        
-    Else
-        Dim Query As New MemberQuery
-        Set Result = Query.Execute(mTestClass)
-    End If
-    
-    Set QueryTestClass = Result
+    Dim Query As New MemberQuery
+    Set QueryTestClass = Query.Execute(mTestClass)
 End Function
 
 Private Sub AssignContextMethods(ByVal Result As QueryResult)
