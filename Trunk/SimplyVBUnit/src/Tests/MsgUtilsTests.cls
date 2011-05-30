@@ -39,7 +39,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Call Test.Use("abcD", "abcd", False, 4)
             Call Test.Use("abcd", "abcde", False, 5)
             Call Test.Use("abcde", "abcd", False, 5)
-        
+
         Case "ClipString_WithValues_ReturnsExpected"
             Call Test.Use("string", 1, 6, "string")
             Call Test.Use("string", 1, 5, "st...")
@@ -51,17 +51,17 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Call Test.Use("12345678901", 1, 10, "1234567...")
             Call Test.Use("12345678901", 2, 10, "...2345...")
             Call Test.Use("12345678901", 3, 10, "...3456...")
-            
+
         Case "ClipExpectedAndActual_WithUnclippedExpected_ReturnsClippedExpected"
             Call Test.Use("1234567890", "1234567890", 1)
             Call Test.Use("12345678901", "1234567...", 1)
             Call Test.Use("12345678901", "...5678901", 11)
-            
+
         Case "ClipExpectedAndActual_WithUnclippedActual_ReturnsClippedExpected"
             Call Test.Use("1234567890", "1234567890", 1)
             Call Test.Use("12345678901", "1234567...", 1)
             Call Test.Use("12345678901", "...5678901", 11)
-        
+
         Case "EscapeControlChars_WithValues_ReturnsExpected"
             Call Test.Use("abc", "abc")
             Call Test.Use("ab" & vbCr & "cd", "ab\rcd")
@@ -69,35 +69,35 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Call Test.Use("abc" & Chr$(14) & "de", "abc\x000Ede")
             Test.Use "abc" & ChrW$(8194) & "de", "abc\x2002de"
             Call Test.Use("", "")
-        
+
         Case "GetTypeRepresentation_WithValues_ReturnsExpected"
             Test.Use CInt(1), "<Integer>"
             Dim Arr As Variant
             Arr = Array(1, 2)
             Test.Use Arr, "<Variant(0 To 1)>"
-            
+
             ReDim Arr(1 To 2) As Long
             Test.Use Arr, "<Long(1 To 2)>"
-            
+
             ReDim Arr(1 To 2, 3 To 4) As Long
             Test.Use Arr, "<Long(1 To 2, 3 To 4)>"
-            
+
             Test.Use New Collection, "<VBA.Collection>"
-        
+
         Case "GetArrayIndicesAsString_WithValues_ReturnsExpected"
             Dim Longs() As Long
             Longs = NewLongsLb(1, 1, 2, 3)
             Test.Use Longs, "1,2,3"
-            
+
             Erase Longs
             Test.Use Longs, ""
-            
+
         Case "GetArrayIndicesFromCollectionIndex_WithValues_ReturnsExpected"
             Test.Use New Collection, 1, NewLongs()
             Test.Use NewCollection(1, 2), 1, NewLongs(2)
             Test.Use NewLongs(1, 2), 1, NewLongs(1)
             Test.Use Array(), 0, NewLongs()
-            
+
             Dim Long1() As Long
             ReDim Long1(0 To 2, 0 To 2, 0 To 3)
             Test.Use Long1, 0, NewLongs(0, 0, 0)
@@ -109,7 +109,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector
             Test.Use Long1, 19, NewLongs(1, 0, 2)
             Test.Use Long1, 25, NewLongs(1, 2, 2)
             Test.Use Long1, 31, NewLongs(1, 1, 3)
-            
+'
     End Select
 End Sub
 

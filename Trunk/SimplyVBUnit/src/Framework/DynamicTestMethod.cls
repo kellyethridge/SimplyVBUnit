@@ -38,13 +38,13 @@ Private mTestCaseData   As TestCaseData
 Public Sub Run()
     SetupExpectedError
     
-    If mMember.ReturnType = VT_VOID Then
-        tli.InvokeHookArraySub mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments
-    Else
+    If ExpectsResult Then
         Dim Result As Variant
         VariantCopyInd Result, tli.InvokeHookArray(mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments)
         
         Assert.That Result, mTestCaseData.Expected
+    Else
+        tli.InvokeHookArraySub mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments
     End If
 End Sub
 
@@ -82,6 +82,24 @@ Private Sub AssertExpectedError()
     
     Assert.Throws Info.Number, Info.Source, Info.Description
 End Sub
+
+Private Function ExpectsResult() As Boolean
+    Dim Result As Boolean
+    Select Case mMember.ReturnType
+        Case VT_VOID
+            Result = False
+        Case VT_HRESULT
+            Result = LastParameterIsNotNamed
+        Case Else
+            Result = True
+    End Select
+    
+    ExpectsResult = Result
+End Function
+
+Private Function LastParameterIsNotNamed() As Boolean
+    LastParameterIsNotNamed = (Len(mMember.Parameters(mMember.Parameters.Count).Name) = 0)
+End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
