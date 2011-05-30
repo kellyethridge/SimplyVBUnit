@@ -254,6 +254,7 @@ Private Function QueryTestClass() As QueryResult
         Dim Builder As New TestFixtureBuilder
         Fixture.GetTestCases Builder
         Set Result = New QueryResult
+        
     Else
         Dim Query As New MemberQuery
         Set Result = Query.Execute(mTestClass)

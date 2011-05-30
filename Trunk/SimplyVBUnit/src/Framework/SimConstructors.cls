@@ -230,3 +230,8 @@ Public Function NewCollectionContainsConstraint(ByRef Expected As Variant, Optio
     NewCollectionContainsConstraint.Init Expected, Expression
 End Function
 
+Public Function NewLateBoundTestMethod(ByVal TestClass As Object, ByRef MethodName As String, ByVal TestCaseData As TestCaseData) As LateBoundTestMethod
+    Set NewLateBoundTestMethod = New LateBoundTestMethod
+    NewLateBoundTestMethod.Init TestClass, MethodName, TestCaseData
+End Function
+
