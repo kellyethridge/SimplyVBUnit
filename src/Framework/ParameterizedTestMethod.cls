@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "DynamicTestMethod"
+Attribute VB_Name = "ParameterizedTestMethod"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -25,26 +25,26 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: ArgTestMethod
+' Module: ParameterizedTestMethod
 '
 Option Explicit
 Implements ITestMethod
 
 Private mTestClass      As Object
-Private mMember         As MemberInfo
+Private mMemberId       As Variant
 Private mTestCaseData   As TestCaseData
 
 
 Public Sub Run()
     SetupExpectedError
     
-    If ExpectsResult Then
+    If mTestCaseData.Expected Is Nothing Then
+        tli.InvokeHookArraySub mTestClass, mMemberId, INVOKE_FUNC, mTestCaseData.Arguments
+    Else
         Dim Result As Variant
-        VariantCopyInd Result, tli.InvokeHookArray(mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments)
+        VariantCopyInd Result, tli.InvokeHookArray(mTestClass, mMemberId, INVOKE_FUNC, mTestCaseData.Arguments)
         
         Assert.That Result, mTestCaseData.Expected
-    Else
-        tli.InvokeHookArraySub mTestClass, mMember.MemberId, INVOKE_FUNC, mTestCaseData.Arguments
     End If
 End Sub
 
@@ -56,10 +56,29 @@ End Property
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Constructors
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData)
+Friend Sub Init(ByVal TestClass As Object, ByRef MemberId As Variant, ByVal TestCaseData As TestCaseData)
+    If TestClass Is Nothing Then _
+        Error.CannotBeNothing Me, "Init", "TestClass"
+    If TestCaseData Is Nothing Then _
+        Error.CannotBeNothing Me, "Init", "TestCaseData"
+    
     Set mTestClass = TestClass
-    Set mMember = Member
     Set mTestCaseData = TestCaseData
+    
+    Select Case VarType(MemberId)
+        Case vbString
+            If Len(MemberId) = 0 Then _
+                Error.CannotBeEmpty Me, "Init", "MemberId"
+                
+            mMemberId = MemberId
+            
+        Case vbLong, vbInteger, vbByte
+            mMemberId = MemberId
+        
+        Case Else
+            Error.Argument Me, "Init", "MemberId", "Must be a String or Number."
+            
+    End Select
 End Sub
 
 
@@ -82,24 +101,6 @@ Private Sub AssertExpectedError()
     
     Assert.Throws Info.Number, Info.Source, Info.Description
 End Sub
-
-Private Function ExpectsResult() As Boolean
-    Dim Result As Boolean
-    Select Case mMember.ReturnType
-        Case VT_VOID
-            Result = False
-        Case VT_HRESULT
-            Result = LastParameterIsNotNamed
-        Case Else
-            Result = True
-    End Select
-    
-    ExpectsResult = Result
-End Function
-
-Private Function LastParameterIsNotNamed() As Boolean
-    LastParameterIsNotNamed = (Len(mMember.Parameters(mMember.Parameters.Count).Name) = 0)
-End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

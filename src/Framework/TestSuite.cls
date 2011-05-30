@@ -286,7 +286,7 @@ End Sub
 
 Private Function BuildContextMethod(ByVal Member As MemberInfo) As ITestMethod
     If ContextMemberWasFound(Member) Then
-        Set BuildContextMethod = Sim.NewStaticTestMethod(mTestClass, Member)
+        Set BuildContextMethod = Sim.NewSimpleTestMethod(mTestClass, Member)
     Else
         Set BuildContextMethod = NullMethod.Instance
     End If

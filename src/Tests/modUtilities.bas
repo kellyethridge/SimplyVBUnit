@@ -17,7 +17,7 @@ Public Sub AssertError(ByVal ActualError As ErrObject, ByVal ExpectedNumber As L
     If Actual.Number = ErrorCode.NoError Then
         Err.Raise AssertCode.FailureCode, , "Expected an error to be raised."
     ElseIf Actual.Equals(Expected) = False Then
-        Err.Raise AssertCode.FailureCode, , "Wrong error raised."
+        Err.Raise AssertCode.FailureCode, , "Wrong error raised. Was '" & Err.Description & "'."
     End If
 End Sub
 
