@@ -37,9 +37,20 @@ Private Const METHOD_CANNOTBEEMPTY              As String = "CannotBeEmpty"
 Private Const METHOD_CANNOTBENEGATIVE           As String = "CannotBeNegative"
 Private Const METHOD_INDEXOUTOFRANGE            As String = "IndexOutOfRange"
 Private Const METHOD_ENUMERATIONNOTSUPPORTED    As String = "EnumerationNotSupported"
+Private Const METHOD_ARGUMENT                   As String = "Argument"
 
 
-Public Sub CannotBeNothing(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String)
+
+Public Sub Argument(ByVal SourceObject As Object, ByRef SourceMethod As String, ByRef ArgName As String, ByRef Description As String)
+    ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_ARGUMENT
+    
+    Dim Source As String
+    Source = BuildSource(SourceObject, SourceMethod)
+    
+    Err.Raise ErrorCode.Argument, Source, "Invalid argument '" & ArgName & "'. " & Description
+End Sub
+
+Public Sub CannotBeNothing(ByVal SourceObject As Object, ByRef SourceMethod As String, ByRef ArgName As String)
     ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_CANNOTBENOTHING
     
     Dim Source As String
@@ -51,7 +62,7 @@ Public Sub CannotBeNothing(ByVal SourceObject As Object, ByVal SourceMethod As S
     Err.Raise ErrorCode.ArgumentNull, Source, Description
 End Sub
 
-Public Sub CannotBeEmpty(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String)
+Public Sub CannotBeEmpty(ByVal SourceObject As Object, ByRef SourceMethod As String, ByRef ArgName As String)
     ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_CANNOTBEEMPTY
         
     Dim Source As String
@@ -63,7 +74,7 @@ Public Sub CannotBeEmpty(ByVal SourceObject As Object, ByVal SourceMethod As Str
     Err.Raise ErrorCode.Argument, Source, Description
 End Sub
 
-Public Sub CannotBeNegative(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String)
+Public Sub CannotBeNegative(ByVal SourceObject As Object, ByRef SourceMethod As String, ByRef ArgName As String)
     ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_CANNOTBENEGATIVE
     
     Dim Source As String
@@ -75,7 +86,7 @@ Public Sub CannotBeNegative(ByVal SourceObject As Object, ByVal SourceMethod As 
     Err.Raise ErrorCode.ArgumentOutOfRange, Source, Description
 End Sub
 
-Public Sub IndexOutOfRange(ByVal SourceObject As Object, ByVal SourceMethod As String)
+Public Sub IndexOutOfRange(ByVal SourceObject As Object, ByRef SourceMethod As String)
     ValidateParameters SourceObject, SourceMethod, "Index", METHOD_INDEXOUTOFRANGE
     
     Dim Source As String
@@ -87,7 +98,7 @@ Public Sub IndexOutOfRange(ByVal SourceObject As Object, ByVal SourceMethod As S
     Err.Raise ErrorCode.IndexOutOfRange, Source, Description
 End Sub
 
-Public Sub EnumerationNotSupported(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String)
+Public Sub EnumerationNotSupported(ByVal SourceObject As Object, ByRef SourceMethod As String, ByRef ArgName As String)
     ValidateParameters SourceObject, SourceMethod, ArgName, METHOD_ENUMERATIONNOTSUPPORTED
     
     Dim Source As String
@@ -103,7 +114,7 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Sub ValidateParameters(ByVal SourceObject As Object, ByVal SourceMethod As String, ByVal ArgName As String, ByVal ErrorHelperMethod As String)
+Private Sub ValidateParameters(ByVal SourceObject As Object, ByRef SourceMethod As String, ByRef ArgName As String, ByRef ErrorHelperMethod As String)
     If SourceObject Is Nothing Then
         CannotBeNothing Me, ErrorHelperMethod, SOURCE_OBJECT
     End If
@@ -115,7 +126,7 @@ Private Sub ValidateParameters(ByVal SourceObject As Object, ByVal SourceMethod 
     End If
 End Sub
 
-Private Function BuildSource(ByVal SourceObject As Object, ByVal SourceMethod As String) As String
+Private Function BuildSource(ByVal SourceObject As Object, ByRef SourceMethod As String) As String
     BuildSource = TypeName(SourceObject) & "." & SourceMethod
 End Function
 

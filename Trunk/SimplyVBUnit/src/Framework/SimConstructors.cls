@@ -45,9 +45,9 @@ Public Function NewTestCase(ByRef Name As String, ByVal TestMethod As ITestMetho
     NewTestCase.Init Name, TestMethod
 End Function
 
-Public Function NewStaticTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo) As StaticTestMethod
-    Set NewStaticTestMethod = New StaticTestMethod
-    NewStaticTestMethod.Init TestClass, Member
+Public Function NewSimpleTestMethod(ByVal TestClass As Object, ByRef MemberId As Variant) As SimpleTestMethod
+    Set NewSimpleTestMethod = New SimpleTestMethod
+    NewSimpleTestMethod.Init TestClass, MemberId
 End Function
 
 Public Function NewTestSuite(ByRef Name As String) As TestSuite
@@ -60,9 +60,9 @@ Public Function NewErrorInfo(ByVal Number As Long, Optional ByRef Source As Stri
     NewErrorInfo.Init Number, Source, Description, LastDllError
 End Function
 
-Public Function NewDynamicTestMethod(ByVal TestClass As Object, ByVal Member As MemberInfo, ByVal TestCaseData As TestCaseData) As DynamicTestMethod
-    Set NewDynamicTestMethod = New DynamicTestMethod
-    NewDynamicTestMethod.Init TestClass, Member, TestCaseData
+Public Function NewParameterizedTestMethod(ByVal TestClass As Object, ByRef MemberId As Variant, ByVal TestCaseData As TestCaseData) As ParameterizedTestMethod
+    Set NewParameterizedTestMethod = New ParameterizedTestMethod
+    NewParameterizedTestMethod.Init TestClass, MemberId, TestCaseData
 End Function
 
 Public Function NewTestListEnumerator(ByVal List As TestList) As TestListEnumerator

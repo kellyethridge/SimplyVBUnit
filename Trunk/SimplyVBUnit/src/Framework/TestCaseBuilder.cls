@@ -49,10 +49,10 @@ Private Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo)
 End Sub
 
 Private Sub BuildTestCases()
-    If CanBuildDirectly Then
-        BuildDirectly
-    ElseIf CanBuildIndirectly Then
-        BuildIndirectly
+    If HasNoParameters Then
+        BuildSimpleTestMethod
+    ElseIf IsParameterized Then
+        BuildParameterizedTestMethod
     End If
 End Sub
 
@@ -63,13 +63,25 @@ Private Function Release() As Collection
     Set mTestCases = Nothing
 End Function
 
-Private Function CanBuildDirectly() As Boolean
-    CanBuildDirectly = (mMember.Parameters.Count = 0)
+Private Function IsParameterized() As Boolean
+    IsParameterized = HasParameters And CanProvideArguments
 End Function
 
-Private Sub BuildDirectly()
+Private Function HasParameters() As Boolean
+    HasParameters = (mMember.Parameters.Count > 0)
+End Function
+
+Private Function CanProvideArguments() As Boolean
+    CanProvideArguments = (TypeOf mTestClass Is ITestCaseSource)
+End Function
+
+Private Function HasNoParameters() As Boolean
+    HasNoParameters = Not HasParameters
+End Function
+
+Private Sub BuildSimpleTestMethod()
     Dim Method As ITestMethod
-    Set Method = Sim.NewStaticTestMethod(mTestClass, mMember)
+    Set Method = Sim.NewSimpleTestMethod(mTestClass, mMember.MemberId)
     AddTestCase Method
 End Sub
 
@@ -77,7 +89,7 @@ Private Function CanBuildIndirectly() As Boolean
     CanBuildIndirectly = (TypeOf mTestClass Is ITestCaseSource)
 End Function
 
-Private Sub BuildIndirectly()
+Private Sub BuildParameterizedTestMethod()
     Dim Suite As TestSuite
     Set Suite = Sim.NewTestSuite(mMember.Name)
     mTestCases.Add Suite
@@ -92,7 +104,7 @@ End Sub
 
 Private Function MakeTestCaseFromData(ByVal Data As TestCaseData) As TestCase
     Dim Method As ITestMethod
-    Set Method = Sim.NewDynamicTestMethod(mTestClass, mMember, Data)
+    Set Method = Sim.NewParameterizedTestMethod(mTestClass, mMember.MemberId, Data)
     
     Dim Name As String
     Name = BuildTestName(Data.TestName)

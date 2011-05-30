@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "StaticTestMethodTests"
+Attribute VB_Name = "SimpleTestMethodTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,7 +25,7 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: StaticTestMethodTests
+' Module: SimpleTestMethodTests
 '
 Option Explicit
 
@@ -35,33 +35,45 @@ Public Sub Constructor_WithNothingTestClass_RaisesError()
     
     On Error GoTo errTrap
     
-    Sim.NewStaticTestMethod Nothing, Member
+    Sim.NewSimpleTestMethod Nothing, "a"
     
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
 errTrap:
-    AssertError Err, ErrorCode.ArgumentNull, "StaticTestMethod.Init", "TestClass cannot be Nothing."
+    AssertError Err, ErrorCode.ArgumentNull, "SimpleTestMethod.Init", "TestClass cannot be Nothing."
 End Sub
 
-Public Sub Constructor_WithNothingMember_RaisesError()
+Public Sub Constructor_WithEmptyMemberId_RaisesError()
     On Error GoTo errTrap
     
-    Sim.NewStaticTestMethod New Fake1Test, Nothing
+    Sim.NewSimpleTestMethod New Fake1Test, ""
     
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
 errTrap:
-    AssertError Err, ErrorCode.ArgumentNull, "StaticTestMethod.Init", "Member cannot be Nothing."
+    AssertError Err, ErrorCode.Argument, "SimpleTestMethod.Init", "MemberId cannot be empty."
+End Sub
+
+Public Sub Constructor_WithNothingMemberId_RaisesError()
+    On Error GoTo errTrap
+    
+    Sim.NewSimpleTestMethod New Fake1Test, Nothing
+    
+    On Error GoTo 0
+    Assert.Fail "An error should be raised."
+    
+errTrap:
+    AssertError Err, ErrorCode.Argument, "SimpleTestMethod.Init"
 End Sub
 
 Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim TestClass As New Mock1Test
     Dim Member As MemberInfo
     Set Member = MakeTest1Member(TestClass)
-    Dim Method As StaticTestMethod
-    Set Method = Sim.NewStaticTestMethod(TestClass, Member)
+    Dim Method As SimpleTestMethod
+    Set Method = Sim.NewSimpleTestMethod(TestClass, Member.MemberId)
     
     Method.Run
     
@@ -72,9 +84,9 @@ Public Sub Constructor_WhenCalled_StoresTestClass()
     Dim Fake As New Fake1Test
     Dim Member As MemberInfo
     Set Member = MakeTest1Member(Fake)
-    Dim Method As StaticTestMethod
+    Dim Method As SimpleTestMethod
     
-    Set Method = Sim.NewStaticTestMethod(Fake, Member)
+    Set Method = Sim.NewSimpleTestMethod(Fake, Member.Name)
     
     Dim Actual As Object
     Set Actual = Method.TestClass

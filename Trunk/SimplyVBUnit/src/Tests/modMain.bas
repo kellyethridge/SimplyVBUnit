@@ -33,7 +33,7 @@ Private Sub RunTestClassTests()
     Suite.Add New TestSuiteTests
     Suite.Add New TestCaseTests
     Suite.Add New AssertionsTests
-    Suite.Add New StaticTestMethodTests
+    Suite.Add New SimpleTestMethodTests
     Suite.Add New ErrorInfoTests
     Suite.Add New MemberQueryTests
     Suite.Add New TestCaseCollectorTests
@@ -64,7 +64,7 @@ Private Sub RunTestClassTests()
     Suite.Add New ErrorHelperTests
     Suite.Add New ThrowsConstraintTests
     Suite.Add New TestCaseModifierTests
-    Suite.Add New DynamicTestMethodTests
+    Suite.Add New ParameterizedTestMethodTests
     Suite.Add New ConstraintBuilderTests
     Suite.Add New AndOperatorTests
     Suite.Add New OrOperatorTests

@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "DynamicTestMethodTests"
+Attribute VB_Name = "ParameterizedTestMethodTests"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -25,14 +25,14 @@ Attribute VB_Exposed = False
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: DynamicTestMethodTests
+' Module: ParameterizedTestMethodTests
 '
 Option Explicit
 
 Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim Mock As New Mock1TestCaseSourceExpect
-    Dim Method As DynamicTestMethod
-    Set Method = MakeDynamicTestMethod(Mock)
+    Dim Method As ParameterizedTestMethod
+    Set Method = MakeParameterizedTestMethod(Mock)
 
     Method.Run
 
@@ -50,8 +50,8 @@ Public Sub Run_WhenCalled_AppliesConstraintToResult()
     Dim Args() As Variant
     Args = Array(5)
     TestCaseData.CopyArguments Args
-    Dim Method As DynamicTestMethod
-    Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
+    Dim Method As ParameterizedTestMethod
+    Set Method = Sim.NewParameterizedTestMethod(Stub, Member, TestCaseData)
 
     Method.Run
 
@@ -69,8 +69,8 @@ Public Sub Run_WhenCalled_AppliesConstraintToResult2()
     Dim Args() As Variant
     Args = Array(5)
     TestCaseData.CopyArguments Args
-    Dim Method As DynamicTestMethod
-    Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
+    Dim Method As ParameterizedTestMethod
+    Set Method = Sim.NewParameterizedTestMethod(Stub, Member, TestCaseData)
 
     Method.Run
 
@@ -90,8 +90,8 @@ Public Sub Run_WhenCalled_AssertsResult()
     Dim Args() As Variant
     Args = Array(5)
     TestCaseData.CopyArguments Args
-    Dim Method As DynamicTestMethod
-    Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
+    Dim Method As ParameterizedTestMethod
+    Set Method = Sim.NewParameterizedTestMethod(Stub, Member, TestCaseData)
 
     On Error GoTo errTrap
     Method.Run
@@ -102,7 +102,7 @@ errTrap:
 End Sub
 
 
-Private Function MakeDynamicTestMethod(ByVal TestClass As Object) As DynamicTestMethod
+Private Function MakeParameterizedTestMethod(ByVal TestClass As Object) As ParameterizedTestMethod
     Dim Member As MemberInfo
     Set Member = tli.InterfaceInfoFromObject(TestClass).VTableInterface.GetMember(Constants.TEST1_METHOD)
     Dim TestCaseData As New TestCaseData
@@ -111,7 +111,7 @@ Private Function MakeDynamicTestMethod(ByVal TestClass As Object) As DynamicTest
     Args = Array(5)
     TestCaseData.CopyArguments Args
     
-    Set MakeDynamicTestMethod = Sim.NewDynamicTestMethod(TestClass, Member, TestCaseData)
+    Set MakeParameterizedTestMethod = Sim.NewParameterizedTestMethod(TestClass, Member, TestCaseData)
 End Function
 
 Private Function PassingConstraint() As MockConstraint

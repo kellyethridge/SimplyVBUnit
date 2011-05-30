@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "StaticTestMethod"
+Attribute VB_Name = "SimpleTestMethod"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -25,33 +25,53 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: StaticTestMethod
+' Module: SimpleTestMethod
 '
 Option Explicit
 Implements ITestMethod
 
 Private mTestClass  As Object
-Private mMember     As MemberInfo
+Private mMemberId   As Variant
 
 
 Public Sub Run()
-    tli.InvokeHookSub mTestClass, mMember.MemberId, INVOKE_FUNC
+    tli.InvokeHookSub mTestClass, mMemberId, INVOKE_FUNC
 End Sub
 
 Public Property Get TestClass() As Object
     Set TestClass = mTestClass
 End Property
 
-Friend Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo)
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Friend Sub Init(ByVal TestClass As Object, ByRef MemberId As Variant)
     If TestClass Is Nothing Then _
         Error.CannotBeNothing Me, "Init", "TestClass"
-    If Member Is Nothing Then _
-        Error.CannotBeNothing Me, "Init", "Member"
     
     Set mTestClass = TestClass
-    Set mMember = Member
+    
+    Select Case VarType(MemberId)
+        Case vbString
+            If Len(MemberId) = 0 Then _
+                Error.CannotBeEmpty Me, "Init", "MemberId"
+                
+            mMemberId = MemberId
+            
+        Case vbLong, vbInteger, vbByte
+            mMemberId = MemberId
+        
+        Case Else
+            Error.Argument Me, "Init", "MemberId", "Must be a String or Number."
+            
+    End Select
 End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   ITestMethod Interface
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ITestMethod_Run()
     Run
 End Sub
