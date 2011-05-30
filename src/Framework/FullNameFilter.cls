@@ -32,22 +32,38 @@ Implements ITestFilter
 
 Private mBase   As New TestFilterBase
 Private mNames  As New Collection
-
+Private mLikes  As New Collection
 
 Public Sub Add(ByRef Name As String)
     On Error GoTo errTrap
-    mNames.Add Name, Name
+    
+    If Right$(Name, 1) = "*" Then
+        mLikes.Add Name
+    Else
+        mNames.Add Name, Name
+    End If
 errTrap:
 End Sub
 
 Public Function Match(ByVal Test As ITest) As Boolean
     On Error GoTo errTrap
     
+    Dim NameToCheck As String
+    NameToCheck = Test.FullName
+    
     Dim Name As String
-    Name = mNames(Test.FullName)
+    Name = mNames(NameToCheck)
     Match = True
+    Exit Function
     
 errTrap:
+    Dim NameExp As Variant
+    For Each NameExp In mLikes
+        If NameToCheck Like NameExp Then
+            Match = True
+            Exit Function
+        End If
+    Next
 End Function
 
 Public Function Pass(ByVal Test As ITest) As Boolean

@@ -48,6 +48,7 @@ Class=Mock1TestCaseSourceExpect; Mock1TestCaseSourceExpect.cls
 Class=CollectionProxy; CollectionProxy.cls
 Class=FakePersistable; FakePersistable.cls
 Class=FakeNonPersistable; FakeNonPersistable.cls
+Class=MockITestFixture; MockITestFixture.cls
 Startup="(None)"
 HelpFile=""
 Command32=""

@@ -69,6 +69,12 @@ Public Sub CopyArguments(ByRef Arguments() As Variant)
     MakeReverseCopy Arguments
 End Sub
 
+Public Property Get HasArguments() As Boolean
+    On Error GoTo errTrap
+    HasArguments = UBound(mArguments) >= 0
+errTrap:
+End Property
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
