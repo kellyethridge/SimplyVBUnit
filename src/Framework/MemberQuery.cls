@@ -49,7 +49,7 @@ Private Function InitedSuccessfully(ByVal TestClass As Object) As Boolean
     Set mResult = New QueryResult
     
     On Error GoTo errTrap
-    Set mInfo = tli.InterfaceInfoFromObject(TestClass)
+    Set mInfo = tli.InterfaceInfoFromObject(TestClass).VTableInterface
     InitedSuccessfully = True
     
 errTrap:

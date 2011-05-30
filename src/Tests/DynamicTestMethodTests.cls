@@ -33,16 +33,16 @@ Public Sub Run_WhenCalled_ExecutesTestClassMethod()
     Dim Mock As New Mock1TestCaseSourceExpect
     Dim Method As DynamicTestMethod
     Set Method = MakeDynamicTestMethod(Mock)
-    
+
     Method.Run
-    
+
     AssertCalls Mock.Calls, "Test1.5"
 End Sub
 
 Public Sub Run_WhenCalled_AppliesConstraintToResult()
     Dim Stub As New Mock1TestCaseSourceExpect
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember(Constants.TEST1_METHOD)
+    Set Member = tli.InterfaceInfoFromObject(Stub).VTableInterface.GetMember(Constants.TEST1_METHOD)
     Dim Mock As New MockConstraint
     Mock.Matches = True
     Dim TestCaseData As New TestCaseData
@@ -52,9 +52,9 @@ Public Sub Run_WhenCalled_AppliesConstraintToResult()
     TestCaseData.CopyArguments Args
     Dim Method As DynamicTestMethod
     Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
-    
+
     Method.Run
-    
+
     AssertCalls Mock.Calls, "Resolve", "Matches"
 End Sub
 
@@ -71,9 +71,9 @@ Public Sub Run_WhenCalled_AppliesConstraintToResult2()
     TestCaseData.CopyArguments Args
     Dim Method As DynamicTestMethod
     Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
-    
+
     Method.Run
-    
+
     Dim Actual As Variant
     Actual = Mock.Actual
     Assert.That Actual, Iz.EqualTo(5)
@@ -92,11 +92,11 @@ Public Sub Run_WhenCalled_AssertsResult()
     TestCaseData.CopyArguments Args
     Dim Method As DynamicTestMethod
     Set Method = Sim.NewDynamicTestMethod(Stub, Member, TestCaseData)
-    
+
     On Error GoTo errTrap
     Method.Run
     On Error GoTo 0
-    
+
 errTrap:
     AssertError Err, AssertCode.FailureCode
 End Sub
@@ -104,7 +104,7 @@ End Sub
 
 Private Function MakeDynamicTestMethod(ByVal TestClass As Object) As DynamicTestMethod
     Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(TestClass).GetMember(Constants.TEST1_METHOD)
+    Set Member = tli.InterfaceInfoFromObject(TestClass).VTableInterface.GetMember(Constants.TEST1_METHOD)
     Dim TestCaseData As New TestCaseData
     Set TestCaseData.Expected = PassingConstraint
     Dim Args() As Variant
