@@ -29,28 +29,28 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mSetupMember            As MemberInfo
-Private mTeardownMember         As MemberInfo
-Private mFixtureSetupMember     As MemberInfo
-Private mFixtureTeardownMember  As MemberInfo
+Private mSetupMember            As Variant
+Private mTeardownMember         As Variant
+Private mFixtureSetupMember     As Variant
+Private mFixtureTeardownMember  As Variant
 Private mTestCaseMembers        As New Collection
 
 
 
-Public Property Get SetupMember() As MemberInfo
-    Set SetupMember = mSetupMember
+Public Property Get SetupMember() As Variant
+    SetupMember = mSetupMember
 End Property
 
-Public Property Get TeardownMember() As MemberInfo
-    Set TeardownMember = mTeardownMember
+Public Property Get TeardownMember() As Variant
+    TeardownMember = mTeardownMember
 End Property
 
-Public Property Get FixtureSetupMember() As MemberInfo
-    Set FixtureSetupMember = mFixtureSetupMember
+Public Property Get FixtureSetupMember() As Variant
+    FixtureSetupMember = mFixtureSetupMember
 End Property
 
-Public Property Get FixtureTeardownMember() As MemberInfo
-    Set FixtureTeardownMember = mFixtureTeardownMember
+Public Property Get FixtureTeardownMember() As Variant
+    FixtureTeardownMember = mFixtureTeardownMember
 End Property
 
 Public Property Get TestCaseMembers() As Collection
@@ -59,10 +59,10 @@ End Property
 
 Public Sub AddMember(ByVal Member As MemberInfo)
     Select Case LCase$(Member.Name)
-        Case "setup":           Set mSetupMember = Member
-        Case "teardown":        Set mTeardownMember = Member
-        Case "fixturesetup":    Set mFixtureSetupMember = Member
-        Case "fixtureteardown": Set mFixtureTeardownMember = Member
+        Case "setup":           mSetupMember = Member.MemberId
+        Case "teardown":        mTeardownMember = Member.MemberId
+        Case "fixturesetup":    mFixtureSetupMember = Member.MemberId
+        Case "fixtureteardown": mFixtureTeardownMember = Member.MemberId
         Case Else:              mTestCaseMembers.Add Member
     End Select
 End Sub

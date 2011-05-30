@@ -36,9 +36,9 @@ Public Sub Query_WithEmptyTestClass_DoesNotFindSetupMember()
     Dim Result As QueryResult
     Set Result = Query.Execute(Fake)
     
-    Dim Actual As MemberInfo
-    Set Actual = Result.SetupMember
-    Assert.IsTrue Actual Is Nothing
+    Dim Actual As Variant
+    Actual = Result.SetupMember
+    Assert.IsTrue IsEmpty(Actual)
 End Sub
 
 Public Sub Query_WithEmptyTestClass_DoesNotFindTeardownMember()
@@ -48,9 +48,9 @@ Public Sub Query_WithEmptyTestClass_DoesNotFindTeardownMember()
     Dim Result As QueryResult
     Set Result = Query.Execute(Fake)
     
-    Dim Actual As MemberInfo
-    Set Actual = Result.TeardownMember
-    Assert.IsTrue Actual Is Nothing
+    Dim Actual As Variant
+    Actual = Result.TeardownMember
+    Assert.IsTrue IsEmpty(Actual)
 End Sub
 
 Public Sub Query_WithEmptyTestClass_DoesNotFindFixtureSetupMember()
@@ -60,9 +60,9 @@ Public Sub Query_WithEmptyTestClass_DoesNotFindFixtureSetupMember()
     Dim Result As QueryResult
     Set Result = Query.Execute(Fake)
     
-    Dim Actual As MemberInfo
-    Set Actual = Result.FixtureSetupMember
-    Assert.IsTrue Actual Is Nothing
+    Dim Actual As Variant
+    Actual = Result.FixtureSetupMember
+    Assert.IsTrue IsEmpty(Actual)
 End Sub
 
 Public Sub Query_WithEmptyTestClass_DoesNotFindFixtureTeardownMember()
@@ -72,9 +72,9 @@ Public Sub Query_WithEmptyTestClass_DoesNotFindFixtureTeardownMember()
     Dim Result As QueryResult
     Set Result = Query.Execute(Fake)
     
-    Dim Actual As MemberInfo
-    Set Actual = Result.FixtureTeardownMember
-    Assert.IsTrue Actual Is Nothing
+    Dim Actual As Variant
+    Actual = Result.FixtureTeardownMember
+    Assert.IsTrue IsEmpty(Actual)
 End Sub
 
 Public Sub Query_WithEmptyTestClass_DoesNotFindTestCaseMembers()
@@ -120,9 +120,9 @@ Public Sub Query_With1TestAndSetup_FindsSetupMember()
     Dim Result As QueryResult
     Set Result = Query.Execute(Fake)
     
-    Dim Actual As MemberInfo
-    Set Actual = Result.SetupMember
-    Assert.IsTrue Not Actual Is Nothing
+    Dim Actual As Variant
+    Actual = Result.SetupMember
+    Assert.IsTrue Not IsEmpty(Actual)
 End Sub
 
 Public Sub Query_With1TestAndSetup_Finds1TestCaseMember()
@@ -144,9 +144,9 @@ Public Sub Query_With1TestAndTeardown_FindsTeardownMembmer()
     Dim Result As QueryResult
     Set Result = Query.Execute(Fake)
     
-    Dim Actual As MemberInfo
-    Set Actual = Result.TeardownMember
-    Assert.IsTrue Not Actual Is Nothing
+    Dim Actual As Variant
+    Actual = Result.TeardownMember
+    Assert.IsTrue Not IsEmpty(Actual)
 End Sub
 
 Public Sub Query_With1TestAndFixtureSetup_FindsFixtureSetupMethod()
@@ -156,9 +156,9 @@ Public Sub Query_With1TestAndFixtureSetup_FindsFixtureSetupMethod()
     Dim Result As QueryResult
     Set Result = Query.Execute(Fake)
     
-    Dim Actual As MemberInfo
-    Set Actual = Result.FixtureSetupMember
-    Assert.IsTrue Not Actual Is Nothing
+    Dim Actual As Variant
+    Actual = Result.FixtureSetupMember
+    Assert.IsTrue Not IsEmpty(Actual)
 End Sub
 
 Public Sub Query_With1TestAndFixtureTeardown_FindsFixtureTeardownMethod()
@@ -168,9 +168,9 @@ Public Sub Query_With1TestAndFixtureTeardown_FindsFixtureTeardownMethod()
     Dim Result As QueryResult
     Set Result = Query.Execute(Fake)
     
-    Dim Actual As MemberInfo
-    Set Actual = Result.FixtureTeardownMember
-    Assert.IsTrue Not Actual Is Nothing
+    Dim Actual As Variant
+    Actual = Result.FixtureTeardownMember
+    Assert.IsTrue Not IsEmpty(Actual)
 End Sub
 
 Public Sub Query_With1Property_ExcludesProperty()

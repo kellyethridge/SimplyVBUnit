@@ -420,7 +420,7 @@ Public Sub Run_WithRunStateSetToNotRunnable_ReturnsResultSetToNotRunnable()
     Assert.IsTrue Result.ResultState = NotRunnableState
 End Sub
 
-Public Sub Run_WithNonPassingFilter_DoesNotRun()
+Public Sub Run_WithNonPassingFilter_RunsTestFixtureContextNoTests()
     Dim Stub As New StubFilter
     Stub.Matches = False
     Stub.Passes = False
@@ -430,7 +430,7 @@ Public Sub Run_WithNonPassingFilter_DoesNotRun()
     
     Fixture.Run Nothing, Stub
     
-    AssertNoCalls Mock.Calls
+    AssertCalls Mock.Calls, "FixtureSetup", "FixtureTeardown"
 End Sub
 
 Public Sub Run_WithNonPassingFilter_ReturnsInconclusiveResult()

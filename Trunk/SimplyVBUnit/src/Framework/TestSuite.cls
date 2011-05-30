@@ -149,16 +149,18 @@ Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Fi
         Listener.TestSuiteStarted Me
         
         If Me.RunState = RunnableRunState Then
-            If Filter.Pass(Me) Then
-                Result.Success
-                InitMetrics
-                
-                If RunFixtureSetup(Result) = True Then
-                    RunTests Result
-                End If
-                
-                RunFixtureTeardown
-                RecordMetrics Result
+            Result.Success
+            InitMetrics
+            
+            If RunFixtureSetup(Result) = True Then
+                RunTests Result, Listener, Filter
+            End If
+            
+            RunFixtureTeardown
+            RecordMetrics Result
+            
+            If Result.Results.Count = 0 Then
+                Result.SetResult InconclusiveState
             End If
         Else
             Result.Invalid
@@ -215,12 +217,14 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Sub RunTests(ByVal Result As TestResult)
+Private Sub RunTests(ByVal Result As TestResult, ByVal Listener As IEventListener, ByVal Filter As ITestFilter)
     Dim Test As ITest
     
     For Each Test In mTests
-        Test.RunState = Me.RunState
-        Result.AddResult Test.Run
+        If Filter.Pass(Test) Then
+            Test.RunState = Me.RunState
+            Result.AddResult Test.Run(Listener, Filter)
+        End If
     Next
 End Sub
 
@@ -242,20 +246,54 @@ Private Function StopTiming() As Currency
 End Function
 
 Private Sub ManuallyBuildFixture()
-    Debug.Assert False
+    CreateTestCaseContext "Setup", "Teardown"
+    CreateTestFixtureContext "FixtureSetup", "FixtureTeardown"
     
     Dim Fixture As ITestFixture
     Set Fixture = mTestClass
     Dim Builder As New TestFixtureBuilder
     Fixture.GetTestCases Builder
     
+    Dim Count       As Long
+    Dim Collector   As TestCaseCollector
+    Dim Method      As ITestMethod
+    Dim Test        As TestCase
+    For Each Collector In Builder
+        If Collector.DataStore.Count > 0 Then
+            Dim Scenario As TestCaseData
+            For Each Scenario In Collector.DataStore
+                If Scenario.HasArguments Then
+                    Set Method = Sim.NewParameterizedTestMethod(mTestClass, Collector.MethodName, Scenario)
+                Else
+                    Set Method = Sim.NewSimpleTestMethod(mTestClass, Collector.MethodName)
+                End If
+                
+                Dim Name As String
+                If Len(Scenario.TestName) = 0 Then
+                    Count = Count + 1
+                    Name = Collector.MethodName & "_" & Count
+                Else
+                    Name = Scenario.TestName
+                End If
+                
+                Set Test = Sim.NewTestCase(Name, Method)
+                AddTestCase Test
+            Next
+        Else
+            Set Method = Sim.NewSimpleTestMethod(mTestClass, Collector.MethodName)
+            Set Test = Sim.NewTestCase(Collector.MethodName, Method)
+            AddTestCase Test
+        End If
+    Next
+    
+    SetContext mTests
 End Sub
 
 Private Sub AutomaticallyBuildFixture()
     Dim Result As QueryResult
     Set Result = QueryTestClass
     
-    AssignContextMethods Result
+    CreateContextMethods Result
     BuildTestCasesFromMembers Result.TestCaseMembers
     SetContext mTests
 End Sub
@@ -265,12 +303,12 @@ Private Function QueryTestClass() As QueryResult
     Set QueryTestClass = Query.Execute(mTestClass)
 End Function
 
-Private Sub AssignContextMethods(ByVal Result As QueryResult)
-    AssignTestCaseContext Result.SetupMember, Result.TeardownMember
-    AssignTestFixtureContext Result.FixtureSetupMember, Result.FixtureTeardownMember
+Private Sub CreateContextMethods(ByVal Result As QueryResult)
+    CreateTestCaseContext Result.SetupMember, Result.TeardownMember
+    CreateTestFixtureContext Result.FixtureSetupMember, Result.FixtureTeardownMember
 End Sub
 
-Private Sub AssignTestCaseContext(ByVal SetupMember As MemberInfo, ByVal TeardownMember As MemberInfo)
+Private Sub CreateTestCaseContext(ByRef SetupMember As Variant, ByRef TeardownMember As Variant)
     Dim SetupMethod     As ITestMethod
     Dim TeardownMethod  As ITestMethod
     
@@ -279,21 +317,21 @@ Private Sub AssignTestCaseContext(ByVal SetupMember As MemberInfo, ByVal Teardow
     Set mTestCaseContext = Sim.NewContextMethods(SetupMethod, TeardownMethod)
 End Sub
 
-Private Sub AssignTestFixtureContext(ByVal FixtureSetupMember As MemberInfo, ByVal FixtureTeardownMember As MemberInfo)
+Private Sub CreateTestFixtureContext(ByRef FixtureSetupMember As Variant, ByRef FixtureTeardownMember As Variant)
     Set mFixtureSetup = BuildContextMethod(FixtureSetupMember)
     Set mFixtureTeardown = BuildContextMethod(FixtureTeardownMember)
 End Sub
 
-Private Function BuildContextMethod(ByVal Member As MemberInfo) As ITestMethod
-    If ContextMemberWasFound(Member) Then
-        Set BuildContextMethod = Sim.NewSimpleTestMethod(mTestClass, Member)
+Private Function BuildContextMethod(ByRef MemberId As Variant) As ITestMethod
+    If ContextMemberWasFound(MemberId) Then
+        Set BuildContextMethod = Sim.NewSimpleTestMethod(mTestClass, MemberId)
     Else
         Set BuildContextMethod = NullMethod.Instance
     End If
 End Function
 
-Private Function ContextMemberWasFound(ByVal Member As MemberInfo) As Boolean
-    ContextMemberWasFound = (Not Member Is Nothing)
+Private Function ContextMemberWasFound(ByRef MemberId As Variant) As Boolean
+    ContextMemberWasFound = Not IsEmpty(MemberId)
 End Function
 
 Private Sub BuildTestCasesFromMembers(ByVal Members As Collection)
@@ -341,6 +379,12 @@ Private Function RunFixtureSetup(ByVal FixtureResult As TestResult) As Boolean
     Exit Function
     
 errTrap:
+    Const ERR_METHODNOTFOUND As Long = 438
+    If Err.Number = ERR_METHODNOTFOUND Then
+        RunFixtureSetup = True
+        Exit Function
+    End If
+    
     FixtureResult.Error Resource.GetString(Msg_FixtureSetupFailed), SetupSite
     FailAllTests mTests, FixtureResult
 End Function

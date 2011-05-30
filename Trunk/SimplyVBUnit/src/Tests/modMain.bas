@@ -92,6 +92,7 @@ Private Sub RunTestClassTests()
     Suite.Add New PersistableConstraintTests
     Suite.Add New AllItemsConstraintTests
     Suite.Add New SomeItemsConstraintTests
+    Suite.Add New ITestFixtureTests
     
     Dim Runner As TestRunner
     Set Runner = Sim.NewTestRunner(Suite)

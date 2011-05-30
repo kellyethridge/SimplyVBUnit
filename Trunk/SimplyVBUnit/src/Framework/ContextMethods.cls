@@ -29,16 +29,18 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mSetup      As ITestMethod
-Private mTeardown   As ITestMethod
+Private mSetup          As ITestMethod
+Private mTeardown       As ITestMethod
+Private mSkipSetup      As Boolean
+Private mSkipTeardown   As Boolean
 
 
 Public Sub RunSetup()
-    mSetup.Run
+    RunMethod mSetup, mSkipSetup
 End Sub
 
 Public Sub RunTeardown()
-    mTeardown.Run
+    RunMethod mTeardown, mSkipTeardown
 End Sub
 
 
@@ -48,4 +50,20 @@ End Sub
 Friend Sub Init(ByVal SetupMethod As ITestMethod, ByVal TeardownMethod As ITestMethod)
     Set mSetup = SetupMethod
     Set mTeardown = TeardownMethod
+End Sub
+
+
+Private Sub RunMethod(ByRef Method As ITestMethod, ByRef Skip As Boolean)
+    On Error GoTo errTrap
+    If Skip = False Then
+        Method.Run
+    End If
+    Exit Sub
+    
+errTrap:
+    If Err.Number = 438 Then
+        Skip = True
+    Else
+        Err.Raise Err.Number, Err.Source, Err.Description
+    End If
 End Sub
