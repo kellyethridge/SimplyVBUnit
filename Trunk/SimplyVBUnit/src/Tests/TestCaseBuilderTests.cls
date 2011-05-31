@@ -115,26 +115,6 @@ Public Sub BuildFrom_WithTestWithArgsDoesNotImplementITestCaseSource_ReturnsEmpt
     Assert.IsTrue Actual.Count = 0, "Should be 0 test cases."
 End Sub
 
-Public Sub BuildFrom_WithTestNameSet_ReturnsWithTestName()
-    Dim Stub As New Stub1TestCaseSourceTestName
-    Stub.TestName = "Custom"
-    Dim Member As MemberInfo
-    Set Member = tli.InterfaceInfoFromObject(Stub).GetMember(Constants.TEST1_METHOD)
-    Dim Builder As New TestCaseBuilder
-    
-    Dim Tests As Collection
-    Set Tests = Builder.BuildFrom(Stub, Member)
-    
-    Dim Parent As ITest
-    Set Parent = Tests(1)
-
-    Dim Test As ITest
-    Set Test = Parent.Tests(0)
-    Dim Actual As String
-    Actual = Test.Name
-    Assert.That Actual, Iz.EqualTo("Custom")
-End Sub
-
 
 
 

@@ -28,31 +28,21 @@ Attribute VB_Exposed = True
 ' Module: TestCaseModifier
 '
 Option Explicit
-Implements AssertExpression
-Implements TestNameExpression
 
 Private mData As TestCaseData
 
 
-Public Function TestName(ByVal NewTestName As String) As AssertExpression
-    mData.TestName = NewTestName
-    Set TestName = Me
-End Function
-
-Public Function Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As String, Optional ByVal ErrorDescription As String) As TestNameExpression
+Public Sub Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As String, Optional ByVal ErrorDescription As String)
     Set mData.ErrorInfo = Sim.NewErrorInfo(ErrorNumber, ErrorSource, ErrorDescription)
-    Set Throws = Me
-End Function
+End Sub
 
-Public Function Expect(ByRef Expected As Variant) As TestNameExpression
+Public Sub Expect(ByRef Expected As Variant)
     If IsConstraint(Expected) Then
         Set mData.Expected = Expected
     Else
         Set mData.Expected = Sim.NewEqualConstraint(Expected)
     End If
-    
-    Set Expect = Me
-End Function
+End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -79,24 +69,4 @@ Friend Sub Init(ByVal Data As TestCaseData)
         Error.CannotBeNothing Me, "Init", "Data"
         
     Set mData = Data
-End Sub
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   AssertExpression Interface
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Sub AssertExpression_Expect(Expected As Variant)
-    Expect Expected
-End Sub
-
-Private Sub AssertExpression_Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As String, Optional ByVal ErrorDescription As String)
-    Throws ErrorNumber, ErrorSource, ErrorDescription
-End Sub
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   TestNameExpression Interface
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Sub TestNameExpression_TestName(ByVal NewTestName As String)
-    TestName NewTestName
 End Sub

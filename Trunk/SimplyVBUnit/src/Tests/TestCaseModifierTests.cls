@@ -29,18 +29,6 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Public Sub TestName_WithName_StoresInTestCaseData()
-    Dim Data As New TestCaseData
-    Dim Modifier As TestCaseModifier
-    Set Modifier = Sim.NewTestCaseModifier(Data)
-    
-    Modifier.TestName "Test"
-    
-    Dim Actual As String
-    Actual = Data.TestName
-    Assert.That Actual, Iz.EqualTo("Test")
-End Sub
-
 Public Sub Throws_WithNumber_StoresErrorInfo()
     Dim Data As New TestCaseData
     Dim Modifier As TestCaseModifier

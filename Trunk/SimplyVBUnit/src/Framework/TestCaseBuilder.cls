@@ -106,22 +106,7 @@ Private Function MakeTestCaseFromData(ByVal Data As TestCaseData) As TestCase
     Dim Method As ITestMethod
     Set Method = Sim.NewParameterizedTestMethod(mTestClass, mMember.MemberId, Data)
     
-    Dim Name As String
-    Name = BuildTestName(Data.TestName)
-    
-    Set MakeTestCaseFromData = Sim.NewTestCase(Name, Method)
-End Function
-
-Private Function BuildTestName(ByRef UserDefinedName As String) As String
-    Dim Result As String
-    
-    If Len(UserDefinedName) > 0 Then
-        Result = UserDefinedName
-    Else
-        Result = NextSequentialTestName
-    End If
-    
-    BuildTestName = Result
+    Set MakeTestCaseFromData = Sim.NewTestCase(NextSequentialTestName, Method)
 End Function
 
 Private Function NextSequentialTestName() As String
