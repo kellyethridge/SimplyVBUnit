@@ -259,27 +259,29 @@ Private Sub ManuallyBuildFixture()
     Dim Method      As ITestMethod
     Dim Test        As TestCase
     For Each Collector In Builder
-        If Collector.DataStore.Count > 0 Then
-            Dim Scenario As TestCaseData
-            For Each Scenario In Collector.DataStore
-                If Scenario.HasArguments Then
-                    Set Method = Sim.NewParameterizedTestMethod(mTestClass, Collector.MethodName, Scenario)
-                Else
-                    Set Method = Sim.NewSimpleTestMethod(mTestClass, Collector.MethodName)
-                End If
-                
-                Dim Name As String
-                Count = Count + 1
-                Name = Collector.MethodName & "_" & Count
-                
-                Set Test = Sim.NewTestCase(Name, Method)
+        With CategoryParser.Parse(Collector.MethodName)
+            If Collector.DataStore.Count > 0 Then
+                Dim Scenario As TestCaseData
+                For Each Scenario In Collector.DataStore
+                    If Scenario.HasArguments Then
+                        Set Method = Sim.NewParameterizedTestMethod(mTestClass, Collector.MethodName, Scenario)
+                    Else
+                        Set Method = Sim.NewSimpleTestMethod(mTestClass, Collector.MethodName)
+                    End If
+                    
+                    Dim Name As String
+                    Count = Count + 1
+                    Name = .Name & "_" & Count
+                    
+                    Set Test = Sim.NewTestCase(Name, Method, .Categories)
+                    AddTestCase Test
+                Next
+            Else
+                Set Method = Sim.NewSimpleTestMethod(mTestClass, Collector.MethodName)
+                Set Test = Sim.NewTestCase(.Name, Method, .Categories)
                 AddTestCase Test
-            Next
-        Else
-            Set Method = Sim.NewSimpleTestMethod(mTestClass, Collector.MethodName)
-            Set Test = Sim.NewTestCase(Collector.MethodName, Method)
-            AddTestCase Test
-        End If
+            End If
+        End With
     Next
     
     SetContext mTests
