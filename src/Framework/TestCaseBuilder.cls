@@ -111,7 +111,7 @@ End Function
 
 Private Function NextSequentialTestName() As String
     mTestSequence = mTestSequence + 1
-    NextSequentialTestName = mMember.Name & mTestSequence
+    NextSequentialTestName = mMember.Name & "_" & mTestSequence
 End Function
 
 Private Function GetTestCases() As Collection

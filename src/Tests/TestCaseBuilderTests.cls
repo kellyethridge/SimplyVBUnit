@@ -97,10 +97,10 @@ Public Sub BuildFrom_With2TestCaseSource_TestCaseNamesEqualParentNamesPlusSequen
     Set Parent = Tests(1)
     Dim Test As ITest
     Set Test = Parent.Tests(0)
-    Assert.IsTrue Test.Name = "Test11"
+    Assert.IsTrue Test.Name = "Test1_1"
     
     Set Test = Parent.Tests(1)
-    Assert.IsTrue Test.Name = "Test12"
+    Assert.IsTrue Test.Name = "Test1_2"
 End Sub
 
 Public Sub BuildFrom_WithTestWithArgsDoesNotImplementITestCaseSource_ReturnsEmpty()

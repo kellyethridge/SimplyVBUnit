@@ -269,12 +269,8 @@ Private Sub ManuallyBuildFixture()
                 End If
                 
                 Dim Name As String
-                If Len(Scenario.TestName) = 0 Then
-                    Count = Count + 1
-                    Name = Collector.MethodName & "_" & Count
-                Else
-                    Name = Scenario.TestName
-                End If
+                Count = Count + 1
+                Name = Collector.MethodName & "_" & Count
                 
                 Set Test = Sim.NewTestCase(Name, Method)
                 AddTestCase Test
