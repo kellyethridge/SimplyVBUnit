@@ -228,18 +228,15 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Name As String, ByVal TestMethod As ITestMethod)
+Friend Sub Init(ByRef Name As String, ByVal TestMethod As ITestMethod, ByVal Categories As CategoryList)
     If Len(Name) = 0 Then _
         Error.CannotBeEmpty Me, "Init", "Name"
     If TestMethod Is Nothing Then _
         Error.CannotBeNothing Me, "Init", "TestMethod"
     
-    With CategoryParser.Parse(Name)
-        mName = .Name
-        Set mCategories = .Categories
-    End With
-    
+    mName = Name
     Set mTestMethod = TestMethod
+    Set mCategories = Categories
 End Sub
 
 Friend Property Set Context(ByVal RHS As ContextMethods)

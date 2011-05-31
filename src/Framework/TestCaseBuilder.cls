@@ -33,6 +33,8 @@ Private mTestCases      As Collection
 Private mMember         As MemberInfo
 Private mTestClass      As Object
 Private mTestSequence   As Long
+Private mCategories     As CategoryList
+Private mTestName       As String
 
 
 Public Function BuildFrom(ByVal TestClass As Object, ByVal Member As MemberInfo) As Collection
@@ -46,6 +48,11 @@ Private Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo)
     Set mMember = Member
     Set mTestClass = TestClass
     mTestSequence = 0
+    
+    With CategoryParser.Parse(Member.Name)
+        mTestName = .Name
+        Set mCategories = .Categories
+    End With
 End Sub
 
 Private Sub BuildTestCases()
@@ -106,12 +113,12 @@ Private Function MakeTestCaseFromData(ByVal Data As TestCaseData) As TestCase
     Dim Method As ITestMethod
     Set Method = Sim.NewParameterizedTestMethod(mTestClass, mMember.MemberId, Data)
     
-    Set MakeTestCaseFromData = Sim.NewTestCase(NextSequentialTestName, Method)
+    Set MakeTestCaseFromData = Sim.NewTestCase(NextSequentialTestName, Method, mCategories)
 End Function
 
 Private Function NextSequentialTestName() As String
     mTestSequence = mTestSequence + 1
-    NextSequentialTestName = mMember.Name & "_" & mTestSequence
+    NextSequentialTestName = mTestName & "_" & mTestSequence
 End Function
 
 Private Function GetTestCases() As Collection
@@ -127,7 +134,7 @@ End Function
 
 Private Sub AddTestCase(ByVal Method As ITestMethod)
     Dim TestCase As TestCase
-    Set TestCase = Sim.NewTestCase(mMember.Name, Method)
+    Set TestCase = Sim.NewTestCase(mTestName, Method, mCategories)
     mTestCases.Add TestCase
 End Sub
 
