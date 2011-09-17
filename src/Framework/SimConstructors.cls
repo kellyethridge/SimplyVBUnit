@@ -40,9 +40,9 @@ Public Function NewTestResult(ByVal Test As ITest) As TestResult
     NewTestResult.Init Test
 End Function
 
-Public Function NewTestCase(ByRef Name As String, ByVal TestMethod As ITestMethod, Optional ByVal Categories As CategoryList) As TestCase
+Public Function NewTestCase(ByRef Name As String, ByVal TestMethod As ITestMethod) As TestCase
     Set NewTestCase = New TestCase
-    NewTestCase.Init Name, TestMethod, Categories
+    NewTestCase.Init Name, TestMethod
 End Function
 
 Public Function NewSimpleTestMethod(ByVal TestClass As Object, ByRef MemberId As Variant) As SimpleTestMethod
@@ -235,3 +235,7 @@ Public Function NewLateBoundTestMethod(ByVal TestClass As Object, ByRef MethodNa
     NewLateBoundTestMethod.Init TestClass, MethodName, TestCaseData
 End Function
 
+Public Function NewTestCategories(ByRef Name As String, ByVal IsFixture As Boolean) As TestCategories
+    Set NewTestCategories = New TestCategories
+    NewTestCategories.Init Name, IsFixture
+End Function

@@ -59,7 +59,6 @@ Public Assert               As New Assertions
 Public TestContext          As New TestContextStatic
 Public TestContextManager   As New TestContextManager
 Public TestFilter           As New TestFilterStatic
-Public CategoryParser       As New CategoryParser
 Public MsgUtils             As New MsgUtils
 Public GlobalSettings       As New GlobalSettings
 Public Tolerance            As New ToleranceStatic

@@ -333,39 +333,6 @@ Public Sub CountTestCases_WithPartialPassingFilter_ReturnsTwo()
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 
-Public Sub Categories_WhenDefinedInTestName_AddsToList()
-    Dim Suite As TestSuite
-    Set Suite = Sim.NewTestSuite("Suite__DB")
-    
-    Dim Actual As Boolean
-    Actual = Suite.Categories.Contains("DB")
-    
-    Assert.IsTrue Actual
-End Sub
-
-Public Sub Name_WithCategoryDefined_RemovesCategoryFromName()
-    Dim Suite As TestSuite
-    Set Suite = Sim.NewTestSuite("Suite__DB")
-
-    Dim Actual As String
-    Actual = Suite.Name
-
-    Assert.That Actual, Iz.EqualTo("Suite")
-End Sub
-
-Public Sub Name_WithMultipleCategoriesDefined_AddsToList()
-    Dim Suite As TestSuite
-    Set Suite = Sim.NewTestSuite("Suite__DB_General")
-
-    Dim Actual1 As Boolean
-    Dim Actual2 As Boolean
-    Actual1 = Suite.Categories.Contains("DB")
-    Actual2 = Suite.Categories.Contains("General")
-
-    Assert.IsTrue Actual1
-    Assert.IsTrue Actual2
-End Sub
-
 
 Private Function NewStubTest(ByVal Name As String) As ITest
     Dim Stub As New StubTest

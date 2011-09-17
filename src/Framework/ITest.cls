@@ -57,9 +57,5 @@ Public Property Let RunState(ByVal RHS As RunState): End Property
 
 Public Function CountTestCases(ByVal Filter As ITestFilter) As Long: End Function
 
-Public Property Get Categories() As CategoryList: End Property
-
-Public Property Get HasCategories() As Boolean: End Property
-
 Public Sub SetRunner(ByVal Runner As ITestRunner): End Sub
 
