@@ -43,22 +43,11 @@ Private mTicks              As Currency
 Private mRunState           As RunState
 Private mTestCaseContext    As ContextMethods
 Private mName               As String
-Private mCategories         As CategoryList
 Private mRunner             As ITestRunner
 
 
 Public Property Get This() As TestSuite
     Set This = Me
-End Property
-
-Public Property Get HasCategories() As Boolean
-    If Not mCategories Is Nothing Then
-        HasCategories = (mCategories.Count > 0)
-    End If
-End Property
-
-Public Property Get Categories() As CategoryList
-    Set Categories = mCategories
 End Property
 
 Public Function CountTestCases(ByVal Filter As ITestFilter) As Long
@@ -193,10 +182,7 @@ End Property
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub InitTestSuite(ByRef Name As String)
-    With CategoryParser.Parse(Name)
-        mName = .Name
-        Set mCategories = .Categories
-    End With
+    mName = Name
 End Sub
 
 Friend Sub InitTestFixture(ByVal TestClass As Object)
@@ -259,7 +245,7 @@ Private Sub ManuallyBuildFixture()
     Dim Method      As ITestMethod
     Dim Test        As TestCase
     For Each Collector In Builder
-        With CategoryParser.Parse(Collector.MethodName)
+'        With CategoryParser.Parse(Collector.MethodName)
             If Collector.DataStore.Count > 0 Then
                 Dim Scenario As TestCaseData
                 For Each Scenario In Collector.DataStore
@@ -271,17 +257,18 @@ Private Sub ManuallyBuildFixture()
                     
                     Dim Name As String
                     Count = Count + 1
-                    Name = .Name & "_" & Count
+                    Name = Collector.MethodName & "_" & Count
                     
-                    Set Test = Sim.NewTestCase(Name, Method, .Categories)
+                    Set Test = Sim.NewTestCase(Name, Method)
                     AddTestCase Test
                 Next
             Else
                 Set Method = Sim.NewSimpleTestMethod(mTestClass, Collector.MethodName)
-                Set Test = Sim.NewTestCase(.Name, Method, .Categories)
+'                Set Test = Sim.NewTestCase(.Name, Method, .Categories)
+                Set Test = Sim.NewTestCase(Collector.MethodName, Method)
                 AddTestCase Test
             End If
-        End With
+'        End With
     Next
     
     SetContext mTests
@@ -427,20 +414,12 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Property Get ITest_Categories() As CategoryList
-    Set ITest_Categories = Categories
-End Property
-
 Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
     ITest_CountTestCases = CountTestCases(Filter)
 End Function
 
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
-End Property
-
-Private Property Get ITest_HasCategories() As Boolean
-    ITest_HasCategories = HasCategories
 End Property
 
 Private Property Get ITest_HasParent() As Boolean
@@ -502,20 +481,12 @@ End Property
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   TestFixture Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Property Get TestFixture_Categories() As CategoryList
-    Set TestFixture_Categories = Categories
-End Property
-
 Private Function TestFixture_CountTestCases(ByVal Filter As ITestFilter) As Long
     TestFixture_CountTestCases = CountTestCases(Filter)
 End Function
 
 Private Property Get TestFixture_FullName() As String
     TestFixture_FullName = FullName
-End Property
-
-Private Property Get TestFixture_HasCategories() As Boolean
-    TestFixture_HasCategories = HasCategories
 End Property
 
 Private Property Get TestFixture_HasParent() As Boolean

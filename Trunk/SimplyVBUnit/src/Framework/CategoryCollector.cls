@@ -6,12 +6,12 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "CategoryList"
+Attribute VB_Name = "CategoryCollector"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-' Copyright 2009 Kelly Ethridge
+' Copyright 2011 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
 ' you may not use this file except in compliance with the License.
@@ -25,40 +25,35 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: CategoryList
+' Module: CategoryCollector
 '
 Option Explicit
 
-Private mItems As New Collection
+Private mFixtureCategories As TestCategories
+Private mTestCategories As New Collection
 
-    
-Public Property Get Count() As Long
-    Count = mItems.Count
-End Property
-
-Public Sub Add(ByRef Name As String)
-    On Error GoTo errTrap
-    mItems.Add Name, Name
-errTrap:
+Public Sub ForFixture(ParamArray Categories() As Variant)
+    Dim Item As Variant
+    For Each Item In Categories
+        If VarType(Item) = vbString Then
+            mFixtureCategories.Add Item
+        End If
+    Next
 End Sub
 
-Public Property Get Item(ByVal Index As Long) As String
-Attribute Item.VB_UserMemId = 0
-    If Index < 0 Or Index >= Me.Count Then _
-        Error.IndexOutOfRange Me, "Item"
-        
-    Item = mItems(Index + 1)
-End Property
+Public Sub ForTest(ByRef TestName As String, ParamArray Categories() As Variant)
+    Dim c As TestCategories
+    Set c = Sim.NewTestCategories(Name, False)
+    
+    Dim Item As Variant
+    For Each Item In Categories
+        If VarType(Item) = vbString Then
+            c.Add Item
+        End If
+    Next
+    
+    mTestCategories.Add c, TestName
+End Sub
 
-Public Function Contains(ByRef Name As String) As Boolean
-    On Error GoTo errTrap
-    Name = mItems(Name)
-    Contains = True
-errTrap:
-End Function
 
-Public Function NewEnum() As IUnknown
-Attribute NewEnum.VB_UserMemId = -4
-Attribute NewEnum.VB_MemberFlags = "40"
-    Set NewEnum = mItems.[_NewEnum]
-End Function
+

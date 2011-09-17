@@ -53,8 +53,6 @@ Private Sub RunTestClassTests()
     Suite.Add New TestRunnerTests
     Suite.Add New EmptyFilterTests
     Suite.Add New FullNameFilterTests
-    Suite.Add New CategoryListTests
-    Suite.Add New CategoryParserTests
     Suite.Add New OrFilterTests
     Suite.Add New AndFilterTests
     Suite.Add New NotFilterTests

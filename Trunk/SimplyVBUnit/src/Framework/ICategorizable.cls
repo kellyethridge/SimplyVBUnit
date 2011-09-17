@@ -6,12 +6,12 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "CategoryParserResult"
+Attribute VB_Name = "ICategorizable"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
+Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-' Copyright 2009 Kelly Ethridge
+' Copyright 2011 Kelly Ethridge
 '
 ' Licensed under the Apache License, Version 2.0 (the "License");
 ' you may not use this file except in compliance with the License.
@@ -25,27 +25,9 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: CategoryParserResult
+' Module: ICategorizable
 '
 Option Explicit
 
-Private mCategories As CategoryList
-Private mName       As String
-
-
-Public Property Get Categories() As CategoryList
-    Set Categories = mCategories
-End Property
-
-Public Property Set Categories(ByVal RHS As CategoryList)
-    Set mCategories = RHS
-End Property
-
-Public Property Get Name() As String
-    Name = mName
-End Property
-
-Public Property Let Name(ByVal RHS As String)
-    mName = RHS
-End Property
+Public Sub GetCategories(ByVal Category As CategoryCollector): End Sub
 

@@ -36,19 +36,8 @@ Private mParent             As Long
 Private mTicks              As Currency
 Private mRunState           As RunState
 Private mContext            As ContextMethods
-Private mCategories         As CategoryList
 Private mRunner             As ITestRunner
 
-
-Public Property Get HasCategories() As Boolean
-    If Not mCategories Is Nothing Then
-        HasCategories = (mCategories.Count > 0)
-    End If
-End Property
-
-Public Property Get Categories() As CategoryList
-    Set Categories = mCategories
-End Property
 
 Public Function CountTestCases(ByVal Filter As ITestFilter) As Long
     If Filter.Pass(Me) Then
@@ -228,7 +217,7 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Name As String, ByVal TestMethod As ITestMethod, ByVal Categories As CategoryList)
+Friend Sub Init(ByRef Name As String, ByVal TestMethod As ITestMethod)
     If Len(Name) = 0 Then _
         Error.CannotBeEmpty Me, "Init", "Name"
     If TestMethod Is Nothing Then _
@@ -236,7 +225,6 @@ Friend Sub Init(ByRef Name As String, ByVal TestMethod As ITestMethod, ByVal Cat
     
     mName = Name
     Set mTestMethod = TestMethod
-    Set mCategories = Categories
 End Sub
 
 Friend Property Set Context(ByVal RHS As ContextMethods)
@@ -261,20 +249,12 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Property Get ITest_Categories() As CategoryList
-    Set ITest_Categories = Categories
-End Property
-
 Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
     ITest_CountTestCases = CountTestCases(Filter)
 End Function
 
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
-End Property
-
-Private Property Get ITest_HasCategories() As Boolean
-    ITest_HasCategories = HasCategories
 End Property
 
 Private Property Get ITest_HasParent() As Boolean
