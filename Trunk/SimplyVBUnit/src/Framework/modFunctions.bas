@@ -40,6 +40,17 @@ Public Type ArrayProxy
     SA          As SafeArray1d
 End Type
 
+Public Function ContainsKey(ByRef Items As Collection, ByRef Key As String) As Boolean
+    On Error GoTo errTrap
+    
+    Dim Item As Variant
+    Item = Items(Key)
+    ContainsKey = False
+    Exit Function
+    
+errTrap:
+    ContainsKey = True
+End Function
 
 Public Function CanonicalizePath(ByRef Path As String) As String
     Dim Source() As String

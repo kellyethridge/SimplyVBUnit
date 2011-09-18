@@ -239,3 +239,13 @@ Public Function NewTestCategories(ByRef Name As String, ByVal IsFixture As Boole
     Set NewTestCategories = New TestCategories
     NewTestCategories.Init Name, IsFixture
 End Function
+
+Public Function NewCategoryStore(ByRef FixtureName As String) As CategoryStore
+    Set NewCategoryStore = New CategoryStore
+    NewCategoryStore.Init FixtureName
+End Function
+
+Public Function NewCategoryCollector(ByVal Store As CategoryStore) As CategoryCollector
+    Set NewCategoryCollector = New CategoryCollector
+    NewCategoryCollector.Init Store
+End Function
