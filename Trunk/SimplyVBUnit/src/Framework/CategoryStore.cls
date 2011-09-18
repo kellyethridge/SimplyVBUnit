@@ -29,22 +29,25 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mFixtureCategories  As TestCategories
-Private mTestCategories     As New Collection
+Private mFixtureCategorization  As Categorization
+Private mTestCategorizations    As New Collection
 
 
-Public Property Get FixtureCategories() As TestCategories
-    Set FixtureCategories = mFixtureCategories
+Public Property Get FixtureCategorization() As Categorization
+    Set FixtureCategorization = mFixtureCategorization
 End Property
 
-Public Property Get TestCategories() As Collection
-    Set TestCategories = mTestCategories
+Public Property Get TestCategorizations() As Collection
+    Set TestCategorizations = mTestCategorizations
 End Property
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Friend Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByRef FixtureName As String)
     If Len(FixtureName) = 0 Then _
         Error.CannotBeEmpty Me, "Init", "FixtureName"
         
-    Set mFixtureCategories = Sim.NewTestCategories(FixtureName, True)
+    Set mFixtureCategorization = Sim.NewCategorization(FixtureName, True)
 End Sub

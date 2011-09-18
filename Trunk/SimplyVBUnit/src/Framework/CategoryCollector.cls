@@ -38,32 +38,32 @@ Public Sub AddFixtureCategories(ParamArray Categories() As Variant)
     Dim Item As Variant
     For Each Item In Categories
         If VarType(Item) <> vbString Then _
-            Error.Argument Me, "FixtureCategories", "Categories", "Only strings can be passed in."
+            Error.Argument Me, "AddFixtureCategories", "Categories", "Only strings can be passed in."
             
-        mStore.FixtureCategories.Add Item
+        mStore.FixtureCategorization.Add CStr(Item)
     Next
 End Sub
 
 Public Sub AddTestCategories(ByRef TestName As String, ParamArray Categories() As Variant)
     If Len(TestName) = 0 Then _
         Error.CannotBeEmpty Me, "AddTestCategories", "TestName"
-    If ContainsKey(mTestCategories, TestName) Then _
+    If ContainsKey(mStore.TestCategorizations, TestName) Then _
         Error.Argument Me, "AddTestCategories", "TestName", "Categories for test <" & TestName & "> already exist."
     If UBound(Categories) < LBound(Categories) Then _
         Error.Argument Me, "AddTestCategories", "Categories", "No categories are defined."
         
-    Dim c As TestCategories
-    Set c = Sim.NewTestCategories(Name, False)
+    Dim c As Categorization
+    Set c = Sim.NewCategorization(TestName, False)
     
     Dim Item As Variant
     For Each Item In Categories
         If VarType(Item) <> vbString Then _
-            Error.Argument Me, "FixtureCategories", "Categories", "Only strings can be passed in."
+            Error.Argument Me, "AddTestCategories", "Categories", "Only strings can be passed in."
             
-        c.Add Item
+        c.Add CStr(Item)
     Next
     
-    mStore.TestCategories.Add c, testnam
+    mStore.TestCategorizations.Add c, TestName
 End Sub
 
 

@@ -25,7 +25,7 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: TestCategories
+' Module: Categorization
 '
 Option Explicit
 
@@ -43,8 +43,10 @@ Public Property Get Name() As String
 End Property
 
 Public Sub Add(ByRef Category As String)
-    If Len(Name) = 0 Then _
+    If Len(Category) = 0 Then _
         Error.CannotBeEmpty Me, "Add", "Category"
+    If ContainsKey(mCategories, Category) Then _
+        Error.Argument Me, "Add", "Category", "Category <" & Category & "> already exists."
         
     mCategories.Add Category, Category
 End Sub

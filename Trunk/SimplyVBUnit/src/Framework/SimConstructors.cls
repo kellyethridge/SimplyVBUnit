@@ -235,9 +235,9 @@ Public Function NewLateBoundTestMethod(ByVal TestClass As Object, ByRef MethodNa
     NewLateBoundTestMethod.Init TestClass, MethodName, TestCaseData
 End Function
 
-Public Function NewTestCategories(ByRef Name As String, ByVal IsFixture As Boolean) As TestCategories
-    Set NewTestCategories = New TestCategories
-    NewTestCategories.Init Name, IsFixture
+Public Function NewCategorization(ByRef Name As String, ByVal IsFixture As Boolean) As Categorization
+    Set NewCategorization = New Categorization
+    NewCategorization.Init Name, IsFixture
 End Function
 
 Public Function NewCategoryStore(ByRef FixtureName As String) As CategoryStore
