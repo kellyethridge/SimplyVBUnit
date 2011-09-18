@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "ICategorizable"
+Attribute VB_Name = "CategoryStore"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -25,9 +25,26 @@ Attribute VB_Exposed = True
 ' See the License for the specific language governing permissions and
 ' limitations under the License.
 '
-' Module: ICategorizable
+' Module: CategoryStore
 '
 Option Explicit
 
-Public Sub Categorize(ByVal Categories As CategoryCollector): End Sub
+Private mFixtureCategories  As TestCategories
+Private mTestCategories     As New Collection
 
+
+Public Property Get FixtureCategories() As TestCategories
+    Set FixtureCategories = mFixtureCategories
+End Property
+
+Public Property Get TestCategories() As Collection
+    Set TestCategories = mTestCategories
+End Property
+
+
+Friend Sub Init(ByRef FixtureName As String)
+    If Len(FixtureName) = 0 Then _
+        Error.CannotBeEmpty Me, "Init", "FixtureName"
+        
+    Set mFixtureCategories = Sim.NewTestCategories(FixtureName, True)
+End Sub
