@@ -32,7 +32,7 @@ Option Explicit
 Public Enum ErrorCode
     NoError = 0
     Argument = 5
-    ArgumentNull = 91
+    ArgumentNull = 5
     ArgumentOutOfRange = 380
     ArgumentNotOptional = 449
     IndexOutOfRange = 9

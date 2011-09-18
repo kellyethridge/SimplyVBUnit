@@ -43,13 +43,12 @@ End Type
 Public Function ContainsKey(ByRef Items As Collection, ByRef Key As String) As Boolean
     On Error GoTo errTrap
     
-    Dim Item As Variant
-    Item = Items(Key)
-    ContainsKey = False
+    Dim Value As Boolean
+    Value = IsObject(Items(Key))
+    ContainsKey = True
     Exit Function
     
 errTrap:
-    ContainsKey = True
 End Function
 
 Public Function CanonicalizePath(ByRef Path As String) As String

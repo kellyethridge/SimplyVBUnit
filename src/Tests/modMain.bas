@@ -91,6 +91,8 @@ Private Sub RunTestClassTests()
     Suite.Add New AllItemsConstraintTests
     Suite.Add New SomeItemsConstraintTests
     Suite.Add New ITestFixtureTests
+    Suite.Add New CategorizationTests
+    Suite.Add New CategoryCollectorTests
     
     Dim Runner As TestRunner
     Set Runner = Sim.NewTestRunner(Suite)
