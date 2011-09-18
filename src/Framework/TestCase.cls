@@ -37,7 +37,18 @@ Private mTicks              As Currency
 Private mRunState           As RunState
 Private mContext            As ContextMethods
 Private mRunner             As ITestRunner
+Private mCategories         As Categorization
 
+
+Public Property Get Categories() As Categorization
+    Set Categories = mCategories
+End Property
+
+Public Property Get HasCategories() As Boolean
+    If Not mCategories Is Nothing Then
+        HasCategories = mCategories.Count > 0
+    End If
+End Property
 
 Public Function CountTestCases(ByVal Filter As ITestFilter) As Long
     If Filter.Pass(Me) Then
@@ -249,12 +260,20 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Property Get ITest_Categories() As Categorization
+    Set ITest_Categories = Categories
+End Property
+
 Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
     ITest_CountTestCases = CountTestCases(Filter)
 End Function
 
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName
+End Property
+
+Private Property Get ITest_HasCategories() As Boolean
+    ITest_HasCategories = HasCategories
 End Property
 
 Private Property Get ITest_HasParent() As Boolean

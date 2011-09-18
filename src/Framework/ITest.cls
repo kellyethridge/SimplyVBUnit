@@ -59,3 +59,6 @@ Public Function CountTestCases(ByVal Filter As ITestFilter) As Long: End Functio
 
 Public Sub SetRunner(ByVal Runner As ITestRunner): End Sub
 
+Public Property Get Categories() As Categorization: End Property
+
+Public Property Get HasCategories() As Boolean: End Property

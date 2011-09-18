@@ -41,6 +41,16 @@ Public Property Get TestCategorizations() As Collection
     Set TestCategorizations = mTestCategorizations
 End Property
 
+Public Function Contains(ByRef TestName As String) As Boolean
+    Contains = ContainsKey(mTestCategorizations, TestName)
+End Function
+
+Public Function GetTestCategorization(ByRef TestName As String) As Categorization
+    If ContainsKey(TestName) Then
+        Set GetTestCategorization = mTestCategorizations(TestName)
+    End If
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
