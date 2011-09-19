@@ -343,6 +343,21 @@ Private Sub BuildTestCases(ByVal Member As MemberInfo)
     Next
 End Sub
 
+Private Function CategorizeTestClass() As CategoryStore
+    If TypeOf mTestClass Is ICategorizable Then
+        Dim Store As CategoryStore
+        Set Store = Sim.NewCategoryStore(Me.Name)
+        Dim Collector As CategoryCollector
+        Set Collector = Sim.NewCategoryCollector(Store)
+        
+        Dim Categorizable As ICategorizable
+        Set Categorizable = mTestClass
+        Categorizable.Categorize Collector
+        
+        Set CategorizeTestClass = Store
+    End If
+End Function
+
 Private Sub AddTestCase(ByVal Test As ITest)
     Set Test.Parent = Me
     mTests.Add Test
