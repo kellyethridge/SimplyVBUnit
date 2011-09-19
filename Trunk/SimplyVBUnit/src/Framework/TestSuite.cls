@@ -45,6 +45,7 @@ Private mTestCaseContext    As ContextMethods
 Private mName               As String
 Private mRunner             As ITestRunner
 Private mCategories         As Categorization
+Private mCategoryStore      As CategoryStore
 
 
 Public Property Get Categories() As Categorization
@@ -202,6 +203,7 @@ Friend Sub InitTestFixture(ByVal TestClass As Object)
         
     Set mTestClass = TestClass
     InitTestSuite TypeName(TestClass)
+    CategorizeTestClass
     
     If TypeOf TestClass Is ITestFixture Then
         ManuallyBuildFixture
@@ -343,7 +345,7 @@ Private Sub BuildTestCases(ByVal Member As MemberInfo)
     Next
 End Sub
 
-Private Function CategorizeTestClass() As CategoryStore
+Private Sub CategorizeTestClass()
     If TypeOf mTestClass Is ICategorizable Then
         Dim Store As CategoryStore
         Set Store = Sim.NewCategoryStore(Me.Name)
@@ -354,9 +356,13 @@ Private Function CategorizeTestClass() As CategoryStore
         Set Categorizable = mTestClass
         Categorizable.Categorize Collector
         
-        Set CategorizeTestClass = Store
+        If Store.FixtureCategorization.Count > 0 Then
+            Set mCategories = Store.FixtureCategorization
+        End If
+        
+        Set mCategoryStore = Store
     End If
-End Function
+End Sub
 
 Private Sub AddTestCase(ByVal Test As ITest)
     Set Test.Parent = Me
