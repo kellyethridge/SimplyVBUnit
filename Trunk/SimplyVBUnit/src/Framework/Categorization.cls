@@ -60,6 +60,10 @@ Public Property Get Count() As Long
     Count = mCategories.Count
 End Property
 
+Public Function Contains(ByRef Category As String) As Boolean
+    Contains = ContainsKey(mCategories, Category)
+End Function
+
 Public Function NewEnum() As IUnknown
 Attribute NewEnum.VB_UserMemId = -4
 Attribute NewEnum.VB_MemberFlags = "40"
