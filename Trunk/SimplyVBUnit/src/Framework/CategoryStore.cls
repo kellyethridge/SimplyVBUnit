@@ -46,7 +46,7 @@ Public Function Contains(ByRef TestName As String) As Boolean
 End Function
 
 Public Function GetTestCategorization(ByRef TestName As String) As Categorization
-    If ContainsKey(TestName) Then
+    If Contains(TestName) Then
         Set GetTestCategorization = mTestCategorizations(TestName)
     End If
 End Function

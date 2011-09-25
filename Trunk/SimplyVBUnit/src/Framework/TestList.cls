@@ -47,6 +47,16 @@ Public Property Get Count() As Long
     Count = mCount
 End Property
 
+Public Function Find(ByRef TestName As String) As ITest
+    Dim i As Long
+    For i = 0 To mCount - 1
+        If mItems(i).Name = TestName Then
+            Set Find = mItems(i)
+            Exit Function
+        End If
+    Next
+End Function
+
 Public Sub Add(ByVal Test As ITest)
     If Test Is Nothing Then _
         Error.CannotBeNothing Me, "Add", "Test"
@@ -85,12 +95,18 @@ Private Sub SetCapacity(ByVal Capacity As Long)
     ReDim Preserve mItems(0 To Capacity - BASE_ONE_OFFSET)
 End Sub
 
-Public Property Get Item(ByVal Index As Long) As ITest
+Public Property Get Item(ByVal Index As Variant) As ITest
 Attribute Item.VB_UserMemId = 0
-    If (Index < MINIMUM_INDEX) Or (Index >= Me.Count) Then _
-        Error.IndexOutOfRange Me, "Item"
-        
-    Set Item = mItems(Index)
+    If VarType(Index) = vbString Then
+        Set Item = Find(CStr(Index))
+        If Item Is Nothing Then _
+            Error.Argument Me, "Item", "Index", "Test name was not found."
+    Else
+        If (Index < MINIMUM_INDEX) Or (Index >= Me.Count) Then _
+            Error.IndexOutOfRange Me, "Item"
+            
+        Set Item = mItems(Index)
+    End If
 End Property
 
 Public Function Equals(ByVal Other As TestList) As Boolean
@@ -175,6 +191,10 @@ Attribute NewEnum.VB_MemberFlags = "40"
     Set NewEnum = CreateEnumerator(Enumerator)
 End Function
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Class Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
     SetCapacity DEF_CAPACITY
 End Sub
