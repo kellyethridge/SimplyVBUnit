@@ -48,6 +48,7 @@ Class=CollectionProxy; CollectionProxy.cls
 Class=FakePersistable; FakePersistable.cls
 Class=FakeNonPersistable; FakeNonPersistable.cls
 Class=MockITestFixture; MockITestFixture.cls
+Class=FakeCategorizedTests; FakeCategorizedTests.cls
 Startup="(None)"
 HelpFile=""
 Command32=""

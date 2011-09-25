@@ -85,6 +85,7 @@ Class=SomeItemsConstraintTests; SomeItemsConstraintTests.cls
 Class=ITestFixtureTests; ITestFixtureTests.cls
 Class=CategorizationTests; CategorizationTests.cls
 Class=CategoryCollectorTests; CategoryCollectorTests.cls
+Class=CategoryFilterTests; CategoryFilterTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""

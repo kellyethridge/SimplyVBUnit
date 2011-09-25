@@ -20,6 +20,10 @@ Public Parent       As ITest
 Public Tests        As New TestList
 
 
+Private Property Set ITest_Categories(ByVal RHS As SVBUnit.Categorization)
+
+End Property
+
 Private Property Get ITest_Categories() As SVBUnit.Categorization
 
 End Property

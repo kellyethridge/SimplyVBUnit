@@ -45,11 +45,14 @@ Private mTestCaseContext    As ContextMethods
 Private mName               As String
 Private mRunner             As ITestRunner
 Private mCategories         As Categorization
-Private mCategoryStore      As CategoryStore
 
 
 Public Property Get Categories() As Categorization
     Set Categories = mCategories
+End Property
+
+Public Property Set Categories(ByVal RHS As Categorization)
+    Set mCategories = RHS
 End Property
 
 Public Property Get HasCategories() As Boolean
@@ -203,13 +206,13 @@ Friend Sub InitTestFixture(ByVal TestClass As Object)
         
     Set mTestClass = TestClass
     InitTestSuite TypeName(TestClass)
-    CategorizeTestClass
     
     If TypeOf TestClass Is ITestFixture Then
         ManuallyBuildFixture
     Else
         AutomaticallyBuildFixture
     End If
+    CategorizeTestClass
 End Sub
 
 
@@ -360,7 +363,10 @@ Private Sub CategorizeTestClass()
             Set mCategories = Store.FixtureCategorization
         End If
         
-        Set mCategoryStore = Store
+        Dim Test As ITest
+        For Each Test In mTests
+            Set Test.Categories = Store.GetTestCategorization(Test.Name)
+        Next
     End If
 End Sub
 
@@ -443,6 +449,10 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Property Set ITest_Categories(ByVal RHS As Categorization)
+    Set Categories = RHS
+End Property
+
 Private Property Get ITest_Categories() As Categorization
     Set ITest_Categories = Categories
 End Property
@@ -518,6 +528,10 @@ End Property
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   TestFixture Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Property Set TestFixture_Categories(ByVal RHS As Categorization)
+    Set Categories = RHS
+End Property
+
 Private Property Get TestFixture_Categories() As Categorization
     Set TestFixture_Categories = Categories
 End Property

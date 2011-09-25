@@ -44,6 +44,10 @@ Public Property Get Categories() As Categorization
     Set Categories = mCategories
 End Property
 
+Public Property Set Categories(ByVal RHS As Categorization)
+    Set mCategories = RHS
+End Property
+
 Public Property Get HasCategories() As Boolean
     If Not mCategories Is Nothing Then
         HasCategories = mCategories.Count > 0
@@ -260,6 +264,10 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   ITest Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Property Set ITest_Categories(ByVal RHS As Categorization)
+    Set Categories = RHS
+End Property
+
 Private Property Get ITest_Categories() As Categorization
     Set ITest_Categories = Categories
 End Property

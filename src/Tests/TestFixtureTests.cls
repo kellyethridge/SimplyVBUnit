@@ -84,11 +84,11 @@ Public Sub Constructor_WithTestClass_StoresTestCases()
     On Error GoTo errTrap
     Dim TestClass As New Fake2Tests
     Dim Fixture As TestFixture
+    
     Set Fixture = Sim.NewTestFixture(TestClass)
     
     Dim Actual As Long
     Actual = Fixture.Tests.Count
-    
     Debug.Assert Actual = 2
     Exit Sub
     
@@ -100,6 +100,7 @@ Public Sub Constructor_WithTestClass_StoresTestCase()
     On Error GoTo errTrap
     Dim TestClass As New Fake1Test
     Dim Fixture As TestFixture
+    
     Set Fixture = Sim.NewTestFixture(TestClass)
     
     Dim Actual As String
@@ -111,15 +112,40 @@ errTrap:
     Debug.Assert False
 End Sub
 
+Public Sub Constructor_WithCategorizableTestClass_CategorizesFixture()
+    Dim TestClass As New FakeCategorizedTests
+    Dim Fixture As TestFixture
+    
+    Set Fixture = Sim.NewTestFixture(TestClass)
+    
+    Assert.IsTrue Fixture.HasCategories
+    Assert.AreEquivalent Array("one", "two"), Fixture.Categories
+End Sub
+
+Public Sub Constructor_WithCategorizableTestClass_CategorizesTests()
+    Dim TestClass As New FakeCategorizedTests
+    Dim Fixture As TestFixture
+    
+    Set Fixture = Sim.NewTestFixture(TestClass)
+    
+    Dim Test1 As ITest
+    Set Test1 = Fixture.Tests("Test1")
+    Assert.IsTrue Test1.HasCategories
+    Assert.AreEquivalent Array("three"), Test1.Categories
+    Dim Test2 As ITest
+    Set Test2 = Fixture.Tests("Test2")
+    Assert.IsFalse Test2.HasCategories
+End Sub
+
 Public Sub Run_WithTestCases_AddsTestCaseResultToFixtureResult()
     On Error GoTo errTrap
     Dim TestClass As New Fake1Test
     Dim Fixture As TestFixture
+    
     Set Fixture = Sim.NewTestFixture(TestClass)
     
     Dim Result As TestResult
     Set Result = Fixture.Run
-    
     Dim Actual As Long
     Actual = Result.Results.Count
     Debug.Assert Actual = 1

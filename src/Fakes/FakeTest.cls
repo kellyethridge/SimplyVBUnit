@@ -15,10 +15,19 @@ Option Explicit
 Implements ITest
 
 Public Parent As ITest
+Public Categories As Categorization
 
+
+Private Sub Class_Initialize()
+    Set Categories = Sim.NewCategorization("FakeTest", False)
+End Sub
+
+Private Property Set ITest_Categories(ByVal RHS As SVBUnit.Categorization)
+    Set Categories = RHS
+End Property
 
 Private Property Get ITest_Categories() As SVBUnit.Categorization
-
+    Set ITest_Categories = Categories
 End Property
 
 Private Function ITest_CountTestCases(ByVal Filter As SVBUnit.ITestFilter) As Long
@@ -26,7 +35,7 @@ Private Function ITest_CountTestCases(ByVal Filter As SVBUnit.ITestFilter) As Lo
 End Function
 
 Private Property Get ITest_HasCategories() As Boolean
-
+    ITest_HasCategories = Categories.Count > 0
 End Property
 
 Private Property Get ITest_HasParent() As Boolean

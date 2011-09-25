@@ -61,4 +61,6 @@ Public Sub SetRunner(ByVal Runner As ITestRunner): End Sub
 
 Public Property Get Categories() As Categorization: End Property
 
+Public Property Set Categories(ByVal RHS As Categorization): End Property
+
 Public Property Get HasCategories() As Boolean: End Property
