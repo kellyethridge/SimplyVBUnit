@@ -87,6 +87,10 @@ Private Function IzSyntaxHelper_Missing() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Missing = NewExp.Missing
 End Function
 
+Private Function IzSyntaxHelper_Negative() As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_Negative = NewExp.LessThan(0)
+End Function
+
 Private Function IzSyntaxHelper_Not() As SimplyVBUnitType.IConstraintExpression
     Set IzSyntaxHelper_Not = NewExp.Not
 End Function
@@ -101,6 +105,10 @@ End Function
 
 Private Function IzSyntaxHelper_Persistable() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Persistable = NewExp.Persistable
+End Function
+
+Private Function IzSyntaxHelper_Positive() As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_Positive = NewExp.GreaterThan(0)
 End Function
 
 Private Function IzSyntaxHelper_SameAs(ByVal Expected As Object) As SimplyVBUnitType.IBasicExpression

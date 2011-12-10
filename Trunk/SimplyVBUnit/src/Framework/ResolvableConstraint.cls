@@ -133,6 +133,10 @@ Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpre
     Set IConstraintExpression_Missing = mExpression.Missing
 End Function
 
+Private Function IConstraintExpression_Negative() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Negative = mExpression.Negative
+End Function
+
 Private Function IConstraintExpression_No() As SimplyVBUnitType.IConstraintExpression
     Set IConstraintExpression_No = mExpression.No
 End Function
@@ -155,6 +159,10 @@ End Function
 
 Private Function IConstraintExpression_Persistable() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Persistable = mExpression.Persistable
+End Function
+
+Private Function IConstraintExpression_Positive() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Positive = mExpression.Positive
 End Function
 
 Private Function IConstraintExpression_RP() As SimplyVBUnitType.IConstraintExpression

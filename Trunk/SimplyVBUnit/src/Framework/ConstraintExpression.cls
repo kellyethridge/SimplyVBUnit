@@ -181,6 +181,14 @@ Public Function RP() As IConstraintExpression
     Set RP = AddOperator(New RightParenOperator)
 End Function
 
+Public Function Positive() As IBasicExpression
+    Set Positive = GreaterThan(0)
+End Function
+
+Public Function Negative() As IBasicExpression
+    Set Negative = LessThan(0)
+End Function
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Private Helpers
@@ -263,6 +271,10 @@ Private Function IConstraintExpression_Missing() As SimplyVBUnitType.IBasicExpre
     Set IConstraintExpression_Missing = Missing
 End Function
 
+Private Function IConstraintExpression_Negative() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Negative = Negative
+End Function
+
 Private Function IConstraintExpression_No() As SimplyVBUnitType.IConstraintExpression
     Set IConstraintExpression_No = No
 End Function
@@ -285,6 +297,10 @@ End Function
 
 Private Function IConstraintExpression_Persistable() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Persistable = Persistable
+End Function
+
+Private Function IConstraintExpression_Positive() As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_Positive = Positive
 End Function
 
 Private Function IConstraintExpression_RP() As SimplyVBUnitType.IConstraintExpression
