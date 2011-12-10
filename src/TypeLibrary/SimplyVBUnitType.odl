@@ -180,6 +180,8 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT Member([in] VARIANT * Expected, [out, retval] ICollectionContainsConstraint ** RetVal);
                 HRESULT LP([out, retval] IConstraintExpression ** RetVal);
                 HRESULT RP([out, retval] IConstraintExpression ** RetVal);
+                HRESULT Positive([out, retval] IBasicExpression ** RetVal);
+                HRESULT Negative([out, retval] IBasicExpression ** RetVal);
 	}
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
@@ -305,6 +307,8 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT Persistable([out, retval] IBasicExpression ** RetVal);
                 HRESULT All([out, retval] IConstraintExpression ** RetVal);
                 HRESULT LP([out, retval] IConstraintExpression ** RetVal);
+                HRESULT Positive([out, retval] IBasicExpression ** RetVal);
+                HRESULT Negative([out, retval] IBasicExpression ** RetVal);
 	}
 }
 
