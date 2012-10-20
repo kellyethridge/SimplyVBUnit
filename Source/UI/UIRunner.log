@@ -1,0 +1,3 @@
+Line 39: Class SimplyVBUnitUI.UIListBox of control lstFailureOutput was not a loaded control class.
+Line 45: The property name _ExtentX in lstFailureOutput is invalid.
+Line 46: The property name _ExtentY in lstFailureOutput is invalid.

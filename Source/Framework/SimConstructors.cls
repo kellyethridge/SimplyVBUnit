@@ -249,3 +249,8 @@ Public Function NewCategoryCollector(ByVal Store As CategoryStore) As CategoryCo
     Set NewCategoryCollector = New CategoryCollector
     NewCategoryCollector.Init Store
 End Function
+
+Public Function NewTestOutputWriter(ByVal Listener As IEventListener, ByVal OutputType As TestOutputType) As TestOutputWriter
+    Set NewTestOutputWriter = New TestOutputWriter
+    NewTestOutputWriter.Init Listener, OutputType
+End Function

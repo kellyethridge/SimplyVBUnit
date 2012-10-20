@@ -166,3 +166,13 @@ ThreadPerObject=0
 MaxNumberOfThreads=1
 ThreadingModel=1
 DebugStartupOption=0
+
+[TaskList]
+Num=0
+
+[TASK1]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
