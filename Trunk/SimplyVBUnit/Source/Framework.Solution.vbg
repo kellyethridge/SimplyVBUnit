@@ -1,4 +1,0 @@
-VBGROUP 5.0
-Project=Framework\SVBUnit.vbp
-Project=Fakes\SVBUnitFakes.vbp
-StartupProject=Tests\SVBUnitTests.vbp

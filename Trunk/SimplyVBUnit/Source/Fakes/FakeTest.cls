@@ -22,15 +22,15 @@ Private Sub Class_Initialize()
     Set Categories = Sim.NewCategorization("FakeTest", False)
 End Sub
 
-Private Property Set ITest_Categories(ByVal RHS As SVBUnit.Categorization)
+Private Property Set ITest_Categories(ByVal RHS As Categorization)
     Set Categories = RHS
 End Property
 
-Private Property Get ITest_Categories() As SVBUnit.Categorization
+Private Property Get ITest_Categories() As Categorization
     Set ITest_Categories = Categories
 End Property
 
-Private Function ITest_CountTestCases(ByVal Filter As SVBUnit.ITestFilter) As Long
+Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
 
 End Function
 
@@ -79,19 +79,19 @@ Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional B
 
 End Function
 
-Private Property Let ITest_RunState(ByVal RHS As SVBUnit.RunState)
+Private Property Let ITest_RunState(ByVal RHS As RunState)
 
 End Property
 
-Private Property Get ITest_RunState() As SVBUnit.RunState
+Private Property Get ITest_RunState() As RunState
 
 End Property
 
-Private Sub ITest_SetRunner(ByVal Runner As SVBUnit.ITestRunner)
+Private Sub ITest_SetRunner(ByVal Runner As ITestRunner)
 
 End Sub
 
-Private Sub ITest_Sort(Optional ByVal Comparer As SVBUnit.ITestComparer)
+Private Sub ITest_Sort(Optional ByVal Comparer As ITestComparer)
 
 End Sub
 
@@ -103,6 +103,6 @@ Private Property Get ITest_TestCount() As Long
 
 End Property
 
-Private Property Get ITest_Tests() As SVBUnit.TestList
+Private Property Get ITest_Tests() As TestList
 
 End Property

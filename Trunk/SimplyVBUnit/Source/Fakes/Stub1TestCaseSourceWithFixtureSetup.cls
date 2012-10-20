@@ -16,7 +16,7 @@ Implements ITestCaseSource
 
 Public Errors As New CallError
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Test.Use "1"
 End Sub
 

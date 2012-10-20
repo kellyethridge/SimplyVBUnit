@@ -1,0 +1,371 @@
+Type=Exe
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Reference=*\ASimplyVBUnit.Fakes.vbp
+Reference=*\G{8B217740-717D-11CE-AB5B-D41203C10000}#1.0#0#..\..\..\..\..\..\Windows\SysWow64\TLBINF32.DLL#TypeLib Information
+Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#..\TypeLibrary\SimplyVBUnitType.tlb#SimplyVBUnit 4.0 Type Library
+Reference=*\ASimplyVBUnit.Framework.vbp
+Module=modMain; Tests\modMain.bas
+Class=BootstrapTestFixtureTests; Tests\BootstrapTestFixtureTests.cls
+Class=BootstrapMockOneSubTestClassTests; Tests\BootstrapMockOneSubTestClassTests.cls
+Class=IBootstrapTestClass; Tests\IBootstrapTestClass.cls
+Class=BootstrapTestSuiteTests; Tests\BootstrapTestSuiteTests.cls
+Class=TestFixtureTests; Tests\TestFixtureTests.cls
+Class=BootstrapStubOneSubTestClassTests; Tests\BootstrapStubOneSubTestClassTests.cls
+Class=TestResultTests; Tests\TestResultTests.cls
+Class=TestListTests; Tests\TestListTests.cls
+Class=TestResultListTests; Tests\TestResultListTests.cls
+Class=TestSuiteTests; Tests\TestSuiteTests.cls
+Class=TestCaseTests; Tests\TestCaseTests.cls
+Class=AssertionsTests; Tests\AssertionsTests.cls
+Class=SimpleTestMethodTests; Tests\SimpleTestMethodTests.cls
+Class=ErrorInfoTests; Tests\ErrorInfoTests.cls
+Class=BootstrapMockTestsWithSetupTests; Tests\MockTestsWithSetupTests.cls
+Class=BootstrapCallTraceTests; Tests\BootstrapCallTraceTests.cls
+Class=BootstrapCallErrorTests; Tests\BootstrapCallErrorTests.cls
+Class=TestCaseCollectorTests; Tests\TestCaseCollectorTests.cls
+Class=TestCaseDataTests; Tests\TestCaseDataTests.cls
+Class=TestCaseBuilderTests; Tests\TestCaseBuilderTests.cls
+Class=TestListEnumeratorTests; Tests\TestListEnumeratorTests.cls
+Class=MemberQueryTests; Tests\MemberQueryTests.cls
+Class=EqualConstraintTests; Tests\EqualConstraintTests.cls
+Class=TextMessageWriterTests; Tests\TextMessageWriterTests.cls
+Class=StringBuilderTests; Tests\StringBuilderTests.cls
+Module=modUtilities; Tests\modUtilities.bas
+Class=BootstrapUtilitiesTests; Tests\BootstrapUtilitiesTests.cls
+Class=IzTests; Tests\IzTests.cls
+Class=ArrayEnumeratorTests; Tests\ArrayEnumeratorTests.cls
+Class=EnumVariantEnumeratorTests; Tests\EnumVariantEnumeratorTests.cls
+Class=TestOutputTests; Tests\TestOutputTests.cls
+Module=Constants; Tests\Constants.bas
+Class=StackTests; Tests\StackTests.cls
+Class=TestContextTests; Tests\TestContextTests.cls
+Class=TestContextManagerTests; Tests\TestContextManagerTests.cls
+Class=TestRunnerTests; Tests\TestRunnerTests.cls
+Class=EmptyFilterTests; Tests\EmptyFilterTests.cls
+Class=FullNameFilterTests; Tests\FullNameFilterTests.cls
+Class=OrFilterTests; Tests\OrFilterTests.cls
+Class=AndFilterTests; Tests\AndFilterTests.cls
+Class=NotFilterTests; Tests\NotFilterTests.cls
+Class=AndOperatorTests; Tests\AndOperatorTests.cls
+Class=AndConstraintTests; Tests\AndConstraintTests.cls
+Class=ErrorHelperTests; Tests\ErrorHelperTests.cls
+Class=ThrowsConstraintTests; Tests\ThrowsConstraintTests.cls
+Class=TestCaseModifierTests; Tests\TestCaseModifierTests.cls
+Class=ParameterizedTestMethodTests; Tests\ParameterizedTestMethodTests.cls
+Class=OrConstraintTests; Tests\OrConstraintTests.cls
+Class=NotConstraintTests; Tests\NotConstraintTests.cls
+Class=ConstraintBuilderTests; Tests\ConstraintBuilderTests.cls
+Class=OrOperatorTests; Tests\OrOperatorTests.cls
+Class=MsgUtilsTests; Tests\MsgUtilsTests.cls
+Class=ConstraintExpressionTests; Tests\ConstraintExpressionTests.cls
+Class=ToleranceTests; Tests\ToleranceTests.cls
+Module=modWinApi; Tests\modWinApi.bas
+Class=ComparisonConstraintTests; Tests\ComparisonConstraintTests.cls
+Class=RangeConstraintTests; Tests\RangeConstraintTests.cls
+Class=EmptyContraintTests; Tests\EmptyContraintTests.cls
+Class=TallyTests; Tests\TallyTests.cls
+Class=ValueTallierTests; Tests\ValueTallierTests.cls
+Class=SameAsConstraintTests; Tests\SameAsConstraintTests.cls
+Class=UniqueItemsConstraintTests; Tests\UniqueItemsConstraintTests.cls
+Class=EquivalentConstraintTests; Tests\EquivalentConstraintTests.cls
+Class=SubsetOfConstraintTests; Tests\SubsetOfConstraintTests.cls
+Class=BootstrapEqualityComparerTests; Tests\BootstrapEqualityComparerTests.cls
+Class=OrderedConstraintTests; Tests\OrderedConstraintTests.cls
+Class=StringComparerTests; Tests\StringComparerTests.cls
+Class=NumberComparerTests; Tests\NumberComparerTests.cls
+Class=SubstringConstraintTests; Tests\SubstringConstraintTests.cls
+Class=StartsWithConstraintTests; Tests\StartsWithConstraintTests.cls
+Class=EndsWithConstraintTests; Tests\EndsWithConstraintTests.cls
+Class=RegexConstraintTests; Tests\RegexConstraintTests.cls
+Class=SamePathConstraintTests; Tests\SamePathConstraintTests.cls
+Class=SamePathOrUnderConstraintTests; Tests\SamePathOrUnderConstraintTests.cls
+Class=PersistableConstraintTests; Tests\PersistableConstraintTests.cls
+Class=AllItemsConstraintTests; Tests\AllItemsConstraintTests.cls
+Class=SomeItemsConstraintTests; Tests\SomeItemsConstraintTests.cls
+Class=ITestFixtureTests; Tests\ITestFixtureTests.cls
+Class=CategorizationTests; Tests\CategorizationTests.cls
+Class=CategoryCollectorTests; Tests\CategoryCollectorTests.cls
+Class=CategoryFilterTests; Tests\CategoryFilterTests.cls
+Startup="Sub Main"
+HelpFile=""
+Command32=""
+Name="SVBUnitTests"
+HelpContextID="0"
+Description="SimplyVBUnit Framkework 4.0 Tests"
+CompatibleMode="0"
+MajorVer=1
+MinorVer=0
+RevisionVer=0
+AutoIncrementVer=0
+ServerSupportFiles=0
+VersionCompanyName="Sundial Time Systems"
+CompilationType=0
+OptimizationType=0
+FavorPentiumPro(tm)=0
+CodeViewDebugInfo=0
+NoAliasing=0
+BoundsCheck=0
+OverflowCheck=0
+FlPointCheck=0
+FDIVCheck=0
+UnroundedFP=0
+StartMode=0
+Unattended=0
+Retained=0
+ThreadPerObject=0
+MaxNumberOfThreads=1
+
+[TaskList]
+Num=0
+
+[TASK1]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK2]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK3]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK4]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK5]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK6]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK7]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK8]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK9]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK10]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK11]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK12]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK13]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK14]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK15]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK16]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK17]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK18]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK19]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK20]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK21]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK22]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK23]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK24]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK25]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK26]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK27]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK28]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK29]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK30]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK31]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK32]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK33]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK34]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK35]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=
+
+[TASK36]
+Description=
+Status=
+Priority=
+AssignedTo=
+Comment=

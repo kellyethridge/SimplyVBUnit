@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "CollectionContainsConstraint"
+Attribute VB_Name = "CollectionContainsCstr"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -59,12 +59,12 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     Matches = Result
 End Function
 
-Public Function IgnoreCase() As CollectionContainsConstraint
+Public Function IgnoreCase() As CollectionContainsCstr
     mComparer.IgnoreCase = True
     Set IgnoreCase = Me
 End Function
 
-Public Function Using(ByVal Comparer As IComparer) As CollectionContainsConstraint
+Public Function Using(ByVal Comparer As IComparer) As CollectionContainsCstr
     Set mComparer.ExternalComparer = Comparer
     Set Using = Me
 End Function

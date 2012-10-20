@@ -16,7 +16,7 @@ Implements ITestFixture
 
 Public Calls As New CallTrace
 
-Private Sub ITestFixture_GetTestCases(ByVal Tests As SVBUnit.TestFixtureBuilder)
+Private Sub ITestFixture_GetTestCases(ByVal Tests As TestFixtureBuilder)
     Tests.Add "Test1"
     With Tests.Add("Test3")
         .Use 2
