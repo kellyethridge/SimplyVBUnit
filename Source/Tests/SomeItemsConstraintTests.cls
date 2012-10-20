@@ -30,7 +30,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements ITestCaseSource
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Select Case Test.MethodName
         Case "Matches_WithValues_ReturnsExpected"
             Call Test.Use(Iz.EqualTo(1), Array(0, 0, 1)).Expect(True)

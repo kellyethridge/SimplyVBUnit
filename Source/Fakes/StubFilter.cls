@@ -17,10 +17,10 @@ Implements ITestFilter
 Public Matches  As Boolean
 Public Passes   As Boolean
 
-Private Function ITestFilter_Match(ByVal Test As SVBUnit.ITest) As Boolean
+Private Function ITestFilter_Match(ByVal Test As ITest) As Boolean
     ITestFilter_Match = Matches
 End Function
 
-Private Function ITestFilter_Pass(ByVal Test As SVBUnit.ITest) As Boolean
+Private Function ITestFilter_Pass(ByVal Test As ITest) As Boolean
     ITestFilter_Pass = Passes
 End Function

@@ -22,11 +22,11 @@ Private Sub CallMade(ByVal MethodName As String)
     Err.Clear
 End Sub
 
-Private Sub IEventListener_RunException(ByVal Info As SVBUnit.ErrorInfo)
+Private Sub IEventListener_RunException(ByVal Info As ErrorInfo)
     CallMade "RunException"
 End Sub
 
-Private Sub IEventListener_RunFinished(ByVal Result As SVBUnit.TestResult)
+Private Sub IEventListener_RunFinished(ByVal Result As TestResult)
     CallMade "RunFinished"
 End Sub
 
@@ -34,27 +34,27 @@ Private Sub IEventListener_RunStarted(ByVal Name As String, ByVal TestCount As L
     CallMade "RunStarted"
 End Sub
 
-Private Sub IEventListener_TestCaseFinished(ByVal Result As SVBUnit.TestResult)
+Private Sub IEventListener_TestCaseFinished(ByVal Result As TestResult)
     CallMade "TestCaseFinished"
 End Sub
 
-Private Sub IEventListener_TestCaseStarted(ByVal Test As SVBUnit.TestCase)
+Private Sub IEventListener_TestCaseStarted(ByVal Test As TestCase)
     CallMade "TestCaseStarted"
 End Sub
 
-Private Sub IEventListener_TestOutput(ByVal Output As SVBUnit.TestOutput)
+Private Sub IEventListener_TestOutput(ByVal Output As TestOutput)
     CallMade "TestOutput"
 End Sub
 
-Private Sub IEventListener_TestSuiteFinished(ByVal Result As SVBUnit.TestResult)
+Private Sub IEventListener_TestSuiteFinished(ByVal Result As TestResult)
     CallMade "TestSuiteFinished"
 End Sub
 
-Private Sub IEventListener_TestSuiteStarted(ByVal Suite As SVBUnit.TestSuite)
+Private Sub IEventListener_TestSuiteStarted(ByVal Suite As TestSuite)
     CallMade "TestSuiteStarted"
 End Sub
 
-Private Sub IEventListener_UnhandledError(ByVal Info As SVBUnit.ErrorInfo)
+Private Sub IEventListener_UnhandledError(ByVal Info As ErrorInfo)
     Set ErrorInfo = Info
     CallMade "UnhandledError"
 End Sub

@@ -15,7 +15,7 @@ Option Explicit
 Implements ICategorizable
 
 
-Private Sub ICategorizable_Categorize(ByVal Categories As SVBUnit.CategoryCollector)
+Private Sub ICategorizable_Categorize(ByVal Categories As CategoryCollector)
     Categories.AddFixtureCategories "one", "two"
     Categories.AddTestCategories "Test1", "three"
 End Sub

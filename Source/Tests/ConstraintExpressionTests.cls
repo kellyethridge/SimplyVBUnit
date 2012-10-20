@@ -30,7 +30,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements ITestCaseSource
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Select Case Test.MethodName
         Case "Resolve_WithExpression_ReturnsConstraint"
             Call Test.Use(Exp.EqualTo(1), 1, True)

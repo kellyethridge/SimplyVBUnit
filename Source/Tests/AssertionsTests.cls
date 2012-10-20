@@ -127,7 +127,7 @@ Public Sub That_WithFailingConstraint_IncludesConstraintMessageWithError()
     Debug.Assert False
     
 errTrap:
-    AssertError Err, AssertCode.FailureCode, "SVBUnit", "failed"
+    AssertError Err, AssertCode.FailureCode, "SimplyVBUnit", "failed"
 End Sub
 
 Public Sub That_WithMessage_PrependsConstraintMessage()
@@ -140,7 +140,7 @@ Public Sub That_WithMessage_PrependsConstraintMessage()
     Debug.Assert False
     
 errTrap:
-    AssertError Err, AssertCode.FailureCode, "SVBUnit", "the message" & vbCrLf & "failed"
+    AssertError Err, AssertCode.FailureCode, "SimplyVBUnit", "the message" & vbCrLf & "failed"
 End Sub
 
 Public Sub IsFalse_WithFalseCondtion_DoesNothing()

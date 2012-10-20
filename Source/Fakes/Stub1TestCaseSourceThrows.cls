@@ -20,7 +20,7 @@ Public Source       As String
 Public Description  As String
 
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Select Case Test.MethodName
         Case "Test1"
             Call Test.Use(1).Throws(Number, Source, Description)

@@ -24,18 +24,18 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
     IConstraint_Matches = Me.Matches
 End Function
 
-Private Function IConstraint_Resolve() As SVBUnit.IConstraint
+Private Function IConstraint_Resolve() As IConstraint
     Set IConstraint_Resolve = Me
 End Function
 
-Private Sub IConstraint_WriteActualValueTo(ByVal Writer As SVBUnit.TextMessageWriter)
+Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
     Writer.WriteActualValue Me.ActualValue
 End Sub
 
-Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As SVBUnit.TextMessageWriter)
+Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
     Writer.WriteText Me.Description
 End Sub
 
-Private Sub IConstraint_WriteMessageTo(ByVal Writer As SVBUnit.TextMessageWriter)
+Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
     Writer.WriteText Me.Message
 End Sub

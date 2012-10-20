@@ -169,7 +169,7 @@ Public Function None() As IConstraintExpression
     Set None = AddOperator(New NoItemsOperator)
 End Function
 
-Public Function Member(ByRef Expected As Variant) As CollectionContainsConstraint
+Public Function Member(ByRef Expected As Variant) As CollectionContainsCstr
     Set Member = AddConstraint(Sim.NewCollectionContainsConstraint(Expected, Me))
 End Function
 

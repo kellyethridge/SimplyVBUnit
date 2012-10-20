@@ -225,8 +225,8 @@ Public Function NewNoItemsConstraint(ByVal Constraint As IConstraint) As NoItems
     NewNoItemsConstraint.Init Constraint
 End Function
 
-Public Function NewCollectionContainsConstraint(ByRef Expected As Variant, Optional ByVal Expression As ConstraintExpression) As CollectionContainsConstraint
-    Set NewCollectionContainsConstraint = New CollectionContainsConstraint
+Public Function NewCollectionContainsConstraint(ByRef Expected As Variant, Optional ByVal Expression As ConstraintExpression) As CollectionContainsCstr
+    Set NewCollectionContainsConstraint = New CollectionContainsCstr
     NewCollectionContainsConstraint.Init Expected, Expression
 End Function
 

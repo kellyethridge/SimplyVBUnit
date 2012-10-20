@@ -30,7 +30,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements ITestCaseSource
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Dim Long1() As Long
     Dim Long2() As Long
     Dim Array1  As Variant

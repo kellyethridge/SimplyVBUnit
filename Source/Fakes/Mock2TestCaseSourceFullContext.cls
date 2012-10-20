@@ -17,7 +17,7 @@ Implements ITestCaseSource
 Public Calls As New CallTrace
 
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SVBUnit.TestCaseCollector)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Select Case Test.MethodName
         Case "Test1"
             Test.Use 1

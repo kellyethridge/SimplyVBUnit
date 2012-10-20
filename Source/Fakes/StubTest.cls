@@ -20,15 +20,15 @@ Public Parent       As ITest
 Public Tests        As New TestList
 
 
-Private Property Set ITest_Categories(ByVal RHS As SVBUnit.Categorization)
+Private Property Set ITest_Categories(ByVal RHS As Categorization)
 
 End Property
 
-Private Property Get ITest_Categories() As SVBUnit.Categorization
+Private Property Get ITest_Categories() As Categorization
 
 End Property
 
-Private Function ITest_CountTestCases(ByVal Filter As SVBUnit.ITestFilter) As Long
+Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
 
 End Function
 
@@ -60,11 +60,11 @@ Private Property Get ITest_Name() As String
     ITest_Name = Name
 End Property
 
-Private Property Set ITest_Parent(ByVal RHS As SVBUnit.ITest)
+Private Property Set ITest_Parent(ByVal RHS As ITest)
     Set Parent = RHS
 End Property
 
-Private Property Get ITest_Parent() As SVBUnit.ITest
+Private Property Get ITest_Parent() As ITest
     Set ITest_Parent = Parent
 End Property
 
@@ -72,23 +72,23 @@ Private Sub ITest_Reset()
 
 End Sub
 
-Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As SVBUnit.TestResult
+Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult
 
 End Function
 
-Private Property Let ITest_RunState(ByVal RHS As SVBUnit.RunState)
+Private Property Let ITest_RunState(ByVal RHS As RunState)
 
 End Property
 
-Private Property Get ITest_RunState() As SVBUnit.RunState
+Private Property Get ITest_RunState() As RunState
 
 End Property
 
-Private Sub ITest_SetRunner(ByVal Runner As SVBUnit.ITestRunner)
+Private Sub ITest_SetRunner(ByVal Runner As ITestRunner)
 
 End Sub
 
-Private Sub ITest_Sort(Optional ByVal Comparer As SVBUnit.ITestComparer)
+Private Sub ITest_Sort(Optional ByVal Comparer As ITestComparer)
 
 End Sub
 
@@ -100,6 +100,6 @@ Private Property Get ITest_TestCount() As Long
 
 End Property
 
-Private Property Get ITest_Tests() As SVBUnit.TestList
+Private Property Get ITest_Tests() As TestList
     Set ITest_Tests = Tests
 End Property
