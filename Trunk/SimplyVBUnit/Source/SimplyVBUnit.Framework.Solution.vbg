@@ -1,0 +1,4 @@
+VBGROUP 5.0
+Project=SimplyVBUnit.Framework.vbp
+Project=SimplyVBUnit.Fakes.vbp
+StartupProject=SimplyVBUnit.Tests.vbp

@@ -94,6 +94,7 @@ Private Sub RunTestClassTests()
     Suite.Add New CategorizationTests
     Suite.Add New CategoryCollectorTests
     Suite.Add New CategoryFilterTests
+    Suite.Add New TestOutputWriterTests
     
     Dim Runner As TestRunner
     Set Runner = Sim.NewTestRunner(Suite)

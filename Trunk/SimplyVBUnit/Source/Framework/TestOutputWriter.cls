@@ -36,19 +36,11 @@ Private mBuffer     As New StringBuilder
 
 
 Public Sub WriteText(ByRef Text As String, ParamArray Args() As Variant)
-    mBuffer.Length = 0
-    
-    Dim LocalArgs() As Variant
-    LocalArgs = Args
-    mBuffer.AppendFormatArray Text, LocalArgs
-    
-    Dim Output As TestOutput
-    Set Output = Sim.NewTestOutput(mBuffer.ToString, mOutputType)
-    mListener.TestOutput Output
+    WriteTextDirect(Text) = Args
 End Sub
 
-Public Sub WriteLine(ByRef Text As String, ParamArray Args() As Variant)
-
+Public Sub WriteLine(ParamArray TextAndArgs() As Variant)
+    WriteLineDirect = TextAndArgs
 End Sub
 
 
@@ -56,8 +48,38 @@ End Sub
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Listener As IEventListener, ByVal OutputType As TestOutputType)
+    If Listener Is Nothing Then _
+        Err.Raise ErrorCode.ArgumentNull, "TestOutputWriter", "Listener cannot be Nothing."
+    
     Set mListener = Listener
     mOutputType = OutputType
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Property Let WriteTextDirect(ByRef Text As String, ByVal Args As Variant)
+    mBuffer.Length = 0
+    Dim LocalArgs() As Variant
+    LocalArgs = Args
+    mBuffer.AppendFormatArray Text, LocalArgs
+    OutputText
+End Property
+
+Private Property Let WriteLineDirect(ByVal TextAndArgs As Variant)
+    mBuffer.Length = 0
+    Dim LocalArgs() As Variant
+    LocalArgs = TextAndArgs
+    mBuffer.AppendFormatArrayEx LocalArgs
+    mBuffer.Append vbCrLf
+    OutputText
+End Property
+
+Private Sub OutputText()
+    Dim Output As TestOutput
+    Set Output = Sim.NewTestOutput(mBuffer.ToString, mOutputType)
+    mListener.TestOutput Output
 End Sub
 
 
@@ -65,9 +87,9 @@ End Sub
 '   ITextWriter Interface
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub ITextWriter_WriteLine(ParamArray TextAndArgs() As Variant)
-
+    WriteLineDirect = TextAndArgs
 End Sub
 
 Private Sub ITextWriter_WriteText(ByVal Text As String, ParamArray Args() As Variant)
-
+    WriteTextDirect(Text) = Args
 End Sub

@@ -16,6 +16,7 @@ Implements IEventListener
 
 Public Calls        As New CallTrace
 Public ErrorInfo    As ErrorInfo
+Public Output       As TestOutput
 
 Private Sub CallMade(ByVal MethodName As String)
     Calls.Add MethodName
@@ -44,6 +45,7 @@ End Sub
 
 Private Sub IEventListener_TestOutput(ByVal Output As TestOutput)
     CallMade "TestOutput"
+    Set Me.Output = Output
 End Sub
 
 Private Sub IEventListener_TestSuiteFinished(ByVal Result As TestResult)
