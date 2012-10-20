@@ -2,7 +2,7 @@
 // SimplyVBUnit Type Library
 //
 
-[ helpstring("SimplyVBUnit 4.0 Type Library"), uuid(923925AC-1013-4d27-9FB1-4FF0B3B47BA2), lcid(0x00000000), version(4.0)]
+[ helpstring("SimplyVBUnit Type Library 4.0"), uuid(923925AC-1013-4d27-9FB1-4FF0B3B47BA2), lcid(0x00000000), version(4.0)]
 library SimplyVBUnitType {
 importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 
