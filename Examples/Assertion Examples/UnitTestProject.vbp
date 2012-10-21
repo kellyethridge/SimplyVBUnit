@@ -4,6 +4,7 @@ Reference=*\G{5E4E54C2-20C8-41D2-83E8-03432DCF3EC4}#1.0#0#..\..\..\..\..\..\..\P
 Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#..\..\..\..\..\..\..\Program Files (x86)\SimplyVBUnit 4.0\SimplyVBUnitType.tlb#SimplyVBUnit Type Library 4.0
 Object={479997A9-A302-40BF-BFA1-F7D09063DB92}#1.0#0; SimplyVBUnitUI.ocx
 Form=frmTestRunner.frm
+Class=TestingPrimitives; TestingPrimitives.cls
 Startup="frmTestRunner"
 Command32=""
 Name="UnitTestProject"

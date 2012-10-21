@@ -72,6 +72,7 @@ Private Sub Form_Load()
     '
     ' AddTest New MyTestObject
     
+    AddTest New TestingPrimitives
     
     
 End Sub
