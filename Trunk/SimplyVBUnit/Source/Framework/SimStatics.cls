@@ -78,6 +78,7 @@ Public Enum RunState
     #End If
 End Enum
 
+Private mTextBuffer As New StringBuilder
 
 Public Function Sim() As SimConstructors
     Set Sim = modStatics.Sim
@@ -114,5 +115,21 @@ End Function
 Public Property Get Tolerance() As ToleranceStatic
     Set Tolerance = modStatics.Tolerance
 End Property
+
+Public Sub WriteText(ByRef Text As String, ParamArray Args() As Variant)
+    Dim LocalArgs() As Variant
+    LocalArgs = Args
+    mTextBuffer.Length = 0
+    mTextBuffer.AppendFormatArray Text, LocalArgs
+    TestContext.Out.WriteText mTextBuffer.ToString
+End Sub
+
+Public Sub WriteLine(ParamArray TextAndArgs() As Variant)
+    Dim LocalArgs() As Variant
+    LocalArgs = TextAndArgs
+    mTextBuffer.Length = 0
+    mTextBuffer.AppendFormatArrayEx LocalArgs
+    TestContext.Out.WriteLine mTextBuffer.ToString
+End Sub
 
 
