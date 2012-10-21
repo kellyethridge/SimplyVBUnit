@@ -202,7 +202,9 @@ Private Sub UserControl_Initialize()
 End Sub
 
 Private Sub UserControl_Terminate()
+    Call mSuper.UnSubclass
     Call DeleteObject(mFontHandle)
+    Call DestroyWindow(mLBHwnd)
 End Sub
 
 Private Sub UserControl_InitProperties()
