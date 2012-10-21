@@ -72,7 +72,9 @@ Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
 End Sub
 
 Private Sub mListener_TestCaseFinished(ByVal Result As SimplyVBUnit.TestResult)
-    mBar.Value = mBar.Value + 1
+    If mBar.Value < mBar.Max Then
+        mBar.Value = mBar.Value + 1
+    End If
     
     If Result.IsFailure Or Result.IsError Then
         Call SendMessage(mBar.hWnd, PBM_SETBARCOLOR, 0, ByVal vbRed)

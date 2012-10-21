@@ -23,6 +23,7 @@ UserControl=UI\UIListBox.ctl
 UserControl=UI\UIRunner.ctl
 Class=UISetting; UI\UISetting.cls
 Class=UIStaticClasses; UI\UIStaticClasses.cls
+Class=CategoryListController; UI\CategoryListController.cls
 Startup="(None)"
 HelpFile=""
 Title="UI"

@@ -69,5 +69,9 @@ Public Function NewClientInfo(ByVal Info As Object) As ClientInfo
     Call NewClientInfo.Init(Info)
 End Function
 
+Public Function NewCategoryListController(ByVal Tests As ITest, ByVal List As Object, ByVal Enabled As Object, ByVal Exclude As Object, ByVal SelectAll As Object) As CategoryListController
+    Set NewCategoryListController = New CategoryListController
+    Call NewCategoryListController.Init(Tests, List, Enabled, Exclude, SelectAll)
+End Function
 
 

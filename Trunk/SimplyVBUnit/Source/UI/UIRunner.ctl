@@ -205,14 +205,14 @@ Begin VB.UserControl UIRunner
       Top             =   120
       Width           =   3255
       Begin MSComctlLib.TreeView tvwTests 
-         Height          =   4575
-         Left            =   0
+         Height          =   4440
+         Left            =   360
          TabIndex        =   2
          Tag             =   "skip"
-         Top             =   0
-         Width           =   3255
-         _ExtentX        =   5741
-         _ExtentY        =   8070
+         Top             =   75
+         Width           =   2790
+         _ExtentX        =   4921
+         _ExtentY        =   7832
          _Version        =   393217
          HideSelection   =   0   'False
          Indentation     =   441
@@ -227,6 +227,76 @@ Begin VB.UserControl UIRunner
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Tahoma"
             Size            =   9
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+      End
+      Begin VB.CheckBox chkSelectAll 
+         Caption         =   "Select/Deselect All"
+         Height          =   255
+         Left            =   480
+         TabIndex        =   20
+         Top             =   4200
+         Width           =   2415
+      End
+      Begin VB.CheckBox chkCategoriesEnabled 
+         Caption         =   "Categories Enabled"
+         Height          =   255
+         Left            =   480
+         TabIndex        =   19
+         Top             =   120
+         Width           =   1935
+      End
+      Begin VB.CheckBox chkExcludeCategories 
+         Caption         =   "Don't Run Selected Categories"
+         Height          =   255
+         Left            =   480
+         TabIndex        =   18
+         Top             =   360
+         Width           =   2655
+      End
+      Begin VB.ListBox lstCategories 
+         Height          =   3450
+         IntegralHeight  =   0   'False
+         Left            =   390
+         Sorted          =   -1  'True
+         Style           =   1  'Checkbox
+         TabIndex        =   17
+         Top             =   675
+         Visible         =   0   'False
+         Width           =   2790
+      End
+      Begin MSComctlLib.TabStrip tabSelections 
+         Height          =   4575
+         Left            =   0
+         TabIndex        =   16
+         Top             =   0
+         Width           =   3255
+         _ExtentX        =   5741
+         _ExtentY        =   8070
+         MultiRow        =   -1  'True
+         ShowTips        =   0   'False
+         Placement       =   2
+         _Version        =   393216
+         BeginProperty Tabs {1EFB6598-857C-11D1-B16A-00C0F0283628} 
+            NumTabs         =   2
+            BeginProperty Tab1 {1EFB659A-857C-11D1-B16A-00C0F0283628} 
+               Caption         =   "Tests"
+               Key             =   "Tests"
+               ImageVarType    =   2
+            EndProperty
+            BeginProperty Tab2 {1EFB659A-857C-11D1-B16A-00C0F0283628} 
+               Caption         =   "Categories"
+               Key             =   "Categories"
+               ImageVarType    =   2
+            EndProperty
+         EndProperty
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -397,6 +467,7 @@ Private mFilter         As ITestFilter
 Private mRunner         As TestRunner
 Private mListener       As New EventCastListener
 Private mTestTree       As TestTreeController
+Private mCategoryList   As CategoryListController
 Private mResultsTab     As ResultsTabController
 Private mProgress       As TestProgressController
 Private mStatus         As StatusBarController
@@ -468,6 +539,7 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub InitControllers()
     Set mTestTree = UI.NewTestTreeController(UserControl.tvwTests, mTests, mListener)
+    Set mCategoryList = UI.NewCategoryListController(mTests, UserControl.lstCategories, UserControl.chkCategoriesEnabled, UserControl.chkExcludeCategories, UserControl.chkSelectAll)
     Set mResultsTab = UI.NewResultsTabController(UserControl.lstFailureOutput, UserControl.tvwTestsNotRun, UserControl.txtConsoleOutput, UserControl.txtLogOutput, UserControl.txtErrorsOutput, mListener)
     Set mProgress = UI.NewTestProgressController(UserControl.barTestProgress, UserControl.lblCurrentTest, mListener)
     Set mStatus = UI.NewStatusBarController(UserControl.statProgress, mListener)
@@ -479,6 +551,7 @@ Private Sub InitApp()
     Call mConfig.Load(ClientInfo.Path & "\" & ClientInfo.EXEName & ".config")
     Call RestoreFormConfiguration
     Call mTestTree.RestoreTreeViewState(mConfig)
+    Call mCategoryList.LoadState(mConfig)
     Call InitContextWriters
     Call Me.AddListener(mListener)
 End Sub
@@ -499,6 +572,9 @@ Private Sub PositionControls()
     If mLeftPanelContent Is Nothing Then
         Set mLeftPanelContent = New Anchor
         Call mLeftPanelContent.Add(UserControl.tvwTests, ToAllSides)
+        Call mLeftPanelContent.Add(UserControl.tabSelections, ToAllSides)
+        Call mLeftPanelContent.Add(UserControl.lstCategories, ToAllSides)
+        Call mLeftPanelContent.Add(UserControl.chkSelectAll, ToLeft Or ToBottom)
     End If
     Call mLeftPanelContent.ReAnchor
     
@@ -544,6 +620,14 @@ Private Sub DisplayTabPages()
     UserControl.txtErrorsOutput.Visible = UserControl.tabOutputs.Tabs("Errors").Selected
 End Sub
 
+Private Sub DisplayTabSelections()
+    UserControl.lstCategories.Visible = UserControl.tabSelections.Tabs("Categories").Selected
+    UserControl.chkExcludeCategories.Visible = UserControl.lstCategories.Visible
+    UserControl.chkCategoriesEnabled.Visible = UserControl.lstCategories.Visible
+    UserControl.chkSelectAll.Visible = UserControl.lstCategories.Visible
+    UserControl.tvwTests.Visible = UserControl.tabSelections.Tabs("Tests").Selected
+End Sub
+
 Private Sub InitContextWriters()
     Set TestContext.Out = Sim.NewTestOutputWriter(mListener, TestOutputType.StandardOutput)
     Set TestContext.Log = Sim.NewTestOutputWriter(mListener, TestOutputType.LogOutput)
@@ -583,9 +667,6 @@ End Sub
 '   Control Events
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub cmdRun_Click()
-' TODO: Understand this
-'    Call mTests.Reset
-    
     Dim StartingTest As ITest
     Set StartingTest = mTestTree.SelectedTest
     
@@ -597,7 +678,21 @@ Private Sub cmdRun_Click()
     Set mRunner = Sim.NewTestRunner(StartingTest)
     mRunner.AllowCancel = mConfig.AllowStop
     cmdStop.Enabled = mConfig.AllowStop
-    Call mRunner.Run(mListeners, mFilter)
+    
+    Dim CategoryFilter As ITestFilter
+    Set CategoryFilter = mCategoryList.CreateFilter()
+    
+    If CategoryFilter Is Nothing Then
+        Call mRunner.Run(mListeners, mFilter)
+    ElseIf mFilter Is Nothing Then
+        Call mRunner.Run(mListener, CategoryFilter)
+    Else
+        Dim Multi As New AndFilter
+        Multi.Add CategoryFilter
+        Multi.Add mFilter
+        Call mRunner.Run(mListener, Multi)
+    End If
+    
     cmdStop.Enabled = True
 End Sub
 
@@ -710,6 +805,10 @@ Private Sub tabOutputs_Click()
     Call DisplayTabPages
 End Sub
 
+Private Sub tabSelections_Click()
+    Call DisplayTabSelections
+End Sub
+
 Private Sub tvwTests_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = vbRightButton Then
         Call PopupMenu(mnuPopUp)
@@ -728,6 +827,7 @@ Private Sub UserControl_Hide()
     If Ambient.UserMode Then
         Call SaveFormConfiguration
         Call mTestTree.SaveTreeViewState(mConfig)
+        Call mCategoryList.SaveState(mConfig)
         Call mConfig.Save
     End If
 End Sub
@@ -760,6 +860,7 @@ Private Sub UserControl_Show()
     If Ambient.UserMode Then
         Call mTestTree.Refresh
         Call mTestTree.RestoreTreeViewState(mConfig)
+        Call mCategoryList.LoadState(mConfig)
     End If
     
     Set mAnchor = Nothing

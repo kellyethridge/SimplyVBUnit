@@ -40,12 +40,10 @@ Private Const IMG_NOTRUN        As String = "NotRun"
 Private Const IMG_IGNORED       As String = "Ignored"
 Private Const IMG_INCONCLUSIVE  As String = "Inconclusive"
 
-Private WithEvents mTreeView As TreeView
-Attribute mTreeView.VB_VarHelpID = -1
 Private WithEvents mListener As EventCastListener
 Attribute mListener.VB_VarHelpID = -1
-
-Private mRootKey As String
+Private mTreeView   As TreeView
+Private mRootKey    As String
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
