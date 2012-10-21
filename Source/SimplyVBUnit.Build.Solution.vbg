@@ -1,0 +1,3 @@
+VBGROUP 5.0
+StartupProject=SimplyVBUnit.Framework.vbp
+Project=SimplyVBUnitUI.vbp
