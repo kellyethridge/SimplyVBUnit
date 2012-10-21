@@ -1,6 +1,6 @@
 VBGROUP 5.0
 Project=SimplyVBUnit.Framework.vbp
 Project=SimplyVBUnit.Fakes.vbp
-Project=SimplyVBUnit.Tests.vbp
+StartupProject=SimplyVBUnit.Tests.vbp
 Project=SimplyVBUnitUI.vbp
-StartupProject=SimplyVBUnitUITests.vbp
+Project=SimplyVBUnitUITests.vbp

@@ -13,6 +13,12 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 Implements ITestCaseSource
+Implements ICategorizable
+
+
+Private Sub ICategorizable_Categorize(ByVal Categories As SimplyVBUnit.CategoryCollector)
+    Categories.AddFixtureCategories "Slow Tests"
+End Sub
 
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Select Case Test.MethodName

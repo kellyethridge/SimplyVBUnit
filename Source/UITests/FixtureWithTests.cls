@@ -12,6 +12,7 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
+Implements ICategorizable
 
 Public Sub ATest()
 
@@ -30,4 +31,9 @@ Public Sub AThirdTest()
     Mid$(s1, 40, 1) = "A"
     
     Assert.That s2, Iz.EqualTo(s1)
+End Sub
+
+Private Sub ICategorizable_Categorize(ByVal Categories As SimplyVBUnit.CategoryCollector)
+    Categories.AddTestCategories "ATest", "Quick Tests"
+    Categories.AddTestCategories "AnotherTest", "Quick Tests"
 End Sub

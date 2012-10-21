@@ -54,11 +54,15 @@ Public Function Match(ByVal Test As ITest) As Boolean
 End Function
 
 Public Function Pass(ByVal Test As ITest) As Boolean
-    Pass = mBase.Pass(Me, Test)
+    If Test.HasCategories Then
+        Pass = mBase.Pass(Me, Test)
+    Else
+        Pass = True
+    End If
 End Function
 
-Public Property Get Categories() As Collection
-    Set Categories = mCategories
+Public Property Get Count() As Long
+    Count = mCategories.Count
 End Property
 
 
