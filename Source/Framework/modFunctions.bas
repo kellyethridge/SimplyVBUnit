@@ -20,7 +20,7 @@ Attribute VB_Name = "modFunctions"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SimplyVBUnit.modFunctions
+' Module: modFunctions
 '
 ' This module contains various utility functions used in support of higher functions within the project.
 '

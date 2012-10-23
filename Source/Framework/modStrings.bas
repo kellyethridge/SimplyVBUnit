@@ -20,7 +20,7 @@ Attribute VB_Name = "modStrings"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SimplyVBUnit.modStrings
+' Module: modStrings
 '
 ' Helper methods for strings.
 '

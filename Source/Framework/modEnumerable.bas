@@ -20,7 +20,7 @@ Attribute VB_Name = "modEnumerable"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SimplyVBUnit.modEnumerable
+' Module: modEnumerable
 '
 ' Provides functions that deal with Collections and enumerable entities, including arrays.
 '
@@ -90,7 +90,7 @@ Private Function SupportsEnumeration(ByVal Obj As Object) As Boolean
     End If
     
     Dim Info As InterfaceInfo
-    Set Info = tli.InterfaceInfoFromObject(Obj)
+    Set Info = TLI.InterfaceInfoFromObject(Obj)
     
     Dim Member As MemberInfo
     For Each Member In Info.Members

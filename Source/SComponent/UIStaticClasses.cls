@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "EmptyFilter"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
+Attribute VB_Name = "UIStaticClasses"
+Attribute VB_GlobalNameSpace = True
+Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 'The MIT License (MIT)
 'Copyright (c) 2012 Kelly Ethridge
 '
@@ -32,15 +32,18 @@ Attribute VB_Exposed = False
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.EmptyFilter
+' Module: SComponent.UIStaticClasses
 '
 Option Explicit
-Implements ITestFilter
 
-Private Function ITestFilter_Match(ByVal Test As ITest) As Boolean
-    ITestFilter_Match = True
+Public Function UI() As UIConstructors
+    Set UI = modMain.UI
 End Function
 
-Private Function ITestFilter_Pass(ByVal Test As ITest) As Boolean
-    ITestFilter_Pass = True
-End Function
+Public Sub AddTest(ByVal Fixture As Object)
+    Tests.Add Fixture
+End Sub
+
+Public Sub SetClientInfo(ByVal Info As Object)
+    Set ClientInfo = UI.NewClientInfo(Info)
+End Sub

@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "EmptyFilter"
+Attribute VB_Name = "TestResultCollector"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 'The MIT License (MIT)
 'Copyright (c) 2012 Kelly Ethridge
 '
@@ -32,15 +32,38 @@ Attribute VB_Exposed = False
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.EmptyFilter
+' Module: SComponent.TestResultCollector
 '
 Option Explicit
-Implements ITestFilter
 
-Private Function ITestFilter_Match(ByVal Test As ITest) As Boolean
-    ITestFilter_Match = True
-End Function
+Private WithEvents mListener As EventCastListener
+Attribute mListener.VB_VarHelpID = -1
+Private mResults As Collection
 
-Private Function ITestFilter_Pass(ByVal Test As ITest) As Boolean
-    ITestFilter_Pass = True
-End Function
+
+Public Property Get Item(ByVal Index As Variant) As TestResult
+Attribute Item.VB_UserMemId = 0
+    On Error GoTo errTrap
+    Set Item = mResults(Index)
+errTrap:
+End Property
+
+Friend Sub Init(ByVal Listener As EventCastListener)
+    Set mListener = Listener
+End Sub
+
+Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
+    Set mResults = New Collection
+End Sub
+
+Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
+    Call mResults.Add(Result, Result.Test.FullName)
+End Sub
+
+Private Sub mListener_TestFixtureFinished(ByVal Result As TestResult)
+    Call mResults.Add(Result, Result.Test.FullName)
+End Sub
+
+Private Sub mListener_TestSuiteFinished(ByVal Result As TestResult)
+    Call mResults.Add(Result, Result.Test.FullName)
+End Sub
