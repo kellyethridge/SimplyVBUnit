@@ -1,4 +1,4 @@
-Attribute VB_Name = "modFunctions"
+Attribute VB_Name = "modStrings"
 'The MIT License (MIT)
 'Copyright (c) 2012 Kelly Ethridge
 '
@@ -20,29 +20,19 @@ Attribute VB_Name = "modFunctions"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SimplyVBUnit.modFunctions
+' Module: SimplyVBUnit.modStrings
 '
-' This module contains various utility functions used in support of higher functions within the project.
+' Helper methods for strings.
 '
 Option Explicit
 
-Public Const LESS_THAN      As Long = -1
-Public Const GREATER_THAN   As Long = 1
-Public Const EQUAL_TO       As Long = 0
-
-
-Public Function FuncAddr(ByVal Addr As Long) As Long
-    FuncAddr = Addr
+Public Function EqualStrings(ByRef String1 As Variant, ByRef String2 As Variant, Optional ByVal IgnoreCase As Boolean) As Boolean
+    Dim Method As VbCompareMethod
+    If Not IgnoreCase Then
+        Method = vbBinaryCompare
+    Else
+        Method = vbTextCompare
+    End If
+    
+    EqualStrings = (StrComp(String1, String2, Method) = 0)
 End Function
-
-
-
-
-
-
-
-
-
-
-
-
