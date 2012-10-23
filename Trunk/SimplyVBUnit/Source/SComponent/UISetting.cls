@@ -6,11 +6,11 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "EmptyFilter"
+Attribute VB_Name = "UISetting"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
+Attribute VB_Exposed = True
 'The MIT License (MIT)
 'Copyright (c) 2012 Kelly Ethridge
 '
@@ -32,15 +32,25 @@ Attribute VB_Exposed = False
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.EmptyFilter
+' Module: SComponent.UISetting
 '
 Option Explicit
-Implements ITestFilter
 
-Private Function ITestFilter_Match(ByVal Test As ITest) As Boolean
-    ITestFilter_Match = True
-End Function
+Private mName As String
+Private mValue As Variant
 
-Private Function ITestFilter_Pass(ByVal Test As ITest) As Boolean
-    ITestFilter_Pass = True
-End Function
+
+Public Property Get Name() As String
+    Name = mName
+End Property
+
+Public Property Get Value() As Variant
+    Value = mValue
+End Property
+    
+
+
+Friend Sub Init(ByVal Name As String, ByRef Value As Variant)
+    mName = Name
+    mValue = Value
+End Sub

@@ -11,38 +11,29 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'**********************************************************
-'*
-'*     Name:    Anchor
-'*
-'*     Date:    3/15/2004
-'*
-'*     Author:  Kelly Ethridge
-'*
-'*     Purpose: This class is used to anchor controls within
-'*              a container so they can be resized along with
-'*              the container.
-'*
-'*              All of the controls added to this anchor do not
-'*              have to be within the same container. Each control
-'*              is treated individually and maintains their own
-'*              anchors within their container. However, if you
-'*              have many controls and do not need them all to
-'*              be reanchored at the same time, then consider
-'*              placing the controls in separate anchor objects
-'*              grouping them by reanchor needs.
-'*
-'*     Require:   none
-'*
-'*
-'**********************************************************
-'*
-'*--History--
-'*
-'*--ToDo--
-'*
-'**********************************************************
-
+'The MIT License (MIT)
+'Copyright (c) 2012 Kelly Ethridge
+'
+'Permission is hereby granted, free of charge, to any person obtaining a copy
+'of this software and associated documentation files (the "Software"), to deal
+'in the Software without restriction, including without limitation the rights to
+'use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+'the Software, and to permit persons to whom the Software is furnished to do so,
+'subject to the following conditions:
+'
+'The above copyright notice and this permission notice shall be included in all
+'copies or substantial portions of the Software.
+'
+'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+'INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+'PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+'FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+'OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+'DEALINGS IN THE SOFTWARE.
+'
+'
+' Module: SComponent.Anchor
+'
 Option Explicit
 
 Private Const DEF_CAPACITY As Long = 16
@@ -173,12 +164,12 @@ End Sub
 '  Private Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub EnsureCapacity(ByVal RequiredCapacity As Long)
-   Dim newCapacity As Long
+   Dim NewCapacity As Long
    
    If NeedsMoreCapacity(RequiredCapacity) Then
-      newCapacity = Capacity * 2
-      If RequiredCapacity > newCapacity Then newCapacity = RequiredCapacity
-      Capacity = newCapacity
+      NewCapacity = Capacity * 2
+      If RequiredCapacity > NewCapacity Then NewCapacity = RequiredCapacity
+      Capacity = NewCapacity
    End If
 End Sub
 

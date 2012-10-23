@@ -36,17 +36,17 @@ Begin VB.UserControl UIRunner
       TabIndex        =   6
       Top             =   0
       Width           =   5295
-      Begin SimplyVBUnitUI.UIListBox lstFailureOutput 
+      Begin SComponent.UIListBox lstFailureOutput 
          Height          =   2415
          Left            =   120
-         TabIndex        =   15
-         Top             =   2130
+         TabIndex        =   20
+         Top             =   2160
          Width           =   4935
          _ExtentX        =   8705
          _ExtentY        =   4260
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "Courier"
-            Size            =   9.75
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -238,7 +238,7 @@ Begin VB.UserControl UIRunner
          Caption         =   "Select/Deselect All"
          Height          =   255
          Left            =   480
-         TabIndex        =   20
+         TabIndex        =   19
          Top             =   4200
          Width           =   2415
       End
@@ -246,7 +246,7 @@ Begin VB.UserControl UIRunner
          Caption         =   "Categories Enabled"
          Height          =   255
          Left            =   480
-         TabIndex        =   19
+         TabIndex        =   18
          Top             =   120
          Width           =   1935
       End
@@ -254,7 +254,7 @@ Begin VB.UserControl UIRunner
          Caption         =   "Don't Run Selected Categories"
          Height          =   255
          Left            =   480
-         TabIndex        =   18
+         TabIndex        =   17
          Top             =   360
          Width           =   2655
       End
@@ -264,7 +264,7 @@ Begin VB.UserControl UIRunner
          Left            =   390
          Sorted          =   -1  'True
          Style           =   1  'Checkbox
-         TabIndex        =   17
+         TabIndex        =   16
          Top             =   675
          Visible         =   0   'False
          Width           =   2790
@@ -272,7 +272,7 @@ Begin VB.UserControl UIRunner
       Begin MSComctlLib.TabStrip tabSelections 
          Height          =   4575
          Left            =   0
-         TabIndex        =   16
+         TabIndex        =   15
          Top             =   0
          Width           =   3255
          _ExtentX        =   5741
@@ -424,31 +424,31 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-
-'    CopyRight (c) 2008 Kelly Ethridge
+'The MIT License (MIT)
+'Copyright (c) 2012 Kelly Ethridge
 '
-'    This file is part of SimplyVBUnitUI.
+'Permission is hereby granted, free of charge, to any person obtaining a copy
+'of this software and associated documentation files (the "Software"), to deal
+'in the Software without restriction, including without limitation the rights to
+'use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+'the Software, and to permit persons to whom the Software is furnished to do so,
+'subject to the following conditions:
 '
-'    SimplyVBUnitUI is free software; you can redistribute it and/or modify
-'    it under the terms of the GNU Library General Public License as published by
-'    the Free Software Foundation; either version 2.1 of the License, or
-'    (at your option) any later version.
+'The above copyright notice and this permission notice shall be included in all
+'copies or substantial portions of the Software.
 '
-'    SimplyVBUnitUI is distributed in the hope that it will be useful,
-'    but WITHOUT ANY WARRANTY; without even the implied warranty of
-'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'    GNU Library General Public License for more details.
+'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+'INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+'PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+'FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+'OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+'DEALINGS IN THE SOFTWARE.
 '
-'    You should have received a copy of the GNU Library General Public License
-'    along with Foobar; if not, write to the Free Software
-'    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 '
-'    Module: ctlSimplyVBUnitUI
+' Module: SComponent.UIRunner
 '
-
 Option Explicit
 
-'Private WithEvents mUserEvents As UserEvents
 Private WithEvents mContainer  As Form
 Attribute mContainer.VB_VarHelpID = -1
 
@@ -522,7 +522,7 @@ Public Sub Init(ByVal Info As Object)
     Set mTests = Sim.NewTestSuite(ClientInfo.EXEName)
     
     Dim Item As Object
-    For Each Item In modStaticClasses.Tests
+    For Each Item In modMain.Tests
         Call mTests.Add(Item)
     Next
 
@@ -752,25 +752,25 @@ Private Sub picLeftPanel_Resize()
     Call PositionControls
 End Sub
 
-Private Sub picSplitter_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picSplitter_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Button = vbLeftButton Then
-        mMouseDownDX = x
+        mMouseDownDX = X
         picSplitter.BackColor = &H8080FF
         mDragSplitter = True
     End If
 End Sub
 
-Private Sub picSplitter_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picSplitter_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If mDragSplitter Then
         Dim NewX As Long
-        NewX = picSplitter.Left + x - mMouseDownDX
+        NewX = picSplitter.Left + X - mMouseDownDX
         If NewX < 1000 Then NewX = 1000
         If NewX > UserControl.Width - 1000 Then NewX = UserControl.Width - 1000
         picSplitter.Left = NewX
     End If
 End Sub
 
-Private Sub picSplitter_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picSplitter_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If mDragSplitter Then
         Set mAnchor = Nothing
         picSplitter.BackColor = vbButtonFace
@@ -783,11 +783,11 @@ End Sub
 Private Sub picSplitter_Paint()
     picSplitter.Cls
     
-    Dim y As Long
-    y = picSplitter.Height / 2 - 200
+    Dim Y As Long
+    Y = picSplitter.Height / 2 - 200
     
     Dim i As Long
-    For i = y To y + 270 Step 90
+    For i = Y To Y + 270 Step 90
         picSplitter.CurrentX = -70
         picSplitter.CurrentY = i
         picSplitter.Print "w"
@@ -809,7 +809,7 @@ Private Sub tabSelections_Click()
     Call DisplayTabSelections
 End Sub
 
-Private Sub tvwTests_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub tvwTests_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If Button = vbRightButton Then
         Call PopupMenu(mnuPopUp)
     End If
@@ -830,6 +830,10 @@ Private Sub UserControl_Hide()
         Call mCategoryList.SaveState(mConfig)
         Call mConfig.Save
     End If
+End Sub
+
+Private Sub UserControl_Initialize()
+    Set modMain.Tests = New Collection
 End Sub
 
 'Initialize Properties for User Control
@@ -871,6 +875,10 @@ Private Sub UserControl_Show()
             Call cmdRun_Click
         End If
     End If
+End Sub
+
+Private Sub UserControl_Terminate()
+    Set modMain.Tests = Nothing
 End Sub
 
 'Write property values to storage

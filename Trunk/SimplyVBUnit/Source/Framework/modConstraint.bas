@@ -20,7 +20,7 @@ Attribute VB_Name = "modConstraint"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SimplyVBUnit.modConstraint
+' Module: modConstraint
 '
 ' Provides helper functions for constraints.
 '

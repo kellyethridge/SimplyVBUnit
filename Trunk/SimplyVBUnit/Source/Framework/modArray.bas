@@ -20,7 +20,7 @@ Attribute VB_Name = "modArray"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SimplyVBUnit.modArray
+' Module: modArray
 '
 ' This module provides functionaly for interacting with arrays.
 '
@@ -99,7 +99,7 @@ Public Function GetArrayElement(ByRef Arr As Variant, ByVal Index As Long) As Va
         If SA.cDims > 0 Then
             VariantType(Src) = VarType(Arr)
             MemLong(VarPtr(Src) + VARIANTDATA_OFFSET) = VarPtr(SA)
-            SA.lLbound = 0
+            SA.lLBound = 0
             SA.cElements = GetElementCount(Arr, SA.cDims)
             SA.cDims = 1
             
