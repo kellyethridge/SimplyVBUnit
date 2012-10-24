@@ -41,4 +41,6 @@ Public Sub AssertingOneLessThanTheOther()
     Const Other As Long = 2
     
     Assert.That Actual, Iz.LessThan(Other)
+    
+    WriteLine "Hello kelly"
 End Sub

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{479997A9-A302-40BF-BFA1-F7D09063DB92}#1.0#0"; "SimplyVBUnitUI.ocx"
+Object = "{EB2012E6-B07B-4B6F-8CCD-BE9D0AD980FC}#1.0#0"; "SimplyVBUnit.Component.ocx"
 Begin VB.Form frmTestRunner 
    ClientHeight    =   5220
    ClientLeft      =   120
@@ -10,13 +10,13 @@ Begin VB.Form frmTestRunner
    ScaleHeight     =   5220
    ScaleWidth      =   9060
    StartUpPosition =   3  'Windows Default
-   Begin SimplyVBUnitUI.UIRunner UIRunner1 
+   Begin SimplyVBComp.UIRunner UIRunner1 
       Height          =   5175
       Left            =   0
       TabIndex        =   0
       Top             =   0
-      Width           =   9015
-      _ExtentX        =   15901
+      Width           =   9135
+      _ExtentX        =   16113
       _ExtentY        =   9128
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
