@@ -47,7 +47,7 @@ Public Function TestSelectedTestIsReturned(ByVal Name As String) As String
 End Function
 
 
-Private Sub ITestCaseSource_GetTestCases(ByVal Test As SimplyVBUnit.TestCaseCollector)
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Select Case Test.MethodName
         Case "TestSelectedTestIsReturned"
             Call Test.use("TreeView Tests.FixtureWithTests.ATest").Expect("ATest")

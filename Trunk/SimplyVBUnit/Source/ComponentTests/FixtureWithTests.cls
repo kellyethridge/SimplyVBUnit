@@ -33,7 +33,7 @@ Public Sub AThirdTest()
     Assert.That s2, Iz.EqualTo(s1)
 End Sub
 
-Private Sub ICategorizable_Categorize(ByVal Categories As SimplyVBUnit.CategoryCollector)
+Private Sub ICategorizable_Categorize(ByVal Categories As CategoryCollector)
     Categories.AddTestCategories "ATest", "Quick Tests"
     Categories.AddTestCategories "AnotherTest", "Quick Tests"
 End Sub

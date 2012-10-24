@@ -36,7 +36,7 @@ Begin VB.UserControl UIRunner
       TabIndex        =   6
       Top             =   0
       Width           =   5295
-      Begin SComponent.UIListBox lstFailureOutput 
+      Begin SimplyVBComp.UIListBox lstFailureOutput 
          Height          =   2415
          Left            =   120
          TabIndex        =   20
@@ -45,8 +45,8 @@ Begin VB.UserControl UIRunner
          _ExtentX        =   8705
          _ExtentY        =   4260
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
+            Name            =   "Courier"
+            Size            =   9.75
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -424,6 +424,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
+
 'The MIT License (MIT)
 'Copyright (c) 2012 Kelly Ethridge
 '

@@ -19,15 +19,15 @@ Public TestCount As Long
 Public Parent As ITest
 Public Tests As New TestList
 
-Private Property Set ITest_Categories(ByVal RHS As SimplyVBUnit.Categorization)
+Private Property Set ITest_Categories(ByVal RHS As Categorization)
 
 End Property
 
-Private Property Get ITest_Categories() As SimplyVBUnit.Categorization
+Private Property Get ITest_Categories() As Categorization
 
 End Property
 
-Private Function ITest_CountTestCases(ByVal Filter As SimplyVBUnit.ITestFilter) As Long
+Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
 
 End Function
 
@@ -59,11 +59,11 @@ Private Property Get ITest_Name() As String
     ITest_Name = Name
 End Property
 
-Private Property Set ITest_Parent(ByVal RHS As SimplyVBUnit.ITest)
+Private Property Set ITest_Parent(ByVal RHS As ITest)
     Set Parent = RHS
 End Property
 
-Private Property Get ITest_Parent() As SimplyVBUnit.ITest
+Private Property Get ITest_Parent() As ITest
     Set Parent = Parent
 End Property
 
@@ -71,23 +71,23 @@ Private Sub ITest_Reset()
 
 End Sub
 
-Private Function ITest_Run(Optional ByVal Listener As SimplyVBUnit.IEventListener, Optional ByVal Filter As SimplyVBUnit.ITestFilter) As SimplyVBUnit.TestResult
+Private Function ITest_Run(Optional ByVal Listener As IEventListener, Optional ByVal Filter As ITestFilter) As TestResult
     
 End Function
 
-Private Property Let ITest_RunState(ByVal RHS As SimplyVBUnit.RunState)
+Private Property Let ITest_RunState(ByVal RHS As RunState)
 
 End Property
 
-Private Property Get ITest_RunState() As SimplyVBUnit.RunState
+Private Property Get ITest_RunState() As RunState
 
 End Property
 
-Private Sub ITest_SetRunner(ByVal Runner As SimplyVBUnit.ITestRunner)
+Private Sub ITest_SetRunner(ByVal Runner As ITestRunner)
 
 End Sub
 
-Private Sub ITest_Sort(Optional ByVal Comparer As SimplyVBUnit.ITestComparer)
+Private Sub ITest_Sort(Optional ByVal Comparer As ITestComparer)
 
 End Sub
 
