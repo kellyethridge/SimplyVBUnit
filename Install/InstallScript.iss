@@ -24,10 +24,9 @@ SolidCompression=yes
 Name: english; MessagesFile: compiler:Default.isl
 
 [Files]
-Source: Compiled\SimplyVBUnit.Framework.dll; DestDir: {sys}; Flags: regserver
-Source: Compiled\SimplyVBUnit.Component.ocx; DestDir: {sys}; Flags: regserver
+Source: ..\Binary\Compiled\SimplyVBUnit.Framework.dll; DestDir: {sys}; Flags: regserver
+Source: ..\Binary\Compiled\SimplyVBUnit.Component.ocx; DestDir: {sys}; Flags: regserver
 Source: ..\TypeLibrary\SimplyVBUnitType.tlb; DestDir: {sys}; Flags: regtypelib
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: ..\Source\Projects\frmTestRunner.frm; DestDir: {code:GetProjectsDir|{app}}; Languages: 
 Source: ..\Source\Projects\UnitTestProject.vbp; DestDir: {code:GetProjectsDir|{app}}
 Source: readme.txt; DestDir: {app}; DestName: readme.txt; Flags: isreadme
