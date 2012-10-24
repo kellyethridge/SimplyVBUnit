@@ -18,11 +18,11 @@ Private mSuccesses As Long
 Private mFailures  As Long
 Private mErrors    As Long
 
-Private Sub IEventListener_RunException(ByVal Info As SimplyVBUnit.ErrorInfo)
+Private Sub IEventListener_RunException(ByVal Info As ErrorInfo)
 
 End Sub
 
-Private Sub IEventListener_RunFinished(ByVal Result As SimplyVBUnit.TestResult)
+Private Sub IEventListener_RunFinished(ByVal Result As TestResult)
     Dim sb As New StringBuilder
     sb.Append "Passed: " & mSuccesses & vbCrLf
     sb.Append "Failed: " & mFailures & vbCrLf
@@ -41,7 +41,7 @@ Private Sub IEventListener_RunStarted(ByVal Name As String, ByVal TestCount As L
     Debug.Print String$(20, "-") & " Run Starting " & String$(20, "-")
 End Sub
 
-Private Sub IEventListener_TestCaseFinished(ByVal Result As SimplyVBUnit.TestResult)
+Private Sub IEventListener_TestCaseFinished(ByVal Result As TestResult)
     Dim sb As New StringBuilder
     
     If Result.IsSuccess Then
@@ -57,30 +57,30 @@ Private Sub IEventListener_TestCaseFinished(ByVal Result As SimplyVBUnit.TestRes
     End If
 End Sub
 
-Private Sub IEventListener_TestCaseStarted(ByVal Test As SimplyVBUnit.TestCase)
+Private Sub IEventListener_TestCaseStarted(ByVal Test As TestCase)
 
 End Sub
 
-Private Sub IEventListener_TestFixtureFinished(ByVal Result As SimplyVBUnit.TestResult)
+Private Sub IEventListener_TestFixtureFinished(ByVal Result As TestResult)
 
 End Sub
 
-Private Sub IEventListener_TestFixtureStarted(ByVal Fixture As SimplyVBUnit.TestFixture)
+Private Sub IEventListener_TestFixtureStarted(ByVal Fixture As TestFixture)
 
 End Sub
 
-Private Sub IEventListener_TestOutput(ByVal Output As SimplyVBUnit.TestOutput)
+Private Sub IEventListener_TestOutput(ByVal Output As TestOutput)
 
 End Sub
 
-Private Sub IEventListener_TestSuiteFinished(ByVal Result As SimplyVBUnit.TestResult)
+Private Sub IEventListener_TestSuiteFinished(ByVal Result As TestResult)
 
 End Sub
 
-Private Sub IEventListener_TestSuiteStarted(ByVal Suite As SimplyVBUnit.TestSuite)
+Private Sub IEventListener_TestSuiteStarted(ByVal Suite As TestSuite)
 
 End Sub
 
-Private Sub IEventListener_UnhandledError(ByVal Info As SimplyVBUnit.ErrorInfo)
+Private Sub IEventListener_UnhandledError(ByVal Info As ErrorInfo)
 
 End Sub

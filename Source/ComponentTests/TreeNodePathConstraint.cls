@@ -48,15 +48,15 @@ Private Function IConstraint_Matches(Actual As Variant) As Boolean
     IConstraint_Matches = True
 End Function
 
-Private Sub IConstraint_WriteActualValueTo(ByVal Writer As SimplyVBUnit.TextMessageWriter)
+Private Sub IConstraint_WriteActualValueTo(ByVal Writer As TextMessageWriter)
 
 End Sub
 
-Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As SimplyVBUnit.TextMessageWriter)
+Private Sub IConstraint_WriteDescriptionTo(ByVal Writer As TextMessageWriter)
     
 End Sub
 
-Private Sub IConstraint_WriteMessageTo(ByVal Writer As SimplyVBUnit.TextMessageWriter)
+Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
     Call Writer.DisplayDifferences(mExpected, mActual)
 End Sub
 

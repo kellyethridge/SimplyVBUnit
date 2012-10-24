@@ -16,7 +16,7 @@ Implements ITestCaseSource
 Implements ICategorizable
 
 
-Private Sub ICategorizable_Categorize(ByVal Categories As SimplyVBUnit.CategoryCollector)
+Private Sub ICategorizable_Categorize(ByVal Categories As CategoryCollector)
     Categories.AddFixtureCategories "Slow Tests"
 End Sub
 

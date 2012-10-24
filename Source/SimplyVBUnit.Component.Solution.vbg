@@ -1,0 +1,3 @@
+VBGROUP 5.0
+StartupProject=SimplyVBUnit.Component.Tests.vbp
+Project=SimplyVBUnit.Component.vbp

@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "*\A..\SimplyVBUnitUI.vbp"
+Object = "*\A..\SimplyVBUnit.Component.vbp"
 Begin VB.Form frmSample 
    Caption         =   "Form1"
    ClientHeight    =   6555
@@ -11,7 +11,7 @@ Begin VB.Form frmSample
    ScaleHeight     =   6555
    ScaleWidth      =   9420
    StartUpPosition =   3  'Windows Default
-   Begin SimplyVBUnitUI.UIRunner UIRunner1 
+   Begin SimplyVBComp.UIRunner UIRunner1 
       Height          =   5175
       Left            =   240
       TabIndex        =   0
