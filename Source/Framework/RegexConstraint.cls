@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.RegexConstraint
+' Module: RegexConstraint
 '
 Option Explicit
 Implements IConstraint

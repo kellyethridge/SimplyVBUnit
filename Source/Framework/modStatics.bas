@@ -20,7 +20,7 @@ Attribute VB_Name = "modStatics"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.modStatics
+' Module: modStatics
 '
 Option Explicit
 

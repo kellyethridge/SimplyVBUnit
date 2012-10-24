@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.TestCaseData
+' Module: TestCaseData
 '
 Option Explicit
 Private Const LOWER_BOUND As Long = 0

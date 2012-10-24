@@ -8,7 +8,7 @@ BEGIN
 END
 Attribute VB_Name = "ArrayEnumerator"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
+Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 'The MIT License (MIT)
@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.ArrayEnumerator
+' Module: ArrayEnumerator
 '
 Option Explicit
 Implements IEnumerator
@@ -51,7 +51,8 @@ Private mIndex  As Long
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByRef Arr As Variant)
     If Not IsArray(Arr) Then _
-        Err.Raise ErrorCode.Argument, "ArrayEnumerator.Init", "Arr must be an Array."
+        Error.ResourceArgument Me, "Init", "Arr", Arg_MustBeArray
+'        Error.Argument Me, "Init", "Arr", Resource.GetString(Arg_MustBeArray, "Arr")
         
     Dim pSA As Long
     pSA = GetArrayPointer(Arr)
@@ -101,7 +102,7 @@ Private Sub CreateArrayProxy(ByRef Arr As Variant)
     VariantType(mArray) = VarType(Arr)
     MemLong(VarPtr(mArray) + VARIANTDATA_OFFSET) = VarPtr(mSA)
     
-    mSA.lLBound = 0
+    mSA.lLbound = 0
     mSA.cElements = Count
     mSA.cDims = ARRAY_DIMENSIONS
     

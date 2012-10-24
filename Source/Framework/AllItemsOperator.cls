@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.AllItemsOperator
+' Module: AllItemsOperator
 '
 Option Explicit
 Implements IOperator

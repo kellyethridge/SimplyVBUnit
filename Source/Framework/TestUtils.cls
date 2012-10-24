@@ -32,7 +32,7 @@ Attribute VB_Exposed = False
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.TestUtils
+' Module: TestUtils
 '
 Option Explicit
 

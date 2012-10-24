@@ -36,7 +36,7 @@ Public Sub Constructor_WithNonArray_RaisesError()
     On Error GoTo 0
     
 errTrap:
-    AssertError Err, ErrorCode.Argument, "ArrayEnumerator.Init", "Arr must be an Array."
+    AssertError Err, ErrorCode.Argument, "ArrayEnumerator.Init", "Invalid argument 'Arr'. Arr must be an Array."
 End Sub
 
 Public Sub MoveNext_WithEmptyArray_ReturnsFalse()

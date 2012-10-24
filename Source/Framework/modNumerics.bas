@@ -20,7 +20,7 @@ Attribute VB_Name = "modNumerics"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.modNumerics
+' Module: modNumerics
 '
 Option Explicit
 

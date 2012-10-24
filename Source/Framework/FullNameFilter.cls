@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.FullNameFilter
+' Module: FullNameFilter
 '
 Option Explicit
 Implements ITestFilter

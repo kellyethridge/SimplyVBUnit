@@ -22,6 +22,9 @@ Public Enum StringResourceID
     Arg_CannotBeNegative = 104
     Arg_IndexOutOfRange = 105
     Arg_EnumerationNonSupported = 106
+    Arg_MustBeArray = 123
+    Arg_MustBeStringOrEnumerable = 124
+    Arg_MustBeEnumerable = 125
     Msg_FixtureSetupFailed = 122
     
 End Enum

@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.SameAsConstraint
+' Module: SameAsConstraint
 '
 Option Explicit
 Implements IConstraint

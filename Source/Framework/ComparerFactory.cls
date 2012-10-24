@@ -32,7 +32,7 @@ Attribute VB_Exposed = False
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.ComparerFactory
+' Module: ComparerFactory
 '
 Option Explicit
 
