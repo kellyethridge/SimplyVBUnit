@@ -1,22 +1,22 @@
 VERSION 5.00
-Object = "{479997A9-A302-40BF-BFA1-F7D09063DB92}#1.0#0"; "SimplyVBUnitUI.ocx"
+Object = "{EB2012E6-B07B-4B6F-8CCD-BE9D0AD980FC}#1.0#0"; "SimplyVBUnit.Component.ocx"
 Begin VB.Form frmTestRunner 
-   ClientHeight    =   5220
+   ClientHeight    =   5535
    ClientLeft      =   120
    ClientTop       =   450
-   ClientWidth     =   9060
+   ClientWidth     =   9450
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5220
-   ScaleWidth      =   9060
+   ScaleHeight     =   5535
+   ScaleWidth      =   9450
    StartUpPosition =   3  'Windows Default
-   Begin SimplyVBUnitUI.UIRunner UIRunner1 
+   Begin SimplyVBComp.UIRunner UIRunner1 
       Height          =   5175
-      Left            =   0
+      Left            =   120
       TabIndex        =   0
-      Top             =   0
-      Width           =   9015
-      _ExtentX        =   15901
+      Top             =   120
+      Width           =   9135
+      _ExtentX        =   16113
       _ExtentY        =   9128
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
@@ -35,10 +35,10 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '
-' frmSimplyVBUnitRunner
+' frmTestRunner
 '
 ' ** NOTE **
-' Please set <Tools\Options\General\Error Trapping> to <Break on Unhandled Errors>
+' Please set Tools->Options->General->Error_Trapping to 'Break on Unhandled Errors'
 '
 Option Explicit
 ' Namespaces Available:
@@ -46,8 +46,6 @@ Option Explicit
 '
 ' Public Functions Availabe:
 '       AddTest <TestObject>
-'       AddListener <ITestListener Object>
-'       AddFilter <ITestFilter Object>
 '       WriteText "Message"
 '       WriteLine "Message"
 '
@@ -71,7 +69,6 @@ Private Sub Form_Load()
     ' Add tests here
     '
     ' AddTest New MyTestObject
-    
     
     
 End Sub
