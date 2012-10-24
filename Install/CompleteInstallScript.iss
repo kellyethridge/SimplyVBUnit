@@ -16,7 +16,7 @@ DefaultDirName={pf}\SimplyVBUnit 4.0
 DefaultGroupName=SimplyVBUnit 4.0
 AllowNoIcons=yes
 OutputDir=.
-OutputBaseFilename=SimplyVBUnitSetup-4.0
+OutputBaseFilename=SimplyVBUnitComplete-4.0
 Compression=lzma
 SolidCompression=yes
 
