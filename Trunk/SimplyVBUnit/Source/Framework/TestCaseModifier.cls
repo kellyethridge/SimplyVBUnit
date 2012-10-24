@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.TestCaseModifier
+' Module: TestCaseModifier
 '
 Option Explicit
 

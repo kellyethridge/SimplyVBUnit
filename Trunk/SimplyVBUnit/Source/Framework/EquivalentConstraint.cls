@@ -8,7 +8,7 @@ BEGIN
 END
 Attribute VB_Name = "EquivalentConstraint"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = True
+Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 'The MIT License (MIT)
@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.EquivalentConstraint
+' Module: EquivalentConstraint
 '
 Option Explicit
 Implements IConstraint

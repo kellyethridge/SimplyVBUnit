@@ -1,7 +1,7 @@
 Type=OleDll
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
 Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#..\TypeLibrary\SimplyVBUnitType.tlb#SimplyVBUnit 4.0 Type Library
-Reference=*\G{5E4E54C2-20C8-41D2-83E8-03432DCF3EC4}#1.0#0#..\Binaries\Compiled\SimplyVBUnit.Framework.dll#SimplyVBUnit Framework 4.0
+Reference=*\G{23B6C3E6-2268-4527-B37A-F79C7DE37DA4}#1.0#0#..\Binaries\Compiled\SimplyVBUnit.Framework.dll#SimplyVBUnit Framework 4.0
 Class=FakeEmpty; Fakes\FakeEmpty.cls
 Class=Fake1Test; Fakes\Fake1Test.cls
 Class=Mock1Test; Fakes\Mock1Test.cls

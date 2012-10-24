@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.UniqueItemsConstraint
+' Module: UniqueItemsConstraint
 '
 Option Explicit
 Implements IConstraint
@@ -46,8 +46,8 @@ Private mComparer   As New EqualityComparer
 
 Public Function Matches(ByRef Actual As Variant) As Boolean
     If Not IsEnumerable(Actual) Then _
-        Err.Raise ErrorCode.Argument, "UniqueItemsConstraint.Matches", "The actual value must be enumerable."
-    
+        Error.ResourceArgument Me, "Matches", "Actual", Arg_MustBeEnumerable
+        
     Matches = IsUnique(Actual)
 End Function
 

@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.ContextMethods
+' Module: ContextMethods
 '
 Option Explicit
 
@@ -60,15 +60,19 @@ Friend Sub Init(ByVal SetupMethod As ITestMethod, ByVal TeardownMethod As ITestM
 End Sub
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub RunMethod(ByRef Method As ITestMethod, ByRef Skip As Boolean)
     On Error GoTo errTrap
-    If Skip = False Then
+    If Not Skip Then
         Method.Run
     End If
     Exit Sub
     
 errTrap:
-    If Err.Number = 438 Then
+    Const MethodNotFound As Long = 438
+    If Err.Number = MethodNotFound Then
         Skip = True
     Else
         Err.Raise Err.Number, Err.Source, Err.Description

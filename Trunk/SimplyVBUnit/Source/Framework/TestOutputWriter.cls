@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.TestOutputWriter
+' Module: TestOutputWriter
 '
 Option Explicit
 Implements ITextWriter
@@ -56,7 +56,7 @@ End Sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Listener As IEventListener, ByVal OutputType As TestOutputType)
     If Listener Is Nothing Then _
-        Err.Raise ErrorCode.ArgumentNull, "TestOutputWriter", "Listener cannot be Nothing."
+        Error.CannotBeNothing Me, "Init", "Listener"
     
     Set mListener = Listener
     mOutputType = OutputType

@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.EmptyConstraint
+' Module: EmptyConstraint
 '
 Option Explicit
 Implements IConstraint
@@ -53,7 +53,7 @@ Public Function Matches(ByRef Actual As Variant) As Boolean
     ElseIf VarType(Actual) = vbString Then
         Result = IsEmptyString(Actual)
     Else
-        Err.Raise ErrorCode.Argument, "EmptyConstraint.Matches", "Actual must be a String or support enumeration."
+        Error.ResourceArgument Me, "Matches", "Actual", Arg_MustBeStringOrEnumerable
     End If
     
     Matches = Result

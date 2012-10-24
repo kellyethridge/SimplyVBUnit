@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.SimStatics
+' Module: SimStatics
 '
 Option Explicit
 

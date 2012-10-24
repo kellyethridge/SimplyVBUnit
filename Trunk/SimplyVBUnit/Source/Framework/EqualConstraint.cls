@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.EqualConstraint
+' Module: EqualConstraint
 '
 Option Explicit
 Implements IConstraint
@@ -62,11 +62,6 @@ Public Function NoClip() As EqualConstraint
     Set NoClip = Me
 End Function
 
-''
-' Tells the constraint to perform string comparisons as case-insensitive.
-'
-' @return Returns a reference to itself to make it easier to chain commands together.
-'
 Public Function IgnoreCase() As EqualConstraint
     mComparer.IgnoreCase = True
     Set IgnoreCase = Me
@@ -91,12 +86,6 @@ Public Function Strict() As EqualConstraint
     Set Strict = Me
 End Function
 
-''
-' Compares the actual value to the expected value, returning the result.
-'
-' @param Actual The value to be compared to the expected value.
-' @return The result of the comparison.
-'
 Public Function Matches(ByRef Actual As Variant) As Boolean
     Dim Result As Boolean
     

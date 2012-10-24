@@ -20,7 +20,7 @@ Attribute VB_Name = "modIEnumerator"
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.modIEnumerator
+' Module: modIEnumerator
 '
 '   This module creates lightweight objects that will wrap
 '   a user's object that implements the IEnumerator interface.

@@ -54,7 +54,7 @@ Public Function GetArrayPointer(ByRef Arr As Variant) As Long
         Case BYREF_ARRAY:   Ptr = MemLong(MemLong(VarPtr(Arr) + VARIANTDATA_OFFSET))
         Case vbArray:       Ptr = MemLong(VarPtr(Arr) + VARIANTDATA_OFFSET)
         Case Else
-            Err.Raise ErrorCode.Argument, , "GetArrayPointer", "Array is required."
+            Err.Raise ErrorCode.Argument, "GetArrayPointer", Resource.GetString(Arg_MustBeArray, "Arr")
     End Select
     
     ' HACK HACK HACK
@@ -99,7 +99,7 @@ Public Function GetArrayElement(ByRef Arr As Variant, ByVal Index As Long) As Va
         If SA.cDims > 0 Then
             VariantType(Src) = VarType(Arr)
             MemLong(VarPtr(Src) + VARIANTDATA_OFFSET) = VarPtr(SA)
-            SA.lLBound = 0
+            SA.lLbound = 0
             SA.cElements = GetElementCount(Arr, SA.cDims)
             SA.cDims = 1
             

@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.ParameterizedTestMethod
+' Module: ParameterizedTestMethod
 '
 Option Explicit
 Implements ITestMethod

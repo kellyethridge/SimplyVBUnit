@@ -32,7 +32,7 @@ Attribute VB_Exposed = True
 'DEALINGS IN THE SOFTWARE.
 '
 '
-' Module: SComponent.EnumVariantEnumerator
+' Module: EnumVariantEnumerator
 '
 Option Explicit
 Implements IEnumerator
