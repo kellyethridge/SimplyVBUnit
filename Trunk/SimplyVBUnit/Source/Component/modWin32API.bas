@@ -46,20 +46,20 @@ Public Declare Sub GetSAPtr Lib "msvbvm60.dll" Alias "GetMem4" (ByRef Arr() As A
 Public Declare Sub SetSAPtr Lib "msvbvm60.dll" Alias "PutMem4" (ByRef Arr() As Any, ByVal Value As Long)
 
 Public Type LOGFONT
-    lfHeight As Long
-    lfWidth As Long
-    lfEscapement As Long
-    lfOrientation As Long
-    lfWeight As Long
-    lfItalic As Byte
-    lfUnderline As Byte
-    lfStrikeOut As Byte
-    lfCharSet As Byte
-    lfOutPrecision As Byte
-    lfClipPrecision As Byte
-    lfQuality As Byte
-    lfPitchAndFamily As Byte
-    lfFaceName As String * 32
+    lfHeight            As Long
+    lfWidth             As Long
+    lfEscapement        As Long
+    lfOrientation       As Long
+    lfWeight            As Long
+    lfItalic            As Byte
+    lfUnderline         As Byte
+    lfStrikeOut         As Byte
+    lfCharSet           As Byte
+    lfOutPrecision      As Byte
+    lfClipPrecision     As Byte
+    lfQuality           As Byte
+    lfPitchAndFamily    As Byte
+    lfFaceName          As String * 32
 End Type
 
 Public Type RECT
@@ -121,21 +121,18 @@ Public Const WM_DRAWITEM            As Long = &H2B
 Public Const WM_MEASUREITEM         As Long = &H2C
 Public Const WM_CREATE              As Long = &H1
 Public Const WS_EX_CLIENTEDGE       As Long = &H200&
-Public Const WS_VSCROLL As Long = &H200000
-Public Const WS_HSCROLL As Long = &H100000
-Public Const WM_PAINT As Long = &HF&
+Public Const WS_VSCROLL             As Long = &H200000
+Public Const WS_HSCROLL             As Long = &H100000
+Public Const WM_PAINT               As Long = &HF&
 
-Public Const WS_EX_WINDOWEDGE As Long = &H100&
+Public Const WS_EX_WINDOWEDGE       As Long = &H100&
 Public Const WS_EX_OVERLAPPEDWINDOW As Long = (WS_EX_WINDOWEDGE Or WS_EX_CLIENTEDGE)
-Public Const WS_CHILD As Long = &H40000000
-Public Const WS_VISIBLE As Long = &H10000000
-Public Const WS_BORDER As Long = &H800000
-Public Const ODT_LISTBOX As Long = 2
-Public Const ODS_SELECTED As Long = &H1
-Public Const DT_LEFT As Long = &H0
-Public Const SM_CYCAPTION      As Long = 4
-Public Const SM_CYFRAME        As Long = 33
-Public Const SM_CXFRAME        As Long = 32
-
-':) Ulli's VB Code Formatter V2.24.17 (2008-Nov-22 13:22)  Decl: 136  Code: 0  Total: 136 Lines
-':) CommentOnly: 17 (12.5%)  Commented: 0 (0%)  Filled: 119 (87.5%)  Empty: 17 (12.5%)  Max Logic Depth: 1
+Public Const WS_CHILD               As Long = &H40000000
+Public Const WS_VISIBLE             As Long = &H10000000
+Public Const WS_BORDER              As Long = &H800000
+Public Const ODT_LISTBOX            As Long = 2
+Public Const ODS_SELECTED           As Long = &H1
+Public Const DT_LEFT                As Long = &H0
+Public Const SM_CYCAPTION           As Long = 4
+Public Const SM_CYFRAME             As Long = 33
+Public Const SM_CXFRAME             As Long = 32
