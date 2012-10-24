@@ -9,9 +9,9 @@ AppId={{C4DF9B45-7164-4EB1-AEAD-CE1F014CA161}
 AppName=SimplyVBUnit 4.0
 AppVerName=SimplyVBUnit 4.0
 AppPublisher=Kelly Ethridge
-AppPublisherURL=http://sourceforge.net/projects/simplyvbunit/
-AppSupportURL=http://sourceforge.net/projects/simplyvbunit/
-AppUpdatesURL=http://sourceforge.net/projects/simplyvbunit/
+AppPublisherURL=https://sourceforge.net/projects/simplyvbunit/
+AppSupportURL=https://sourceforge.net/projects/simplyvbunit/
+AppUpdatesURL=https://sourceforge.net/projects/simplyvbunit/
 DefaultDirName={pf}\SimplyVBUnit 4.0
 DefaultGroupName=SimplyVBUnit 4.0
 AllowNoIcons=yes
@@ -24,13 +24,14 @@ SolidCompression=yes
 Name: english; MessagesFile: compiler:Default.isl
 
 [Files]
-Source: Compiled\SimplyVBUnit.Framework.dll; DestDir: {app}; Flags: regserver
-Source: Compiled\SimplyVBUnitUI.ocx; DestDir: {app}; Flags: regserver
-Source: ..\TypeLibrary\SimplyVBUnitType.tlb; DestDir: {app}; Flags: regtypelib
+Source: Compiled\SimplyVBUnit.Framework.dll; DestDir: {sys}; Flags: regserver
+Source: Compiled\SimplyVBUnit.Component.ocx; DestDir: {sys}; Flags: regserver
+Source: ..\TypeLibrary\SimplyVBUnitType.tlb; DestDir: {sys}; Flags: regtypelib
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 Source: ..\Source\Projects\frmTestRunner.frm; DestDir: {code:GetProjectsDir|{app}}; Languages: 
 Source: ..\Source\Projects\UnitTestProject.vbp; DestDir: {code:GetProjectsDir|{app}}
 Source: readme.txt; DestDir: {app}; DestName: readme.txt; Flags: isreadme
+Source: LICENSE.txt; DestDir: {app}; DestName LICENSE.txt;
 
 [Icons]
 Name: {group}\{cm:UninstallProgram,SimplyVBUnit}; Filename: {uninstallexe}
