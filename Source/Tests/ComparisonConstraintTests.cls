@@ -67,6 +67,16 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
             Call Test.Use("A", "a").Expect(True)
             Call Test.Use("b", "b").Expect(True)
             Call Test.Use(1, 1).Expect(True)
+            
+        Case "TestAtLeast"
+            Call Test.Use(1, 2).Expect(True)
+            Call Test.Use(2, 1).Expect(False)
+            Call Test.Use(2, 2).Expect(True)
+            
+        Case "TestAtMost"
+            Call Test.Use(1, 2).Expect(False)
+            Call Test.Use(2, 2).Expect(True)
+            Call Test.Use(2, 1).Expect(True)
     End Select
 End Sub
 
@@ -92,4 +102,16 @@ Public Function TestGreaterThanOrEqualTo(ByRef Expected As Variant, ByRef Actual
     Dim c As IConstraint
     Set c = Iz.GreaterThanOrEqualTo(Expected)
     TestGreaterThanOrEqualTo = c.Matches(Actual)
+End Function
+
+Public Function TestAtLeast(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim c As IConstraint
+    Set c = Iz.AtLeast(Expected)
+    TestAtLeast = c.Matches(Actual)
+End Function
+
+Public Function TestAtMost(ByRef Expected As Variant, ByRef Actual As Variant) As Boolean
+    Dim c As IConstraint
+    Set c = Iz.AtMost(Expected)
+    TestAtMost = c.Matches(Actual)
 End Function

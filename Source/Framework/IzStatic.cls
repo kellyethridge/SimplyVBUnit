@@ -50,6 +50,14 @@ Private Function IzSyntaxHelper_All() As SimplyVBUnitType.IConstraintExpression
     Set IzSyntaxHelper_All = NewExp.All
 End Function
 
+Private Function IzSyntaxHelper_AtLeast(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_AtLeast = NewExp.AtLeast(Expected)
+End Function
+
+Private Function IzSyntaxHelper_AtMost(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IzSyntaxHelper_AtMost = NewExp.AtMost(Expected)
+End Function
+
 Private Function IzSyntaxHelper_Empty() As SimplyVBUnitType.IBasicExpression
     Set IzSyntaxHelper_Empty = NewExp.Empty
 End Function

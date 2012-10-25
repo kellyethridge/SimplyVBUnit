@@ -78,6 +78,14 @@ Public Function LessThanOrEqualTo(ByRef Expected As Variant) As IBasicExpression
     Set LessThanOrEqualTo = AddConstraint(Sim.NewComparisonConstraint(Expected, True, False, True, "less than or equal to", Me))
 End Function
 
+Public Function AtLeast(ByRef Expected As Variant) As IBasicExpression
+    Set AtLeast = AddConstraint(Sim.NewComparisonConstraint(Expected, False, True, True, "at least", Me))
+End Function
+
+Public Function AtMost(ByRef Expected As Variant) As IBasicExpression
+    Set AtMost = AddConstraint(Sim.NewComparisonConstraint(Expected, True, False, True, "at most", Me))
+End Function
+
 Public Function InRange(ByRef FromValue As Variant, ByRef ToValue As Variant) As RangeConstraint
     Set InRange = AddConstraint(Sim.NewRangeConstraint(FromValue, ToValue, Me))
 End Function
@@ -228,6 +236,14 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IConstraintExpression_All() As SimplyVBUnitType.IConstraintExpression
     Set IConstraintExpression_All = All
+End Function
+
+Private Function IConstraintExpression_AtLeast(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_AtLeast = AtLeast(Expected)
+End Function
+
+Private Function IConstraintExpression_AtMost(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_AtMost = AtMost(Expected)
 End Function
 
 Private Function IConstraintExpression_Empty() As SimplyVBUnitType.IBasicExpression

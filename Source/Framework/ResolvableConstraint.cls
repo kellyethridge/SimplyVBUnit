@@ -92,6 +92,14 @@ Private Function IConstraintExpression_All() As SimplyVBUnitType.IConstraintExpr
     Set IConstraintExpression_All = mExpression.All
 End Function
 
+Private Function IConstraintExpression_AtLeast(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_AtLeast = mExpression.AtLeast(Expected)
+End Function
+
+Private Function IConstraintExpression_AtMost(Expected As Variant) As SimplyVBUnitType.IBasicExpression
+    Set IConstraintExpression_AtMost = mExpression.AtMost(Expected)
+End Function
+
 Private Function IConstraintExpression_Empty() As SimplyVBUnitType.IBasicExpression
     Set IConstraintExpression_Empty = mExpression.Empty_
 End Function
