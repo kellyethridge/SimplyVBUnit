@@ -13,23 +13,13 @@ Begin VB.Form frmOptions
    ScaleWidth      =   6510
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.CheckBox chkAllowStop 
-      Caption         =   "Allow tests to be stopped"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   375
-      Left            =   480
+   Begin VB.TextBox txtUpdateFrequency 
+      Alignment       =   1  'Right Justify
+      Height          =   285
+      Left            =   2760
       TabIndex        =   9
-      ToolTipText     =   "Allowing tests to be stopped will slow down the test run."
-      Top             =   1200
-      Width           =   2655
+      Top             =   120
+      Width           =   735
    End
    Begin VB.CommandButton cmdOK 
       Caption         =   "OK"
@@ -79,7 +69,7 @@ Begin VB.Form frmOptions
       Height          =   375
       Left            =   480
       TabIndex        =   5
-      Top             =   840
+      Top             =   1080
       Width           =   2655
    End
    Begin VB.CheckBox chkOutputToLogConsole 
@@ -96,7 +86,7 @@ Begin VB.Form frmOptions
       Height          =   375
       Left            =   480
       TabIndex        =   4
-      Top             =   2160
+      Top             =   2040
       Width           =   3615
    End
    Begin VB.CheckBox chkOutputToErrorConsole 
@@ -113,7 +103,7 @@ Begin VB.Form frmOptions
       Height          =   375
       Left            =   480
       TabIndex        =   3
-      Top             =   2520
+      Top             =   2400
       Width           =   3615
    End
    Begin VB.CheckBox chkOutputToTextConsole 
@@ -130,7 +120,7 @@ Begin VB.Form frmOptions
       Height          =   375
       Left            =   480
       TabIndex        =   2
-      Top             =   1800
+      Top             =   1680
       Width           =   3615
    End
    Begin VB.ComboBox cboTreeViewStates 
@@ -149,15 +139,49 @@ Begin VB.Form frmOptions
       List            =   "frmOptions.frx":0010
       Style           =   2  'Dropdown List
       TabIndex        =   1
-      Top             =   360
+      Top             =   600
       Width           =   1455
+   End
+   Begin VB.Label Label4 
+      Caption         =   "tests completed."
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   3600
+      TabIndex        =   11
+      Top             =   120
+      Width           =   1815
+   End
+   Begin VB.Label Label3 
+      Caption         =   "Update display after every"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   480
+      TabIndex        =   10
+      Top             =   120
+      Width           =   2175
    End
    Begin VB.Label Label2 
       BorderStyle     =   1  'Fixed Single
       Height          =   45
       Left            =   120
       TabIndex        =   6
-      Top             =   1680
+      Top             =   1560
       Width           =   6255
    End
    Begin VB.Label Label1 
@@ -175,7 +199,7 @@ Begin VB.Form frmOptions
       Height          =   210
       Left            =   480
       TabIndex        =   0
-      Top             =   360
+      Top             =   600
       Width           =   3360
    End
 End
@@ -221,10 +245,10 @@ Public Function Edit(ByVal Options As UIConfiguration, ByVal Owner As Object) As
 End Function
 
 Private Sub DisplayOptions()
+    Me.txtUpdateFrequency.Text = mOptions.DoEventsFrequency
     Me.cboTreeViewStates.Text = mOptions.TreeViewStartUpState
 
     Call SetChecked(Me.chkAutoRunTests, mOptions.AutoRun)
-    Call SetChecked(Me.chkAllowStop, mOptions.AllowStop)
     Call SetChecked(Me.chkOutputToErrorConsole, mOptions.OutputToErrorConsole)
     Call SetChecked(Me.chkOutputToLogConsole, mOptions.OutputToLogConsole)
     Call SetChecked(Me.chkOutputToTextConsole, mOptions.OutputToTextConsole)
@@ -235,9 +259,9 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub cmdOK_Click()
+    mOptions.DoEventsFrequency = Val(Me.txtUpdateFrequency.Text)
     mOptions.TreeViewStartUpState = Me.cboTreeViewStates.Text
     mOptions.AutoRun = GetChecked(Me.chkAutoRunTests)
-    mOptions.AllowStop = GetChecked(Me.chkAllowStop)
     mOptions.OutputToErrorConsole = GetChecked(Me.chkOutputToErrorConsole)
     mOptions.OutputToLogConsole = GetChecked(Me.chkOutputToLogConsole)
     mOptions.OutputToTextConsole = GetChecked(Me.chkOutputToTextConsole)

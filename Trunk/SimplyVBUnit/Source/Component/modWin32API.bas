@@ -124,6 +124,8 @@ Public Const WS_EX_CLIENTEDGE       As Long = &H200&
 Public Const WS_VSCROLL             As Long = &H200000
 Public Const WS_HSCROLL             As Long = &H100000
 Public Const WM_PAINT               As Long = &HF&
+Public Const WM_SETREDRAW           As Long = &HB
+
 
 Public Const WS_EX_WINDOWEDGE       As Long = &H100&
 Public Const WS_EX_OVERLAPPEDWINDOW As Long = (WS_EX_WINDOWEDGE Or WS_EX_CLIENTEDGE)

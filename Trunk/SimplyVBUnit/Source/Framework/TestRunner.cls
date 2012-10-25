@@ -77,23 +77,12 @@ errTrap:
 End Function
 
 Public Property Get IsCancelled() As Boolean
-    If mAllowCancel Then
-        DoEvents
-        IsCancelled = mIsCancelled
-    End If
+    IsCancelled = mIsCancelled
 End Property
 
 Public Sub Cancel()
-    mIsCancelled = mAllowCancel
+    mIsCancelled = True
 End Sub
-
-Public Property Get AllowCancel() As Boolean
-    AllowCancel = mAllowCancel
-End Property
-
-Public Property Let AllowCancel(ByVal RHS As Boolean)
-    mAllowCancel = RHS
-End Property
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

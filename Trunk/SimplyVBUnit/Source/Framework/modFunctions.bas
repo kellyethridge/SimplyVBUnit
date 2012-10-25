@@ -35,14 +35,3 @@ Public Function FuncAddr(ByVal Addr As Long) As Long
     FuncAddr = Addr
 End Function
 
-
-
-
-
-
-
-
-
-
-
-
