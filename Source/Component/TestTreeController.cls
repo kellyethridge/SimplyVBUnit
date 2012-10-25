@@ -48,6 +48,7 @@ Private mTreeView   As TreeView
 Private mRootKey    As String
 
 
+
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Public Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -221,18 +222,7 @@ Private Function CanReplaceImage(ByVal Node As Node, ByVal NewImage As String) A
     CanReplaceImage = Result
 End Function
 
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   mListener Events
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
-    Dim Node As Node
-    For Each Node In mTreeView.Nodes
-        Node.Image = IMG_NOTRUN
-    Next Node
-End Sub
-
-Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
+Private Sub UpdateTreeNode(ByVal Result As TestResult)
     Dim Node As Node
     Set Node = mTreeView.Nodes(Result.Test.FullName)
     
@@ -245,3 +235,17 @@ Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
     End If
 End Sub
 
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   mListener Events
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
+    Dim Node As Node
+    For Each Node In mTreeView.Nodes
+        Node.Image = IMG_NOTRUN
+    Next Node
+End Sub
+
+Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
+    UpdateTreeNode Result
+End Sub

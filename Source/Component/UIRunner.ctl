@@ -163,6 +163,7 @@ Begin VB.UserControl UIRunner
          End
          Begin VB.CommandButton cmdStop 
             Caption         =   "Stop"
+            Enabled         =   0   'False
             Height          =   375
             Left            =   1320
             TabIndex        =   1
@@ -452,6 +453,8 @@ Option Explicit
 
 Private WithEvents mContainer  As Form
 Attribute mContainer.VB_VarHelpID = -1
+Private WithEvents mListener   As EventCastListener
+Attribute mListener.VB_VarHelpID = -1
 
 Private mConfig                 As New UIConfiguration
 Private mAnchor                 As Anchor
@@ -462,17 +465,18 @@ Private mDragSplitter           As Boolean
 Private mSplitterLeftMargin     As Long
 Private mSplitterRightMargin    As Long
 
-Private mTests          As TestSuite
-Private mListeners      As New MultiCastListener
-Private mFilter         As ITestFilter
-Private mRunner         As TestRunner
-Private mListener       As New EventCastListener
-Private mTestTree       As TestTreeController
-Private mCategoryList   As CategoryListController
-Private mResultsTab     As ResultsTabController
-Private mProgress       As TestProgressController
-Private mStatus         As StatusBarController
-Private mResults        As TestResultCollector
+Private mTests              As TestSuite
+Private mListeners          As New MultiCastListener
+Private mFilter             As ITestFilter
+Private mRunner             As TestRunner
+Private mTestTree           As TestTreeController
+Private mCategoryList       As CategoryListController
+Private mResultsTab         As ResultsTabController
+Private mProgress           As TestProgressController
+Private mStatus             As StatusBarController
+Private mResults            As TestResultCollector
+Private mDoEventsFrequency  As Long
+Private mTestsCompleted     As Long
 
 
 Public Property Get Width() As Single
@@ -661,6 +665,8 @@ Private Sub RestoreFormConfiguration()
         mContainer.WindowState = Settings("WindowState").Value
         Me.SplitterPosition = Settings("SplitterPosition").Value
     End If
+    
+    mDoEventsFrequency = mConfig.DoEventsFrequency
 End Sub
 
 
@@ -677,8 +683,8 @@ Private Sub cmdRun_Click()
     
     Call mResultsTab.SetOutputSupport(mConfig)
     Set mRunner = Sim.NewTestRunner(StartingTest)
-    mRunner.AllowCancel = mConfig.AllowStop
-    cmdStop.Enabled = mConfig.AllowStop
+    cmdStop.Enabled = True
+    cmdRun.Enabled = False
     
     Dim CategoryFilter As ITestFilter
     Set CategoryFilter = mCategoryList.CreateFilter()
@@ -694,7 +700,8 @@ Private Sub cmdRun_Click()
         Call mRunner.Run(mListener, Multi)
     End If
     
-    cmdStop.Enabled = True
+    cmdStop.Enabled = False
+    cmdRun.Enabled = True
 End Sub
 
 Private Sub cmdStop_Click()
@@ -704,6 +711,18 @@ End Sub
 Private Sub mContainer_Resize()
     Call PositionControls
     Call UserControl.Extender.Move(0, 0, mContainer.ScaleWidth, mContainer.ScaleHeight)
+End Sub
+
+Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
+    mTestsCompleted = 0
+End Sub
+
+Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
+    mTestsCompleted = mTestsCompleted + 1
+    If mTestsCompleted = mDoEventsFrequency Then
+        mTestsCompleted = 0
+        DoEvents
+    End If
 End Sub
 
 Private Sub mnuCollapseAllNodes_Click()
@@ -835,6 +854,7 @@ End Sub
 
 Private Sub UserControl_Initialize()
     Set modMain.Tests = New Collection
+    Set mListener = New EventCastListener
 End Sub
 
 'Initialize Properties for User Control

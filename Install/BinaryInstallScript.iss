@@ -24,13 +24,13 @@ SolidCompression=yes
 Name: english; MessagesFile: compiler:Default.isl
 
 [Files]
-Source: ..\Binary\Compiled\SimplyVBUnit.Framework.dll; DestDir: {sys}; Flags: regserver
-Source: ..\Binary\Compiled\SimplyVBUnit.Component.ocx; DestDir: {sys}; Flags: regserver
+Source: ..\Binaries\Compiled\SimplyVBUnit.Framework.dll; DestDir: {sys}; Flags: regserver
+Source: ..\Binaries\Compiled\SimplyVBUnit.Component.ocx; DestDir: {sys}; Flags: regserver
 Source: ..\TypeLibrary\SimplyVBUnitType.tlb; DestDir: {sys}; Flags: regtypelib
-Source: ..\Source\Projects\frmTestRunner.frm; DestDir: {code:GetProjectsDir|{app}}; Languages: 
-Source: ..\Source\Projects\UnitTestProject.vbp; DestDir: {code:GetProjectsDir|{app}}
-Source: readme.txt; DestDir: {app}; DestName: readme.txt; Flags: isreadme
-Source: LICENSE.txt; DestDir: {app}; DestName LICENSE.txt;
+Source: ..\Source\Projects\*; Excludes: "*.vbw"; DestDir: {code:GetProjectsDir|{app}}; Languages: 
+Source: ..\Examples\*; Excludes: "*.vbw,*.pdb,*.config"; DestDir: {app}\Examples; Flags: recursesubdirs
+Source: readme.txt; DestDir: {app}; Flags: isreadme
+Source: LICENSE.txt; DestDir: {app};
 
 [Icons]
 Name: {group}\{cm:UninstallProgram,SimplyVBUnit}; Filename: {uninstallexe}

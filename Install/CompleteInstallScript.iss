@@ -31,9 +31,9 @@ Source: ..\Binaries\Compatibility\SimplyVBUnit.Component.cmp; DestDir: {app}\Bin
 Source: ..\TypeLibrary\SimplyVBUnitType.tlb; DestDir: {sys}; Flags: regtypelib
 Source: ..\TypeLibrary\SimplyVBUnitType.odl; DestDir: {app}\TypeLibrary
 Source: ..\TypeLibrary\BuildSimplyVBUnitType.bat; DestDir: {app}\TypeLibrary
-Source: ..\Source\Projects\frmTestRunner.frm; DestDir: {code:GetProjectsDir|{app}}; Languages: 
-Source: ..\Source\Projects\UnitTestProject.vbp; DestDir: {code:GetProjectsDir|{app}}
+Source: ..\Source\Projects\*; Excludes: "*.vbw"; DestDir: {code:GetProjectsDir|{app}}; Languages: 
 Source: ..\Source\*; Excludes: "*.vbw,*.config,*.oca,*.pdb"; DestDir: {app}\Source; Flags: recursesubdirs
+Source: ..\Examples\*; Excludes: "*.vbw,*.pdb,*.config"; DestDir: {app}\Examples; Flags: recursesubdirs
 Source: readme.txt; DestDir: {app}; Flags: isreadme
 Source: LICENSE.txt; DestDir: {app};
 

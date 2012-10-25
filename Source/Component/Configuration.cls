@@ -182,13 +182,14 @@ Public Property Let OutputToErrorConsole(ByVal RHS As Boolean)
     Call SetValue("OutputToErrorConsole", RHS)
 End Property
 
-Public Property Get AllowStop() As Boolean
-    AllowStop = GetValue("AllowStop", True)
+Public Property Get DoEventsFrequency() As Long
+    DoEventsFrequency = GetValue("DoEventsFrequency", 1)
 End Property
 
-Public Property Let AllowStop(ByVal RHS As Boolean)
-    Call SetValue("AllowStop", RHS)
+Public Property Let DoEventsFrequency(ByVal RHS As Long)
+    Call SetValue("DoEventsFrequency", RHS)
 End Property
+
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
