@@ -94,11 +94,8 @@ Private Function Release() As IConstraint
     Dim Result As IConstraint
     
     If HasConstraints Then
-        Set Result = mConstraints.Pop
+        Set Result = mConstraints.Peek
     End If
-    
-    mConstraints.Clear
-    mOperators.Clear
     
     Set Release = Result
 End Function

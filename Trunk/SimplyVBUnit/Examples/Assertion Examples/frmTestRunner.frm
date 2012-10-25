@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{7983BD3B-752A-43EA-9BFF-444BBA1FC293}#2.0#0"; "SimplyVBUnit.Component.ocx"
+Object = "{7983BD3B-752A-43EA-9BFF-444BBA1FC293}#2.1#0"; "SimplyVBUnit.Component.ocx"
 Begin VB.Form frmTestRunner 
    ClientHeight    =   5535
    ClientLeft      =   120
@@ -74,6 +74,8 @@ Private Sub Form_Load()
     AddTest New StringAssertions
     AddTest New ObjectAssertions
     AddTest New CollectionAssertions
+    AddTest New TestCaseSourceUsage
+    AddTest New ArrayAssertions
     
 End Sub
 

@@ -745,6 +745,20 @@ Public Sub Run_UsingTestCaseSourceWithExpect_UsesConstraint2()
     Assert.That Actual, Iz.EqualTo(5)
 End Sub
 
+Public Sub Run_UsingTestCaseSourceWithExpect_CanBeCalledMultipleTimes()
+    Dim Mock As New Mock1TestCaseSourceExpect
+    Mock.Constraint.Matches = True
+    Dim Suite As TestSuite
+    Set Suite = Sim.NewTestSuite("Test")
+    Suite.Add Mock
+    Suite.Run
+    
+    Dim Result As TestResult
+    Set Result = Suite.Run
+    
+    Assert.IsTrue Result.IsSuccess
+End Sub
+
 
 
 Private Function MakeFailingTestCase() As TestCase

@@ -18,11 +18,14 @@ Public ParameterValue   As Variant
 Public Constraint       As New MockConstraint
 Public Calls            As New CallTrace
 
+
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Select Case Test.MethodName
         Case "Test1"
             Test.Use(ParameterValue).Expect Constraint
         
+        Case "Test2"
+            Call Test.Use(1).Expect(Iz.EqualTo(1))
     End Select
 End Sub
 
@@ -30,3 +33,8 @@ Public Function Test1(ByVal Value As Variant) As Variant
     Calls.Add "Test1." & CStr(Value)
     VariantCopyInd Test1, Value
 End Function
+
+Public Function Test2(ByVal Value As Variant) As Variant
+    Test2 = Value
+End Function
+
