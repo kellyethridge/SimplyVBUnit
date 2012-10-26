@@ -36,5 +36,5 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Public Sub Categorize(ByVal Categories As CategoryCollector): End Sub
+Public Sub Categorize(ByVal Cat As CategoryCollector): End Sub
 

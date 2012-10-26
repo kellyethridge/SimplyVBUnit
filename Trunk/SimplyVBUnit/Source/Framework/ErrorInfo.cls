@@ -70,6 +70,10 @@ Public Function Equals(ByVal Other As ErrorInfo, Optional ByVal IgnoreCase As Bo
     Equals = Result
 End Function
 
+Public Sub Throw()
+    Err.Raise mNumber, mSource, mDescription
+End Sub
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
