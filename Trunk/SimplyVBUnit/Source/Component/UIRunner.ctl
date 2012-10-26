@@ -554,11 +554,12 @@ End Sub
 Private Sub InitApp()
     Set mContainer = UserControl.Parent
     Call mConfig.Load(ClientInfo.Path & "\" & ClientInfo.EXEName & ".config")
+    Set mProgress.Config = mConfig
     Call RestoreFormConfiguration
     Call mTestTree.RestoreTreeViewState(mConfig)
     Call mCategoryList.LoadState(mConfig)
     Call InitContextWriters
-    Call Me.AddListener(mListener)
+    Call AddListener(mListener)
 End Sub
 
 Private Sub InitTitle()

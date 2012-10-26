@@ -42,6 +42,9 @@ Private Const PBM_SETBARCOLOR   As Long = WM_USER + 9
 Private mBar        As ProgressBar
 Private mDisplay    As Label
 Private mFailed     As Boolean
+Private mConfig     As UIConfiguration
+Private mUpdateFreq As Long
+Private mTestCount  As Long
 
 Private WithEvents mListener As EventCastListener
 Attribute mListener.VB_VarHelpID = -1
@@ -56,15 +59,22 @@ Friend Sub Init(ByVal Bar As ProgressBar, ByVal Display As Label, ByVal Listener
     Set mListener = Listener
 End Sub
 
+Friend Property Set Config(ByVal RHS As UIConfiguration)
+    Set mConfig = RHS
+End Property
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   mListener Events
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub mListener_RunFinished(ByVal Result As TestResult)
     mDisplay.Caption = ""
+    mBar.Value = mBar.Max
 End Sub
 
 Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
+    mUpdateFreq = mConfig.DoEventsFrequency
+    mTestCount = 0
     mBar.Max = IIf(TestCount = 0, 1, TestCount)
     mBar.Min = 0
     mBar.Value = 0
@@ -74,8 +84,10 @@ Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
 End Sub
 
 Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
-    If mBar.Value < mBar.Max Then
-        mBar.Value = mBar.Value + 1
+    mTestCount = mTestCount + 1
+    If mTestCount = mUpdateFreq And mBar.Value < mBar.Max Then
+        mBar.Value = mBar.Value + mUpdateFreq
+        mTestCount = 0
     End If
     
     If Result.IsFailure Or Result.IsError Then
