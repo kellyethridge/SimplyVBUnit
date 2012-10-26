@@ -665,8 +665,6 @@ Private Sub RestoreFormConfiguration()
         mContainer.WindowState = Settings("WindowState").Value
         Me.SplitterPosition = Settings("SplitterPosition").Value
     End If
-    
-    mDoEventsFrequency = mConfig.DoEventsFrequency
 End Sub
 
 
@@ -674,6 +672,8 @@ End Sub
 '   Control Events
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub cmdRun_Click()
+    mDoEventsFrequency = mConfig.DoEventsFrequency
+    
     Dim StartingTest As ITest
     Set StartingTest = mTestTree.SelectedTest
     
