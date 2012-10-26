@@ -148,7 +148,9 @@ End Sub
 Friend Sub Init(ByVal TreeView As TreeView, ByVal Root As ITest, ByVal Listener As EventCastListener)
     Set mTreeView = TreeView
     Set mListener = Listener
+    mTreeView.Visible = False
     Call AddRootNode(Root)
+    mTreeView.Visible = True
 End Sub
 
 
