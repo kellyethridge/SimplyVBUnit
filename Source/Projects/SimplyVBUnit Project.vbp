@@ -1,7 +1,7 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#..\..\..\..\..\..\..\Windows\SysWow64\SimplyVBUnitType.tlb#SimplyVBUnit Type Library 4.0
-Object={7983BD3B-752A-43EA-9BFF-444BBA1FC293}#2.2#0; SimplyVBUnit.Component.ocx
+Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#..\..\TypeLibrary\SimplyVBUnitType.tlb#SimplyVBUnit Type Library 4.0
+Object={7983BD3B-752A-43EA-9BFF-444BBA1FC293}#3.0#0; SimplyVBUnit.Component.ocx
 Form=frmTestRunner.frm
 Startup="frmTestRunner"
 Command32=""
