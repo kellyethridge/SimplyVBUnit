@@ -1,6 +1,6 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Object={7983BD3B-752A-43EA-9BFF-444BBA1FC293}#2.1#0; SimplyVBUnit.Component.ocx
+Object={7983BD3B-752A-43EA-9BFF-444BBA1FC293}#3.0#0; SimplyVBUnit.Component.ocx
 Form=frmTestRunner.frm
 Class=NumericAssertions; NumericAssertions.cls
 Class=StringAssertions; StringAssertions.cls

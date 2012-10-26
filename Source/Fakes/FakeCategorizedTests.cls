@@ -15,9 +15,9 @@ Option Explicit
 Implements ICategorizable
 
 
-Private Sub ICategorizable_Categorize(ByVal Categories As CategoryCollector)
-    Categories.AddFixtureCategories "one", "two"
-    Categories.AddTestCategories "Test1", "three"
+Private Sub ICategorizable_Categorize(ByVal Cat As CategoryCollector)
+    Cat.ForFixture "one", "two"
+    Cat.ForTest "Test1", "three"
 End Sub
 
 Public Sub Test1()

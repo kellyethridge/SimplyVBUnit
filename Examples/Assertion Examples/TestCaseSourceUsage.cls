@@ -44,6 +44,10 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As SimplyVBComp.TestCaseColl
             Call Test.Use(5).Expect(10)
             Call Test.Use(20).Expect(Iz.EqualTo(40))
             Call Test.Use(20).Expect(Iz.InRange(30, 50))
+            
+        Case "DivideValue"
+            Const DivideByZeroError As Long = 11
+            Call Test.Use(0).Throws(DivideByZeroError)
     End Select
 End Sub
 
@@ -52,8 +56,8 @@ End Sub
 ' This test simply accepts two values, and tests that multiplying the original value by 2
 ' will equal to the expected value. The test is performed entirely within the method body.
 '
-Public Sub CompareDoubleValueWithoutReturn(ByVal original As Long, ByVal expected As Long)
-    Assert.That original * 2, Iz.EqualTo(expected)
+Public Sub CompareDoubleValueWithoutReturn(ByVal original As Long, ByVal Expected As Long)
+    Assert.That original * 2, Iz.EqualTo(Expected)
 End Sub
 
 ' This test accepts a value and returns the value * 2. The test is not performed within
@@ -63,4 +67,9 @@ End Sub
 '
 Public Function CompareDoubleValueWithReturn(ByVal Value As Long) As Long
     CompareDoubleValueWithReturn = Value * 2
+End Function
+
+
+Public Function DivideValue(ByVal Denominator As Long) As Long
+    DivideValue = 10 / Denominator
 End Function

@@ -29,99 +29,131 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
+Private Store       As CategoryStore
+Private Collector   As CategoryCollector
+
+Public Sub Setup()
+    Set Store = Sim.NewCategoryStore("store")
+    Set Collector = Sim.NewCategoryCollector(Store)
+End Sub
+
 Public Sub Constructor_WithNothing_ThrowsException()
     Assert.Throws ErrorCode.ArgumentNull, "CategoryCollector.Init"
     
     Sim.NewCategoryCollector Nothing
 End Sub
 
-Public Sub AddFixtureCategories_WithNoneDefined_ThrowsException()
-    Dim Store As CategoryStore
-    Set Store = Sim.NewCategoryStore("fix")
-    Dim Collector As CategoryCollector
-    Set Collector = Sim.NewCategoryCollector(Store)
-
-    Assert.Throws ErrorCode.Argument, "CategoryCollector.AddFixtureCategories"
+Public Sub ForTest_WithEmptyTestName_Throws()
+    Assert.Throws ErrorCode.Argument, "CategoryCollector.ForTest"
     
-    Collector.AddFixtureCategories
+    Collector.ForTest "", "c1", "c2", "c3"
 End Sub
 
-Public Sub AddFixtureCategories_WithValues_AddsToStore()
-    Dim Store As CategoryStore
-    Set Store = Sim.NewCategoryStore("fix")
-    Dim Collector As CategoryCollector
-    Set Collector = Sim.NewCategoryCollector(Store)
+Public Sub ForTest_WithNoCategories_Throws()
+    Assert.Throws ErrorCode.Argument, "CategoryCollector.ForTest"
     
-    Collector.AddFixtureCategories "one", "two"
+    Collector.ForTest ""
+End Sub
+
+Public Sub ForTest_WithNonStringValues_Throws()
+    Assert.Throws ErrorCode.InvalidOperation, "CategoryCollector.ForTest"
     
-    Dim Expected() As Variant
-    Expected = Array("one", "two")
+    Collector.ForTest "test", "two", 2
+End Sub
+
+Public Sub ForTest_WithMultipleCategories_AddsToTestsCategories()
+    Collector.ForTest "abc", "c1", "c2", "c3"
+    
+    Dim Expected As Variant
+    Expected = Array("c1", "c2", "c3")
+    Assert.AreEquivalent Expected, Store.GetTestCategorization("abc")
+End Sub
+
+Public Sub ForTest_WithSameCategoryTwice_SkipsAdditionalCategory()
+    Collector.ForTest "abc", "c1", "c2", "c2"
+    
+    Dim Expected As Variant
+    Expected = Array("c1", "c2")
+    Assert.AreEquivalent Expected, Store.GetTestCategorization("abc")
+End Sub
+
+Public Sub ForTest_WhenCalledMultipleTimesForSameTest_AddsCategories()
+    Collector.ForTest "abc", "c1"
+    
+    Collector.ForTest "abc", "c2"
+    
+    Dim Expected As Variant
+    Expected = Array("c1", "c2")
+    Assert.AreEquivalent Expected, Store.GetTestCategorization("abc")
+End Sub
+
+Public Sub ForCategory_WithEmptyCategoryName_Throws()
+    Assert.Throws ErrorCode.Argument, "CategoryCollector.ForCategory"
+    
+    Collector.ForCategory "", "t1"
+End Sub
+
+Public Sub ForCategory_WithNoTests_Throws()
+    Assert.Throws ErrorCode.Argument, "CategoryCollector.ForCategory"
+    
+    Collector.ForCategory ""
+End Sub
+
+Public Sub ForCategory_WithNonStringValues_Throws()
+    Assert.Throws ErrorCode.InvalidOperation, "CategoryCollector.ForCategory"
+    
+    Collector.ForCategory "c1", "t1", 2
+End Sub
+
+Public Sub ForCategory_WithTestName_CreatesCategorization()
+    Collector.ForCategory "c1", "t1"
+    
+    Dim Expected As Variant
+    Expected = Array("c1")
+    Assert.AreEquivalent Expected, Store.GetTestCategorization("t1")
+End Sub
+
+Public Sub ForCategory_WithMultipleTests_CreatesCategorizationForAllTests()
+    Collector.ForCategory "c1", "t1", "t2"
+    
+    Dim Expected As Variant
+    Expected = Array("c1")
+    Assert.AreEquivalent Expected, Store.GetTestCategorization("t1")
+    Assert.AreEquivalent Expected, Store.GetTestCategorization("t2")
+End Sub
+
+Public Sub ForFixture_WithNoCategories_Throws()
+    Assert.Throws ErrorCode.Argument, "CategoryCollector.ForFixture"
+    
+    Collector.ForFixture
+End Sub
+
+Public Sub ForFixture_WithMultipleCategories_AddsCategories()
+    Collector.ForFixture "c1", "c2"
+    
+    Dim Expected As Variant
+    Expected = Array("c1", "c2")
     Assert.AreEquivalent Expected, Store.FixtureCategorization
 End Sub
 
-Public Sub AddFixtureCategories_WithNonStringValue_ThrowsException()
-    Dim Store As CategoryStore
-    Set Store = Sim.NewCategoryStore("fix")
-    Dim Collector As CategoryCollector
-    Set Collector = Sim.NewCategoryCollector(Store)
-
-    Assert.Throws ErrorCode.Argument, "CategoryCollector.AddFixtureCategories"
-    Collector.AddFixtureCategories "one", 2
+Public Sub ForFixture_WithMultipleCalls_AddsCategories()
+    Collector.ForFixture "c1"
+    
+    Collector.ForFixture "c2"
+    
+    Dim Expected As Variant
+    Expected = Array("c1", "c2")
+    Assert.AreEquivalent Expected, Store.FixtureCategorization
 End Sub
 
-Public Sub AddTestCategories_WithEmptyName_ThrowsException()
-    Dim Store As CategoryStore
-    Set Store = Sim.NewCategoryStore("fix")
-    Dim Collector As CategoryCollector
-    Set Collector = Sim.NewCategoryCollector(Store)
+Public Sub ForFixture_WithDuplicateCategory_SkipsDuplicate()
+    Collector.ForFixture "c1"
     
-    Assert.Throws ErrorCode.Argument, "CategoryCollector.AddTestCategories"
-    Collector.AddTestCategories "", "one", "two"
-End Sub
-
-Public Sub AddTestCategories_WithDuplicateName_ThrowsException()
-    Dim Store As CategoryStore
-    Set Store = Sim.NewCategoryStore("fix")
-    Dim Collector As CategoryCollector
-    Set Collector = Sim.NewCategoryCollector(Store)
-    Collector.AddTestCategories "test", "one"
+    Collector.ForFixture "c1"
     
-    Assert.Throws ErrorCode.InvalidOperation, "CategoryCollector.AddTestCategories"
-    Collector.AddTestCategories "test", "two"
-End Sub
-
-Public Sub AddTestCategories_WithNonStringValue_ThrowsException()
-    Dim Store As CategoryStore
-    Set Store = Sim.NewCategoryStore("fix")
-    Dim Collector As CategoryCollector
-    Set Collector = Sim.NewCategoryCollector(Store)
-    
-    Assert.Throws ErrorCode.InvalidOperation, "CategoryCollector.AddTestCategories"
-    Collector.AddTestCategories "test", "two", 2
-End Sub
-
-Public Sub AddTestCategories_WithNoneDefined_ThrowsException()
-    Dim Store As CategoryStore
-    Set Store = Sim.NewCategoryStore("fix")
-    Dim Collector As CategoryCollector
-    Set Collector = Sim.NewCategoryCollector(Store)
-
-    Assert.Throws ErrorCode.Argument, "CategoryCollector.AddTestCategories"
-    
-    Collector.AddTestCategories "test"
-End Sub
-
-Public Sub AddTestCategories_WithValues_AddsToStore()
-    Dim Store As CategoryStore
-    Set Store = Sim.NewCategoryStore("fix")
-    Dim Collector As CategoryCollector
-    Set Collector = Sim.NewCategoryCollector(Store)
-
-    Collector.AddTestCategories "test", "one", "two"
-    
-    Dim Expected() As Variant
-    Expected = Array("one", "two")
-    Assert.AreEquivalent Expected, Store.TestCategorizations(1)
+    Dim Expected As Variant
+    Expected = Array("c1")
+    Assert.AreEquivalent Expected, Store.FixtureCategorization
 End Sub
 
 

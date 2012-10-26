@@ -20,17 +20,15 @@ Attribute VB_Exposed = False
 ' demonstrate how to perform assertions with different methods.
 '
 Option Explicit
+Implements ICategorizable
 
+
+Private Sub ICategorizable_Categorize(ByVal Cat As SimplyVBComp.CategoryCollector)
+    Cat.ForFixture "Collection Tests"
+End Sub
 
 Public Sub IsEmpty_WithEmptyCollection_Passes()
     Dim Actual As New Collection
-    
-    Assert.That Actual, Iz.Empty
-    Assert.IsEmpty Actual
-End Sub
-
-Public Sub IsEmpty_WithNullArray_Passes()
-    Dim Actual() As Long
     
     Assert.That Actual, Iz.Empty
     Assert.IsEmpty Actual

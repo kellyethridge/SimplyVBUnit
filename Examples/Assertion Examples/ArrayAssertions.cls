@@ -15,6 +15,11 @@ Attribute VB_Exposed = False
 ' This class demonstrates various ways arrays can be tested
 '
 Option Explicit
+Implements ICategorizable
+
+Private Sub ICategorizable_Categorize(ByVal Cat As SimplyVBComp.CategoryCollector)
+    Cat.ForFixture "Array Tests"
+End Sub
 
 ' tests two identical arrays for equality by checking
 ' the lower and upper bounds and then each element.
@@ -51,6 +56,7 @@ Public Sub TestsThatArraysIsSortedInDescendingOrder()
     a = Array(5, 4, 3, 2, 1, 0)
     
     Assert.That a, Iz.Ordered.Descending
+    Assert.OrderedDescending a
 End Sub
 
 ' this applies a constraint to each element, ensuring each element
@@ -106,6 +112,7 @@ Public Sub TestForAnEmptyArray()
     a = Array()
     
     Assert.That a, Iz.Empty
+    Assert.IsEmpty a
 End Sub
 
 ' checks that at least one element is equal to the value specified in Member.
@@ -142,4 +149,5 @@ Private Function CreateLongs(ByVal Count As Long) As Long()
     
     CreateLongs = Result
 End Function
+
 

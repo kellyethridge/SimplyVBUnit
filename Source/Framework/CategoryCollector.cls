@@ -38,39 +38,59 @@ Option Explicit
 
 Private mStore As CategoryStore
 
-Public Sub AddFixtureCategories(ParamArray Categories() As Variant)
+
+Public Sub ForFixture(ParamArray Categories() As Variant)
     If UBound(Categories) < LBound(Categories) Then _
-        Error.Argument Me, "AddFixtureCategories", "Categories", "No categories are defined."
+        Error.Argument Me, "ForFixture", "Categories", "No categories are defined."
     
     Dim Item As Variant
     For Each Item In Categories
         If VarType(Item) <> vbString Then _
-            Error.Argument Me, "AddFixtureCategories", "Categories", "Only strings can be passed in."
+            Error.Argument Me, "ForTest", "Categories", "Only strings can be passed in."
             
-        mStore.FixtureCategorization.Add CStr(Item)
+        Dim Category As String
+        Category = Item
+        If Not mStore.FixtureCategorization.Contains(Category) Then
+            mStore.FixtureCategorization.Add Category
+        End If
     Next
 End Sub
 
-Public Sub AddTestCategories(ByRef TestName As String, ParamArray Categories() As Variant)
+Public Sub ForTest(ByRef TestName As String, ParamArray Categories() As Variant)
     If Len(TestName) = 0 Then _
-        Error.CannotBeEmpty Me, "AddTestCategories", "TestName"
-    If ContainsKey(mStore.TestCategorizations, TestName) Then _
-        Error.Argument Me, "AddTestCategories", "TestName", "Categories for test <" & TestName & "> already exist."
+        Error.CannotBeEmpty Me, "ForTest", "TestName"
     If UBound(Categories) < LBound(Categories) Then _
-        Error.Argument Me, "AddTestCategories", "Categories", "No categories are defined."
-        
-    Dim c As Categorization
-    Set c = Sim.NewCategorization(TestName, False)
+        Error.Argument Me, "ForTest", "Categories", "No categories are defined."
+    
+    Dim Categorization As Categorization
+    Set Categorization = GetCategorization(TestName)
     
     Dim Item As Variant
     For Each Item In Categories
         If VarType(Item) <> vbString Then _
-            Error.Argument Me, "AddTestCategories", "Categories", "Only strings can be passed in."
-            
-        c.Add CStr(Item)
+            Error.Argument Me, "ForTest", "Categories", "Only strings can be passed in."
+        
+        Dim CategoryName As String
+        CategoryName = Item
+        If Not Categorization.Contains(CategoryName) Then
+            Categorization.Add CategoryName
+        End If
     Next
+End Sub
+
+Public Sub ForCategory(ByRef CategoryName As String, ParamArray Tests() As Variant)
+    If Len(CategoryName) = 0 Then _
+        Error.CannotBeEmpty Me, "ForCategory", "CategoryName"
+    If UBound(Tests) < LBound(Tests) Then _
+        Error.Argument Me, "ForCategory", "Tests", "No tests are defined."
     
-    mStore.TestCategorizations.Add c, TestName
+    Dim Item As Variant
+    For Each Item In Tests
+        If VarType(Item) <> vbString Then _
+            Error.Argument Me, "ForCategory", "Tests", "Only strings can be passed in."
+        
+        ForTest CStr(Item), CategoryName
+    Next
 End Sub
 
 
@@ -85,4 +105,18 @@ Friend Sub Init(ByVal Store As CategoryStore)
 End Sub
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function GetCategorization(ByRef TestName As String) As Categorization
+    Dim Result As Categorization
+    If mStore.Contains(TestName) Then
+        Set Result = mStore.GetTestCategorization(TestName)
+    Else
+        Set Result = Sim.NewCategorization(TestName, False)
+        mStore.TestCategorizations.Add Result, TestName
+    End If
+    
+    Set GetCategorization = Result
+End Function
 

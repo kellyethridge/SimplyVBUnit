@@ -35,5 +35,5 @@ End Sub
 
 Private Sub ICategorizable_Categorize(ByVal Categories As CategoryCollector)
     Categories.AddTestCategories "ATest", "Quick Tests"
-    Categories.AddTestCategories "AnotherTest", "Quick Tests"
+    Categories.AddTestCategories "ATest", "Quick Tests"
 End Sub

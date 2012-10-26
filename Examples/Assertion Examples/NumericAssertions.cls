@@ -20,7 +20,14 @@ Attribute VB_Exposed = False
 ' demonstrate how to perform assertions with different methods.
 '
 Option Explicit
+Implements ICategorizable
 
+
+Private Sub ICategorizable_Categorize(ByVal Cat As SimplyVBComp.CategoryCollector)
+    Cat.ForFixture "Numerics"
+    Cat.ForCategory "Number tests using Longs", "Equality_WithEqualValues_Passes", "Equality_WithNonEqualValues_Fails", "LessThan_WithLesserValue_Passes", "Inequality_WithNonEqualValues_Passes"
+    Cat.ForTest "Equality_WithLongAndDouble_Passes", "Number tests using Longs", "Number tests using Doubles"
+End Sub
 
 '
 ' Comparison test using Longs
@@ -109,6 +116,5 @@ Public Sub GreaterThanAndLessThan_WithValueOutsideRange_Fails()
     
     Assert.That Actual, Iz.GreaterThan(4).AndAlso.LessThan(9), "This should fail."
 End Sub
-
 
 
