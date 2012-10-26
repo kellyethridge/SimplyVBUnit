@@ -526,6 +526,7 @@ Public Sub Init(ByVal Info As Object)
 
     Set mTests = Sim.NewTestSuite(ClientInfo.EXEName)
     
+    On Error GoTo errTrap
     Dim Item As Object
     For Each Item In modMain.Tests
         Call mTests.Add(Item)
@@ -536,6 +537,12 @@ Public Sub Init(ByVal Info As Object)
     Call InitApp
     Call InitTitle
     Call mStatus.Reset(mTests.TestCount)
+    Exit Sub
+    
+errTrap:
+    MsgBox "Error: " & Err.Number & ", " + Err.Description
+    Set mTests = Nothing
+    Set Tests = Nothing
 End Sub
 
 
@@ -682,23 +689,25 @@ Private Sub cmdRun_Click()
         Set StartingTest = mTests
     End If
     
-    Call mResultsTab.SetOutputSupport(mConfig)
-    Set mRunner = Sim.NewTestRunner(StartingTest)
-    cmdStop.Enabled = True
-    cmdRun.Enabled = False
-    
-    Dim CategoryFilter As ITestFilter
-    Set CategoryFilter = mCategoryList.CreateFilter()
-    
-    If CategoryFilter Is Nothing Then
-        Call mRunner.Run(mListeners, mFilter)
-    ElseIf mFilter Is Nothing Then
-        Call mRunner.Run(mListener, CategoryFilter)
-    Else
-        Dim Multi As New AndFilter
-        Multi.Add CategoryFilter
-        Multi.Add mFilter
-        Call mRunner.Run(mListener, Multi)
+    If Not StartingTest Is Nothing Then
+        Call mResultsTab.SetOutputSupport(mConfig)
+        Set mRunner = Sim.NewTestRunner(StartingTest)
+        cmdStop.Enabled = True
+        cmdRun.Enabled = False
+        
+        Dim CategoryFilter As ITestFilter
+        Set CategoryFilter = mCategoryList.CreateFilter()
+        
+        If CategoryFilter Is Nothing Then
+            Call mRunner.Run(mListeners, mFilter)
+        ElseIf mFilter Is Nothing Then
+            Call mRunner.Run(mListener, CategoryFilter)
+        Else
+            Dim Multi As New AndFilter
+            Multi.Add CategoryFilter
+            Multi.Add mFilter
+            Call mRunner.Run(mListener, Multi)
+        End If
     End If
     
     cmdStop.Enabled = False
