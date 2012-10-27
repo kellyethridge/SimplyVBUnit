@@ -129,8 +129,10 @@ Private Function GetTestCases() As Collection
     
     Dim Source As ITestCaseSource
     Set Source = mTestClass
+    On Error GoTo errTrap
     Source.GetTestCases Builder
     
+errTrap:
     Set GetTestCases = Builder.DataStore
 End Function
 
