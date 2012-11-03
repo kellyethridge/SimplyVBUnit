@@ -190,6 +190,13 @@ Public Property Let DoEventsFrequency(ByVal RHS As Long)
     Call SetValue("DoEventsFrequency", RHS)
 End Property
 
+Public Property Get SortTests() As Boolean
+    SortTests = GetValue("SortTests", False)
+End Property
+
+Public Property Let SortTests(ByVal RHS As Boolean)
+    Call SetValue("SortTests", RHS)
+End Property
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

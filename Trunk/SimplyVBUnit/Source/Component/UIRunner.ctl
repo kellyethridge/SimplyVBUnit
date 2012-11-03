@@ -477,6 +477,7 @@ Private mStatus             As StatusBarController
 Private mResults            As TestResultCollector
 Private mDoEventsFrequency  As Long
 Private mTestsCompleted     As Long
+Private mTestComparer       As ITestComparer
 
 
 Public Property Get Width() As Single
@@ -519,10 +520,15 @@ Public Sub SetFilter(ByVal Filter As ITestFilter)
     Set mFilter = Filter
 End Sub
 
+Public Sub SetComparer(ByVal Comparer As ITestComparer)
+    Set mTestComparer = Comparer
+End Sub
+
 Public Sub Init(ByVal Info As Object)
     Set ClientInfo = UI.NewClientInfo(Info)
     mSplitterLeftMargin = 205
     mSplitterRightMargin = 210
+    Call mConfig.Load(ClientInfo.Path & "\" & ClientInfo.EXEName & ".config")
 
     Set mTests = Sim.NewTestSuite(ClientInfo.EXEName)
     
@@ -531,6 +537,10 @@ Public Sub Init(ByVal Info As Object)
     For Each Item In modMain.Tests
         Call mTests.Add(Item)
     Next
+
+    If mConfig.SortTests Then
+        mTests.Sort mTestComparer
+    End If
 
     Call InitControllers
     Call DisplayTabPages
@@ -560,7 +570,6 @@ End Sub
 
 Private Sub InitApp()
     Set mContainer = UserControl.Parent
-    Call mConfig.Load(ClientInfo.Path & "\" & ClientInfo.EXEName & ".config")
     Set mProgress.Config = mConfig
     Call RestoreFormConfiguration
     Call mTestTree.RestoreTreeViewState(mConfig)
@@ -571,7 +580,14 @@ End Sub
 
 Private Sub InitTitle()
     Dim sb As New StringBuilder
-    Call sb.AppendFormat("SimplyVBUnit {0}.{1} - [{2}]", App.Major, App.Minor, ClientInfo.EXEName)
+    sb.AppendFormat "SimplyVBUnit {0}.{1}", App.Major, App.Minor
+    
+    If App.Revision <> 0 Then
+        sb.AppendFormat ".{0}", App.Revision
+    End If
+    
+    sb.AppendFormat " - [{0}]", ClientInfo.EXEName
+    
     mContainer.Caption = sb.ToString
 End Sub
 

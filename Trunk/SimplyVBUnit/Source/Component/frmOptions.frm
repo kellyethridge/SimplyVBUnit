@@ -5,14 +5,31 @@ Begin VB.Form frmOptions
    ClientHeight    =   3720
    ClientLeft      =   45
    ClientTop       =   315
-   ClientWidth     =   6510
+   ClientWidth     =   6525
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   3720
-   ScaleWidth      =   6510
+   ScaleWidth      =   6525
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.CheckBox chkSortTests 
+      Caption         =   "Sort Tests"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   480
+      TabIndex        =   12
+      Top             =   960
+      Width           =   2655
+   End
    Begin VB.TextBox txtUpdateFrequency 
       Alignment       =   1  'Right Justify
       Height          =   285
@@ -69,7 +86,7 @@ Begin VB.Form frmOptions
       Height          =   375
       Left            =   480
       TabIndex        =   5
-      Top             =   1080
+      Top             =   1320
       Width           =   2655
    End
    Begin VB.CheckBox chkOutputToLogConsole 
@@ -86,7 +103,7 @@ Begin VB.Form frmOptions
       Height          =   375
       Left            =   480
       TabIndex        =   4
-      Top             =   2040
+      Top             =   2280
       Width           =   3615
    End
    Begin VB.CheckBox chkOutputToErrorConsole 
@@ -103,7 +120,7 @@ Begin VB.Form frmOptions
       Height          =   375
       Left            =   480
       TabIndex        =   3
-      Top             =   2400
+      Top             =   2640
       Width           =   3615
    End
    Begin VB.CheckBox chkOutputToTextConsole 
@@ -120,7 +137,7 @@ Begin VB.Form frmOptions
       Height          =   375
       Left            =   480
       TabIndex        =   2
-      Top             =   1680
+      Top             =   1920
       Width           =   3615
    End
    Begin VB.ComboBox cboTreeViewStates 
@@ -143,7 +160,7 @@ Begin VB.Form frmOptions
       Width           =   1455
    End
    Begin VB.Label Label4 
-      Caption         =   "tests completed."
+      Caption         =   "tests completed (0 to disable)."
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9
@@ -153,11 +170,11 @@ Begin VB.Form frmOptions
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   375
+      Height          =   255
       Left            =   3600
       TabIndex        =   11
       Top             =   120
-      Width           =   1815
+      Width           =   2895
    End
    Begin VB.Label Label3 
       Caption         =   "Update display after every"
@@ -181,7 +198,7 @@ Begin VB.Form frmOptions
       Height          =   45
       Left            =   120
       TabIndex        =   6
-      Top             =   1560
+      Top             =   1800
       Width           =   6255
    End
    Begin VB.Label Label1 
@@ -252,6 +269,7 @@ Private Sub DisplayOptions()
     Call SetChecked(Me.chkOutputToErrorConsole, mOptions.OutputToErrorConsole)
     Call SetChecked(Me.chkOutputToLogConsole, mOptions.OutputToLogConsole)
     Call SetChecked(Me.chkOutputToTextConsole, mOptions.OutputToTextConsole)
+    Call SetChecked(Me.chkSortTests, mOptions.SortTests)
 End Sub
 
 Private Sub cmdCancel_Click()
@@ -265,6 +283,7 @@ Private Sub cmdOK_Click()
     mOptions.OutputToErrorConsole = GetChecked(Me.chkOutputToErrorConsole)
     mOptions.OutputToLogConsole = GetChecked(Me.chkOutputToLogConsole)
     mOptions.OutputToTextConsole = GetChecked(Me.chkOutputToTextConsole)
+    mOptions.SortTests = GetChecked(Me.chkSortTests)
     
     mOK = True
     Call Unload(Me)
