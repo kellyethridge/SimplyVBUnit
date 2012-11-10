@@ -1,5 +1,12 @@
 ** SimplyVBUnit **
 
+version 4.0.1
+	* Optimized filling treeview with tests.
+	* Tests can optionally be sorted. Currently sorts by name.
+	* Can set a custom test comparer for custom sorting.
+	* Added error handling during ITestCaseSource.GetTestCases to prevent OCX from crashing project.
+	* Optimized progress bar to update only during DoEvents.
+
 version 4.0
 	* #Version 4 breaks backward compatibility#
 	* Changed ITestCastData to ITestCaseSource. The method signature
