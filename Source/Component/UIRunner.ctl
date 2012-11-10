@@ -909,7 +909,7 @@ End Sub
 
 Private Sub UserControl_Show()
     If Ambient.UserMode Then
-        Call mTestTree.Refresh
+'        Call mTestTree.Refresh
         Call mTestTree.RestoreTreeViewState(mConfig)
         Call mCategoryList.LoadState(mConfig)
     End If
