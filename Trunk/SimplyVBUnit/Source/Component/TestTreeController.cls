@@ -46,7 +46,7 @@ Private WithEvents mListener As EventCastListener
 Attribute mListener.VB_VarHelpID = -1
 Private mTreeView   As TreeView
 Private mRootKey    As String
-
+Private mRootNode   As Nodes
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -109,6 +109,7 @@ Public Sub RestoreTreeViewState(ByVal Config As UIConfiguration)
     On Error GoTo errTrap
     mTreeView.Nodes(Config.GetValue("SelectedTest", mRootKey)).Selected = True
 errTrap:
+    mTreeView.Visible = True
 End Sub
 
 Public Sub SaveTreeViewState(ByVal Config As UIConfiguration)
@@ -149,8 +150,8 @@ Friend Sub Init(ByVal TreeView As TreeView, ByVal Root As ITest, ByVal Listener 
     Set mTreeView = TreeView
     Set mListener = Listener
     mTreeView.Visible = False
+    Set mRootNode = TreeView.Nodes
     Call AddRootNode(Root)
-    mTreeView.Visible = True
 End Sub
 
 
@@ -175,7 +176,7 @@ End Sub
 
 Private Sub AddTestNode(ByVal Parent As Node, ByVal Test As ITest)
     Dim NewNode As Node
-    Set NewNode = mTreeView.Nodes.Add(Parent, tvwChild, Test.FullName, Test.Name, IMG_NOTRUN)
+    Set NewNode = mRootNode.Add(Parent, tvwChild, Test.FullName, Test.Name, IMG_NOTRUN)
     Set NewNode.Tag = Test
 
     Call AddSubTests(NewNode, Test)
@@ -186,7 +187,7 @@ Private Sub AddRootNode(ByVal Root As ITest)
     mRootKey = Root.FullName
 
     Dim RootNode As Node
-    Set RootNode = mTreeView.Nodes.Add(, , mRootKey, ClientInfo.Path & "\" & Root.Name, IMG_NOTRUN)
+    Set RootNode = mRootNode.Add(, , mRootKey, ClientInfo.Path & "\" & Root.Name, IMG_NOTRUN)
     Set RootNode.Tag = Root
     
     Call AddSubTests(RootNode, Root)
