@@ -40,9 +40,13 @@ Implements IEnumerator
 Private Const INDEX_RESET As Long = -1
 Private Const EMPTY_ARRAY As Long = -1
 
+Private Type GuidSafeArray1d
+    Guid As VBGUID
+    SA As SafeArray1d
+End Type
 
 Private mArray  As Variant
-Private mSA     As SafeArray1d
+Private mSA     As GuidSafeArray1d
 Private mIndex  As Long
 
 
@@ -52,7 +56,6 @@ Private mIndex  As Long
 Friend Sub Init(ByRef Arr As Variant)
     If Not IsArray(Arr) Then _
         Error.ResourceArgument Me, "Init", "Arr", Arg_MustBeArray
-'        Error.Argument Me, "Init", "Arr", Resource.GetString(Arg_MustBeArray, "Arr")
         
     Dim pSA As Long
     pSA = GetArrayPointer(Arr)
@@ -73,7 +76,7 @@ Private Function ArrayExists(ByVal Ptr As Long) As Boolean
 End Function
 
 Private Sub CreateProxy(ByRef Arr As Variant, ByVal PtrSA As Long)
-    FillDescriptor PtrSA
+    FillDescriptor PtrSA, VarType(Arr) And &HFF
     
     If HasElements Then
         CreateArrayProxy Arr
@@ -82,12 +85,20 @@ Private Sub CreateProxy(ByRef Arr As Variant, ByVal PtrSA As Long)
     End If
 End Sub
 
-Private Sub FillDescriptor(ByVal Ptr As Long)
-    CopyMemory mSA, ByVal Ptr, LenB(mSA)
+Private Sub FillDescriptor(ByVal Ptr As Long, ByVal ArrayType As VbVarType)
+    Const SIZEOF_GUID As Long = 16
+
+    Dim Offset As Long
+    Select Case ArrayType
+        Case vbObject: Offset = SIZEOF_GUID
+        Case vbUserDefinedType: Offset = 4
+    End Select
+    
+    CopyMemory ByVal VarPtr(mSA.SA) - Offset, ByVal Ptr - Offset, LenB(mSA.SA) + Offset
 End Sub
 
 Private Function HasElements() As Boolean
-    HasElements = (mSA.cDims > 0)
+    HasElements = (mSA.SA.cDims > 0)
 End Function
 
 Private Sub CreateArrayProxy(ByRef Arr As Variant)
@@ -95,22 +106,22 @@ Private Sub CreateArrayProxy(ByRef Arr As Variant)
     Count = 1
     
     Dim i As Long
-    For i = 1 To mSA.cDims
+    For i = 1 To mSA.SA.cDims
         Count = Count * (UBound(Arr, i) - LBound(Arr, i) + 1)
     Next i
 
     VariantType(mArray) = VarType(Arr)
-    MemLong(VarPtr(mArray) + VARIANTDATA_OFFSET) = VarPtr(mSA)
+    MemLong(VarPtr(mArray) + VARIANTDATA_OFFSET) = VarPtr(mSA.SA)
     
-    mSA.lLbound = 0
-    mSA.cElements = Count
-    mSA.cDims = ARRAY_DIMENSIONS
+    mSA.SA.lLbound = 0
+    mSA.SA.cElements = Count
+    mSA.SA.cDims = ARRAY_DIMENSIONS
     
     mIndex = INDEX_RESET
 End Sub
 
 Private Sub CreateEmptyProxy()
-    mSA.cElements = EMPTY_ARRAY
+    mSA.SA.cElements = EMPTY_ARRAY
 End Sub
 
 
@@ -131,7 +142,7 @@ End Property
 
 Private Function IEnumerator_MoveNext() As Boolean
     mIndex = mIndex + 1
-    IEnumerator_MoveNext = (mIndex < mSA.cElements)
+    IEnumerator_MoveNext = (mIndex < mSA.SA.cElements)
 End Function
 
 Private Sub IEnumerator_Reset()

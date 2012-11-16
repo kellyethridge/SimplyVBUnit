@@ -98,6 +98,18 @@ Public Sub MoveNext_CalledTwiceWith2DimensionArray_ReturnsTrue()
     Assert.IsTrue En.MoveNext = False
 End Sub
 
+Public Sub Enumerate_WithUDT_EnumeratesUDT()
+    Dim Arr(0) As PublicUDT
+    Arr(0).Value = 1
+    Dim En As IEnumerator
+    Set En = Sim.NewArrayEnumerator(Arr)
+    
+    Assert.IsTrue En.MoveNext
+    Dim UDT As PublicUDT
+    UDT = En.Current
+    Assert.AreEqual 1, UDT.Value
+End Sub
+
 
 
 
