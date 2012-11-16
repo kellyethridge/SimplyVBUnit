@@ -14,6 +14,10 @@ Attribute VB_Exposed = True
 Option Explicit
 Option Compare Text
 
+Public Type PublicUDT
+    Value As Long
+End Type
+
 Private mMethodNames As New Collection
 
 Public Property Get Count() As Long

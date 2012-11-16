@@ -1,5 +1,8 @@
 ** SimplyVBUnit **
 
+version 4.0.2
+	* Added support for User Defined Type arrays.
+
 version 4.0.1
 	* Optimized filling treeview with tests.
 	* Tests can optionally be sorted. Currently sorts by name.
