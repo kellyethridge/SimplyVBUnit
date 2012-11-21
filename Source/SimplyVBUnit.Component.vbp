@@ -1,9 +1,9 @@
 Type=Control
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{3F4DACA7-160D-11D2-A8E9-00104B365C9F}#5.5#0#..\..\..\..\..\..\Windows\system32\vbscript.dll\3#Microsoft VBScript Regular Expressions 5.5
-Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#6.0#0#..\..\..\..\..\..\Windows\System32\msxml6.dll#Microsoft XML, v6.0
-Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#..\..\..\..\..\..\Windows\SysWow64\SimplyVBUnitType.tlb#SimplyVBUnit Type Library 4.0
-Reference=*\G{8B217740-717D-11CE-AB5B-D41203C10000}#1.0#0#..\..\..\..\..\..\Windows\SysWow64\TLBINF32.DLL#TypeLib Information
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\STDOLE2.TLB#OLE Automation
+Reference=*\G{3F4DACA7-160D-11D2-A8E9-00104B365C9F}#5.5#0#C:\WINDOWS\system32\vbscript.dll\3#Microsoft VBScript Regular Expressions 5.5
+Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#6.0#0#C:\WINDOWS\system32\msxml6.dll#Microsoft XML, v6.0
+Reference=*\G{923925AC-1013-4D27-9FB1-4FF0B3B47BA2}#4.0#0#C:\WINDOWS\system32\SimplyVBUnitType.tlb#SimplyVBUnit Type Library 4.0
+Reference=*\G{8B217740-717D-11CE-AB5B-D41203C10000}#1.0#0#c:\windows\system32\tlbinf32.dll#TypeLib Information
 Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0; MSCOMCTL.OCX
 Class=Anchor; Component\Anchor.cls
 Class=ClientInfo; Component\AppInfo.cls
@@ -194,3 +194,6 @@ ThreadPerObject=0
 MaxNumberOfThreads=1
 ThreadingModel=1
 DebugStartupOption=0
+
+[MS Transaction Server]
+AutoRefresh=1

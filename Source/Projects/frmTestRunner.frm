@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{EB2012E6-B07B-4B6F-8CCD-BE9D0AD980FC}#1.0#0"; "SimplyVBUnit.Component.ocx"
+Object = "{7983BD3B-752A-43EA-9BFF-444BBA1FC293}#3.2#0"; "SimplyVBUnit.Component.ocx"
 Begin VB.Form frmTestRunner 
    ClientHeight    =   5535
    ClientLeft      =   120
@@ -83,6 +83,7 @@ End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = vbKeyEscape Then Call Unload(Me)
+    If KeyCode = vbKeyF5 Then Call UIRunner1.Run
 End Sub
 
 

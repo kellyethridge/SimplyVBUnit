@@ -1,6 +1,6 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#6.0#0#..\..\..\..\..\..\Windows\System32\msxml6.dll#Microsoft XML, v6.0
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\STDOLE2.TLB#OLE Automation
+Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#6.0#0#C:\WINDOWS\system32\msxml6.dll#Microsoft XML, v6.0
 Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0; MSCOMCTL.OCX
 Module=modMain; ComponentTests\modMain.bas
 Class=TestTreeViewController; ComponentTests\TestTreeViewController.cls
@@ -18,7 +18,7 @@ Class=FakeFixture; ComponentTests\FakeFixture.cls
 Class=TreeNodePathConstraint; ComponentTests\TreeNodePathConstraint.cls
 Class=DebugListener; ComponentTests\DebugListener.cls
 Class=TestConfiguration; ComponentTests\TestConfiguration.cls
-Object={7983BD3B-752A-43EA-9BFF-444BBA1FC293}#3.0#0; SimplyVBUnit.Component.ocx
+Object={7983BD3B-752A-43EA-9BFF-444BBA1FC293}#3.2#0; SimplyVBUnit.Component.ocx
 Startup="frmSample"
 HelpFile=""
 Command32=""
@@ -46,3 +46,6 @@ Unattended=0
 Retained=0
 ThreadPerObject=0
 MaxNumberOfThreads=1
+
+[MS Transaction Server]
+AutoRefresh=1
