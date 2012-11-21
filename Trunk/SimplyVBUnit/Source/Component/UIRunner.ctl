@@ -516,6 +516,10 @@ Public Sub AddTest(ByVal Fixture As Object)
     Call mStatus.Reset(mTests.TestCount)
 End Sub
 
+Public Sub Run()
+    Call cmdRun_Click
+End Sub
+
 Public Sub SetFilter(ByVal Filter As ITestFilter)
     Set mFilter = Filter
 End Sub
