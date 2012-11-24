@@ -2,6 +2,7 @@
 
 version 4.0.2
 	* Added support for User Defined Type arrays.
+	* Fixed category list. Wasn't reloading selected categories correctly.
 
 version 4.0.1
 	* Optimized filling treeview with tests.
