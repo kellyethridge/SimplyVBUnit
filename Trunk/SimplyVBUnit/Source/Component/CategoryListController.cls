@@ -98,11 +98,11 @@ Public Sub LoadState(ByVal Config As UIConfiguration)
     On Error Resume Next
     Dim i As Long
     For i = 0 To mList.ListCount - 1
+        Err.Clear
         Dim Value As Variant
         Value = Selected(mList.List(i))
         If Err.Number = 0 Then
             mList.Selected(i) = True
-            Err.Clear
         End If
     Next i
     
