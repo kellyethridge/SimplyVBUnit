@@ -73,7 +73,7 @@ End Sub
 '   Private Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function BuildTestCaseName(ByVal Result As TestResult) As String
-    BuildTestCaseName = Result.Test.Parent.Name & "." & Result.Test.Name
+    BuildTestCaseName = Result.Test.Parent.Name & "." & Result.Test.DisplayName
 End Function
 
 Private Function StripCrLf(ByRef Value As String) As String
@@ -91,9 +91,9 @@ End Function
 Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
     Call mNotRun.Nodes.Clear
     Call mOutput.Clear
-    mOut.Text = ""
-    mLog.Text = ""
-    mError.Text = ""
+    mOut.Text = vbNullString
+    mLog.Text = vbNullString
+    mError.Text = vbNullString
 End Sub
 
 Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)

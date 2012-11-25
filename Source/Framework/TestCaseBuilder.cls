@@ -39,8 +39,9 @@ Option Explicit
 Private mTestCases      As Collection
 Private mMember         As MemberInfo
 Private mTestClass      As Object
-Private mTestSequence   As Long
 Private mTestName       As String
+Private mNameBuilder    As New StringBuilder
+Private mNameSequence   As Long
 
 
 Public Function BuildFrom(ByVal TestClass As Object, ByVal Member As MemberInfo) As Collection
@@ -53,7 +54,7 @@ Private Sub Init(ByVal TestClass As Object, ByVal Member As MemberInfo)
     Set mTestCases = New Collection
     Set mMember = Member
     Set mTestClass = TestClass
-    mTestSequence = 0
+    mNameSequence = 0
     mTestName = Member.Name
 End Sub
 
@@ -115,12 +116,51 @@ Private Function MakeTestCaseFromData(ByVal Data As TestCaseData) As TestCase
     Dim Method As ITestMethod
     Set Method = Sim.NewParameterizedTestMethod(mTestClass, mMember.MemberId, Data)
     
-    Set MakeTestCaseFromData = Sim.NewTestCase(NextSequentialTestName, Method)
+    Set MakeTestCaseFromData = Sim.NewTestCase(BuildTestName, BuildTestDisplayName(Data.Arguments), Method)
 End Function
 
-Private Function NextSequentialTestName() As String
-    mTestSequence = mTestSequence + 1
-    NextSequentialTestName = mTestName & "_" & mTestSequence
+Private Function BuildTestDisplayName(ByRef Args() As Variant) As String
+    mNameBuilder.Length = 0
+    mNameBuilder.Append mTestName
+    mNameBuilder.Append " ("
+    
+    Dim i As Long
+    For i = UBound(Args) To LBound(Args) Step -1
+        If i < UBound(Args) Then
+            mNameBuilder.Append ", "
+        End If
+        
+        Select Case VarType(Args(i))
+            Case vbByte
+                mNameBuilder.Append "CByte(" & Args(i) & ")"
+            Case vbInteger
+                mNameBuilder.Append Args(i) & "%"
+            Case vbLong
+                mNameBuilder.Append Args(i) & "&"
+            Case vbSingle
+                mNameBuilder.Append Args(i) & "!"
+            Case vbDouble
+                mNameBuilder.Append Args(i) & "#"
+            Case vbCurrency
+                mNameBuilder.Append Args(i) & "@"
+            Case vbDecimal
+                mNameBuilder.Append "CDec(" & Args(i) & ")"
+            Case vbString
+                mNameBuilder.Append """" & Args(i) & """"
+            Case vbDate, vbBoolean
+                mNameBuilder.Append Args(i)
+            Case Else
+                mNameBuilder.Append TypeName(Args(i))
+        End Select
+    Next
+    
+    mNameBuilder.Append ")"
+    BuildTestDisplayName = mNameBuilder.ToString
+End Function
+
+Private Function BuildTestName() As String
+    mNameSequence = mNameSequence + 1
+    BuildTestName = mTestName & "_" & mNameSequence
 End Function
 
 Private Function GetTestCases() As Collection
@@ -138,7 +178,7 @@ End Function
 
 Private Sub AddTestCase(ByVal Method As ITestMethod)
     Dim TestCase As TestCase
-    Set TestCase = Sim.NewTestCase(mTestName, Method)
+    Set TestCase = Sim.NewTestCase(mTestName, mTestName, Method)
     mTestCases.Add TestCase
 End Sub
 

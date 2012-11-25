@@ -50,6 +50,7 @@ Private mTicks              As Currency
 Private mRunState           As RunState
 Private mTestCaseContext    As ContextMethods
 Private mName               As String
+Private mDisplayName        As String
 Private mRunner             As ITestRunner
 Private mCategories         As Categorization
 
@@ -187,6 +188,10 @@ Public Property Get Name() As String
     Name = mName
 End Property
 
+Public Property Get DisplayName() As String
+    DisplayName = mName & " (" & TestCount & " Tests)"
+End Property
+
 Public Property Get FullName() As String
     FullName = TestUtils.BuildFullName(Me)
 End Property
@@ -281,12 +286,12 @@ Private Sub ManuallyBuildFixture()
                 Count = Count + 1
                 Name = Collector.MethodName & "_" & Count
                 
-                Set Test = Sim.NewTestCase(Name, Method)
+                Set Test = Sim.NewTestCase(Name, Name, Method)
                 AddTestCase Test
             Next
         Else
             Set Method = Sim.NewSimpleTestMethod(mTestClass, Collector.MethodName)
-            Set Test = Sim.NewTestCase(Collector.MethodName, Method)
+            Set Test = Sim.NewTestCase(Collector.MethodName, Collector.MethodName, Method)
             AddTestCase Test
         End If
     Next
@@ -467,6 +472,10 @@ End Property
 Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
     ITest_CountTestCases = CountTestCases(Filter)
 End Function
+
+Private Property Get ITest_DisplayName() As String
+    ITest_DisplayName = DisplayName
+End Property
 
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName

@@ -39,6 +39,7 @@ Implements ITest
 
 Private mTestMethod         As ITestMethod
 Private mName               As String
+Private mDisplayName        As String
 Private mParent             As Long
 Private mTicks              As Currency
 Private mRunState           As RunState
@@ -93,6 +94,10 @@ End Property
 
 Public Property Get Name() As String
     Name = mName
+End Property
+
+Public Property Get DisplayName() As String
+    DisplayName = mDisplayName
 End Property
 
 Public Property Get FullName() As String
@@ -239,13 +244,16 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Friend Methods
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Friend Sub Init(ByRef Name As String, ByVal TestMethod As ITestMethod)
+Friend Sub Init(ByRef Name As String, ByRef DisplayName As String, ByVal TestMethod As ITestMethod)
     If Len(Name) = 0 Then _
         Error.CannotBeEmpty Me, "Init", "Name"
+    If Len(DisplayName) = 0 Then _
+        Error.CannotBeEmpty Me, "Init", "DisplayName"
     If TestMethod Is Nothing Then _
         Error.CannotBeNothing Me, "Init", "TestMethod"
     
     mName = Name
+    mDisplayName = DisplayName
     Set mTestMethod = TestMethod
 End Sub
 
@@ -282,6 +290,10 @@ End Property
 Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
     ITest_CountTestCases = CountTestCases(Filter)
 End Function
+
+Private Property Get ITest_DisplayName() As String
+    ITest_DisplayName = DisplayName
+End Property
 
 Private Property Get ITest_FullName() As String
     ITest_FullName = FullName

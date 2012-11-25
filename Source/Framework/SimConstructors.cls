@@ -47,9 +47,9 @@ Public Function NewTestResult(ByVal Test As ITest) As TestResult
     NewTestResult.Init Test
 End Function
 
-Public Function NewTestCase(ByRef Name As String, ByVal TestMethod As ITestMethod) As TestCase
+Public Function NewTestCase(ByRef Name As String, ByRef DisplayName As String, ByVal TestMethod As ITestMethod) As TestCase
     Set NewTestCase = New TestCase
-    NewTestCase.Init Name, TestMethod
+    NewTestCase.Init Name, DisplayName, TestMethod
 End Function
 
 Public Function NewSimpleTestMethod(ByVal TestClass As Object, ByRef MemberId As Variant) As SimpleTestMethod
