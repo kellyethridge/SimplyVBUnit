@@ -176,7 +176,7 @@ End Sub
 
 Private Sub AddTestNode(ByVal Parent As Node, ByVal Test As ITest)
     Dim NewNode As Node
-    Set NewNode = mRootNode.Add(Parent, tvwChild, Test.FullName, Test.Name, IMG_NOTRUN)
+    Set NewNode = mRootNode.Add(Parent, tvwChild, Test.FullName, Test.DisplayName, IMG_NOTRUN)
     Set NewNode.Tag = Test
 
     Call AddSubTests(NewNode, Test)
@@ -187,7 +187,7 @@ Private Sub AddRootNode(ByVal Root As ITest)
     mRootKey = Root.FullName
 
     Dim RootNode As Node
-    Set RootNode = mRootNode.Add(, , mRootKey, ClientInfo.Path & "\" & Root.Name, IMG_NOTRUN)
+    Set RootNode = mRootNode.Add(, , mRootKey, ClientInfo.Path & "\" & Root.DisplayName, IMG_NOTRUN)
     Set RootNode.Tag = Root
     
     Call AddSubTests(RootNode, Root)

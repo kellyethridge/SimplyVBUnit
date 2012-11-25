@@ -86,6 +86,8 @@ End Sub
 
 Public Sub BuildFrom_With2TestCaseSource_TestCaseNamesEqualParentNamesPlusSequenceNumber()
     Dim Mock As New Mock2TestCaseSource
+    Mock.Value1 = 1
+    Mock.Value2 = "Value2"
     Dim Member As MemberInfo
     Set Member = tli.InterfaceInfoFromObject(Mock).GetMember(Constants.TEST1_METHOD)
     Dim Builder As New TestCaseBuilder
@@ -97,10 +99,12 @@ Public Sub BuildFrom_With2TestCaseSource_TestCaseNamesEqualParentNamesPlusSequen
     Set Parent = Tests(1)
     Dim Test As ITest
     Set Test = Parent.Tests(0)
-    Assert.IsTrue Test.Name = "Test1_1"
+    Assert.AreEqual "Test1 (1%, ""Hello"", 55#)", Test.DisplayName
+    Assert.AreEqual "Test1_1", Test.Name
     
     Set Test = Parent.Tests(1)
-    Assert.IsTrue Test.Name = "Test1_2"
+    Assert.AreEqual "Test1 (""Value2"", ""Bye"", Variant())", Test.DisplayName
+    Assert.AreEqual "Test1_2", Test.Name
 End Sub
 
 Public Sub BuildFrom_WithTestWithArgsDoesNotImplementITestCaseSource_ReturnsEmpty()

@@ -34,6 +34,10 @@ Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
 
 End Function
 
+Private Property Get ITest_DisplayName() As String
+
+End Property
+
 Private Property Get ITest_HasCategories() As Boolean
     ITest_HasCategories = Categories.Count > 0
 End Property

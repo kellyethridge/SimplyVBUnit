@@ -32,7 +32,7 @@ Option Explicit
 
 Public Sub Constructor_WhenCalled_StoresName()
     Dim TestCase As TestCase
-    Set TestCase = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
+    Set TestCase = Sim.NewTestCase(Constants.TEST1_METHOD, Constants.TEST1_METHOD, MakeTestMethod)
     
     Dim Actual As String
     Actual = TestCase.Name
@@ -43,7 +43,7 @@ End Sub
 Public Sub Constructor_WithEmptyName_RaisesError()
     On Error GoTo errTrap
     
-    Sim.NewTestCase "", MakeTestMethod
+    Sim.NewTestCase "", "", MakeTestMethod
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
@@ -54,7 +54,7 @@ End Sub
 Public Sub Constructor_WithNothingTestMethod_RaisesError()
     On Error GoTo errTrap
     
-    Sim.NewTestCase "Name", Nothing
+    Sim.NewTestCase "Name", "Name", Nothing
     On Error GoTo 0
     Assert.Fail "An error should be raised."
     
@@ -76,7 +76,7 @@ End Sub
 
 Public Sub FullName_WithNoParent_ReturnsName()
     Dim TestCase As TestCase
-    Set TestCase = Sim.NewTestCase("Test", MakeTestMethod)
+    Set TestCase = Sim.NewTestCase("Test", "Test", MakeTestMethod)
     Set TestCase.Parent = Nothing
     
     Dim Actual As String
@@ -557,7 +557,7 @@ End Sub
 Public Sub Run_WithRunStateSetToNotRunnable_CallsListenerMethods()
     Dim Mock As New MockEventListener
     Dim Test As TestCase
-    Set Test = Sim.NewTestCase(Constants.TEST1_METHOD, MakeTestMethod)
+    Set Test = Sim.NewTestCase(Constants.TEST1_METHOD, Constants.TEST1_METHOD, MakeTestMethod)
     Test.RunState = NotRunnableRunState
     
     Test.Run Mock

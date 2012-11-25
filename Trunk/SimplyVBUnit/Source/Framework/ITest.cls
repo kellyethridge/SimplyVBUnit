@@ -40,6 +40,8 @@ Public Function Run(Optional ByVal Listener As IEventListener, Optional ByVal Fi
 
 Public Property Get Name() As String: End Property
 
+Public Property Get DisplayName() As String: End Property
+
 Public Property Get TestCount() As Long: End Property
 
 Public Property Get FullName() As String: End Property

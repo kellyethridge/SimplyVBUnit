@@ -1,5 +1,10 @@
 ** SimplyVBUnit **
 
+version 4.1 (OCX Version Upgrade)
+	* Added display of test count for test suites in tree view.
+	* Added display of parameter information for ITestCaseSource tests in tree view.
+	* Changed UIListBox to non-public.
+
 version 4.0.2
 	* Added support for User Defined Type arrays.
 	* Fixed category list. Wasn't reloading selected categories correctly.

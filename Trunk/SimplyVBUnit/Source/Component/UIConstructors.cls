@@ -41,7 +41,7 @@ Public Function NewTestTreeController(ByVal TreeView As Object, ByVal RootTest A
     Call NewTestTreeController.Init(TreeView, RootTest, Listener)
 End Function
 
-Public Function NewResultsTabController(ByVal Output As UIListBox, ByVal NotRun As Object, ByVal Out As Object, ByVal Log As Object, ByVal Error As Object, ByVal Listener As EventCastListener) As ResultsTabController
+Friend Function NewResultsTabController(ByVal Output As UIListBox, ByVal NotRun As Object, ByVal Out As Object, ByVal Log As Object, ByVal Error As Object, ByVal Listener As EventCastListener) As ResultsTabController
     Set NewResultsTabController = New ResultsTabController
     Call NewResultsTabController.Init(Output, NotRun, Out, Log, Error, Listener)
 End Function

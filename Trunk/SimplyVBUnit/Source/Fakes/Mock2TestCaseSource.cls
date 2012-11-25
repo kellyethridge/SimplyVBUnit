@@ -22,11 +22,11 @@ Public Value2 As Variant
 Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
     Calls.Add "GetTestCases." & Test.MethodName
     
-    Test.Use Value1
-    Test.Use Value2
+    Test.Use Value1, "Hello", 55#
+    Test.Use Value2, "Bye", Array(0)
 End Sub
 
-Public Sub Test1(ByVal Value As Variant)
+Public Sub Test1(ByVal Value As Variant, ByVal Value2 As String, ByVal Value3 As Double)
     Err.Clear
     Calls.Add "Test1"
 End Sub
