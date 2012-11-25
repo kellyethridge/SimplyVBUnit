@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{7983BD3B-752A-43EA-9BFF-444BBA1FC293}#2.1#0"; "SimplyVBUnit.Component.ocx"
+Object = "{7983BD3B-752A-43EA-9BFF-444BBA1FC293}#4.0#0"; "SimplyVBUnit.Component.ocx"
 Begin VB.Form frmSimplyVBRunner 
    ClientHeight    =   6195
    ClientLeft      =   60

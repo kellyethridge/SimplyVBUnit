@@ -133,8 +133,6 @@ Private Function BuildTestDisplayName(ByRef Args() As Variant) As String
         Select Case VarType(Args(i))
             Case vbByte
                 mNameBuilder.Append "CByte(" & Args(i) & ")"
-            Case vbInteger
-                mNameBuilder.Append Args(i) & "%"
             Case vbLong
                 mNameBuilder.Append Args(i) & "&"
             Case vbSingle
@@ -147,7 +145,7 @@ Private Function BuildTestDisplayName(ByRef Args() As Variant) As String
                 mNameBuilder.Append "CDec(" & Args(i) & ")"
             Case vbString
                 mNameBuilder.Append """" & Args(i) & """"
-            Case vbDate, vbBoolean
+            Case vbInteger, vbDate, vbBoolean
                 mNameBuilder.Append Args(i)
             Case Else
                 mNameBuilder.Append TypeName(Args(i))

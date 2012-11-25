@@ -99,7 +99,7 @@ Public Sub BuildFrom_With2TestCaseSource_TestCaseNamesEqualParentNamesPlusSequen
     Set Parent = Tests(1)
     Dim Test As ITest
     Set Test = Parent.Tests(0)
-    Assert.AreEqual "Test1 (1%, ""Hello"", 55#)", Test.DisplayName
+    Assert.AreEqual "Test1 (1, ""Hello"", 55#)", Test.DisplayName
     Assert.AreEqual "Test1_1", Test.Name
     
     Set Test = Parent.Tests(1)
