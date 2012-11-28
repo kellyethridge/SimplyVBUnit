@@ -57,7 +57,6 @@ Public Sub AddTest(ByVal Test As ITest)
     Set Parent = mTreeView.Nodes(mRootKey)
 
     Call AddTestNode(Parent, Test)
-    Parent.Sorted = True
 End Sub
 
 Public Property Get SelectedTest() As ITest
@@ -180,7 +179,6 @@ Private Sub AddTestNode(ByVal Parent As Node, ByVal Test As ITest)
     Set NewNode.Tag = Test
 
     Call AddSubTests(NewNode, Test)
-    NewNode.Sorted = True
 End Sub
 
 Private Sub AddRootNode(ByVal Root As ITest)

@@ -220,7 +220,6 @@ Begin VB.UserControl UIRunner
          LabelEdit       =   1
          LineStyle       =   1
          PathSeparator   =   "."
-         Sorted          =   -1  'True
          Style           =   7
          ImageList       =   "imglTestTree"
          BorderStyle     =   1
@@ -780,9 +779,14 @@ Private Sub mnuExpandAllNodesPopUp_Click()
 End Sub
 
 Private Sub mnuOptions_Click()
+    Dim CurrentSort As Boolean
+    CurrentSort = mConfig.SortTests
     Dim Editor As New frmOptions
     Call Editor.Edit(mConfig, Me)
-    Call Unload(Editor)
+    If Not CurrentSort And mConfig.SortTests Then
+        mTests.Sort mTestComparer
+        mTestTree.Refresh
+    End If
 End Sub
 
 Private Sub mnuResultDetailsPopUp_Click()
