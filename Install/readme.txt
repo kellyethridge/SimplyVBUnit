@@ -1,5 +1,8 @@
 ** SimplyVBUnit **
 
+version 4.1.1
+	* Padded sequence number when using ITestCaseSource to keep natural numeric sorting.
+
 version 4.1 (OCX Version Upgrade)
 	* Added display of test count for test suites in tree view.
 	* Added display of parameter information for ITestCaseSource tests in tree view.
