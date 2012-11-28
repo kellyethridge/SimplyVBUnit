@@ -158,7 +158,7 @@ End Function
 
 Private Function BuildTestName() As String
     mNameSequence = mNameSequence + 1
-    BuildTestName = mTestName & "_" & mNameSequence
+    BuildTestName = mTestName & "_" & Format$(mNameSequence, "000")
 End Function
 
 Private Function GetTestCases() As Collection

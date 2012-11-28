@@ -100,11 +100,11 @@ Public Sub BuildFrom_With2TestCaseSource_TestCaseNamesEqualParentNamesPlusSequen
     Dim Test As ITest
     Set Test = Parent.Tests(0)
     Assert.AreEqual "Test1 (1, ""Hello"", 55#)", Test.DisplayName
-    Assert.AreEqual "Test1_1", Test.Name
+    Assert.AreEqual "Test1_001", Test.Name
     
     Set Test = Parent.Tests(1)
     Assert.AreEqual "Test1 (""Value2"", ""Bye"", Variant())", Test.DisplayName
-    Assert.AreEqual "Test1_2", Test.Name
+    Assert.AreEqual "Test1_002", Test.Name
 End Sub
 
 Public Sub BuildFrom_WithTestWithArgsDoesNotImplementITestCaseSource_ReturnsEmpty()
