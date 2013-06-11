@@ -1,5 +1,8 @@
 ** SimplyVBUnit **
 
+version 4.1.2
+	* Fixed a failing red progress bar from changing to yellow after an Assert.Ignore.
+
 version 4.1.1
 	* Padded sequence number when using ITestCaseSource to keep natural numeric sorting.
 

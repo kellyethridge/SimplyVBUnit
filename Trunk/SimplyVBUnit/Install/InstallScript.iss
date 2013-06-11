@@ -6,8 +6,8 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{249D663E-A119-4D35-A0F4-15821B9416E5}
-AppName=SimplyVBUnit 4.1
-AppVerName=SimplyVBUnit 4.1
+AppName=SimplyVBUnit 4.1.2
+AppVerName=SimplyVBUnit 4.1.2
 AppPublisher=Kelly Ethridge
 AppPublisherURL=https://sourceforge.net/projects/simplyvbunit/
 AppSupportURL=https://sourceforge.net/projects/simplyvbunit/
@@ -16,7 +16,7 @@ DefaultDirName={pf}\SimplyVBUnit 4.1
 DefaultGroupName=SimplyVBUnit 4.1
 AllowNoIcons=yes
 OutputDir=.
-OutputBaseFilename=SimplyVBUnitSetup-4.1
+OutputBaseFilename=SimplyVBUnitSetup-4.1.2
 Compression=lzma
 SolidCompression=yes
 
