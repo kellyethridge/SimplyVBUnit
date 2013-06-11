@@ -36,11 +36,12 @@ Attribute VB_Exposed = True
 '
 Option Explicit
 
-Private mBar As StatusBar
+Private mBar        As StatusBar
+Private mFailures   As Long
+Private mTestsRun   As Long
+
 Private WithEvents mListener As EventCastListener
 Attribute mListener.VB_VarHelpID = -1
-Private mFailures As Long
-Private mTestsRun As Long
 
 
 Friend Sub Init(ByVal Bar As StatusBar, ByVal Listener As EventCastListener)
