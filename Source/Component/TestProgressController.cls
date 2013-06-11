@@ -80,7 +80,7 @@ Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
     mBar.Value = 0
     mFailed = False
     mDisplay.Caption = ""
-    Call SendMessage(mBar.hWnd, PBM_SETBARCOLOR, 0, ByVal vbGreen)
+    SendMessage mBar.hWnd, PBM_SETBARCOLOR, 0, ByVal vbGreen
 End Sub
 
 Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
@@ -90,11 +90,13 @@ Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
         mTestCount = 0
     End If
     
-    If Result.IsFailure Or Result.IsError Then
-        Call SendMessage(mBar.hWnd, PBM_SETBARCOLOR, 0, ByVal vbRed)
-        mFailed = True
-    ElseIf Result.IsIgnored Then
-        Call SendMessage(mBar.hWnd, PBM_SETBARCOLOR, 0, ByVal vbYellow)
+    If Not mFailed Then
+        If Result.IsFailure Or Result.IsError Then
+            SendMessage mBar.hWnd, PBM_SETBARCOLOR, 0, ByVal vbRed
+            mFailed = True
+        ElseIf Result.IsIgnored Then
+            SendMessage mBar.hWnd, PBM_SETBARCOLOR, 0, ByVal vbYellow
+        End If
     End If
 End Sub
 
