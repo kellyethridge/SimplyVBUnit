@@ -38,16 +38,11 @@ Option Explicit
 Implements IBasicExpression
 Implements IConstraintExpression
 
-Private mBuilder    As New ConstraintBuilder
-Private mConstraint As IConstraint
+Private mBuilder As New ConstraintBuilder
 
 
 Public Function Resolve() As IConstraint
-    If mConstraint Is Nothing Then
-        Set mConstraint = mBuilder.Resolve
-    End If
-    
-    Set Resolve = mConstraint
+    Set Resolve = mBuilder.Resolve
 End Function
 
 Public Function OrElse() As IConstraintExpression

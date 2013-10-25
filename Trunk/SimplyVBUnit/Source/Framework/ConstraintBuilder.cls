@@ -95,6 +95,8 @@ Private Function Release() As IConstraint
     
     If HasConstraints Then
         Set Result = mConstraints.Peek
+        mConstraints.Clear
+        mOperators.Clear
     End If
     
     Set Release = Result

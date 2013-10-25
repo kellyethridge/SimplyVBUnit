@@ -1,7 +1,7 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
 Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#6.0#0#..\..\..\..\..\..\Windows\System32\msxml6.dll#Microsoft XML, v6.0
-Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0; MSCOMCTL.OCX
+Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0; mscomctl.ocx
 Module=modMain; ComponentTests\modMain.bas
 Class=TestTreeViewController; ComponentTests\TestTreeViewController.cls
 Form=ComponentTests\frmTreeView.frm

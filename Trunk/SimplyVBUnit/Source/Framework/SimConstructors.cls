@@ -261,3 +261,9 @@ Public Function NewTestOutputWriter(ByVal Listener As IEventListener, ByVal Outp
     Set NewTestOutputWriter = New TestOutputWriter
     NewTestOutputWriter.Init Listener, OutputType
 End Function
+
+Friend Function NewConstraintProxy(ByVal Constraint As IConstraint) As IConstraint
+    Dim Proxy As New ConstraintProxy
+    Proxy.Init Constraint
+    Set NewConstraintProxy = Proxy
+End Function

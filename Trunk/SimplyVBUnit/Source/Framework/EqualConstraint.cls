@@ -261,10 +261,6 @@ End Sub
 Private Sub DisplayCollectionFailurePoint(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Writer As TextMessageWriter, ByVal Index As Long, ByVal Indent As Long)
     Writer.WriteText Space$(Indent)
     
-'    If IsCollection(Expected) Then
-'        Index = Index + 1
-'    End If
-    
     Dim ExpectedIndices As String
     ExpectedIndices = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Expected, Index))
     
