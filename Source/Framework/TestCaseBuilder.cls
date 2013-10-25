@@ -95,10 +95,6 @@ Private Sub BuildSimpleTestMethod()
     AddTestCase Method
 End Sub
 
-Private Function CanBuildIndirectly() As Boolean
-    CanBuildIndirectly = (TypeOf mTestClass Is ITestCaseSource)
-End Function
-
 Private Sub BuildParameterizedTestMethod()
     Dim Suite As TestSuite
     Set Suite = Sim.NewTestSuite(mMember.Name)
@@ -145,7 +141,9 @@ Private Function BuildTestDisplayName(ByRef Args() As Variant) As String
                 mNameBuilder.Append "CDec(" & Args(i) & ")"
             Case vbString
                 mNameBuilder.Append """" & Args(i) & """"
-            Case vbInteger, vbDate, vbBoolean
+                Case vbDate
+                mNameBuilder.Append "#" & Args(i) & "#"
+            Case vbInteger, vbBoolean
                 mNameBuilder.Append Args(i)
             Case Else
                 mNameBuilder.Append TypeName(Args(i))
