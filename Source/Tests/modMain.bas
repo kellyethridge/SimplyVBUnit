@@ -95,6 +95,7 @@ Private Sub RunTestClassTests()
     Suite.Add New CategoryCollectorTests
     Suite.Add New CategoryFilterTests
     Suite.Add New TestOutputWriterTests
+    Suite.Add New MemoryLeakTests
     
     Dim Runner As TestRunner
     Set Runner = Sim.NewTestRunner(Suite)

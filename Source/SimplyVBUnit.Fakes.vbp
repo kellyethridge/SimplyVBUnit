@@ -49,6 +49,7 @@ Class=FakePersistable; Fakes\FakePersistable.cls
 Class=FakeNonPersistable; Fakes\FakeNonPersistable.cls
 Class=MockITestFixture; Fakes\MockITestFixture.cls
 Class=FakeCategorizedTests; Fakes\FakeCategorizedTests.cls
+Class=ClassEventMonitor; Fakes\ClassEventMonitor.cls
 Startup="(None)"
 HelpFile=""
 Command32=""

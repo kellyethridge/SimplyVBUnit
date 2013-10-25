@@ -1,5 +1,8 @@
 ** SimplyVBUnit **
 
+version 4.1.3
+	* Fixed memory leak when calling Assert.
+
 version 4.1.2
 	* Fixed a failing red progress bar from changing to yellow after an Assert.Ignore.
 

@@ -25,7 +25,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
             Test.Use(ParameterValue).Expect Constraint
         
         Case "Test2"
-            Call Test.Use(1).Expect(Iz.EqualTo(1))
+            Call Test.Use(1).Expect(Iz.EqualTo(1).OrElse.EqualTo(2))
     End Select
 End Sub
 

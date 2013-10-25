@@ -44,11 +44,21 @@ Public Sub Throws(ByVal ErrorNumber As Long, Optional ByVal ErrorSource As Strin
 End Sub
 
 Public Sub Expect(ByRef Expected As Variant)
-    If IsConstraint(Expected) Then
-        Set mData.Expected = Expected
-    Else
-        Set mData.Expected = Sim.NewEqualConstraint(Expected)
+    If IsObject(Expected) Then
+        If Not Expected Is Nothing Then
+            If TypeOf Expected Is IResolvable Then
+                Dim Resolvable As IResolvable
+                Set Resolvable = Expected
+                Set mData.Expected = Sim.NewConstraintProxy(Resolvable.Resolve)
+                Exit Sub
+            ElseIf TypeOf Expected Is IConstraint Then
+                Set mData.Expected = Expected
+                Exit Sub
+            End If
+        End If
     End If
+    
+    Set mData.Expected = Sim.NewEqualConstraint(Expected)
 End Sub
 
 

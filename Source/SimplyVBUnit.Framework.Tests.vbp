@@ -87,6 +87,7 @@ Class=CategorizationTests; Tests\CategorizationTests.cls
 Class=CategoryCollectorTests; Tests\CategoryCollectorTests.cls
 Class=CategoryFilterTests; Tests\CategoryFilterTests.cls
 Class=TestOutputWriterTests; Tests\TestOutputWriterTests.cls
+Class=MemoryLeakTests; Tests\MemoryLeakTests.cls
 Startup="Sub Main"
 HelpFile=""
 Command32=""
