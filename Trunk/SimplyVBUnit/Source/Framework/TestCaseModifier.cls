@@ -63,22 +63,6 @@ End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Helpers
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function IsConstraint(ByRef Expected As Variant) As Boolean
-    Dim Result As Boolean
-    
-    If IsObject(Expected) Then
-        If Not Expected Is Nothing Then
-            Result = TypeOf Expected Is IConstraint
-        End If
-    End If
-    
-    IsConstraint = Result
-End Function
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Constructors
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Data As TestCaseData)
