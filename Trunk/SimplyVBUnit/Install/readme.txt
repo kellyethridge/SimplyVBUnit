@@ -1,5 +1,8 @@
 ** SimplyVBUnit **
 
+version 4.1.4
+	* Test names that include ITestCaseSource string parameters are now escaped for non-displayable characters.
+
 version 4.1.3
 	* Fixed memory leak when calling Assert.
 
