@@ -28,6 +28,18 @@ Attribute VB_Exposed = False
 ' Module: TestCaseBuilderTests
 '
 Option Explicit
+Implements ITestCaseSource
+
+Private Sub ITestCaseSource_GetTestCases(ByVal Test As SimplyVBUnit.TestCaseCollector)
+    Select Case Test.MethodName
+        Case "BuildFrom_WithNonDisplayableCharacter_EscapesString"
+            Test.Use vbNullChar, "TestWithArgs (""\0"")"
+            Test.Use vbTab, "TestWithArgs (""\t"")"
+            Test.Use vbCr, "TestWithArgs (""\r"")"
+            Test.Use vbLf, "TestWithArgs (""\n"")"
+            
+    End Select
+End Sub
 
 Public Sub BuildFrom_With1Test_Returns1TestCase()
     Dim Fake As New Fake1Test
@@ -118,6 +130,22 @@ Public Sub BuildFrom_WithTestWithArgsDoesNotImplementITestCaseSource_ReturnsEmpt
     
     Assert.IsTrue Actual.Count = 0, "Should be 0 test cases."
 End Sub
+
+Public Sub BuildFrom_WithNonDisplayableCharacter_EscapesString(ByVal s As String, ByVal Expected As String)
+    Dim Fake As New FakeWithNonDiplayableArgs
+    Fake.Argument = s
+    Dim Member As MemberInfo
+    Set Member = tli.InterfaceInfoFromObject(Fake).GetMember("TestWithArgs")
+    Dim Builder As New TestCaseBuilder
+    
+    Dim Parent As ITest
+    Set Parent = Builder.BuildFrom(Fake, Member)(1)
+    
+    Dim Test As ITest
+    Set Test = Parent.Tests(0)
+    Assert.That Test.DisplayName, Iz.EqualTo(Expected)
+End Sub
+
 
 
 
