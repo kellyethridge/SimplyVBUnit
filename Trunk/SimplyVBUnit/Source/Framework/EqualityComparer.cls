@@ -180,13 +180,17 @@ Private Function EqualEnumerables(ByRef X As Variant, ByRef Y As Variant) As Boo
         End If
         
         If XHasMore <> YHasMore Then
-            mFailurePoints.Push Count
+            If XHasMore Then
+                mFailurePoints.Push Sim.NewFailurePoint(Count, XEnumerator.Current, Empty)
+            Else
+                mFailurePoints.Push Sim.NewFailurePoint(Count, Empty, YEnumerator.Current)
+            End If
             RetVal = False
             Exit Do
         End If
         
         If Not Equals(XEnumerator.Current, YEnumerator.Current) Then
-            mFailurePoints.Push Count
+            mFailurePoints.Push Sim.NewFailurePoint(Count, XEnumerator.Current, YEnumerator.Current)
             RetVal = False
             Exit Do
         End If

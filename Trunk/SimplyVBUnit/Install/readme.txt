@@ -1,5 +1,8 @@
 ** SimplyVBUnit **
 
+version 4.1.5
+	* Enhanced EqualContraint error message to better describe mismatched collection(any enumerable object) elements.
+
 version 4.1.4
 	* Test names that include ITestCaseSource string parameters are now escaped for non-displayable characters.
 

@@ -182,31 +182,25 @@ Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
     Writer.DisplayStringDifferences CStr(mExpected), CStr(mActual), MismatchIndex, mComparer.IgnoreCase, mClipping
 End Sub
 
-Private Function GetValue(ByRef Source As Variant, ByVal Index As Long) As Variant
-    If IsArray(Source) Then
-        VariantCopyInd GetValue, GetArrayElement(Source, Index)
-    ElseIf TypeOf Source Is Collection Then
-        VariantCopyInd GetValue, Source(Index + 1)
-    End If
-End Function
-
 Private Sub DisplayCollectionDifferences(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Writer As TextMessageWriter, Optional ByVal Indent As Long)
+    Dim Failure As FailurePoint
     DisplayCollectionTypesAndSizes Expected, Actual, Writer, Indent
 
     If mComparer.FailurePoints.Count > 0 Then
+        Set Failure = mComparer.FailurePoints.Pop
         Dim Index As Long
-        Index = mComparer.FailurePoints.Pop
+        Index = Failure.Position
 
         DisplayCollectionFailurePoint Expected, Actual, Writer, Index, Indent
-
+    
         If mComparer.FailurePoints.Count > 0 Then
-            DisplayCollectionDifferences GetValue(Expected, Index), GetValue(Actual, Index), Writer, Indent + 2
+            DisplayCollectionDifferences Failure.Expected, Failure.Actual, Writer, Indent + 2
             Exit Sub
         End If
         
-        Dim ExpectedCount As Long
-        Dim ActualCount As Long
-        Dim Indents As String
+        Dim ExpectedCount   As Long
+        Dim ActualCount     As Long
+        Dim Indents         As String
         
         If TryGetCount(Expected, ExpectedCount) And TryGetCount(Actual, ActualCount) Then
             If ExpectedCount < ActualCount Then
@@ -221,10 +215,10 @@ Private Sub DisplayCollectionDifferences(ByRef Expected As Variant, ByRef Actual
                 Writer.WriteCollectionElements Expected, Index, 3
                 Writer.WriteLine
             Else
-                Writer.DisplayDifferences GetValue(Expected, Index), GetValue(Actual, Index)
+                Writer.DisplayDifferences Failure.Expected, Failure.Actual
             End If
         Else
-            Writer.DisplayDifferences GetValue(Expected, Index), GetValue(Actual, Index)
+            Writer.DisplayDifferences Failure.Expected, Failure.Actual
         End If
     End If
 End Sub

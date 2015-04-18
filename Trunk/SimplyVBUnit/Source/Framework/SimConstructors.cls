@@ -267,3 +267,8 @@ Friend Function NewConstraintProxy(ByVal Constraint As IConstraint) As IConstrai
     Proxy.Init Constraint
     Set NewConstraintProxy = Proxy
 End Function
+
+Friend Function NewFailurePoint(ByVal Position As Long, ByRef Expected As Variant, ByRef Actual As Variant) As FailurePoint
+    Set NewFailurePoint = New FailurePoint
+    NewFailurePoint.Init Position, Expected, Actual
+End Function
