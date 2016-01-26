@@ -140,8 +140,14 @@ Private Function BuildTestDisplayName(ByRef Args() As Variant) As String
             Case vbDecimal
                 mNameBuilder.Append "CDec(" & Args(i) & ")"
             Case vbString
-                mNameBuilder.Append """" & MsgUtils.EscapeControlChars(CStr(Args(i))) & """"
-                Case vbDate
+                Dim s As String
+                s = Args(i)
+                If Len(s) > 40 Then
+                    s = Left$(s, 37) + "..."
+                End If
+                
+                mNameBuilder.Append """" & MsgUtils.EscapeControlChars(s) & """"
+            Case vbDate
                 mNameBuilder.Append "#" & Args(i) & "#"
             Case vbInteger, vbBoolean
                 mNameBuilder.Append Args(i)
