@@ -37,6 +37,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
             Test.Use False, "False"
             Test.Use "actual", Quote("actual")
             Test.Use 1.234, "1.234#"
+            Test.Use "&amp;", """&amp;"""
 
             
         Case "WriteExpectedValue_WithValues_WritesExpected"
@@ -48,6 +49,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
             Test.Use CDec(1.2), "1.2D"
             Test.Use 1@, "1@"
             Test.Use 1.1@, "1.1@"
+            Test.Use "&amp;", """&amp;"""
             
             
         Case "WriteValue_WithValues_WritesExpected"
@@ -79,6 +81,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
             Test.Use Array(), "<empty>"
             Test.Use Array(1, "name", Array("hi", "bye"), 2#), "< 1, ""name"", < ""hi"", ""bye"" >, 2.0# >"
             Test.Use NewCollection(3, 2, 1), "< 3, 2, 1 >"
+            Test.Use "&amp;", """&amp;"""
             
             Dim Unk As IUnknown
             Test.Use Unk, "Nothing"
@@ -97,6 +100,7 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
             Test.Use "abcd", "a1cd", 2, "-^"
             Test.Use "abcd", "ab1d", 3, "--^"
             Test.Use "abcd", "abc1", 4, "---^"
+            Test.Use "val&amp;uz", "val&amp;ue", 10, "---------^"
             
         Case "DisplayStringDifferences_WithClipping_WritesExpected"
             Dim Expected As String

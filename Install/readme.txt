@@ -1,5 +1,9 @@
 ** SimplyVBUnit **
 
+version 4.1.6
+    * Shortend display of strings parameter values in parameterized test names to 40 characters.
+    * Ampersand was not being displayed in UI Runner error message because DrawText api needs it to be escaped.
+
 version 4.1.5
 	* Enhanced EqualContraint error message to better describe mismatched collection(any enumerable object) elements.
 
