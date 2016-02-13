@@ -104,14 +104,11 @@ Private Sub FillMeasureItem(ByRef Measurement As MEASUREITEMSTRUCT)
 End Sub
 
 Private Sub DrawItem(ByRef Canvas As DRAWITEMSTRUCT)
-    Call InitFont(Canvas)
-    
-    Dim Item As String
-    Item = GetItem(Canvas.itemID)
-    
     Dim SystemBrushColor    As Long
     Dim BackgroundColor     As Long
     Dim TextColor           As Long
+    
+    InitFont Canvas
     
     If (Canvas.itemState And ODS_SELECTED) = ODS_SELECTED Then
         SystemBrushColor = vbHighlight And &HF
@@ -123,14 +120,16 @@ Private Sub DrawItem(ByRef Canvas As DRAWITEMSTRUCT)
         TextColor = vbWindowText And &HF
     End If
     
-    Call FillRect(Canvas.hdc, Canvas.rcItem, GetSysColorBrush(SystemBrushColor))
-    Call SetBkColor(Canvas.hdc, GetSysColor(BackgroundColor))
-    Call SetTextColor(Canvas.hdc, GetSysColor(TextColor))
+    FillRect Canvas.hdc, Canvas.rcItem, GetSysColorBrush(SystemBrushColor)
+    SetBkColor Canvas.hdc, GetSysColor(BackgroundColor)
+    SetTextColor Canvas.hdc, GetSysColor(TextColor)
     
     Dim OldFont As Long
+    Dim Item    As String
+    Item = Replace(GetItem(Canvas.itemID), "&", "&&")
     OldFont = SelectObject(Canvas.hdc, mFontHandle)
-    Call DrawText(Canvas.hdc, Item, Len(Item), Canvas.rcItem, DT_LEFT)
-    Call SelectObject(Canvas.hdc, OldFont)
+    DrawText Canvas.hdc, Item, Len(Item), Canvas.rcItem, DT_LEFT
+    SelectObject Canvas.hdc, OldFont
 End Sub
 
 Private Sub InitFont(ByRef Canvas As DRAWITEMSTRUCT)
