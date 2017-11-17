@@ -1,0 +1,1 @@
+SimplyVBUnit 4.1 is a VB6 unit testing framework written in Visual Basic 6. It closely follows the GUI setup of NUnit. Creating Tests is a snap, as you don't need to implement anything, just add your tests to a new class and GO!
