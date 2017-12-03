@@ -1,3 +1,4 @@
 /Source/ComponentTests/*.log
 /Binaries/Compiled/*.oca
 /Source/*.vbw
+/Install/*.exe
