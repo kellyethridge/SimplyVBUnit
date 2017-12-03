@@ -70,6 +70,7 @@ Public Property Get HasCategories() As Boolean
 End Property
 
 Public Property Get This() As TestSuite
+Attribute This.VB_MemberFlags = "40"
     Set This = Me
 End Property
 
@@ -116,7 +117,7 @@ Public Property Get HasParent() As Boolean
     HasParent = (mParent <> vbNullPtr)
 End Property
 
-Public Sub Add(ByVal TestClass As Object)
+Public Function Add(ByVal TestClass As Object, Optional ByRef Name As String) As TestSuite
     If TestClass Is Nothing Then _
         Error.CannotBeNothing Me, "Add", "TestClass"
     
@@ -124,12 +125,14 @@ Public Sub Add(ByVal TestClass As Object)
     If TypeOf TestClass Is ITest Then
         Set Test = TestClass
     Else
-        Set Test = Sim.NewTestFixture(TestClass)
+        Set Test = Sim.NewTestFixture(TestClass, Name)
     End If
     
     Set Test.Parent = Me
     mTests.Add Test
-End Sub
+    
+    Set Add = Me
+End Function
 
 Public Property Get TestCount() As Long
     Dim Test    As ITest
@@ -212,12 +215,12 @@ Friend Sub InitTestSuite(ByRef Name As String)
     mName = Name
 End Sub
 
-Friend Sub InitTestFixture(ByVal TestClass As Object)
+Friend Sub InitTestFixture(ByVal TestClass As Object, ByRef Name As String)
     If TestClass Is Nothing Then _
         Error.CannotBeNothing New TestFixture, "Init", "TestClass"
-        
+    
     Set mTestClass = TestClass
-    InitTestSuite TypeName(TestClass)
+    InitTestSuite IIf(Len(Name) > 0, Name, TypeName(TestClass))
     
     If TypeOf TestClass Is ITestFixture Then
         ManuallyBuildFixture

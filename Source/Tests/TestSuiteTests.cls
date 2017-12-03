@@ -93,6 +93,24 @@ Public Sub Add_WithTestClass_SetsParent()
     Debug.Assert Actual Is Suite
 End Sub
 
+Public Sub Add_WithNoName_UsesClassName()
+    Dim TestClass As New Fake1Test
+    Dim Suite As New TestSuite
+    
+    Suite.Add TestClass
+    
+    Debug.Assert Suite.Tests(0).Name = "Fake1Test"
+End Sub
+
+Public Sub Add_WithName_UsesSuppliedName()
+    Dim TestClass As New Fake1Test
+    Dim Suite As New TestSuite
+    
+    Suite.Add TestClass, "Override"
+    
+    Debug.Assert Suite.Tests(0).Name = "Override"
+End Sub
+
 Public Sub Termination_WhenCalled_SetsChildParentToNothing()
     Dim Parent As New TestSuite
     Dim Child As New TestSuite

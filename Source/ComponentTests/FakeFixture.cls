@@ -32,6 +32,10 @@ Private Function ITest_CountTestCases(ByVal Filter As ITestFilter) As Long
 
 End Function
 
+Private Property Get ITest_DisplayName() As String
+
+End Property
+
 Private Property Get ITest_Fixture() As Object
 
 End Property
