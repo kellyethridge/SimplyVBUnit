@@ -189,6 +189,9 @@ Private Sub Delete(ByRef This As UserEnumWrapper)
 End Sub
 
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   IEnumVariant
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IEnumVariant_Next(ByRef This As UserEnumWrapper, ByVal celt As Long, ByRef prgVar As Variant, ByVal pceltFetched As Long) As Long
     If This.UserEnum.MoveNext Then
         VariantCopyInd prgVar, This.UserEnum.Current

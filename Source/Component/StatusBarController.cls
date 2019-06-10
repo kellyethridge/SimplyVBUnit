@@ -38,6 +38,7 @@ Option Explicit
 
 Private mBar        As StatusBar
 Private mFailures   As Long
+Private mErrors     As Long
 Private mTestsRun   As Long
 
 Private WithEvents mListener As EventCastListener
@@ -53,6 +54,7 @@ Friend Sub Reset(ByVal TestCount As Long)
     mBar.Panels("Status").Text = "Running"
     mBar.Panels("TestCases").Text = "Test Cases: " & TestCount
     mBar.Panels("Failures").Text = "Failures: 0"
+    mBar.Panels("Errors").Text = "Errors: 0"
     mBar.Panels("TestsRun").Text = "Tests Run: 0"
     mBar.Panels("Time").Text = "Time: 0ms"
 End Sub
@@ -61,17 +63,21 @@ Private Sub mListener_RunFinished(ByVal Result As TestResult)
     mBar.Panels("Status").Text = "Tests Completed"
     mBar.Panels("TestsRun").Text = "Tests Run: " & mTestsRun
     mBar.Panels("Failures").Text = "Failures: " & mFailures
+    mBar.Panels("Errors").Text = "Errors: " & mErrors
     mBar.Panels("Time").Text = Result.Time & "ms"
 End Sub
 
 Private Sub mListener_RunStarted(ByVal Name As String, ByVal TestCount As Long)
     mFailures = 0
+    mErrors = 0
     mTestsRun = 0
 End Sub
 
 Private Sub mListener_TestCaseFinished(ByVal Result As TestResult)
     If Result.IsFailure Then
         mFailures = mFailures + 1
+    ElseIf Result.IsError Then
+        mErrors = mErrors + 1
     End If
     
     mTestsRun = mTestsRun + 1

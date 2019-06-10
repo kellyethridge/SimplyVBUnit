@@ -82,25 +82,39 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Helpers
+'   Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function SupportsEnumeration(ByVal Obj As Object) As Boolean
+    Dim Info    As InterfaceInfo
+    Dim Member  As MemberInfo
+    
     If Obj Is Nothing Then
         Exit Function
     End If
     
-    Dim Info As InterfaceInfo
-    Set Info = TLI.InterfaceInfoFromObject(Obj)
+    On Error GoTo Fallback
+    Set Info = tli.InterfaceInfoFromObject(Obj)
     
-    Dim Member As MemberInfo
     For Each Member In Info.Members
         If IsEnumerationMember(Member) Then
             SupportsEnumeration = True
             Exit Function
         End If
     Next
+    
+    Exit Function
+    
+Fallback:
+    SupportsEnumeration = SupportsEnumerationFallbackCheck(Obj)
 End Function
 
 Private Function IsEnumerationMember(ByVal Member As MemberInfo) As Boolean
     IsEnumerationMember = (Member.MemberId = ENUM_MEMBERID)
+End Function
+
+Private Function SupportsEnumerationFallbackCheck(ByVal Obj As Object) As Boolean
+    On Error GoTo Catch
+    tli.InvokeHook Obj, ENUM_MEMBERID, INVOKE_FUNC
+    SupportsEnumerationFallbackCheck = True
+Catch:
 End Function

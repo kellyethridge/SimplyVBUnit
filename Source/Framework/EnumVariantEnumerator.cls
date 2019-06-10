@@ -37,36 +37,59 @@ Attribute VB_Exposed = True
 Option Explicit
 Implements IEnumerator
 
-Private mObject     As Object
-Private mEnum       As IVBEnumVARIANT
-Private mCurrent    As Variant
+Private mObject         As Object
+Private mFallbackItems  As Collection
+Private mEnum           As IVBEnumVARIANT
+Private mCurrent        As Variant
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Friend Method
+'   Constructors
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Friend Sub Init(ByVal Obj As Object)
     If Obj Is Nothing Then _
         Error.CannotBeNothing Me, "Init", "Obj"
-    If Not IsEnumerable(Obj) Then _
-        Error.EnumerationNotSupported Me, "Init", "Obj"
-        
+    
     Set mObject = Obj
+    
+    On Error GoTo Fallback
     Set mEnum = TLI.InvokeHook(Obj, ENUM_MEMBERID, INVOKE_FUNC)
+    mEnum.Reset
+    Exit Sub
+    
+Fallback:
+    InitFallback Obj
+End Sub
+
+Private Sub InitFallback(ByVal Obj As Object)
+    Dim Value As Variant
+    
+    Set mFallbackItems = New Collection
+    
+    On Error GoTo Catch
+    For Each Value In Obj
+        mFallbackItems.Add Value
+    Next
+    
+    Set mEnum = TLI.InvokeHook(mFallbackItems, ENUM_MEMBERID, INVOKE_FUNC)
+    Exit Sub
+    
+Catch:
+    Error.EnumerationNotSupported Me, "Init", "Obj"
 End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IEnumerator Interface
+'   IEnumerator
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Property Get IEnumerator_Current() As Variant
-    VariantCopyInd IEnumerator_Current, mCurrent
+    VariantCopy IEnumerator_Current, mCurrent
 End Property
 
 Private Function IEnumerator_MoveNext() As Boolean
     Dim Count As Long
-    mEnum.VBNext 1, mCurrent, Count
     
+    mEnum.VBNext 1, mCurrent, Count
     IEnumerator_MoveNext = (Count = 1)
 End Function
 

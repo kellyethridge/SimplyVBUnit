@@ -211,7 +211,15 @@ Private Sub RunTestMethod(ByVal Result As TestResult, ByVal Listener As IEventLi
             
         Case Else
             If ExpectedThrows Is Nothing Then
-                Result.Error Info.Description, TestSite
+                Dim ErrorMessage As String
+                ErrorMessage = Info.Number
+                
+                If Len(Info.Source) > 0 Then
+                    ErrorMessage = ErrorMessage & ", " & Info.Source
+                End If
+                
+                ErrorMessage = ErrorMessage & ", " & Info.Description
+                Result.Error ErrorMessage, TestSite
                 Listener.UnhandledError Info
             ElseIf ExpectedThrows.Matches(Info) Then
                 Result.Success

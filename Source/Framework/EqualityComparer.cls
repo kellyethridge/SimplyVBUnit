@@ -159,14 +159,14 @@ Private Function EqualArrayBounds(ByRef X As Variant, ByRef Y As Variant) As Boo
 End Function
 
 Private Function EqualEnumerables(ByRef X As Variant, ByRef Y As Variant) As Boolean
-    Dim XEnumerator  As IEnumerator
-    Dim YEnumerator    As IEnumerator
+    Dim XEnumerator As IEnumerator
+    Dim YEnumerator As IEnumerator
     
     Set XEnumerator = GetEnumerator(X)
     Set YEnumerator = GetEnumerator(Y)
     
     Dim XHasMore As Boolean
-    Dim YHasMore   As Boolean
+    Dim YHasMore As Boolean
     
     Dim RetVal  As Boolean
     Dim Count   As Long

@@ -1,5 +1,10 @@
 ** SimplyVBUnit **
 
+version 5.0.1
+	* Asserting against a compiled object that is private is incorrectly handled.
+	* Added "Errors" panel to status bar in UI.
+	* Enhanced enumerable object detection for objects of private classes.
+
 version 4.1.6
     * Shortend display of strings parameter values in parameterized test names to 40 characters.
     * Ampersand was not being displayed in UI Runner error message because DrawText api needs it to be escaped.

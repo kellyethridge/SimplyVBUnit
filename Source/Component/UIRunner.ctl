@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Begin VB.UserControl UIRunner 
    ClientHeight    =   5130
    ClientLeft      =   0
@@ -350,11 +350,11 @@ Begin VB.UserControl UIRunner
       _ExtentY        =   661
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
-         NumPanels       =   5
+         NumPanels       =   6
          BeginProperty Panel1 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             AutoSize        =   1
             Bevel           =   0
-            Object.Width           =   5662
+            Object.Width           =   3096
             Key             =   "Status"
          EndProperty
          BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
@@ -367,6 +367,9 @@ Begin VB.UserControl UIRunner
             Key             =   "Failures"
          EndProperty
          BeginProperty Panel5 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
+            Key             =   "Errors"
+         EndProperty
+         BeginProperty Panel6 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Key             =   "Time"
          EndProperty
       EndProperty
@@ -463,20 +466,19 @@ Private mMouseDownDX            As Long
 Private mDragSplitter           As Boolean
 Private mSplitterLeftMargin     As Long
 Private mSplitterRightMargin    As Long
-
-Private mTests              As TestSuite
-Private mListeners          As New MultiCastListener
-Private mFilter             As ITestFilter
-Private mRunner             As TestRunner
-Private mTestTree           As TestTreeController
-Private mCategoryList       As CategoryListController
-Private mResultsTab         As ResultsTabController
-Private mProgress           As TestProgressController
-Private mStatus             As StatusBarController
-Private mResults            As TestResultCollector
-Private mDoEventsFrequency  As Long
-Private mTestsCompleted     As Long
-Private mTestComparer       As ITestComparer
+Private mTests                  As TestSuite
+Private mListeners              As New MultiCastListener
+Private mFilter                 As ITestFilter
+Private mRunner                 As TestRunner
+Private mTestTree               As TestTreeController
+Private mCategoryList           As CategoryListController
+Private mResultsTab             As ResultsTabController
+Private mProgress               As TestProgressController
+Private mStatus                 As StatusBarController
+Private mResults                As TestResultCollector
+Private mDoEventsFrequency      As Long
+Private mTestsCompleted         As Long
+Private mTestComparer           As ITestComparer
 
 
 Public Property Get Width() As Single
@@ -493,7 +495,7 @@ End Property
 
 Public Property Set Font(ByVal New_Font As Font)
     Set UserControl.Font = New_Font
-    Call PropertyChanged("Font")
+    PropertyChanged "Font"
 End Property
 
 Public Property Get SplitterPosition() As Long
@@ -503,20 +505,20 @@ End Property
 Public Property Let SplitterPosition(ByVal RHS As Long)
     picSplitter.Left = RHS
     Set mAnchor = Nothing
-    Call PositionControls
+    PositionControls
 End Property
 
 Public Sub AddListener(ByVal Listener As IEventListener)
-    Call mListeners.Add(Listener)
+    mListeners.Add Listener
 End Sub
 
 Public Sub AddTest(ByVal Fixture As Object)
     mTests.Add Fixture
-    Call mStatus.Reset(mTests.TestCount)
+    mStatus.Reset mTests.TestCount
 End Sub
 
 Public Sub Run()
-    Call cmdRun_Click
+    cmdRun_Click
 End Sub
 
 Public Sub SetFilter(ByVal Filter As ITestFilter)
@@ -531,25 +533,25 @@ Public Sub Init(ByVal Info As Object)
     Set ClientInfo = UI.NewClientInfo(Info)
     mSplitterLeftMargin = 205
     mSplitterRightMargin = 210
-    Call mConfig.Load(ClientInfo.Path & "\" & ClientInfo.EXEName & ".config")
+    mConfig.Load ClientInfo.Path & "\" & ClientInfo.EXEName & ".config"
 
     Set mTests = Sim.NewTestSuite(ClientInfo.EXEName)
     
     On Error GoTo errTrap
     Dim Item As Object
     For Each Item In modMain.Tests
-        Call mTests.Add(Item)
+        mTests.Add Item
     Next
 
     If mConfig.SortTests Then
         mTests.Sort mTestComparer
     End If
 
-    Call InitControllers
-    Call DisplayTabPages
-    Call InitApp
-    Call InitTitle
-    Call mStatus.Reset(mTests.TestCount)
+    InitControllers
+    DisplayTabPages
+    InitApp
+    InitTitle
+    mStatus.Reset mTests.TestCount
     Exit Sub
     
 errTrap:
@@ -574,11 +576,11 @@ End Sub
 Private Sub InitApp()
     Set mContainer = UserControl.Parent
     Set mProgress.Config = mConfig
-    Call RestoreFormConfiguration
-    Call mTestTree.RestoreTreeViewState(mConfig)
-    Call mCategoryList.LoadState(mConfig)
-    Call InitContextWriters
-    Call AddListener(mListener)
+    RestoreFormConfiguration
+    mTestTree.RestoreTreeViewState mConfig
+    mCategoryList.LoadState mConfig
+    InitContextWriters
+    AddListener mListener
 End Sub
 
 Private Sub InitTitle()
@@ -603,44 +605,45 @@ Private Sub PositionControls()
     
     If mLeftPanelContent Is Nothing Then
         Set mLeftPanelContent = New Anchor
-        Call mLeftPanelContent.Add(UserControl.tvwTests, ToAllSides)
-        Call mLeftPanelContent.Add(UserControl.tabSelections, ToAllSides)
-        Call mLeftPanelContent.Add(UserControl.lstCategories, ToAllSides)
-        Call mLeftPanelContent.Add(UserControl.chkSelectAll, ToLeft Or ToBottom)
+        mLeftPanelContent.Add UserControl.tvwTests, ToAllSides
+        mLeftPanelContent.Add UserControl.tabSelections, ToAllSides
+        mLeftPanelContent.Add UserControl.lstCategories, ToAllSides
+        mLeftPanelContent.Add UserControl.chkSelectAll, ToLeft Or ToBottom
     End If
-    Call mLeftPanelContent.ReAnchor
+    
+    mLeftPanelContent.ReAnchor
     
     If mRightPanelContent Is Nothing Then
         Set mRightPanelContent = New Anchor
-        Call mRightPanelContent.Add(UserControl.lstFailureOutput, ToAllSides)
-        Call mRightPanelContent.Add(UserControl.tabOutputs, ToAllSides)
-        Call mRightPanelContent.Add(UserControl.txtConsoleOutput, ToAllSides)
-        Call mRightPanelContent.Add(UserControl.txtLogOutput, ToAllSides)
-        Call mRightPanelContent.Add(UserControl.txtErrorsOutput, ToAllSides)
-        Call mRightPanelContent.Add(UserControl.tvwTestsNotRun, ToAllSides)
-        Call mRightPanelContent.Add(UserControl.framTestRunnerControls, ToLeft Or ToRight)
-        Call mRightPanelContent.Add(UserControl.barTestProgress, ToLeft Or ToRight)
-        Call mRightPanelContent.Add(UserControl.lblCurrentTest, ToLeft Or ToRight)
+        mRightPanelContent.Add UserControl.lstFailureOutput, ToAllSides
+        mRightPanelContent.Add UserControl.tabOutputs, ToAllSides
+        mRightPanelContent.Add UserControl.txtConsoleOutput, ToAllSides
+        mRightPanelContent.Add UserControl.txtLogOutput, ToAllSides
+        mRightPanelContent.Add UserControl.txtErrorsOutput, ToAllSides
+        mRightPanelContent.Add UserControl.tvwTestsNotRun, ToAllSides
+        mRightPanelContent.Add UserControl.framTestRunnerControls, ToLeft Or ToRight
+        mRightPanelContent.Add UserControl.barTestProgress, ToLeft Or ToRight
+        mRightPanelContent.Add UserControl.lblCurrentTest, ToLeft Or ToRight
     End If
-    Call mRightPanelContent.ReAnchor
+    
+    mRightPanelContent.ReAnchor
 
     If mAnchor Is Nothing Then
-        picLeftPanel.Width = picSplitter.Left - mSplitterLeftMargin
         Dim NewLeft As Long
         Dim NewWidth As Long
-
+    
+        picLeftPanel.Width = picSplitter.Left - mSplitterLeftMargin
         NewLeft = picSplitter.Left + mSplitterRightMargin
         NewWidth = UserControl.Width - picSplitter.Left - mSplitterRightMargin
-
-        Call picRightPanel.Move(NewLeft, picRightPanel.Top, NewWidth, picRightPanel.Height)
+        picRightPanel.Move NewLeft, picRightPanel.Top, NewWidth, picRightPanel.Height
         
         Set mAnchor = New Anchor
-        Call mAnchor.Add(picSplitter, ToTop Or ToBottom)
-        Call mAnchor.Add(picRightPanel, ToTop Or ToBottom Or ToRight Or ToLeft)
-        Call mAnchor.Add(picLeftPanel, ToTop Or ToBottom)
-        Call PositionControls
+        mAnchor.Add picSplitter, ToTop Or ToBottom
+        mAnchor.Add picRightPanel, ToTop Or ToBottom Or ToRight Or ToLeft
+        mAnchor.Add picLeftPanel, ToTop Or ToBottom
+        PositionControls
     Else
-        Call mAnchor.ReAnchor
+        mAnchor.ReAnchor
     End If
 End Sub
 
