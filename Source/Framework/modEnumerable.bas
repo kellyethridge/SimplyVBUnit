@@ -84,7 +84,7 @@ End Function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '   Helpers
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Private Function SupportsEnumeration(ByVal Obj As Object) As Boolean
+Private Function SupportsEnumeration(ByVal Obj As IUnknown) As Boolean
     Dim Info    As InterfaceInfo
     Dim Member  As MemberInfo
     
@@ -112,7 +112,9 @@ Private Function IsEnumerationMember(ByVal Member As MemberInfo) As Boolean
     IsEnumerationMember = (Member.MemberId = ENUM_MEMBERID)
 End Function
 
-Private Function SupportsEnumerationFallbackCheck(ByVal Obj As Object) As Boolean
+Private Function SupportsEnumerationFallbackCheck(ByVal Obj As IUnknown) As Boolean
+    Dim Value As Variant
+    
     On Error GoTo Catch
     tli.InvokeHook Obj, ENUM_MEMBERID, INVOKE_FUNC
     SupportsEnumerationFallbackCheck = True
