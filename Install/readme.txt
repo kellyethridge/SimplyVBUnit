@@ -1,5 +1,8 @@
 ** SimplyVBUnit **
 
+version 5.0.3
+	* Added equality support for userdefined types.
+	
 version 5.0.1
 	* Asserting against a compiled object that is private is incorrectly handled.
 	* Added "Errors" panel to status bar in UI.

@@ -169,9 +169,6 @@ Public Sub Resolve_WhenCalled_ReturnsSelf()
     Assert.IsTrue Actual Is c
 End Sub
 
-
-
-
 Private Function MakeMissing(Optional ByVal Value As Variant) As Variant
     MakeMissing = Value
 End Function

@@ -208,28 +208,24 @@ Private Function EqualValues(ByRef X As Variant, ByRef Y As Variant) As Boolean
         Select Case VarType(X)
             Case vbString
                 Result = EqualStrings(X, Y)
-                
             Case vbLong, vbInteger, vbByte, vbDouble, vbSingle, vbCurrency, vbDecimal
                 Result = EqualNumbers(X, Y)
-                
             Case vbObject, vbDataObject
                 Result = EqualObjects(X, Y)
-                
             Case vbBoolean
                 Result = EqualBooleans(X, Y)
-                
             Case vbDate
                 Result = EqualDates(X, Y)
-            
+            Case vbUserDefinedType
+                If VarType(Y) = vbUserDefinedType Then
+                    Result = EqualUdt(X, Y)
+                End If
             Case vbEmpty
                 Result = IsEmpty(Y)
-                
             Case vbNull
                 Result = IsNull(Y)
-                
             Case vbError
                 Result = (IsMissing(X) And IsMissing(Y))
-                
         End Select
     End If
     
@@ -306,6 +302,56 @@ Private Function EqualDates(ByRef X As Variant, ByRef Y As Variant) As Boolean
         
         EqualDates = (Difference <= Tolerance)
     End If
+End Function
+
+Private Function EqualUdt(ByRef ObjA As Variant, ByRef ObjB As Variant) As Boolean
+    Const VARIANTRECORD_OFFSET  As Long = 12
+    Const VARIANTDATA_OFFSET    As Long = 8
+    Dim ObjARecord As IRecordInfo
+    Dim ObjBRecord As IRecordInfo
+    
+    ObjectPtr(ObjARecord) = MemLong(VarPtr(ObjA) + VARIANTRECORD_OFFSET)
+    ObjectPtr(ObjBRecord) = MemLong(VarPtr(ObjB) + VARIANTRECORD_OFFSET)
+    
+    On Error GoTo Catch
+    
+    If ObjARecord.IsMatchingType(ObjBRecord) Then
+        Dim FieldNameCount  As Long
+
+        ObjARecord.GetFieldNames FieldNameCount, ByVal vbNullPtr
+        
+        If FieldNameCount > 0 Then
+            Dim FieldNames()    As String
+            Dim ObjAPtr         As Long
+            Dim ObjBPtr         As Long
+            
+            ReDim FieldNames(0 To FieldNameCount - 1)
+            ObjARecord.GetFieldNames FieldNameCount, FieldNames(0)
+            ObjAPtr = MemLong(VarPtr(ObjA) + VARIANTDATA_OFFSET)
+            ObjBPtr = MemLong(VarPtr(ObjB) + VARIANTDATA_OFFSET)
+                                    
+            Dim i As Long
+            For i = 0 To FieldNameCount - 1
+                If Not Equals(ObjARecord.GetField(ObjAPtr, FieldNames(i)), ObjARecord.GetField(ObjBPtr, FieldNames(i))) Then
+                    GoSub Finally
+                    Exit Function
+                End If
+            Next
+        End If
+        
+        EqualUdt = True
+    End If
+    
+    GoSub Finally
+    Exit Function
+    
+Catch:
+    GoSub Finally
+    Err.Raise Err.Number, Err.Source, Err.Description
+Finally:
+    ObjectPtr(ObjARecord) = vbNullPtr
+    ObjectPtr(ObjBRecord) = vbNullPtr
+    Return
 End Function
 
 

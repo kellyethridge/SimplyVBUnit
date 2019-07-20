@@ -125,6 +125,9 @@ Public Function Run() As Long
     ReDim Long2(0 To 1, 0 To 1, 0 To 1)
     RunTest Equals_WithDefaultSettings_ReturnsExpected(Long1, Long2, False)
     RunTest Equals_WithDefaultSettings_ReturnsExpected(Long2, Long2, True)
+    RunTest Equals_WithDefaultSettings_ReturnsExpected(NewFakeStructure(1, "hi"), NewFakeStructure(2, "hi"), False)
+    RunTest Equals_WithDefaultSettings_ReturnsExpected(NewFakeStructure(1, "hi"), NewFakeStructure(1, "bye"), False)
+    RunTest Equals_WithDefaultSettings_ReturnsExpected(NewFakeStructure(1, "hi"), NewFakeStructure(1, "hi"), True)
     
     RunTest Equals_WithStrictSettings_ReturnsExpected(0, 0, True)
     RunTest Equals_WithStrictSettings_ReturnsExpected(0&, 0, False)

@@ -1,62 +1,75 @@
-//
-// SimplyVBUnit Type Library
-//
-
-[ helpstring("SimplyVBUnit Type Library 4.0"), uuid(923925AC-1013-4d27-9FB1-4FF0B3B47BA2), lcid(0x00000000), version(4.0)]
+[ 
+    helpstring("SimplyVBUnit 5.0 Type Library"), 
+    uuid(3E4F7CEC-C640-49f1-80D9-8DD42421CB1B), 
+    lcid(0x00000000), 
+    version(5.0)
+]
 library SimplyVBUnitType {
-importlib("stdole2.tlb"); importlib("msvbvm60.dll");
+    importlib("stdole2.tlb"); 
+    importlib("msvbvm60.dll");
 
-        typedef unsigned char byte;
+    typedef unsigned char byte;
+    typedef long  DWORD;
+    typedef short WORD;
+    typedef long  LPVOID;
+    typedef currency curr;
+    typedef short Char;
+    typedef DWORD HREFTYPE;
 
-        typedef struct VBGUID 
-        {
-                int   Data1;
-                short Data2;
-                short Data3;
-                byte  Data4[8];
-        } VBGUID;
+    typedef enum BOOL 
+    {
+        BOOL_FALSE  = 0,
+        BOOL_TRUE   = 1
+    } BOOL;
 
-        typedef enum DateInterval {
-                OfSeconds = 0,
-                OfMinutes = 1,
-                OfHours = 2,
-                OfDays = 3,
-                OfMonths = 4,
-                OfYears = 5,
-                OfWeeks = 6,
-                OfQuarters = 7,
-                OfDayOfYears = 8
-        } DateInterval;
+    typedef struct VBGUID 
+    {
+        int   Data1;
+        short Data2;
+        short Data3;
+        byte  Data4[8];
+    } VBGUID;
 
-        typedef struct SafeArray1d
-        {
-                short   cDims;
-                short   fFeatures;
-                long    cbElements;
-                long    cLocks;
-                long    pvData;
-                long    cElements;
-                long    lLbound;
-        } SafeArray1d;
+    typedef enum DateInterval {
+        OfSeconds = 0,
+        OfMinutes = 1,
+        OfHours = 2,
+        OfDays = 3,
+        OfMonths = 4,
+        OfYears = 5,
+        OfWeeks = 6,
+        OfQuarters = 7,
+        OfDayOfYears = 8
+    } DateInterval;
 
-        typedef enum ToleranceMode
-        {
-                NoneMode = 0,
-                LinearMode = 1,
-                PercentMode=2
-        } ToleranceMode;
+    typedef struct SafeArray1d
+    {
+        short   cDims;
+        short   fFeatures;
+        long    cbElements;
+        long    cLocks;
+        long    pvData;
+        long    cElements;
+        long    lLbound;
+    } SafeArray1d;
+
+    typedef enum ToleranceMode
+    {
+        NoneMode = 0,
+        LinearMode = 1,
+        PercentMode=2
+    } ToleranceMode;
 
     [dllname("Constants")]
     module Constants {
-    const long vbNullPtr          = 0x00000000;
-    const long ENUM_FINISHED      = 0x00000001;
-    const long E_NOINTERFACE      = 0x80004002;
-    const long E_OUTOFMEMORY      = 0x00000007;
-    const long PVDATA_OFFSET      = 0x0000000C;
-    const long VT_BYREF           = 0x00004000;
-    const long VARIANTDATA_OFFSET = 0x00000008;
+        const long vbNullPtr          = 0x00000000;
+        const long ENUM_FINISHED      = 0x00000001;
+        const long E_NOINTERFACE      = 0x80004002;
+        const long E_OUTOFMEMORY      = 0x00000007;
+        const long PVDATA_OFFSET      = 0x0000000C;
+        const long VT_BYREF           = 0x00004000;
+        const long VARIANTDATA_OFFSET = 0x00000008;
     }
-
 
     [
         dllname("kernel32.dll"),
@@ -73,7 +86,7 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
     [
         dllname("oleaut32.dll"),
         helpstring("Access to API functions within the Oleaut32.dll system file.")
-    ]
+    ]    
     module OleAut32
     {
         [entry("VariantCopyInd")]        HRESULT VariantCopyInd([in] VARIANT * pvarDest, [in] void * pvarSrc);
@@ -108,20 +121,20 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
         [propget, entry("GetMem2")] HRESULT VariantType([in] VARIANT * Source, [out, retval] short * RetVal);
         [propput, entry("PutMem2")] HRESULT VariantType([in] VARIANT * Source, [in] short RHS);
         [propget, entry("GetMem4")] HRESULT StringPtr([in] BSTR * Source, [out, retval] long * RetVal);
-	[propput, entry("PutMem4")] HRESULT StringPtr([in] BSTR * Source, [in] long Value);
-	[propget, entry("GetMem4")] HRESULT SAPtrLong([in] SAFEARRAY(long) * Array, [out, retval] long * RetVal);
-	[propput, entry("PutMem4")] HRESULT SAPtrLong([in] SAFEARRAY(long) * Array, [in] long RHS);
+    	[propput, entry("PutMem4")] HRESULT StringPtr([in] BSTR * Source, [in] long Value);
+    	[propget, entry("GetMem4")] HRESULT SAPtrLong([in] SAFEARRAY(long) * Array, [out, retval] long * RetVal);
+    	[propput, entry("PutMem4")] HRESULT SAPtrLong([in] SAFEARRAY(long) * Array, [in] long RHS);
     }
 
-        // Forward definitions
-        interface IBasicExpression;
-        interface IEqualityExpression;
-        interface ITolerance;
-        interface IOrderedConstraint;
-        interface IComparisonConstraint;
-        interface ITextConstraint;
-        interface IPathConstraint;
-        interface ICollectionContainsConstraint;
+    // Forward definitions
+    interface IBasicExpression;
+    interface IEqualityExpression;
+    interface ITolerance;
+    interface IOrderedConstraint;
+    interface IComparisonConstraint;
+    interface ITextConstraint;
+    interface IPathConstraint;
+    interface ICollectionContainsConstraint;
 
 	[uuid(00020404-0000-0000-C000-000000000046), odl]
 	interface IVBEnumVARIANT : IUnknown
@@ -130,23 +143,23 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
                 HRESULT Skip([in] int celt);
                 HRESULT Reset();
                 HRESULT Clone([in, out] IVBEnumVARIANT ** RetVal);
-	}
+	};
 
 	[uuid(BE21FDD8-15D9-423b-AAD9-3A094532C4D2), odl]
 	interface IEqualityComparer : IDispatch
 	{
 		HRESULT Equals([in] VARIANT * X, [in] VARIANT * Y, [out, retval] boolean * RetVal);
-	}
+	};
 
 	[uuid(814B5074-D094-4031-B744-592F90F8BC5E), odl]
-        interface IComparer : IDispatch
-        {
-                HRESULT Compare([in] VARIANT * X, [in] VARIANT * Y, [out, retval] long * RetVal);
-        }
+    interface IComparer : IDispatch
+    {
+        HRESULT Compare([in] VARIANT * X, [in] VARIANT * Y, [out, retval] long * RetVal);
+    };
 
-        [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
-        interface IConstraintExpression : IDispatch
-        {
+    [uuid(BA47B595-FA90-459e-A107-C076FA915B3B), odl]
+    interface IConstraintExpression : IDispatch
+    {
 		HRESULT EqualTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
 		HRESULT True([out, retval] IBasicExpression ** RetVal);
 		HRESULT False([out, retval] IBasicExpression ** RetVal);
@@ -161,122 +174,122 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 		HRESULT AtLeast([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 		HRESULT AtMost([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
-                HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IComparisonConstraint ** RetVal);
-                HRESULT Empty([out, retval] IBasicExpression ** RetVal);
-                HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
-                HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
-                HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
-                HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
-                HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
-                HRESULT StringContaining([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
-                HRESULT StringStarting([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
-                HRESULT StringEnding([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
-                HRESULT StringMatching([in] BSTR * Pattern, [out, retval] ITextConstraint ** RetVal);
-                HRESULT SamePath([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
-                HRESULT SamePathOrUnder([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
-                HRESULT Persistable([out, retval] IBasicExpression ** RetVal);
-                HRESULT All([out, retval] IConstraintExpression ** RetVal);
-                HRESULT Some([out, retval] IConstraintExpression ** RetVal);
-                HRESULT No([out, retval] IConstraintExpression ** RetVal);
-                HRESULT None([out, retval] IConstraintExpression ** RetVal);
-                HRESULT Member([in] VARIANT * Expected, [out, retval] ICollectionContainsConstraint ** RetVal);
-                HRESULT LP([out, retval] IConstraintExpression ** RetVal);
-                HRESULT RP([out, retval] IConstraintExpression ** RetVal);
-                HRESULT Positive([out, retval] IBasicExpression ** RetVal);
-                HRESULT Negative([out, retval] IBasicExpression ** RetVal);
-	}
+        HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IComparisonConstraint ** RetVal);
+        HRESULT Empty([out, retval] IBasicExpression ** RetVal);
+        HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
+        HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
+        HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
+        HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
+        HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
+        HRESULT StringContaining([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+        HRESULT StringStarting([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+        HRESULT StringEnding([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+        HRESULT StringMatching([in] BSTR * Pattern, [out, retval] ITextConstraint ** RetVal);
+        HRESULT SamePath([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
+        HRESULT SamePathOrUnder([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
+        HRESULT Persistable([out, retval] IBasicExpression ** RetVal);
+        HRESULT All([out, retval] IConstraintExpression ** RetVal);
+        HRESULT Some([out, retval] IConstraintExpression ** RetVal);
+        HRESULT No([out, retval] IConstraintExpression ** RetVal);
+        HRESULT None([out, retval] IConstraintExpression ** RetVal);
+        HRESULT Member([in] VARIANT * Expected, [out, retval] ICollectionContainsConstraint ** RetVal);
+        HRESULT LP([out, retval] IConstraintExpression ** RetVal);
+        HRESULT RP([out, retval] IConstraintExpression ** RetVal);
+        HRESULT Positive([out, retval] IBasicExpression ** RetVal);
+        HRESULT Negative([out, retval] IBasicExpression ** RetVal);
+	};
 
 	[uuid(F4B39A96-8941-4e8b-BF79-C45431E05338), odl]
 	interface IBasicExpression : IDispatch
 	{
 		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
 		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-	}
+	};
 
 	[uuid(E2FC6882-7866-4a26-BBC5-6796640585D1), odl]
-        interface ITextConstraint : IDispatch
-        {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-                HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
-        }
+    interface ITextConstraint : IDispatch
+    {
+        HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+        HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+        HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
+    };
 
-        [uuid(1C30E2C7-03F1-4ea6-BF7F-09A3284754BB), odl]
-        interface IOrderedConstraint : IDispatch
-        {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-		HRESULT Using([in] IComparer * Comparer, [out, retval] IOrderedConstraint ** RetVal);
-                HRESULT IgnoreCase([out, retval] IOrderedConstraint ** RetVal);
-                HRESULT Descending([out, retval] IOrderedConstraint ** RetVal);
-		HRESULT DateInterval([in] DateInterval Interval, [out, retval] IBasicExpression ** RetVal);
-        }
+    [uuid(1C30E2C7-03F1-4ea6-BF7F-09A3284754BB), odl]
+    interface IOrderedConstraint : IDispatch
+    {
+        HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+        HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+        HRESULT Using([in] IComparer * Comparer, [out, retval] IOrderedConstraint ** RetVal);
+        HRESULT IgnoreCase([out, retval] IOrderedConstraint ** RetVal);
+        HRESULT Descending([out, retval] IOrderedConstraint ** RetVal);
+    	HRESULT DateInterval([in] DateInterval Interval, [out, retval] IBasicExpression ** RetVal);
+    };
 
-        [uuid(4724265D-5842-43c2-954F-5CC7F532F442), odl]
-        interface IPathConstraint : IDispatch
-        {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-                HRESULT RespectCase([out, retval] IBasicExpression ** RetVal);
-        }
+    [uuid(4724265D-5842-43c2-954F-5CC7F532F442), odl]
+    interface IPathConstraint : IDispatch
+    {
+    	HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+    	HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+        HRESULT RespectCase([out, retval] IBasicExpression ** RetVal);
+    };
 
 	[uuid(650F33C3-9EFC-4f17-96DF-2D98A3C218C9), odl]
 	interface IToleranceUnits : IDispatch
 	{
-                HRESULT Years([out, retval] IEqualityExpression ** RetVal);
-                HRESULT Quarters([out, retval] IEqualityExpression ** RetVal);
-                HRESULT Months([out, retval] IEqualityExpression ** RetVal);
-                HRESULT Weeks([out, retval] IEqualityExpression ** RetVal);
+        HRESULT Years([out, retval] IEqualityExpression ** RetVal);
+        HRESULT Quarters([out, retval] IEqualityExpression ** RetVal);
+        HRESULT Months([out, retval] IEqualityExpression ** RetVal);
+        HRESULT Weeks([out, retval] IEqualityExpression ** RetVal);
 		HRESULT Days([out, retval] IEqualityExpression ** RetVal);
 		HRESULT Hours([out, retval] IEqualityExpression ** RetVal);
 		HRESULT Minutes([out, retval] IEqualityExpression ** RetVal);
 		HRESULT Seconds([out, retval] IEqualityExpression ** RetVal);
 		HRESULT TotalDays([out, retval] IEqualityExpression ** RetVal);
 		HRESULT TotalHours([out, retval] IEqualityExpression ** RetVal);
-                HRESULT TotalMinutes([out, retval] IEqualityExpression ** RetVal);
-                HRESULT TotalSeconds([out, retval] IEqualityExpression ** RetVal);
-                HRESULT Percent([out, retval] IEqualityExpression ** RetVal);
-	}
+        HRESULT TotalMinutes([out, retval] IEqualityExpression ** RetVal);
+        HRESULT TotalSeconds([out, retval] IEqualityExpression ** RetVal);
+        HRESULT Percent([out, retval] IEqualityExpression ** RetVal);
+	};
 	
 	[uuid(C294ABED-E94B-46fd-83CA-CB146D9D4DB3), odl]
-        interface ITolerance : IDispatch
-        {
-                [propget] HRESULT Amount([out, retval] VARIANT * RetVal);
-                [propget] HRESULT Mode([out, retval] ToleranceMode * RetVal);
-                [propget] HRESULT Interval([out, retval] BSTR * RetVal);
-        }
+    interface ITolerance : IDispatch
+    {
+        [propget] HRESULT Amount([out, retval] VARIANT * RetVal);
+        [propget] HRESULT Mode([out, retval] ToleranceMode * RetVal);
+        [propget] HRESULT Interval([out, retval] BSTR * RetVal);
+    };
 
-        [uuid(7A36580F-B566-4f95-BE6D-35B52E61BA07), odl]
-        interface IEqualityExpression : IDispatch
-        {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-		HRESULT IgnoreCase([out, retval] IEqualityExpression ** RetVal);
-		HRESULT Within([in] VARIANT Tolerance, [out, retval] IToleranceUnits ** RetVal);
-		HRESULT AsCollection([out, retval] IEqualityExpression ** RetVal);
-		HRESULT Using([in] IEqualityComparer * Comparer, [out, retval] IEqualityExpression ** RetVal);
-		HRESULT Strict([out, retval] IEqualityExpression ** RetVal);
-		HRESULT NoClip([out, retval] IEqualityExpression ** RetVal);
-        }
+    [uuid(7A36580F-B566-4f95-BE6D-35B52E61BA07), odl]
+    interface IEqualityExpression : IDispatch
+    {
+    	HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+    	HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+    	HRESULT IgnoreCase([out, retval] IEqualityExpression ** RetVal);
+    	HRESULT Within([in] VARIANT Tolerance, [out, retval] IToleranceUnits ** RetVal);
+    	HRESULT AsCollection([out, retval] IEqualityExpression ** RetVal);
+    	HRESULT Using([in] IEqualityComparer * Comparer, [out, retval] IEqualityExpression ** RetVal);
+    	HRESULT Strict([out, retval] IEqualityExpression ** RetVal);
+    	HRESULT NoClip([out, retval] IEqualityExpression ** RetVal);
+    };
 
-        [uuid(50CA1561-5124-4edc-B588-E89268BC9976), odl]
-        interface IComparisonConstraint : IDispatch
-        {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-		HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
-		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
-		HRESULT DateInterval([in] DateInterval Interval, [out, retval] IBasicExpression ** RetVal);
-        }
+    [uuid(50CA1561-5124-4edc-B588-E89268BC9976), odl]
+    interface IComparisonConstraint : IDispatch
+    {
+    	HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+    	HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+    	HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
+    	HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
+    	HRESULT DateInterval([in] DateInterval Interval, [out, retval] IBasicExpression ** RetVal);
+    };
 
-        [uuid(8F6CB23F-4805-48f3-834B-67E11CA0E68F), odl]
-        interface ICollectionContainsConstraint : IDispatch
-        {
-		HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
-		HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
-		HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
-		HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
-        }
+    [uuid(8F6CB23F-4805-48f3-834B-67E11CA0E68F), odl]
+    interface ICollectionContainsConstraint : IDispatch
+    {
+    	HRESULT AndAlso([out, retval] IConstraintExpression ** RetVal);
+    	HRESULT OrElse([out, retval] IConstraintExpression ** RetVal);
+    	HRESULT IgnoreCase([out, retval] IBasicExpression ** RetVal);
+    	HRESULT Using([in] IComparer * Comparer, [out, retval] IBasicExpression ** RetVal);
+    };
 
 	[uuid(0331F242-579F-4210-9822-39782E51E0BF), odl]
 	interface IzSyntaxHelper : IDispatch
@@ -295,24 +308,68 @@ importlib("stdole2.tlb"); importlib("msvbvm60.dll");
 		HRESULT GreaterThanOrEqualTo([in] VARIANT * Expected, [out, retval] IComparisonConstraint ** RetVal);
 		HRESULT AtLeast([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
 		HRESULT AtMost([in] VARIANT * Expected, [out, retval] IBasicExpression ** RetVal);
-                HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IComparisonConstraint ** RetVal);
-                HRESULT Empty([out, retval] IBasicExpression ** RetVal);
-                HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
-                HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
-                HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
-                HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
-                HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
-                HRESULT StringContaining([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
-                HRESULT StringStarting([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
-                HRESULT StringEnding([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
-                HRESULT StringMatching([in] BSTR * Pattern, [out, retval] ITextConstraint ** RetVal);
-                HRESULT SamePath([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
-                HRESULT SamePathOrUnder([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
-                HRESULT Persistable([out, retval] IBasicExpression ** RetVal);
-                HRESULT All([out, retval] IConstraintExpression ** RetVal);
-                HRESULT LP([out, retval] IConstraintExpression ** RetVal);
-                HRESULT Positive([out, retval] IBasicExpression ** RetVal);
-                HRESULT Negative([out, retval] IBasicExpression ** RetVal);
-	}
-}
+        HRESULT InRange([in] VARIANT * FromValue, [in] VARIANT * ToValue, [out, retval] IComparisonConstraint ** RetVal);
+        HRESULT Empty([out, retval] IBasicExpression ** RetVal);
+        HRESULT SameAs([in] IDispatch * Expected, [out, retval] IBasicExpression ** RetVal);
+        HRESULT Unique([out, retval] IEqualityExpression ** RetVal);
+        HRESULT EquivalentTo([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
+        HRESULT SubsetOf([in] VARIANT * Expected, [out, retval] IEqualityExpression ** RetVal);
+        HRESULT Ordered([out, retval] IOrderedConstraint ** RetVal);
+        HRESULT StringContaining([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+        HRESULT StringStarting([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+        HRESULT StringEnding([in] BSTR * Expected, [out, retval] ITextConstraint ** RetVal);
+        HRESULT StringMatching([in] BSTR * Pattern, [out, retval] ITextConstraint ** RetVal);
+        HRESULT SamePath([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
+        HRESULT SamePathOrUnder([in] BSTR * Expected, [out, retval] IPathConstraint ** RetVal);
+        HRESULT Persistable([out, retval] IBasicExpression ** RetVal);
+        HRESULT All([out, retval] IConstraintExpression ** RetVal);
+        HRESULT LP([out, retval] IConstraintExpression ** RetVal);
+        HRESULT Positive([out, retval] IBasicExpression ** RetVal);
+        HRESULT Negative([out, retval] IBasicExpression ** RetVal);
+	};
 
+    [uuid(00020401-0000-0000-C000-000000000046), odl]
+    interface ITypeInfo : IUnknown
+    {
+        HRESULT GetTypeAttr ([in] long * ppTypeAttr);
+        HRESULT GetTypeComp ([out] long **ppTComp);
+        HRESULT GetFuncDesc ([in] long index,[out] long **ppFuncDesc);
+        HRESULT GetVarDesc ([in] long index,[in] long * ppVarDesc);
+        HRESULT GetNames ([in] long memid,[out] BSTR *rgBstrNames,[in] long cMaxNames,[out] long *pcNames);
+        HRESULT GetRefTypeOfImplType ([in] long index,[out] long *pRefType);
+        HRESULT GetImplTypeFlags ([in] long index,[out] INT *pImplTypeFlags);
+        HRESULT GetIDsOfNames ([in] long *rgszNames,[in] long cNames,[out] long *pMemId);
+        HRESULT Invoke ([in] long pvInstance,[in] long memid,[in] WORD wFlags,[in, out] long *pDispParams,[out] VARIANT *pVarResult,[out] long *pExcepInfo,[out] long *puArgErr);
+        HRESULT GetDocumentation ([in] long memid,[out] BSTR *pBstrName,[out] BSTR *pBstrDocString,[out] DWORD *pdwHelpContext,[out] BSTR *pBstrHelpFile);
+        HRESULT GetDllEntry ([in] long memid,[in] long invKind,[out] BSTR *pBstrDllName,[out] BSTR *pBstrName,[out] WORD *pwOrdinal);
+        HRESULT GetRefTypeInfo ([in] long hRefType,[out] ITypeInfo **ppTInfo);
+        HRESULT AddressOfMember ([in] long memid,[in] long invKind,[out] void *ppv);
+        HRESULT CreateInstance ([in] IUnknown *pUnkOuter,[in] long riid,[out] void *ppvObj);
+        HRESULT GetMops ([in] long memid,[out] BSTR *pBstrMops);
+        HRESULT GetContainingTypeLib ([out] long **ppTLib,[out] long *pIndex);
+        void ReleaseTypeAttr ([in] long pTypeAttr);
+        void ReleaseFuncDesc ([in] long pFuncDesc);
+        void ReleaseVarDesc ([in] long pVarDesc);
+    };
+
+    [uuid(55A2F2D0-8919-11D0-818F-00A0C90FFFC3), odl]
+    interface IRecordInfo : IUnknown
+    {
+        HRESULT RecordInit([in] long pvNew);
+        HRESULT RecordClear([in] long pvExisting);
+        HRESULT RecordCopy([in] long pvExisting, [in] long pvNew);
+        HRESULT GetGuid([out, retval] VBGUID * RetVal);
+        HRESULT GetName([out, retval] BSTR * RetVal);
+        HRESULT GetSize([out, retval] long * RetVal);
+        HRESULT GetTypeInfo([out, retval] ITypeInfo ** RetVal);
+        HRESULT GetField([in] long pvData, [in] LPWSTR szFieldName, [out, retval] VARIANT * RetVal);
+        HRESULT GetFieldNoCopy([in] long pvData, [in] LPWSTR szFieldName, [in] VARIANT * pvarField, [in] long * ppvDataCArray);
+        HRESULT PutField([in] long wFlags, [in] long pvData, [in] LPWSTR szFieldName, [in] VARIANT * pvarField);
+        HRESULT PutFieldNoCopy([in] long wFlags, [in] long pvData, [in] LPWSTR szFieldName, [in] VARIANT * pvarField);
+        HRESULT GetFieldNames([in] long * pcNames, [in] void * rgBstrNames);
+        BOOL IsMatchingType([in] IRecordInfo * pRecordInfo);
+        long RecordCreate();
+        HRESULT RecordCreateCopy([in] long * pvSource, [out, retval] long * RetVal);
+        HRESULT RecordDestroy([in] long pvRecord);
+    };
+};

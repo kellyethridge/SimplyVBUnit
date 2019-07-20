@@ -151,9 +151,8 @@ Public Sub Run_WithUnknownErrorTest_ReturnsErrorTestResult2()
     
     Dim Actual As String
     Actual = Result.Message
-    Assert.IsTrue Actual = "unknown error", "Wrong error message."
+    Assert.IsTrue Actual = "1, unknown error", "Wrong error message. was '" & Actual & "'"
 End Sub
-
 
 Public Sub Run_WithSetupDefined_RunsSetup()
     Dim TestClass As New Mock2TestsWithSetup
