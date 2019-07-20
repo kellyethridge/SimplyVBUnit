@@ -13,12 +13,22 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Public Type FakeStructure
+Public Type SimpleType
     Value1 As Long
     Value2 As String
 End Type
 
-Public Function NewFakeStructure(ByVal Value1 As Long, ByVal Value2 As String) As FakeStructure
-    NewFakeStructure.Value1 = Value1
-    NewFakeStructure.Value2 = Value2
+Public Type ComplexType
+    Value1 As Long
+    Simple1 As SimpleType
+End Type
+
+Public Function NewSimpleType(ByVal Value1 As Long, ByVal Value2 As String) As SimpleType
+    NewSimpleType.Value1 = Value1
+    NewSimpleType.Value2 = Value2
+End Function
+
+Public Function NewComplexType(ByVal Value1 As Long, ByRef Simple1 As SimpleType) As ComplexType
+    NewComplexType.Value1 = Value1
+    NewComplexType.Simple1 = Simple1
 End Function

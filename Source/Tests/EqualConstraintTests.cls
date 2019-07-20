@@ -118,6 +118,25 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
                        "  Expected: 1" & vbCrLf & _
                        "  But was : 2" & vbCrLf
             Test.Use NewCollection(1, 2, 3), Array(2, 2), Expected
+            
+            Expected = "  Expected type <SimpleType>, but was type <ComplexType>" & vbCrLf
+            Test.Use NewSimpleType(1, "hi"), NewComplexType(1, NewSimpleType(1, "hi")), Expected
+            Expected = "  Expected type <SimpleType>, but was type <String>" & vbCrLf
+            Test.Use NewSimpleType(1, "hi"), "abc", Expected
+            Expected = "  Expected type <String>, but was type <SimpleType>" & vbCrLf
+            Test.Use "abc", NewSimpleType(1, "hi"), Expected
+            
+            Expected = "type field -> SimpleType.Value1" & vbCrLf & _
+                       "  Expected: 1" & vbCrLf & _
+                       "  but was : 2" & vbCrLf
+            Test.Use NewSimpleType(1, "hi"), NewSimpleType(2, "hi"), Expected
+            
+            Expected = "type field -> ComplexType.Simple1.Value2" & vbCrLf & _
+                       "  Expected string length 2 but was 3. Strings differ at index 1." & vbCrLf & _
+                       "  Expected: ""hi""" & vbCrLf & _
+                       "  But was : ""bye""" & vbCrLf & _
+                       "  -----------^" & vbCrLf
+            Test.Use NewComplexType(1, NewSimpleType(1, "hi")), NewComplexType(1, NewSimpleType(1, "bye")), Expected
     End Select
     
 End Sub
@@ -168,6 +187,8 @@ Public Sub Resolve_WhenCalled_ReturnsSelf()
     
     Assert.IsTrue Actual Is c
 End Sub
+
+
 
 Private Function MakeMissing(Optional ByVal Value As Variant) As Variant
     MakeMissing = Value

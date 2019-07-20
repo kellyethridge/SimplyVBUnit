@@ -169,17 +169,17 @@ Private Function SetTolerance(ByVal Tolerance As Tolerance) As EqualConstraint
     Set SetTolerance = Me
 End Function
 
-Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter)
+Private Sub DisplayStringDifferences(ByVal Writer As TextMessageWriter, ByRef Expected As Variant, ByRef Actual As Variant)
     Dim MismatchIndex As Long
-    MismatchIndex = MsgUtils.FindMismatchIndex(CStr(mExpected), CStr(mActual), mComparer.IgnoreCase)
+    MismatchIndex = MsgUtils.FindMismatchIndex(CStr(Expected), CStr(Actual), mComparer.IgnoreCase)
     
-    If Len(mExpected) = Len(mActual) Then
-        Writer.WriteLine MSG_STRINGSDIFFERBYINDEX, Len(mExpected), MismatchIndex
+    If Len(Expected) = Len(Actual) Then
+        Writer.WriteLine MSG_STRINGSDIFFERBYINDEX, Len(Expected), MismatchIndex
     Else
-        Writer.WriteLine MSG_STRINGSDIFFERBYLENGTHANDINDEX, Len(mExpected), Len(mActual), MismatchIndex
+        Writer.WriteLine MSG_STRINGSDIFFERBYLENGTHANDINDEX, Len(Expected), Len(Actual), MismatchIndex
     End If
     
-    Writer.DisplayStringDifferences CStr(mExpected), CStr(mActual), MismatchIndex, mComparer.IgnoreCase, mClipping
+    Writer.DisplayStringDifferences CStr(Expected), CStr(Actual), MismatchIndex, mComparer.IgnoreCase, mClipping
 End Sub
 
 Private Sub DisplayCollectionDifferences(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Writer As TextMessageWriter, Optional ByVal Indent As Long)
@@ -308,9 +308,74 @@ Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
     If IsEnumerable(mExpected) And IsEnumerable(mActual) Then
         DisplayCollectionDifferences mExpected, mActual, Writer, 0
     ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
-        DisplayStringDifferences Writer
+        DisplayStringDifferences Writer, mExpected, mActual
+    ElseIf VarType(mExpected) = vbUserDefinedType Then
+        WriteUDTMessage Writer
+    ElseIf VarType(mActual) = vbUserDefinedType Then
+        WriteUDTTypeMismatch Writer
     Else
         Writer.DisplayConstraintDifferences Me
+    End If
+End Sub
+
+Private Sub WriteUDTMessage(ByVal Writer As TextMessageWriter)
+    Dim ActualRecord    As IRecordInfo
+    Dim ExpectedRecord  As IRecordInfo
+        
+    On Error GoTo Catch
+        
+    If VarType(mActual) = vbUserDefinedType Then
+        ObjectPtr(ActualRecord) = MemLong(VarPtr(mActual) + VARIANTRECORD_OFFSET)
+        ObjectPtr(ExpectedRecord) = MemLong(VarPtr(mExpected) + VARIANTRECORD_OFFSET)
+        
+        If ActualRecord.IsMatchingType(ExpectedRecord) Then
+            Writer.WriteLine "type field -> " & CreateTypeNavigationPath
+            WriteUDTExpectedAndActual Writer, mComparer.FailurePoints.Pop, mComparer.FailurePoints.Pop
+        Else
+            WriteUDTTypeMismatch Writer
+        End If
+    Else
+        WriteUDTTypeMismatch Writer
+    End If
+    
+    GoSub Finally
+    Exit Sub
+    
+Catch:
+    GoSub Finally
+    Err.Raise Err.Number, Err.Source, Err.Description
+Finally:
+    ObjectPtr(ActualRecord) = vbNullPtr
+    ObjectPtr(ExpectedRecord) = vbNullPtr
+End Sub
+
+Private Function CreateTypeNavigationPath() As String
+    Dim Path As String
+    
+    Do While mComparer.FailurePoints.Count > 2
+        If Len(Path) > 0 Then
+            Path = Path & "."
+        End If
+        
+        Path = Path & mComparer.FailurePoints.Pop
+    Loop
+
+    CreateTypeNavigationPath = Path
+End Function
+
+Private Sub WriteUDTTypeMismatch(ByVal Writer As TextMessageWriter)
+    Writer.WriteText "  Expected type <" & TypeName(mExpected) & ">, but was type <" & TypeName(mActual) & ">" & vbCrLf
+End Sub
+
+Private Sub WriteUDTExpectedAndActual(ByVal Writer As TextMessageWriter, ByRef Expected As Variant, ByRef Actual As Variant)
+    If VarType(Expected) = vbString And VarType(Actual) = vbString Then
+        DisplayStringDifferences Writer, Expected, Actual
+    Else
+        Writer.WriteText "  Expected: "
+        Writer.WriteExpectedValue Expected
+        Writer.WriteText vbCrLf & "  but was : "
+        Writer.WriteActualValue Actual
+        Writer.WriteText vbCrLf
     End If
 End Sub
 

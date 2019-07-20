@@ -69,6 +69,7 @@ library SimplyVBUnitType {
         const long PVDATA_OFFSET      = 0x0000000C;
         const long VT_BYREF           = 0x00004000;
         const long VARIANTDATA_OFFSET = 0x00000008;
+        const long VARIANTRECORD_OFFSET = 0x0000000C;
     }
 
     [

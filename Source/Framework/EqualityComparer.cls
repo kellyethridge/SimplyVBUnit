@@ -99,6 +99,21 @@ Public Property Get FailurePoints() As Stack
 End Property
 
 Public Function Equals(ByRef X As Variant, ByRef Y As Variant) As Boolean
+    mFailurePoints.Clear
+    Equals = EqualsCore(X, Y)
+    
+    If Not Equals Then
+        If VarType(X) = vbUserDefinedType And VarType(Y) = vbUserDefinedType Then
+            mFailurePoints.Push TypeName(X)
+        End If
+    End If
+End Function
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Private Helpers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Private Function EqualsCore(ByRef X As Variant, ByRef Y As Variant) As Boolean
     Dim Result As Boolean
     
     If IsArray(X) And IsArray(Y) Then
@@ -111,13 +126,9 @@ Public Function Equals(ByRef X As Variant, ByRef Y As Variant) As Boolean
         Result = mExternalComparer.Equals(X, Y)
     End If
     
-    Equals = Result
+    EqualsCore = Result
 End Function
 
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Private Helpers
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function EqualArrays(ByRef X As Variant, ByRef Y As Variant) As Boolean
     If Not mAsCollection Then
         If Not EqualArraySizes(X, Y) Then
@@ -305,8 +316,6 @@ Private Function EqualDates(ByRef X As Variant, ByRef Y As Variant) As Boolean
 End Function
 
 Private Function EqualUdt(ByRef ObjA As Variant, ByRef ObjB As Variant) As Boolean
-    Const VARIANTRECORD_OFFSET  As Long = 12
-    Const VARIANTDATA_OFFSET    As Long = 8
     Dim ObjARecord As IRecordInfo
     Dim ObjBRecord As IRecordInfo
     
@@ -329,10 +338,16 @@ Private Function EqualUdt(ByRef ObjA As Variant, ByRef ObjB As Variant) As Boole
             ObjARecord.GetFieldNames FieldNameCount, FieldNames(0)
             ObjAPtr = MemLong(VarPtr(ObjA) + VARIANTDATA_OFFSET)
             ObjBPtr = MemLong(VarPtr(ObjB) + VARIANTDATA_OFFSET)
-                                    
+
             Dim i As Long
             For i = 0 To FieldNameCount - 1
-                If Not Equals(ObjARecord.GetField(ObjAPtr, FieldNames(i)), ObjARecord.GetField(ObjBPtr, FieldNames(i))) Then
+                If Not EqualsCore(ObjARecord.GetField(ObjAPtr, FieldNames(i)), ObjARecord.GetField(ObjBPtr, FieldNames(i))) Then
+                    If mFailurePoints.Count = 0 Then
+                        mFailurePoints.Push ObjARecord.GetField(ObjBPtr, FieldNames(i))
+                        mFailurePoints.Push ObjARecord.GetField(ObjAPtr, FieldNames(i))
+                    End If
+                
+                    mFailurePoints.Push FieldNames(i)
                     GoSub Finally
                     Exit Function
                 End If
