@@ -132,6 +132,11 @@ Public Function Run() As Long
     RunTest Equals_WithDefaultSettings_ReturnsExpected(NewComplexType(2, NewSimpleType(1, "hi")), NewComplexType(3, NewSimpleType(1, "hi")), False)
     RunTest Equals_WithDefaultSettings_ReturnsExpected(NewComplexType(3, NewSimpleType(1, "hi")), NewComplexType(3, NewSimpleType(1, "bye")), False)
     
+    Dim Complex As ComplexType
+    Complex = NewComplexType(3, NewSimpleType(1, "hi"))
+    ReDim Complex.DynamicSimples(1)
+    RunTest Equals_WithDefaultSettings_ReturnsExpected(Complex, NewComplexType(3, NewSimpleType(1, "hi")), False)
+        
     RunTest Equals_WithStrictSettings_ReturnsExpected(0, 0, True)
     RunTest Equals_WithStrictSettings_ReturnsExpected(0&, 0, False)
     RunTest Equals_WithStrictSettings_ReturnsExpected(0, 0&, False)

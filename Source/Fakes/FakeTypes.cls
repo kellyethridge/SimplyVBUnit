@@ -21,6 +21,9 @@ End Type
 Public Type ComplexType
     Value1 As Long
     Simple1 As SimpleType
+    FixedLong(100) As Long
+    FixedSimples(50) As SimpleType
+    DynamicSimples() As SimpleType
 End Type
 
 Public Function NewSimpleType(ByVal Value1 As Long, ByVal Value2 As String) As SimpleType
@@ -28,7 +31,8 @@ Public Function NewSimpleType(ByVal Value1 As Long, ByVal Value2 As String) As S
     NewSimpleType.Value2 = Value2
 End Function
 
-Public Function NewComplexType(ByVal Value1 As Long, ByRef Simple1 As SimpleType) As ComplexType
+Public Function NewComplexType(ByVal Value1 As Long, ByRef Simple1 As SimpleType, Optional ByVal FixedLong As Long) As ComplexType
     NewComplexType.Value1 = Value1
     NewComplexType.Simple1 = Simple1
+    NewComplexType.FixedLong(75) = FixedLong
 End Function

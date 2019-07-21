@@ -137,8 +137,14 @@ Private Sub ITestCaseSource_GetTestCases(ByVal Test As TestCaseCollector)
                        "  But was : ""bye""" & vbCrLf & _
                        "  -----------^" & vbCrLf
             Test.Use NewComplexType(1, NewSimpleType(1, "hi")), NewComplexType(1, NewSimpleType(1, "bye")), Expected
-    End Select
     
+            Expected = "type field -> ComplexType.FixedLong" & vbCrLf & _
+                       "  Expected and actual are both <Long(0 To 100)>" & vbCrLf & _
+                       "  Values differ at index [75]" & vbCrLf & _
+                       "  Expected: 9" & vbCrLf & _
+                       "  But was : 10" & vbCrLf
+            Test.Use NewComplexType(1, NewSimpleType(1, "hi"), 9), NewComplexType(1, NewSimpleType(1, "hi"), 10), Expected
+    End Select
 End Sub
 
 Public Sub WriteMessageTo_WithValues_WritesExpected(ByRef ConstraintExpected As Variant, ByRef ConstraintActual As Variant, ByVal Expected As String)
@@ -175,6 +181,73 @@ Public Sub WriteMessageTo_WithMultiDimensionalArraysAsCollection_WritesExpected(
                "    Values differ at index [1]" & vbCrLf & _
                "  Expected: 2" & vbCrLf & _
                "  But was : 3" & vbCrLf
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub WriteMessageTo_WithUDTArrays_WritesExpected()
+    Dim c As IConstraint
+    Dim w As New TextMessageWriter
+    ReDim Array1(0) As SimpleType
+    ReDim Array2(0) As SimpleType
+    
+    Array1(0) = NewSimpleType(1, "2")
+    Array2(0) = NewSimpleType(1, "1")
+    Set c = Sim.NewEqualConstraint(Array1)
+    c.Matches Array2
+    c.WriteMessageTo w
+    
+    Dim Actual As String
+    Actual = w.ToString
+    
+    Dim Expected As String
+    Expected = "  Expected and actual are both <SimpleType(0 To 0)>" & vbCrLf & _
+               "  Values differ at index [0]" & vbCrLf & _
+               "type field -> SimpleType.Value2" & vbCrLf & _
+               "  String lengths are both 1. Strings differ at index 1." & vbCrLf & _
+               "  Expected: ""2""" & vbCrLf & _
+               "  But was : ""1""" & vbCrLf & _
+               "  -----------^" & vbCrLf
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub WriteMessageTo_WithUDTSubarrays_WritesExpected()
+    Dim c As IConstraint
+    Dim w As New TextMessageWriter
+    Dim Complex As ComplexType
+    Complex = NewComplexType(1, NewSimpleType(1, "hi"), 10)
+    Complex.FixedSimples(20).Value1 = 5
+    Set c = Sim.NewEqualConstraint(Complex)
+    c.Matches NewComplexType(1, NewSimpleType(1, "hi"), 10)
+    
+    c.WriteMessageTo w
+    
+    Dim Actual As String
+    Actual = w.ToString
+    
+    Dim Expected As String
+    Expected = "type field -> ComplexType.FixedSimples(20).Value1" & vbCrLf & _
+               "  Expected: 5" & vbCrLf & _
+               "  but was : 0" & vbCrLf
+    Assert.That Actual, Iz.EqualTo(Expected)
+End Sub
+
+Public Sub WriteMessageTo_WithDynamicUDTSubarraysOfDifferentsLenghts_WritesExpected()
+    Dim c As IConstraint
+    Dim w As New TextMessageWriter
+    Dim Complex As ComplexType
+    Complex = NewComplexType(1, NewSimpleType(1, "hi"), 10)
+    ReDim Complex.DynamicSimples(0 To 10)
+    Set c = Sim.NewEqualConstraint(Complex)
+    c.Matches NewComplexType(1, NewSimpleType(1, "hi"), 10)
+    
+    c.WriteMessageTo w
+
+    Dim Actual As String
+    Actual = w.ToString
+
+    Dim Expected As String
+    Expected = "type field -> ComplexType" & vbCrLf & _
+               "  Expected is <SimpleType(0 To 10)>, actual is <SimpleType(0 To -1)>" & vbCrLf
     Assert.That Actual, Iz.EqualTo(Expected)
 End Sub
 

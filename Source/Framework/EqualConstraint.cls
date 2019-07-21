@@ -188,10 +188,7 @@ Private Sub DisplayCollectionDifferences(ByRef Expected As Variant, ByRef Actual
 
     If mComparer.FailurePoints.Count > 0 Then
         Set Failure = mComparer.FailurePoints.Pop
-        Dim Index As Long
-        Index = Failure.Position
-
-        DisplayCollectionFailurePoint Expected, Actual, Writer, Index, Indent
+        DisplayCollectionFailurePoint Expected, Actual, Writer, Failure.Position, Indent
     
         If mComparer.FailurePoints.Count > 0 Then
             DisplayCollectionDifferences Failure.Expected, Failure.Actual, Writer, Indent + 2
@@ -206,17 +203,19 @@ Private Sub DisplayCollectionDifferences(ByRef Expected As Variant, ByRef Actual
             If ExpectedCount < ActualCount Then
                 ' too many
                 Writer.WriteText "  Extra: "
-                Writer.WriteCollectionElements Actual, Index, 3
+                Writer.WriteCollectionElements Actual, Failure.Position, 3
                 Writer.WriteLine
     
             ElseIf ExpectedCount > ActualCount Then
                 ' too few
                 Writer.WriteText "  Missing: "
-                Writer.WriteCollectionElements Expected, Index, 3
+                Writer.WriteCollectionElements Expected, Failure.Position, 3
                 Writer.WriteLine
             Else
                 Writer.DisplayDifferences Failure.Expected, Failure.Actual
             End If
+        ElseIf VarType(Failure.Expected) = vbUserDefinedType And VarType(Failure.Actual) = vbUserDefinedType Then
+            DisplayUDTDifference Writer, Failure.Expected, Failure.Actual
         Else
             Writer.DisplayDifferences Failure.Expected, Failure.Actual
         End If
@@ -253,12 +252,11 @@ Private Sub AppendElementCountInfo(ByRef Value As Variant, ByRef s As String)
 End Sub
 
 Private Sub DisplayCollectionFailurePoint(ByRef Expected As Variant, ByRef Actual As Variant, ByVal Writer As TextMessageWriter, ByVal Index As Long, ByVal Indent As Long)
-    Writer.WriteText Space$(Indent)
-    
     Dim ExpectedIndices As String
-    ExpectedIndices = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Expected, Index))
-    
     Dim ActualIndices As String
+    
+    Writer.WriteText Space$(Indent)
+    ExpectedIndices = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Expected, Index))
     ActualIndices = MsgUtils.GetArrayIndicesAsString(MsgUtils.GetArrayIndicesFromCollectionIndex(Actual, Index))
     
     If ExpectedIndices = ActualIndices Then
@@ -268,9 +266,68 @@ Private Sub DisplayCollectionFailurePoint(ByRef Expected As Variant, ByRef Actua
     End If
 End Sub
 
+Private Sub DisplayUDTDifference(ByVal Writer As TextMessageWriter, ByRef Expected As Variant, ByRef Actual As Variant)
+    Dim ActualRecord    As IRecordInfo
+    Dim ExpectedRecord  As IRecordInfo
+        
+    On Error GoTo Catch
+        
+    ObjectPtr(ActualRecord) = MemLong(VarPtr(Actual) + VARIANTRECORD_OFFSET)
+    ObjectPtr(ExpectedRecord) = MemLong(VarPtr(Expected) + VARIANTRECORD_OFFSET)
+    
+    If ActualRecord.IsMatchingType(ExpectedRecord) Then
+        Writer.WriteLine "type field -> " & CreateTypeNavigationPath
+        WriteUDTExpectedAndActual Writer, mComparer.TypePath.Pop, mComparer.TypePath.Pop
+    Else
+        WriteUDTTypeMismatch Writer
+    End If
+    
+    GoSub Finally
+    Exit Sub
+    
+Catch:
+    GoSub Finally
+    Err.Raise Err.Number, Err.Source, Err.Description
+Finally:
+    ObjectPtr(ActualRecord) = vbNullPtr
+    ObjectPtr(ExpectedRecord) = vbNullPtr
+End Sub
+
+Private Function CreateTypeNavigationPath() As String
+    Dim Path As String
+    
+    Do While mComparer.TypePath.Count > 2
+        If Len(Path) > 0 Then
+            Path = Path & "."
+        End If
+        
+        Path = Path & mComparer.TypePath.Pop
+    Loop
+
+    CreateTypeNavigationPath = Path
+End Function
+
+Private Sub WriteUDTTypeMismatch(ByVal Writer As TextMessageWriter)
+    Writer.WriteText "  Expected type <" & TypeName(mExpected) & ">, but was type <" & TypeName(mActual) & ">" & vbCrLf
+End Sub
+
+Private Sub WriteUDTExpectedAndActual(ByVal Writer As TextMessageWriter, ByRef Expected As Variant, ByRef Actual As Variant)
+    If VarType(Expected) = vbString And VarType(Actual) = vbString Then
+        DisplayStringDifferences Writer, Expected, Actual
+    ElseIf IsEnumerable(Expected) And IsEnumerable(Actual) Then
+        DisplayCollectionDifferences Expected, Actual, Writer, 0
+    Else
+        Writer.WriteText "  Expected: "
+        Writer.WriteExpectedValue Expected
+        Writer.WriteText vbCrLf & "  but was : "
+        Writer.WriteActualValue Actual
+        Writer.WriteText vbCrLf
+    End If
+End Sub
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   Class Events
+'   Constructors
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Sub Class_Initialize()
     mClipping = DEF_CLIPPING
@@ -278,7 +335,7 @@ End Sub
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IBasicExpression Interface
+'   IBasicExpression
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IBasicExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
     Set IBasicExpression_AndAlso = mExpression.AndAlso
@@ -290,7 +347,7 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IConstraint Interface
+'   IConstraint
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IConstraint_Matches(Actual As Variant) As Boolean
     IConstraint_Matches = Matches(Actual)
@@ -310,7 +367,11 @@ Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
     ElseIf VarType(mActual) = vbString And VarType(mExpected) = vbString Then
         DisplayStringDifferences Writer, mExpected, mActual
     ElseIf VarType(mExpected) = vbUserDefinedType Then
-        WriteUDTMessage Writer
+        If VarType(mActual) = vbUserDefinedType Then
+            DisplayUDTDifference Writer, mExpected, mActual
+        Else
+            WriteUDTTypeMismatch Writer
+        End If
     ElseIf VarType(mActual) = vbUserDefinedType Then
         WriteUDTTypeMismatch Writer
     Else
@@ -318,70 +379,9 @@ Private Sub IConstraint_WriteMessageTo(ByVal Writer As TextMessageWriter)
     End If
 End Sub
 
-Private Sub WriteUDTMessage(ByVal Writer As TextMessageWriter)
-    Dim ActualRecord    As IRecordInfo
-    Dim ExpectedRecord  As IRecordInfo
-        
-    On Error GoTo Catch
-        
-    If VarType(mActual) = vbUserDefinedType Then
-        ObjectPtr(ActualRecord) = MemLong(VarPtr(mActual) + VARIANTRECORD_OFFSET)
-        ObjectPtr(ExpectedRecord) = MemLong(VarPtr(mExpected) + VARIANTRECORD_OFFSET)
-        
-        If ActualRecord.IsMatchingType(ExpectedRecord) Then
-            Writer.WriteLine "type field -> " & CreateTypeNavigationPath
-            WriteUDTExpectedAndActual Writer, mComparer.FailurePoints.Pop, mComparer.FailurePoints.Pop
-        Else
-            WriteUDTTypeMismatch Writer
-        End If
-    Else
-        WriteUDTTypeMismatch Writer
-    End If
-    
-    GoSub Finally
-    Exit Sub
-    
-Catch:
-    GoSub Finally
-    Err.Raise Err.Number, Err.Source, Err.Description
-Finally:
-    ObjectPtr(ActualRecord) = vbNullPtr
-    ObjectPtr(ExpectedRecord) = vbNullPtr
-End Sub
-
-Private Function CreateTypeNavigationPath() As String
-    Dim Path As String
-    
-    Do While mComparer.FailurePoints.Count > 2
-        If Len(Path) > 0 Then
-            Path = Path & "."
-        End If
-        
-        Path = Path & mComparer.FailurePoints.Pop
-    Loop
-
-    CreateTypeNavigationPath = Path
-End Function
-
-Private Sub WriteUDTTypeMismatch(ByVal Writer As TextMessageWriter)
-    Writer.WriteText "  Expected type <" & TypeName(mExpected) & ">, but was type <" & TypeName(mActual) & ">" & vbCrLf
-End Sub
-
-Private Sub WriteUDTExpectedAndActual(ByVal Writer As TextMessageWriter, ByRef Expected As Variant, ByRef Actual As Variant)
-    If VarType(Expected) = vbString And VarType(Actual) = vbString Then
-        DisplayStringDifferences Writer, Expected, Actual
-    Else
-        Writer.WriteText "  Expected: "
-        Writer.WriteExpectedValue Expected
-        Writer.WriteText vbCrLf & "  but was : "
-        Writer.WriteActualValue Actual
-        Writer.WriteText vbCrLf
-    End If
-End Sub
-
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IEqualityExpression Interface
+'   IEqualityExpression
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IEqualityExpression_AndAlso() As SimplyVBUnitType.IConstraintExpression
     Set IEqualityExpression_AndAlso = mExpression.AndAlso
@@ -417,7 +417,7 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IResolvable Interface
+'   IResolvable
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IResolvable_Resolve() As IConstraint
     Set IResolvable_Resolve = Resolve(Me, mExpression)
@@ -425,7 +425,7 @@ End Function
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'   IToleranceUnits Interface
+'   IToleranceUnits
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private Function IToleranceUnits_Days() As SimplyVBUnitType.IEqualityExpression
     Set IToleranceUnits_Days = Days

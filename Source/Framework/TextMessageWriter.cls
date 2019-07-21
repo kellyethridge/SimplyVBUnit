@@ -141,6 +141,7 @@ Public Sub WriteValue(ByRef Value As Variant)
             Case vbNull:                    WriteText FMT_NULL
             Case vbEmpty:                   WriteText FMT_EMPTY
             Case vbError:                   WriteText FMT_MISSING
+            Case vbUserDefinedType:         WriteDefault TypeName(Value)
             Case Else:                      WriteDefault Value
         End Select
     End If

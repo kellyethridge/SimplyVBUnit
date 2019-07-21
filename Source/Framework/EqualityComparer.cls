@@ -52,6 +52,8 @@ Private mAsCollection       As Boolean
 Private mTolerance          As Tolerance
 Private mExternalComparer   As IEqualityComparer
 Private mFailurePoints      As New Stack
+Private mTypePath           As New Stack
+Private mLevel              As Long
 
 
 Public Property Get Strict() As Boolean
@@ -99,15 +101,18 @@ Public Property Get FailurePoints() As Stack
 End Property
 
 Public Function Equals(ByRef X As Variant, ByRef Y As Variant) As Boolean
-    mFailurePoints.Clear
     Equals = EqualsCore(X, Y)
     
     If Not Equals Then
         If VarType(X) = vbUserDefinedType And VarType(Y) = vbUserDefinedType Then
-            mFailurePoints.Push TypeName(X)
+            mTypePath.Push TypeName(X)
         End If
     End If
 End Function
+
+Friend Property Get TypePath() As Stack
+    Set TypePath = mTypePath
+End Property
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -341,13 +346,13 @@ Private Function EqualUdt(ByRef ObjA As Variant, ByRef ObjB As Variant) As Boole
 
             Dim i As Long
             For i = 0 To FieldNameCount - 1
-                If Not EqualsCore(ObjARecord.GetField(ObjAPtr, FieldNames(i)), ObjARecord.GetField(ObjBPtr, FieldNames(i))) Then
-                    If mFailurePoints.Count = 0 Then
-                        mFailurePoints.Push ObjARecord.GetField(ObjBPtr, FieldNames(i))
-                        mFailurePoints.Push ObjARecord.GetField(ObjAPtr, FieldNames(i))
-                    End If
-                
-                    mFailurePoints.Push FieldNames(i)
+                If Not EqualUdtCore(ObjARecord.GetField(ObjAPtr, FieldNames(i)), ObjARecord.GetField(ObjBPtr, FieldNames(i)), FieldNames(i)) Then
+'                    If mTypePath.Count = 0 Then
+'                        mTypePath.Push ObjARecord.GetField(ObjBPtr, FieldNames(i))
+'                        mTypePath.Push ObjARecord.GetField(ObjAPtr, FieldNames(i))
+'                    End If
+'
+'                    mTypePath.Push FieldNames(i)
                     GoSub Finally
                     Exit Function
                 End If
@@ -367,6 +372,33 @@ Finally:
     ObjectPtr(ObjARecord) = vbNullPtr
     ObjectPtr(ObjBRecord) = vbNullPtr
     Return
+End Function
+
+Private Function EqualUdtCore(ByRef X As Variant, ByRef Y As Variant, ByRef FieldName As String) As Boolean
+    Dim Result As Boolean
+    
+    Result = EqualsCore(X, Y)
+    
+    If Not Result Then
+        If mTypePath.Count = 0 Then
+            mTypePath.Push Y
+            mTypePath.Push X
+        End If
+    
+        If VarType(X) = (vbArray Or vbUserDefinedType) Then
+            Dim Point As FailurePoint
+            
+            If mFailurePoints.Count > 0 Then
+                Set Point = mFailurePoints.Pop
+                mTypePath.Pop
+                mTypePath.Push FieldName & "(" & Point.Position & ")"
+            End If
+        Else
+            mTypePath.Push FieldName
+        End If
+    End If
+    
+    EqualUdtCore = Result
 End Function
 
 
